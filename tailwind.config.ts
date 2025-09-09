@@ -1,0 +1,152 @@
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  darkMode: "class",
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          DEFAULT: "var(--primary)",
+          hover: "var(--primary-hover)",
+          gradient: "var(--primary-gradient)",
+          "gradient-2": "var(--primary-gradient-2)",
+        },
+        neutral: {
+          white: "var(--white)",
+          black: "var(--black)",
+          "black-01": "var(--black-01)",
+          "black-2": "var(--black-2)",
+          "black-text": "var(--black-text)",
+          "preto-fundo": "var(--preto-fundo)",
+          "bg1": "var(--bg1)",
+          "bg2": "var(--bg2)",
+          "black2": "var(--black2)",
+          "dark-grey": "var(--dark-grey)",
+          "dim-grey": "var(--dim-grey)",
+          grey: "var(--grey)",
+          "card-grey": "var(--card-grey)",
+          "dark-slate-grey": "var(--dark-slate-grey)",
+        },
+        accent: {
+          khaki: "var(--khaki)",
+          "green-zap": "var(--green-zap)",
+        },
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        chart: {
+          "1": "hsl(var(--chart-1))",
+          "2": "hsl(var(--chart-2))",
+          "3": "hsl(var(--chart-3))",
+          "4": "hsl(var(--chart-4))",
+          "5": "hsl(var(--chart-5))",
+        },
+      },
+      fontFamily: {
+        primary: ["var(--font-primary)", "Montserrat", "sans-serif"],
+        secondary: ["var(--font-secondary)", "Montserrat", "sans-serif"],
+      },
+      fontSize: {
+        xs: "var(--text-xs)",
+        sm: "var(--text-sm)",
+        base: "var(--text-base)",
+        lg: "var(--text-lg)",
+        xl: "var(--text-xl)",
+        "2xl": "var(--text-2xl)",
+        "3xl": "var(--text-3xl)",
+        "4xl": "var(--text-4xl)",
+        "5xl": "var(--text-5xl)",
+      },
+      fontWeight: {
+        thin: "var(--font-thin)",
+        light: "var(--font-light)",
+        normal: "var(--font-normal)",
+        medium: "var(--font-medium)",
+        semibold: "var(--font-semibold)",
+        bold: "var(--font-bold)",
+        extrabold: "var(--font-extrabold)",
+        black: "var(--font-black)",
+      },
+      lineHeight: {
+        tight: "var(--leading-tight)",
+        normal: "var(--leading-normal)",
+        relaxed: "var(--leading-relaxed)",
+      },
+      spacing: {
+        "1": "var(--space-1)",
+        "2": "var(--space-2)",
+        "3": "var(--space-3)",
+        "4": "var(--space-4)",
+        "5": "var(--space-5)",
+        "6": "var(--space-6)",
+        "8": "var(--space-8)",
+        "10": "var(--space-10)",
+        "12": "var(--space-12)",
+        "16": "var(--space-16)",
+        "20": "var(--space-20)",
+        "24": "var(--space-24)",
+      },
+      borderRadius: {
+        sm: "var(--radius-sm)",
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        xl: "var(--radius-xl)",
+        "2xl": "var(--radius-2xl)",
+        full: "var(--radius-full)",
+        section: "var(--radius-section)",
+      },
+      boxShadow: {
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+        xl: "var(--shadow-xl)",
+      },
+      maxWidth: {
+        container: "var(--container-max)",
+      },
+      height: {
+        navbar: "var(--navbar-height)",
+      },
+      padding: {
+        section: "var(--section-padding)",
+      },
+      transitionDuration: {
+        fast: "var(--transition-fast)",
+        normal: "var(--transition-normal)",
+        slow: "var(--transition-slow)",
+      },
+      zIndex: {
+        dropdown: "var(--z-dropdown)",
+        sticky: "var(--z-sticky)",
+        fixed: "var(--z-fixed)",
+        "modal-backdrop": "var(--z-modal-backdrop)",
+        modal: "var(--z-modal)",
+        popover: "var(--z-popover)",
+        tooltip: "var(--z-tooltip)",
+        toast: "var(--z-toast)",
+      },
+    },
+  },
+  plugins: [require("tailwindcss-animate")],
+};
+
+export default config;

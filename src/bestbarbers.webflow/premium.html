@@ -1,0 +1,602 @@
+<!DOCTYPE html><!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Tue Sep 09 2025 02:25:37 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="6515e48174751a0b8b613f3c" data-wf-site="6087192d180a065532046cc7" lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>BestBarbers - Sistema de Gestão para Barbearias</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Webflow" name="generator">
+  <meta content="noindex" name="robots">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/bestbarbers.webflow.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({  google: {    families: ["Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic","Lato:100,100italic,300,300italic,400,400italic,700,700italic,900,900italic","Source Sans Pro:300,regular"]  }});</script>
+  <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+  <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
+  <link href="images/webclip.png" rel="apple-touch-icon">
+  <link href="https://www.bestbarbers.app/premium" rel="canonical">
+  <script type="text/javascript">!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.agent='plwebflow';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init', '538871725012038');fbq('track', 'PageView');</script><!--  Google Tag Manager  -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id=%27+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5XL2VDK');</script>
+  <!--  End Google Tag Manager  -->
+  <meta name="facebook-domain-verification" content="2wo0bxodh1e5zyu8z9ospie7cro5cq">
+  <!--  Facebook Pixel Code  -->
+  <script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+ fbq('init', '594829322684676'); 
+fbq('track', 'PageView');
+</script>
+  <noscript>
+    <img height="1" width="1" src="https://www.facebook.com/tr?id=538871725012038&ev=PageView
+&noscript=1">
+  </noscript>
+  <!--  End Facebook Pixel Code  -->
+  <!--  Google Tag Manager  -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5XL2VDK');</script>
+  <!--  End Google Tag Manager  -->
+  <meta name="facebook-domain-verification" content="g3pwamv6ocei4wg6d6tlx8kej6y4rh">
+</head>
+<body class="body">
+  <div class="w-embed w-script">
+    <script>
+window.onload = function () {
+// obter os parametros do link
+var queryString = window.location.search
+// alterar o link de navegacao dos botões CTA
+var link_cta_landing_page_plataforma_0 = document.getElementById('cta_landing_page_plataforma')
+link_cta_landing_page_plataforma_0.href += queryString
+var link_cta_landing_page_plataforma_1 = document.getElementById('cta_landing_page_plataforma_1')
+link_cta_landing_page_plataforma_1.href += queryString
+var link_cta_landing_page_plataforma_2 = document.getElementById('cta_landing_page_plataforma_2')
+link_cta_landing_page_plataforma_2.href += queryString
+var link_cta_landing_page_plataforma_3 = document.getElementById('cta_landing_page_plataforma_3')
+link_cta_landing_page_plataforma_3.href += queryString
+var btn_home_header = document.getElementById('btn_home_header')
+btn_home_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_home_header')
+})
+var btn_barbearias_header = document.getElementById('btn_barbearias_header')
+btn_barbearias_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_barbearias_header')
+})
+var btn_clientes_header = document.getElementById('btn_clientes_header')
+btn_clientes_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_clientes_header')
+})
+var btn_planos_header = document.getElementById('btn_planos_header')
+btn_planos_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_planos_header')
+})
+var btn_especialista_header = document.getElementById('btn_especialista_header')
+btn_especialista_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_especialista_header')
+})
+var btn_entrar_header = document.getElementById('btn_entrar_header')
+btn_entrar_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_entrar_header')
+})
+var btn_criar_conta_header = document.getElementById('btn_criar_conta_header')
+btn_criar_conta_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_criar_conta_header')
+})
+var btn_conheca_planos_home = document.getElementById('btn_conheca_planos_home')
+btn_conheca_planos_home.addEventListener('click', function(){
+fbq('trackCustom', 'btn_conheca_planos_home')
+})
+var btn_especialista_home = document.getElementById('btn_especialista_home')
+btn_especialista_home.addEventListener('click', function(){
+fbq('trackCustom', 'btn_especialista_home')
+})
+var btn_app_store_home = document.getElementById('btn_app_store_home')
+btn_app_store_home.addEventListener('click', function(){
+fbq('trackCustom', 'btn_app_store_home')
+})
+var btn_play_store_home = document.getElementById('btn_play_store_home')
+btn_play_store_home.addEventListener('click', function(){
+fbq('trackCustom', 'btn_play_store_home')
+})
+var btn_app_store_clientes = document.getElementById('btn_app_store_clientes')
+btn_app_store_clientes.addEventListener('click', function(){
+fbq('trackCustom', 'btn_app_store_clientes')
+})
+var btn_play_store_clientes = document.getElementById('btn_play_store_clientes')
+btn_play_store_clientes.addEventListener('click', function(){
+fbq('trackCustom', 'btn_play_store_clientes')
+})
+var btn_criar_conta_free_planos = document.getElementById('btn_criar_conta_free_planos')
+btn_criar_conta_free_planos.addEventListener('click', function(){
+fbq('trackCustom', 'btn_criar_conta_free_planos')
+})
+var btn_criar_conta_premium_planos = document.getElementById('btn_criar_conta_premium_planos')
+btn_criar_conta_premium_planos.addEventListener('click', function(){
+fbq('trackCustom', 'btn_criar_conta_premium_planos')
+})
+var btn_app_store_apps = document.getElementById('btn_app_store_apps')
+btn_app_store_apps.addEventListener('click', function(){
+fbq('trackCustom', 'btn_app_store_apps')
+})
+var btn_play_store_apps = document.getElementById('btn_play_store_apps')
+btn_play_store_apps.addEventListener('click', function(){
+fbq('trackCustom', 'btn_play_store_apps')
+})
+var youtube_autoridade = document.getElementById('youtube_autoridade')
+youtube_autoridade.addEventListener('click', function(){
+fbq('trackCustom', 'youtube_autoridade')
+})
+var faq_qual_valor = document.getElementById('faq_qual_valor')
+faq_qual_valor.addEventListener('click', function(){
+fbq('trackCustom', 'faq_qual_valor')
+})
+var faq_link_agendamento = document.getElementById('faq_link_agendamento')
+faq_link_agendamento.addEventListener('click', function(){
+fbq('trackCustom', 'faq_link_agendamento')
+})
+var faq_clientes_agendar = document.getElementById('faq_clientes_agendar')
+faq_clientes_agendar.addEventListener('click', function(){
+fbq('trackCustom', 'faq_clientes_agendar')
+})
+var faq_pagar_por_profissional = document.getElementById('faq_pagar_por_profissional')
+faq_pagar_por_profissional.addEventListener('click', function(){
+fbq('trackCustom', 'faq_pagar_por_profissional')
+})
+var faq_ativar_barbearia = document.getElementById('faq_ativar_barbearia')
+faq_ativar_barbearia.addEventListener('click', function(){
+fbq('trackCustom', 'faq_ativar_barbearia')
+})
+var faq_notificacoes = document.getElementById('faq_notificacoes')
+faq_notificacoes.addEventListener('click', function(){
+fbq('trackCustom', 'faq_notificacoes')
+})
+var faq_comissao_barbeiros = document.getElementById('faq_comissao_barbeiros')
+faq_comissao_barbeiros.addEventListener('click', function(){
+fbq('trackCustom', 'faq_comissao_barbeiros')
+})
+var faq_convidar_barber_parceiro = document.getElementById('faq_convidar_barber_parceiro')
+faq_convidar_barber_parceiro.addEventListener('click', function(){
+fbq('trackCustom', 'faq_convidar_barber_parceiro')
+})
+var faq_criar_servico = document.getElementById('faq_criar_servico')
+faq_criar_servico.addEventListener('click', function(){
+fbq('trackCustom', 'faq_criar_servico')
+})
+var faq_cadastrar_cliente = document.getElementById('faq_cadastrar_cliente')
+faq_cadastrar_cliente.addEventListener('click', function(){
+fbq('trackCustom', 'faq_cadastrar_cliente')
+})
+var faq_fotos_barbearia = document.getElementById('faq_fotos_barbearia')
+faq_fotos_barbearia.addEventListener('click', function(){
+fbq('trackCustom', 'faq_fotos_barbearia')
+})
+var faq_cancelar_app = document.getElementById('faq_cancelar_app')
+faq_cancelar_app.addEventListener('click', function(){
+fbq('trackCustom', 'faq_cancelar_app')
+})
+var faq_alterar_email_senha = document.getElementById('faq_alterar_email_senha')
+faq_alterar_email_senha.addEventListener('click', function(){
+fbq('trackCustom', 'faq_alterar_email_senha')
+})
+var faq_formas_de_pagamento = document.getElementById('faq_formas_de_pagamento')
+faq_formas_de_pagamento.addEventListener('click', function(){
+fbq('trackCustom', 'faq_formas_de_pagamento')
+})
+var faq_alterar_formas_de_pagamento = document.getElementById('faq_alterar_formas_de_pagamento')
+faq_alterar_formas_de_pagamento.addEventListener('click', function(){
+fbq('trackCustom', 'faq_alterar_formas_de_pagamento')
+})
+var faq_nao_consegue_logar = document.getElementById('faq_nao_consegue_logar')
+faq_nao_consegue_logar.addEventListener('click', function(){
+fbq('trackCustom', 'faq_nao_consegue_logar')
+})
+var faq_barbearia_desativada = document.getElementById('faq_barbearia_desativada')
+faq_barbearia_desativada.addEventListener('click', function(){
+fbq('trackCustom', 'faq_barbearia_desativada')
+})
+var faq_carregar_mais_perguntas = document.getElementById('faq_carregar_mais_perguntas')
+faq_carregar_mais_perguntas.addEventListener('click', function(){
+fbq('trackCustom', 'faq_carregar_mais_perguntas')
+})
+var footer_barbeiro_barbearia = document.getElementById('footer_barbeiro_barbearia')
+footer_barbeiro_barbearia.addEventListener('click', function(){
+fbq('trackCustom', 'footer_barbeiro_barbearia')
+})
+var footer_clientes = document.getElementById('footer_clientes')
+footer_clientes.addEventListener('click', function(){
+fbq('trackCustom', 'footer_clientes')
+})
+var footer_planos = document.getElementById('footer_planos')
+footer_planos.addEventListener('click', function(){
+fbq('trackCustom', 'footer_planos')
+})
+var footer_faq = document.getElementById('footer_faq')
+footer_faq.addEventListener('click', function(){
+fbq('trackCustom', 'footer_faq')
+})
+var footer_termos = document.getElementById('footer_termos')
+footer_termos.addEventListener('click', function(){
+fbq('trackCustom', 'footer_termos')
+})
+var footer_politica = document.getElementById('footer_politica')
+footer_politica.addEventListener('click', function(){
+fbq('trackCustom', 'footer_politica')
+})
+var footer_wpp = document.getElementById('footer_wpp')
+footer_wpp.addEventListener('click', function(){
+fbq('trackCustom', 'footer_wpp')
+})
+var footer_email = document.getElementById('footer_email')
+footer_email.addEventListener('click', function(){
+fbq('trackCustom', 'footer_email')
+})
+var footer_app_store = document.getElementById('footer_app_store')
+footer_app_store.addEventListener('click', function(){
+fbq('trackCustom', 'footer_app_store')
+})
+var footer_play_store = document.getElementById('footer_play_store')
+footer_play_store.addEventListener('click', function(){
+fbq('trackCustom', 'footer_play_store')
+})
+}
+</script>
+  </div>
+  <div data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" class="navbar-2 w-nav">
+    <div class="div-block-1892583">
+      <a id="cta_landing_page_plataforma" href="https://adm.bestbarbers.app/cadastro" class="lp-0-button w-button">CADASTRE-SE AGORA</a>
+      <a href="#" class="brand-2 w-nav-brand"><img src="images/Logo-BestBarbers-branco_1.webp" loading="lazy" alt="bestbarbers-fundo-placeholder" class="image-32"></a>
+    </div>
+  </div>
+  <div class="lp-1-section">
+    <div class="div-block-1892587"></div>
+    <div class="div-block-1892584">
+      <div class="div-block-1892585">
+        <div class="lp-title">Você está deixando dinheiro na mesa!<span class="text-span-61"></span></div>
+        <div class="lp-subtitle">O BestBarbers é a solução que você precisa para ter uma gestão operacional mais eficiente e organizada na sua barbearia</div>
+        <a href="https://adm.bestbarbers.app/cadastro" id="cta_landing_page_plataforma_1" class="lp-1-button w-button"><strong>TESTE GRÁTIS POR 7 DIAS</strong></a>
+      </div><img src="images/Mockup-celular-e-note-para-site.gif" loading="lazy" alt="" class="lp-1-img">
+      <div class="div-block-1892598">
+        <div class="div-block-1892597"><img src="images/web-hero.svg" loading="lazy" alt="" class="image-700098"><img src="images/mobile-hero.svg" loading="lazy" alt="" class="image-700097"></div>
+        <div class="lp-subtitle center">Disponível nas versões web e mobile</div>
+      </div>
+    </div>
+  </div>
+  <div class="lp-2-section">
+    <div class="lp-sec-title"><strong class="bold-text-9-copy">SOBRE O APP</strong></div>
+    <div class="lp-title black">O BestBarbers te ajuda com:</div>
+    <div class="div-block-1892590">
+      <div class="div-block-1892589"><img src="images/gestão-de-agenda.svg" loading="lazy" alt="" class="image-700095">
+        <div class="lp-card-text"><strong class="bold-text-9">Gestão de agenda completa</strong></div>
+      </div>
+      <div class="div-block-1892589"><img src="images/número-ilimitado.svg" loading="lazy" alt="" class="image-700095">
+        <div class="lp-card-text"><strong class="bold-text-9">Número ilimitado de barbeiros</strong></div>
+      </div>
+      <div class="div-block-1892589"><img src="images/notificações.svg" loading="lazy" alt="" class="image-700095">
+        <div class="lp-card-text"><strong class="bold-text-9">Notificações e lembretes automáticos</strong></div>
+      </div>
+      <div class="div-block-1892589"><img src="images/link-de-agendamentos-personalizado.svg" loading="lazy" alt="" class="image-700095">
+        <div class="lp-card-text"><strong class="bold-text-9">Link de agendamento personalizado</strong></div>
+      </div>
+      <div class="div-block-1892589"><img src="images/gestão-de-comissões.svg" loading="lazy" alt="" class="image-700095">
+        <div class="lp-card-text"><strong class="bold-text-9">Gestão de comissões dos barbeiros</strong></div>
+      </div>
+      <div class="div-block-1892589"><img src="images/controle-financeiro-automatizado.svg" loading="lazy" alt="" class="image-700095">
+        <div class="lp-card-text"><strong class="bold-text-9">Controle financeiro automatizado</strong></div>
+      </div>
+      <div class="div-block-1892589"><img src="images/gestão-de-comandas-e-consumo-dos-clientes.svg" loading="lazy" alt="" class="image-700095">
+        <div class="lp-card-text"><strong class="bold-text-9">Gestão de comandas e consumo dos clientes</strong></div>
+      </div>
+      <div class="div-block-1892589"><img src="images/relatórios-e-métricas-gerenciais.svg" loading="lazy" alt="" class="image-700095">
+        <div class="lp-card-text"><strong class="bold-text-9">Relatórios e métricas gerenciais</strong></div>
+      </div>
+      <div class="div-block-1892589"><img src="images/gestão-de-estoque.svg" loading="lazy" alt="" class="image-700095">
+        <div class="lp-card-text"><strong class="bold-text-9">Gestão de estoque</strong></div>
+      </div>
+      <div class="div-block-1892589"><img src="images/acesso-exclusivo-para.svg" loading="lazy" alt="" class="image-700095">
+        <div class="lp-card-text"><strong class="bold-text-9">Acesso exclusivo para colaboradores</strong></div>
+      </div>
+      <div class="div-block-1892589"><img src="images/agendamento-online.svg" loading="lazy" alt="" class="image-700095">
+        <div class="lp-card-text"><strong class="bold-text-9">Agendamento online pelo App 24h</strong></div>
+      </div>
+      <div class="div-block-1892589"><img src="images/suporte-da-equipe.svg" loading="lazy" alt="" class="image-700095">
+        <div class="lp-card-text"><strong class="bold-text-9">Suporte da equipe BestBarbers</strong></div>
+      </div>
+    </div>
+  </div>
+  <div class="lp-3-section">
+    <div class="lp-sec-title"><strong class="bold-text-9">ELES APROVAM</strong></div>
+    <div class="lp-title center">Veja quem está com a gente</div>
+    <div class="div-block-1892592">
+      <div id="youtube_autoridade" style="padding-top:56.17021276595745%" class="w-embed-youtubevideo lp-youtube"><iframe src="https://www.youtube.com/embed/GA12o4D6DQ0?rel=0&amp;controls=1&amp;autoplay=0&amp;mute=0&amp;start=0" frameborder="0" style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:auto" allow="autoplay; encrypted-media" allowfullscreen="" title=""></iframe></div>
+      <div id="youtube_autoridade" style="padding-top:56.17021276595745%" class="w-embed-youtubevideo lp-youtube"><iframe src="https://www.youtube.com/embed/Tmis9m1sDCQ?rel=0&amp;controls=1&amp;autoplay=0&amp;mute=0&amp;start=0" frameborder="0" style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:auto" allow="autoplay; encrypted-media" allowfullscreen="" title="Conheça o BestBarbers"></iframe></div>
+    </div>
+    <a href="https://adm.bestbarbers.app/cadastro" id="cta_landing_page_plataforma_2" class="lp-1-button w-button"><strong>CADASTRE-SE AGORA</strong></a>
+  </div>
+  <div class="div-block-1892593">
+    <div class="lp-sec-title white"><strong class="bold-text-9">FEEDBACKS</strong></div>
+    <div class="lp-title black center min">Veja o que nossos usuários estão falando do BestBarbers</div>
+    <div data-delay="4000" data-animation="slide" class="slider-8 w-slider" data-autoplay="false" data-easing="ease" data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="0" data-nav-spacing="3" data-duration="500" data-infinite="true">
+      <div class="w-slider-mask">
+        <div class="slide w-slide">
+          <div class="div-block-1892601">
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Nil-PAiva.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Top demais, muito obrigado pela atenção. A cada dia iremos melhorar mais&quot;</div>
+              </div>
+              <div class="feedback-text name">Nil - Barbearia Nil Paiva</div>
+            </div>
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Bruna---Barbearia-Nell-Cortes.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Ficou super bacana! Sério! Principalmente o Feed [...] Fico feliz pelo suporte que estamos tendo nesse processo&quot;</div>
+              </div>
+              <div class="feedback-text name">Bruna - Barbearia Nell Cortes</div>
+            </div>
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Aysla---Barbearia-Daumas.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Nós estamos recebendo bastante elogios dos nossos clientes pelo aplicativo, que está ótimo&quot;</div>
+              </div>
+              <div class="feedback-text name">Aysla - Barbearia Daumas</div>
+            </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="div-block-1892601">
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Luan---Barbearia-Pelisari.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Estou gostando do app de vocês! Fácil de usar e é bem completo&quot;</div>
+              </div>
+              <div class="feedback-text name">Luan - Barbearia Pelisari</div>
+            </div>
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/profile_image_221020_1695071663465_1.webp" loading="lazy" width="60" height="60" alt="" sizes="(max-width: 479px) 100vw, 60px" srcset="images/profile_image_221020_1695071663465_1profile_image_221020_1695071663465.webp 500w, images/profile_image_221020_1695071663465_1profile_image_221020_1695071663465.webp 800w, images/profile_image_221020_1695071663465_1profile_image_221020_1695071663465.webp 1080w, images/profile_image_221020_1695071663465_1.webp 1195w" class="feedback-img">
+                <div class="feedback-text">&quot;Nossa que ótimo sério! Vcs são demais, o melhor sistema que já usei  👏🏻🙏🏼&quot;</div>
+              </div>
+              <div class="feedback-text name">Carol - Barbearia Machado </div>
+            </div>
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/LM-do-corte.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Show! To curtindo muito o sistema, aparece as métricas certinho. Muito top&quot;</div>
+              </div>
+              <div class="feedback-text name">Lucas - Barbearia LM do Corte</div>
+            </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="div-block-1892601">
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Bruna---Barbearia-Nell-Cortes.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Ficou super bacana! Sério! Principalmente o Feed [...] Fico feliz pelo suporte que estamos tendo nesse processo&quot;</div>
+              </div>
+              <div class="feedback-text name">Bruna - Barbearia Nell Cortes</div>
+            </div>
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Gustavo---Barbearia-Goes.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Muito obrigado viu. Atendimento excelente [...] valeu a pena pela qualidade e eficiência de vocês 👏🏻&quot;</div>
+              </div>
+              <div class="feedback-text name">Gustavo - Barbearia Goes</div>
+            </div>
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Captura-de-Tela-2023-11-07-às-18.52.28.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;A percepção de valores que meus clientes estão tendo quando mostro meu aplicativo próprio é outra!&quot;</div>
+              </div>
+              <div class="feedback-text name">Israel - Barbearia Israel Avila</div>
+            </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="div-block-1892601">
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Gustavo---Barbearia-Goes.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Atendimento excelente de vocês!&quot;</div>
+              </div>
+              <div class="feedback-text name">Gustavo - Barbearia Goes</div>
+            </div>
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Bruna---Barbearia-Nell-Cortes.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Ficou super bacana! Sério! Principalmente o Feed [...] Fico feliz pelo suporte que estamos tendo nesse processo&quot;</div>
+              </div>
+              <div class="feedback-text name">Bruna - Barbearia Nell Cortes</div>
+            </div>
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Aysla---Barbearia-Daumas.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Nós estamos recebendo bastante elogios dos nossos clientes pelo aplicativo, que está ótimo&quot;</div>
+              </div>
+              <div class="feedback-text name">Aysla - Barbearia Daumas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="left-arrow-6 w-slider-arrow-left"></div>
+      <div class="right-arrow-7 w-slider-arrow-right"></div>
+      <div class="w-slider-nav w-round"></div>
+    </div>
+    <div data-delay="4000" data-animation="slide" class="slider-9 w-slider" data-autoplay="false" data-easing="ease" data-hide-arrows="false" data-disable-swipe="false" data-autoplay-limit="0" data-nav-spacing="3" data-duration="500" data-infinite="true">
+      <div class="w-slider-mask">
+        <div class="slide w-slide">
+          <div class="div-block-1892601">
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Nil-PAiva.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Top demais, muito obrigado pela atenção. A cada dia iremos melhorar mais&quot;</div>
+              </div>
+              <div class="feedback-text name">Nil - Barbearia Nil Paiva</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide w-slide">
+          <div class="div-block-1892601">
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Bruna---Barbearia-Nell-Cortes.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Ficou super bacana! Sério! Principalmente o Feed [...] Fico feliz pelo suporte que estamos tendo nesse processo&quot;</div>
+              </div>
+              <div class="feedback-text name">Bruna - Barbearia Nell Cortes</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide w-slide">
+          <div class="div-block-1892601">
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Aysla---Barbearia-Daumas.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Nós estamos recebendo bastante elogios dos nossos clientes pelo aplicativo, que está ótimo&quot;</div>
+              </div>
+              <div class="feedback-text name">Aysla - Barbearia Daumas</div>
+            </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="div-block-1892601">
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Luan---Barbearia-Pelisari.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Estou gostando do app de vocês! Fácil de usar e é bem completo&quot;</div>
+              </div>
+              <div class="feedback-text name">Luan - Barbearia Pelisari</div>
+            </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="div-block-1892601">
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/profile_image_221020_1695071663465_1.webp" loading="lazy" width="60" height="60" alt="" sizes="(max-width: 479px) 100vw, 60px" srcset="images/profile_image_221020_1695071663465_1profile_image_221020_1695071663465.webp 500w, images/profile_image_221020_1695071663465_1profile_image_221020_1695071663465.webp 800w, images/profile_image_221020_1695071663465_1profile_image_221020_1695071663465.webp 1080w, images/profile_image_221020_1695071663465_1.webp 1195w" class="feedback-img">
+                <div class="feedback-text">&quot;Nossa que ótimo sério! Vcs são demais, o melhor sistema que já usei  👏🏻🙏🏼&quot;</div>
+              </div>
+              <div class="feedback-text name">Carol - Barbearia Machado </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="div-block-1892601">
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/LM-do-corte.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Show! To curtindo muito o sistema, aparece as métricas certinho. Muito top&quot;</div>
+              </div>
+              <div class="feedback-text name">Lucas - Barbearia LM do Corte</div>
+            </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="div-block-1892601">
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Gustavo---Barbearia-Goes.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Muito obrigado viu. Atendimento excelente [...] valeu a pena pela qualidade e eficiência de vocês 👏🏻&quot;</div>
+              </div>
+              <div class="feedback-text name">Gustavo - Barbearia Goes</div>
+            </div>
+          </div>
+        </div>
+        <div class="w-slide">
+          <div class="div-block-1892601">
+            <div class="div-block-1892599">
+              <div class="div-block-1892600"><img src="images/Gustavo---Barbearia-Goes.webp" loading="lazy" width="60" height="60" alt="" class="feedback-img">
+                <div class="feedback-text">&quot;Atendimento excelente de vocês!&quot;</div>
+              </div>
+              <div class="feedback-text name">Gustavo - Barbearia Goes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="left-arrow-6 w-slider-arrow-left"></div>
+      <div class="right-arrow-7 w-slider-arrow-right"></div>
+      <div class="w-slider-nav w-round"></div>
+    </div>
+  </div>
+  <div class="div-block-1892595">
+    <div class="div-block-1892594"><img src="images/7-dias-garantia.svg" loading="lazy" alt="" class="image-700096">
+      <div class="lp-sec-title left"><strong class="bold-text-9">GARANTIA DE 7 DIAS</strong></div>
+      <div class="lp-title black left">Uma semana inteira para testar com tranquilidade</div>
+      <div class="div-block-1892596"><img src="images/Logo-BestBarbers-branco_1.webp" loading="lazy" alt="bestbarbers-fundo-placeholder" class="logo-price">
+        <div class="lp-price-text title">ASSINE O<br>BESTBARBERS<br>POR APENAS</div>
+        <div class="lp-price-text price">R$ 69,90</div>
+        <div class="lp-subtitle price"><strong>por mês</strong></div>
+        <a href="https://adm.bestbarbers.app/cadastro" id="cta_landing_page_plataforma_3" class="lp-1-button w-button"><strong>TESTE GRÁTIS POR 7 DIAS</strong></a>
+        <div class="lp-subtitle price">Impulsione os resultados financeiros da sua barbearia e tenha todo o controle do seu negócio na palma da sua mão.</div>
+      </div>
+      <div class="lp-subtitle black"><strong class="bold-text-9 normal">Se até o sétimo dia de uso você não estiver satisfeito, por qualquer motivo que seja, basta cancelar seu plano e nada será cobrado</strong></div>
+    </div>
+  </div>
+  <div class="section-16">
+    <div class="container-15 w-container"><img src="images/Logo-BestBarbers-branco_2.webp" loading="lazy" alt="" class="image-43">
+      <div class="div-block-44">
+        <div class="text-block-86">BestBarbers</div>
+        <a id="footer_barbeiro_barbearia" href="#" class="link-block-8 w-inline-block">
+          <div class="text-block-87">Barbearias e barbeiros</div>
+        </a>
+        <a href="#" id="footer_clientes" class="link-block-9 w-inline-block">
+          <div class="text-block-87">Clientes</div>
+        </a>
+        <a href="#" id="footer_planos" class="link-block-10 w-inline-block">
+          <div class="text-block-87">Nossos planos</div>
+        </a>
+        <a href="#" id="footer_faq" class="link-block-11 w-inline-block">
+          <div class="text-block-87">Duvidas frequentes</div>
+        </a>
+      </div>
+      <div class="div-block-44">
+        <div class="text-block-86">Transparência</div>
+        <a id="footer_termos" href="termos-de-uso.html" class="link-block-12 w-inline-block">
+          <div class="text-block-87">Termos de uso</div>
+        </a>
+        <a id="footer_politica" href="politica-de-privacidade.html" class="link-block-13 w-inline-block">
+          <div class="text-block-87">Política de privacidade</div>
+        </a>
+      </div>
+      <div class="div-block-44">
+        <div class="text-block-86">Fale conosco</div>
+        <a id="footer_wpp" href="https://wa.me/5531972268877?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20BestBarbers" class="link-block-18 w-inline-block"><img src="images/icon-5.webp" loading="lazy" alt="" class="image-44">
+          <div class="text-block-88">+55 31 97168-4757</div>
+        </a>
+        <div class="div-block-45"><img src="images/icon-6.webp" loading="lazy" alt="" class="image-44">
+          <div id="footer_email" class="text-block-88">help@bestbarbers.app</div>
+        </div>
+      </div>
+      <div class="div-block-46">
+        <div class="rodap1-mobile">
+          <div class="text-block-86">BestBarbers</div>
+          <div class="text-block-87">Barbearias e barbeiros</div>
+          <div class="text-block-87">Clientes</div>
+          <div class="text-block-87">Nossos planos</div>
+          <div class="text-block-87">Duvidas frequentes</div>
+        </div>
+        <div class="rodap2-mobile">
+          <div class="text-block-86">Transparência</div>
+          <div class="text-block-87">Termos de uso</div>
+          <div class="text-block-87">Política de privacidade</div>
+        </div>
+        <div class="rodap3-mobile">
+          <div class="text-block-86">Fale conosco</div>
+          <div class="div-block-45"><img src="images/icon-5.webp" loading="lazy" alt="" class="image-44">
+            <div class="text-block-88">+55 31 97222-9690</div>
+          </div>
+          <div class="div-block-45"><img src="images/icon-6.webp" loading="lazy" alt="" class="image-44">
+            <div class="text-block-88">help@bestbarbers.app</div>
+          </div>
+        </div>
+      </div>
+      <div class="rodap4-mobile"></div>
+      <div class="text-block-86">Baixe nosso App</div>
+      <div class="div-block-43"><img src="images/Mobile-app-store-badge.webp" loading="lazy" alt="" class="image-41"><img src="images/Mobile-app-store-badge-1.webp" loading="lazy" alt="" class="image-42"></div>
+      <div class="download-footer">
+        <a id="footer_app_store" href="https://apps.apple.com/br/app/bestbarbers/id1501336370?l=en" class="link-app-store-footer w-inline-block"><img src="images/Mobile-app-store-badge.svg" loading="lazy" alt="" class="image-50"></a>
+        <a id="footer_play_store" href="https://play.google.com/store/apps/details?id=bestbarbers.app&amp;hl=pt_BR&amp;gl=US" class="link-google-play-footer w-inline-block"><img src="images/Mobile-app-store-badge-1.svg" loading="lazy" alt="" class="image-49"></a>
+      </div>
+    </div>
+  </div>
+  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=6087192d180a065532046cc7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="js/webflow.js" type="text/javascript"></script><!--  Google Tag Manager (noscript)  -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XL2VDK" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!--  End Google Tag Manager (noscript)  --><!--  Google Tag Manager (noscript)  -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XL2VDK" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!--  End Google Tag Manager (noscript)  -->
+</body>
+</html>

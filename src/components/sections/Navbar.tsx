@@ -1,0 +1,60 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { homeContent } from "@/content/home";
+
+export function Navbar() {
+  const { navbar } = homeContent;
+
+  return (
+    <nav className="section-dark fixed top-0 left-0 right-0 z-fixed py-4" >
+      <div className="container-custom flex justify-between items-center h-navbar">
+        <Link href="/" className="flex-shrink-0">
+          <Image
+            src={navbar.logo.src}
+            alt={navbar.logo.alt}
+            width={navbar.logo.width}
+            height={navbar.logo.height}
+            className="w-[140px] h-auto"
+            priority
+          />
+        </Link>
+        
+        <div className="hidden md:flex items-center space-x-3">
+          <Button
+            asChild
+            className="btn-primary text-xs font-bold leading-tight px-6 py-3 rounded-2xl transition-colors hover:bg-primary-hover"
+          >
+            <Link href={navbar.buttons.primary.href} target="_blank" rel="noopener noreferrer">
+              {navbar.buttons.primary.text}
+            </Link>
+          </Button>
+          
+          <Button
+            asChild
+            variant="outline"
+            className="btn-ghost text-xs font-bold leading-tight px-6 py-3 rounded-2xl border-white text-white bg-transparent hover:bg-white hover:text-neutral-bg2 transition-all ml-3"
+          >
+            <Link href={navbar.buttons.secondary.href} target="_blank" rel="noopener noreferrer">
+              {navbar.buttons.secondary.text}
+            </Link>
+          </Button>
+        </div>
+
+        {/* Mobile menu button - pode ser implementado posteriormente */}
+        <div className="md:hidden">
+          <Button
+            asChild
+            className="btn-primary text-xs font-bold leading-tight px-4 py-2 rounded-2xl"
+          >
+            <Link href={navbar.buttons.primary.href} target="_blank" rel="noopener noreferrer">
+              APP PRÓPRIO
+            </Link>
+          </Button>
+        </div>
+      </div>
+    </nav>
+  );
+}

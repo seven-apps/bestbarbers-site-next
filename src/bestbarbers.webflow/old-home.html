@@ -1,0 +1,1018 @@
+<!DOCTYPE html><!--  This site was created in Webflow. https://webflow.com  --><!--  Last Published: Tue Sep 09 2025 02:25:37 GMT+0000 (Coordinated Universal Time)  -->
+<html data-wf-page="67bcdad52b289835cdc4e74b" data-wf-site="6087192d180a065532046cc7" lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>BestBarbers - App para Barbearias</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <meta content="Webflow" name="generator">
+  <meta content="noindex" name="robots">
+  <link href="css/normalize.css" rel="stylesheet" type="text/css">
+  <link href="css/webflow.css" rel="stylesheet" type="text/css">
+  <link href="css/bestbarbers.webflow.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({  google: {    families: ["Montserrat:100,100italic,200,200italic,300,300italic,400,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic","Lato:100,100italic,300,300italic,400,400italic,700,700italic,900,900italic","Source Sans Pro:300,regular"]  }});</script>
+  <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
+  <link href="images/favicon.png" rel="shortcut icon" type="image/x-icon">
+  <link href="images/webclip.png" rel="apple-touch-icon">
+  <link href="https://www.bestbarbers.app/old-home" rel="canonical">
+  <script type="text/javascript">!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.agent='plwebflow';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init', '538871725012038');fbq('track', 'PageView');</script><!--  Google Tag Manager  -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id=%27+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5XL2VDK');</script>
+  <!--  End Google Tag Manager  -->
+  <meta name="facebook-domain-verification" content="2wo0bxodh1e5zyu8z9ospie7cro5cq">
+  <!--  Facebook Pixel Code  -->
+  <script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+ fbq('init', '594829322684676'); 
+fbq('track', 'PageView');
+</script>
+  <noscript>
+    <img height="1" width="1" src="https://www.facebook.com/tr?id=538871725012038&ev=PageView
+&noscript=1">
+  </noscript>
+  <!--  End Facebook Pixel Code  -->
+  <!--  Google Tag Manager  -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5XL2VDK');</script>
+  <!--  End Google Tag Manager  -->
+  <meta name="facebook-domain-verification" content="g3pwamv6ocei4wg6d6tlx8kej6y4rh">
+</head>
+<body class="body">
+  <div class="w-embed w-script">
+    <script>
+window.onload = function () {
+var btn_home_header = document.getElementById('btn_home_header')
+btn_home_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_home_header')
+})
+var btn_barbearias_header = document.getElementById('btn_barbearias_header')
+btn_barbearias_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_barbearias_header')
+})
+var btn_clientes_header = document.getElementById('btn_clientes_header')
+btn_clientes_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_clientes_header')
+})
+var btn_planos_header = document.getElementById('btn_planos_header')
+btn_planos_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_planos_header')
+})
+var btn_especialista_header = document.getElementById('btn_especialista_header')
+btn_especialista_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_especialista_header')
+})
+var btn_entrar_header = document.getElementById('btn_entrar_header')
+btn_entrar_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_entrar_header')
+})
+var btn_criar_conta_header = document.getElementById('btn_criar_conta_header')
+btn_criar_conta_header.addEventListener('click', function(){
+fbq('trackCustom', 'btn_criar_conta_header')
+})
+var btn_conheca_planos_home = document.getElementById('btn_conheca_planos_home')
+btn_conheca_planos_home.addEventListener('click', function(){
+fbq('trackCustom', 'btn_conheca_planos_home')
+})
+var btn_especialista_home = document.getElementById('btn_especialista_home')
+btn_especialista_home.addEventListener('click', function(){
+fbq('trackCustom', 'btn_especialista_home')
+})
+var btn_app_store_home = document.getElementById('btn_app_store_home')
+btn_app_store_home.addEventListener('click', function(){
+fbq('trackCustom', 'btn_app_store_home')
+})
+var btn_play_store_home = document.getElementById('btn_play_store_home')
+btn_play_store_home.addEventListener('click', function(){
+fbq('trackCustom', 'btn_play_store_home')
+})
+var btn_app_store_clientes = document.getElementById('btn_app_store_clientes')
+btn_app_store_clientes.addEventListener('click', function(){
+fbq('trackCustom', 'btn_app_store_clientes')
+})
+var btn_play_store_clientes = document.getElementById('btn_play_store_clientes')
+btn_play_store_clientes.addEventListener('click', function(){
+fbq('trackCustom', 'btn_play_store_clientes')
+})
+var btn_criar_conta_free_planos = document.getElementById('btn_criar_conta_free_planos')
+btn_criar_conta_free_planos.addEventListener('click', function(){
+fbq('trackCustom', 'btn_criar_conta_free_planos')
+})
+var btn_criar_conta_premium_planos = document.getElementById('btn_criar_conta_premium_planos')
+btn_criar_conta_premium_planos.addEventListener('click', function(){
+fbq('trackCustom', 'btn_criar_conta_premium_planos')
+})
+var btn_app_store_apps = document.getElementById('btn_app_store_apps')
+btn_app_store_apps.addEventListener('click', function(){
+fbq('trackCustom', 'btn_app_store_apps')
+})
+var btn_play_store_apps = document.getElementById('btn_play_store_apps')
+btn_play_store_apps.addEventListener('click', function(){
+fbq('trackCustom', 'btn_play_store_apps')
+})
+var youtube_autoridade = document.getElementById('youtube_autoridade')
+youtube_autoridade.addEventListener('click', function(){
+fbq('trackCustom', 'youtube_autoridade')
+})
+var faq_qual_valor = document.getElementById('faq_qual_valor')
+faq_qual_valor.addEventListener('click', function(){
+fbq('trackCustom', 'faq_qual_valor')
+})
+var faq_link_agendamento = document.getElementById('faq_link_agendamento')
+faq_link_agendamento.addEventListener('click', function(){
+fbq('trackCustom', 'faq_link_agendamento')
+})
+var faq_clientes_agendar = document.getElementById('faq_clientes_agendar')
+faq_clientes_agendar.addEventListener('click', function(){
+fbq('trackCustom', 'faq_clientes_agendar')
+})
+var faq_pagar_por_profissional = document.getElementById('faq_pagar_por_profissional')
+faq_pagar_por_profissional.addEventListener('click', function(){
+fbq('trackCustom', 'faq_pagar_por_profissional')
+})
+var faq_ativar_barbearia = document.getElementById('faq_ativar_barbearia')
+faq_ativar_barbearia.addEventListener('click', function(){
+fbq('trackCustom', 'faq_ativar_barbearia')
+})
+var faq_notificacoes = document.getElementById('faq_notificacoes')
+faq_notificacoes.addEventListener('click', function(){
+fbq('trackCustom', 'faq_notificacoes')
+})
+var faq_comissao_barbeiros = document.getElementById('faq_comissao_barbeiros')
+faq_comissao_barbeiros.addEventListener('click', function(){
+fbq('trackCustom', 'faq_comissao_barbeiros')
+})
+var faq_convidar_barber_parceiro = document.getElementById('faq_convidar_barber_parceiro')
+faq_convidar_barber_parceiro.addEventListener('click', function(){
+fbq('trackCustom', 'faq_convidar_barber_parceiro')
+})
+var faq_criar_servico = document.getElementById('faq_criar_servico')
+faq_criar_servico.addEventListener('click', function(){
+fbq('trackCustom', 'faq_criar_servico')
+})
+var faq_cadastrar_cliente = document.getElementById('faq_cadastrar_cliente')
+faq_cadastrar_cliente.addEventListener('click', function(){
+fbq('trackCustom', 'faq_cadastrar_cliente')
+})
+var faq_fotos_barbearia = document.getElementById('faq_fotos_barbearia')
+faq_fotos_barbearia.addEventListener('click', function(){
+fbq('trackCustom', 'faq_fotos_barbearia')
+})
+var faq_cancelar_app = document.getElementById('faq_cancelar_app')
+faq_cancelar_app.addEventListener('click', function(){
+fbq('trackCustom', 'faq_cancelar_app')
+})
+var faq_alterar_email_senha = document.getElementById('faq_alterar_email_senha')
+faq_alterar_email_senha.addEventListener('click', function(){
+fbq('trackCustom', 'faq_alterar_email_senha')
+})
+var faq_formas_de_pagamento = document.getElementById('faq_formas_de_pagamento')
+faq_formas_de_pagamento.addEventListener('click', function(){
+fbq('trackCustom', 'faq_formas_de_pagamento')
+})
+var faq_alterar_formas_de_pagamento = document.getElementById('faq_alterar_formas_de_pagamento')
+faq_alterar_formas_de_pagamento.addEventListener('click', function(){
+fbq('trackCustom', 'faq_alterar_formas_de_pagamento')
+})
+var faq_nao_consegue_logar = document.getElementById('faq_nao_consegue_logar')
+faq_nao_consegue_logar.addEventListener('click', function(){
+fbq('trackCustom', 'faq_nao_consegue_logar')
+})
+var faq_barbearia_desativada = document.getElementById('faq_barbearia_desativada')
+faq_barbearia_desativada.addEventListener('click', function(){
+fbq('trackCustom', 'faq_barbearia_desativada')
+})
+var faq_carregar_mais_perguntas = document.getElementById('faq_carregar_mais_perguntas')
+faq_carregar_mais_perguntas.addEventListener('click', function(){
+fbq('trackCustom', 'faq_carregar_mais_perguntas')
+})
+var footer_barbeiro_barbearia = document.getElementById('footer_barbeiro_barbearia')
+footer_barbeiro_barbearia.addEventListener('click', function(){
+fbq('trackCustom', 'footer_barbeiro_barbearia')
+})
+var footer_clientes = document.getElementById('footer_clientes')
+footer_clientes.addEventListener('click', function(){
+fbq('trackCustom', 'footer_clientes')
+})
+var footer_planos = document.getElementById('footer_planos')
+footer_planos.addEventListener('click', function(){
+fbq('trackCustom', 'footer_planos')
+})
+var footer_faq = document.getElementById('footer_faq')
+footer_faq.addEventListener('click', function(){
+fbq('trackCustom', 'footer_faq')
+})
+var footer_termos = document.getElementById('footer_termos')
+footer_termos.addEventListener('click', function(){
+fbq('trackCustom', 'footer_termos')
+})
+var footer_politica = document.getElementById('footer_politica')
+footer_politica.addEventListener('click', function(){
+fbq('trackCustom', 'footer_politica')
+})
+var footer_wpp = document.getElementById('footer_wpp')
+footer_wpp.addEventListener('click', function(){
+fbq('trackCustom', 'footer_wpp')
+})
+var footer_email = document.getElementById('footer_email')
+footer_email.addEventListener('click', function(){
+fbq('trackCustom', 'footer_email')
+})
+var footer_app_store = document.getElementById('footer_app_store')
+footer_app_store.addEventListener('click', function(){
+fbq('trackCustom', 'footer_app_store')
+})
+var footer_play_store = document.getElementById('footer_play_store')
+footer_play_store.addEventListener('click', function(){
+fbq('trackCustom', 'footer_play_store')
+})
+}
+</script>
+  </div>
+  <div data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" class="navbar-2 w-nav">
+    <div class="container-11 w-container">
+      <a href="#" class="brand-2 w-nav-brand"><img src="images/Logo-BestBarbers-branco_2.webp" loading="lazy" alt="" class="image-32"></a>
+      <nav role="navigation" class="nav-menu-2 w-nav-menu">
+        <a href="#" id="btn_home_header" class="nav-link w-nav-link">Home</a>
+        <a href="#Barbearia" id="btn_barbearias_header" class="nav-link-2 w-nav-link">Barbearias</a>
+        <a href="#Clientes" id="btn_clientes_header" class="nav-link-3 w-nav-link">Clientes</a>
+        <a href="#Nossos-Planos" id="btn_planos_header" class="nav-link-4 w-nav-link">Planos</a>
+        <a href="#Duvidas-frequentes" class="nav-link-5 w-nav-link">Agendar meu horário</a>
+        <a href="https://www.bestbarbers.app/form?source=site&amp;desc=[Site]Fale-com-o-especialista" id="btn_especialista_header" class="nav-link-6 w-nav-link">Falar com especialista</a>
+        <a href="https://adm.bestbarbers.app/login" id="btn_entrar_header" class="nav-link-6 w-nav-link">Entrar</a>
+        <a id="btn_criar_conta_header" href="https://adm.bestbarbers.app/cadastro" class="button-10 w-button">Criar uma conta</a>
+      </nav>
+      <div>
+        <div class="menu-button-2 w-nav-button">
+          <div class="icon w-icon-nav-menu"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section-10-copy">
+    <div class="n-o-perca-nenhum-cliente w-container">
+      <div class="text-block-61">Não perca nenhum cliente.<br><span class="text-span-61">Sua agenda online 24 horas por dia.</span></div>
+      <div class="text-1-mobile">Não perca nenhum cliente<br><span class="text-span-61">Sua agenda online 24 horas por dia.</span></div>
+      <div class="text-block-62">O BestBarbers ajuda você a administrar sua barbearia, desde o agendamento até a parte financeira.</div>
+      <div class="text-block-63">Aproveite o <span class="text-span-62">Plano Básico</span> para agendar os horários da sua barbearia de forma prática e organizada.</div>
+      <div class="subtext-1-mobile">Aproveite o <span class="text-span-62">Plano Básico</span> para agendar os horários da sua barbearia de forma prática e organizada.</div>
+      <a href="#Nossos-Planos" id="btn_conheca_planos_home" class="button-11 w-button">Conheça os planos</a>
+      <a href="https://www.bestbarbers.app/form?source=site&amp;desc=[Site]Fale-com-o-especialista" class="link-block-19 w-inline-block">
+        <div id="btn_especialista_home" class="text-block-5334376">Falar com um especialista</div>
+      </a>
+      <a href="#" class="button-1-mobile w-button">Conheça os planos</a>
+      <div class="text-block-64">Baixe também nosso App para iOS e Android</div>
+      <div class="div-block-47">
+        <a href="https://apps.apple.com/br/app/bestbarbers/id1501336370?l=en" class="link-block-6 w-inline-block"><img src="images/Mobile-app-store-badge.svg" loading="lazy" alt="" id="btn_app_store_home" class="image-50"></a>
+        <a href="https://play.google.com/store/apps/details?id=bestbarbers.app&amp;hl=pt_BR&amp;gl=US" class="link-block-7 w-inline-block"><img src="images/Mobile-app-store-badge-1.svg" loading="lazy" alt="" height="100" id="btn_play_store_home" class="image-49"></a>
+      </div>
+    </div>
+  </div>
+  <div id="Barbearia" class="section-11">
+    <div class="container-12 w-container">
+      <div class="div-block-21"><img src="images/icon.webp" loading="lazy" alt="" class="image-36">
+        <div class="text-block-65">BARBEARIA</div>
+      </div>
+      <div class="text-block-67">Feito para barbearias e barbeiros</div>
+      <div class="text-block-68">Uma ferramenta completa para a gestão da sua barbearia</div>
+      <div class="div-block-22">
+        <div class="div-block-23">
+          <div class="text-block-69">Tudo que você precisa<br><span class="text-span-64">Administração da barbearia, agendamento de horários e relatórios financeiros.</span></div><img src="images/iPhone-13-Pro.webp" loading="lazy" alt="" class="do-que-voce-precisa">
+        </div>
+        <div class="div-block-24">
+          <div class="text-block-69">Divulgue sua barbearia<br><span class="text-span-65">Informe horários de funcionamento, localização, serviços e fotos do seu espaço.</span></div><img src="images/iPhone-13-Pro-2_1.webp" loading="lazy" sizes="(max-width: 699px) 100vw, 699px" srcset="images/iPhone-13-Pro-2_1iPhone-13-Pro-2.webp 500w, images/iPhone-13-Pro-2_1.webp 699w" alt="" class="divulgue-sua-barbearia-iphone">
+        </div>
+        <div class="div-block-24">
+          <div class="text-block-69">Gerencie sua equipe<br><span class="text-span-66">Inclua seu time de barbeiros e controle suas comissões direto no App.</span></div><img src="images/iPhone-13-Pro-3_1.webp" loading="lazy" sizes="(max-width: 699px) 100vw, 699px" srcset="images/iPhone-13-Pro-3_1iPhone-13-Pro-3.webp 500w, images/iPhone-13-Pro-3_1.webp 699w" alt="" class="gerencie-sua-equipe">
+        </div>
+        <div class="div-block-26">
+          <div class="text-block-69">Gestão financeira<br><span class="text-span-67">Balanço mensal, fluxo de caixa, gerenciamento de despesas e receitas.</span></div><img src="images/iPhone-13-Pro-4_1.webp" loading="lazy" sizes="(max-width: 699px) 100vw, 699px" srcset="images/iPhone-13-Pro-4_1iPhone-13-Pro-4.webp 500w, images/iPhone-13-Pro-4_1.webp 699w" alt="" class="gestao-financeira">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="Clientes" class="section-12">
+    <div class="container-13 w-container">
+      <div class="div-block-21"><img src="images/icon-9.webp" loading="lazy" alt="" class="clientes-icon">
+        <div class="text-block-65-copy-copy">CLIENTES</div>
+      </div>
+      <div class="text-block-71">Descubra sua próxima barbearia favorita</div>
+      <div class="text-block-72">Por que esperar para ser atendido? Baixe nosso app, agende um horário em uma barbearia e ganhe tempo!</div>
+      <div class="div-block-27">
+        <div class="div-block30"><img src="images/Frame-12_1.webp" loading="lazy" sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 912px" srcset="images/Frame-12_1Frame-12.webp 500w, images/Frame-12_1Frame-12.webp 800w, images/Frame-12_1.webp 912w" alt="" class="image-37">
+          <div>
+            <div class="text-block-69-copy-copy">Passo 1 </div>
+            <div class="text-block-70-copy">Baixe o aplicativo no seu dispositivo e crie a sua conta.</div>
+          </div>
+        </div>
+        <div class="div-block-31">
+          <div>
+            <div class="passo-2">Passo 2</div>
+            <div class="text-desc-1">Encontre a barbearia que atende as suas necessidades.</div>
+          </div><img src="images/Frame-12-1_1.webp" loading="lazy" sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 912px" srcset="images/Frame-12-1_1Frame-12-1.webp 500w, images/Frame-12-1_1Frame-12-1.webp 800w, images/Frame-12-1_1.webp 912w" alt="" class="image-iphone">
+        </div>
+        <div class="div-block-31-copy"><img src="images/Frame-12-2_1.webp" loading="lazy" sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 912px" srcset="images/Frame-12-2_1Frame-12-2.webp 500w, images/Frame-12-2_1Frame-12-2.webp 800w, images/Frame-12-2_1.webp 912w" alt="" class="image-37">
+          <div>
+            <div class="text-1">Passo 3</div>
+            <div class="text-desc-1">Agende seu horário e pronto! Vá ao estabelecimento no horário marcado e seja atendido.</div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-3-mobile"><img src="images/Frame-12-2_1.webp" loading="lazy" sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 912px" srcset="images/Frame-12-2_1Frame-12-2.webp 500w, images/Frame-12-2_1Frame-12-2.webp 800w, images/Frame-12-2_1.webp 912w" alt="" class="image-37">
+        <div class="text-1">Passo 3</div>
+        <div class="text-desc-1">Agende seu horário e pronto! Vá ao estabelecimento no horário marcado e seja atendido.</div>
+      </div>
+      <div class="div-block-33">
+        <div class="div-block-34">
+          <div class="text-block-73">Encontre as barbearias mais próximas</div>
+          <div class="text-block-74">Baseado na sua localização conseguimos lhe apresentar as melhores barbearias da sua região.</div>
+        </div>
+        <div class="div-block-34">
+          <div class="text-block-73">Um perfil detalhado de cada barbearia</div>
+          <div class="text-block-74">Visualize fotos da barbearia, veja o catálogo de serviços, valores e horários de atendimento, tudo num só lugar.</div>
+        </div>
+        <div class="div-block-34">
+          <div class="text-block-73">Agende seu atendimento</div>
+          <div class="text-block-74">Esperar para ser atendido em uma barbearia é coisa do passado. Agende o melhor horário para você e ganhe tempo.</div>
+        </div>
+        <div class="div-block-34">
+          <div class="text-block-73">Histórico de atendimentos</div>
+          <div class="text-block-74">Gostou do atendimento de um barbeiro, mas não lembro seu nome ou qual barbearia era? O histórico de atendimentos tem todos os detalhes!</div>
+        </div>
+      </div>
+      <div class="text-block-75">Baixe agora! Disponível para iOS e Android</div>
+      <div class="div-block-47">
+        <a href="https://apps.apple.com/br/app/bestbarbers/id1501336370?l=en" class="link-block-6 w-inline-block"><img src="images/Mobile-app-store-badge.webp" loading="lazy" alt="" id="btn_app_store_clientes" class="image-50"></a>
+        <a href="https://play.google.com/store/apps/details?id=bestbarbers.app&amp;hl=pt_BR&amp;gl=US" class="link-block-7 w-inline-block"><img src="images/Mobile-app-store-badge-1.webp" loading="lazy" alt="" id="btn_play_store_clientes" class="image-49"></a>
+      </div>
+    </div>
+  </div>
+  <div id="Nossos-Planos" class="section-13">
+    <div class="container-16 w-container">
+      <div class="div-block-21"><img src="images/icon-2.webp" loading="lazy" alt="" class="icon-plan">
+        <div class="nossos-planos">NOSSOS PLANOS</div>
+      </div>
+      <div class="text-block-71">Uma assinatura repleta de benefícios</div>
+      <div class="text-block-72">Experimente um gerenciamento de barbearias que realmente funciona e que tem tudo que você precisa</div>
+      <div data-current="Tab 1" data-easing="ease" data-duration-in="300" data-duration-out="100" class="tabs w-tabs">
+        <div class="tabs-menu w-tab-menu">
+          <a data-w-tab="Tab 2" class="tab-link-tab-2 w-inline-block w-tab-link">
+            <div class="text-block-95">Plano Básico</div>
+          </a>
+          <a data-w-tab="Tab 3" class="tab-link-tab-2 w-inline-block w-tab-link">
+            <div class="text-block-95">Plano Premium</div>
+          </a>
+          <a data-w-tab="Tab 4" class="tab-link-tab-2 w-inline-block w-tab-link">
+            <div class="text-block-95">App Exclusivo</div>
+          </a>
+        </div>
+        <div class="tabs-content w-tab-content">
+          <div data-w-tab="Tab 2" class="tab-pane-tab-2 w-tab-pane">
+            <div class="plan-div">
+              <div class="titulo"><img alt="" loading="lazy" src="images/icon.svg" class="image-38">
+                <div class="text-block-76">Premium</div>
+                <div class="text-plano-free-mobile">Premium</div>
+              </div>
+              <div class="text-desc">Para você que quer impulsionar os resultados financeiros da sua barbearia e ter todo o controle do seu negócio na palma da sua mão.</div>
+              <div class="div-block-57">
+                <div class="text-block-82">Por apenas</div>
+                <div class="text-block-81">R$ 69,90 <span class="text-span-63">/mês</span></div>
+              </div>
+              <a href="https://adm.bestbarbers.app/cadastro" class="teste-gratuitamente-por-7-dias w-button">Teste gratuitamente por 7 dias</a>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54-copy"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Gestão de agendamentos</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Notificações de agendamentos (push-notification)</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Acesso exclusivo para o barbeiros</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">SMS de confirmação de agendamento</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Gestão de clientes</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Controle financeiro automatizado</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Link de agendamentos personalizado</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Número ilimitado de barbeiros</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Relatórios gerenciais</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Gestão de agendamentos</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+            </div>
+          </div>
+          <div data-w-tab="Tab 3" class="tab-pane-tab-2 w-tab-pane">
+            <div class="plan-div">
+              <div class="titulo"><img alt="" loading="lazy" src="images/icon.svg" class="image-38">
+                <div class="text-block-76">Premium</div>
+                <div class="text-plano-free-mobile">Premium</div>
+              </div>
+              <div class="text-desc">Para você que quer impulsionar os resultados financeiros da sua barbearia e ter todo o controle do seu negócio na palma da sua mão.</div>
+              <div class="div-block-57">
+                <div class="text-block-82">Por apenas</div>
+                <div class="text-block-81">R$ 69,90 <span class="text-span-63">/mês</span></div>
+              </div>
+              <a href="https://adm.bestbarbers.app/cadastro" class="teste-gratuitamente-por-7-dias w-button">Teste gratuitamente por 7 dias</a>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54-copy"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Gestão de agendamentos</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Notificações de agendamentos (push-notification)</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Acesso exclusivo para o barbeiros</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">SMS de confirmação de agendamento</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Gestão de clientes</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Controle financeiro automatizado</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Link de agendamentos personalizado</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Número ilimitado de barbeiros</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Relatórios gerenciais</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Gestão de agendamentos</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+            </div>
+          </div>
+          <div data-w-tab="Tab 4" class="tab-pane-tab-2 w-tab-pane">
+            <div class="plan-div">
+              <div class="titulo"><img alt="" loading="lazy" src="images/icon.svg" class="image-38">
+                <div class="text-block-76">Premium</div>
+                <div class="text-plano-free-mobile">Premium</div>
+              </div>
+              <div class="text-desc">Para você que quer impulsionar os resultados financeiros da sua barbearia e ter todo o controle do seu negócio na palma da sua mão.</div>
+              <div class="div-block-57">
+                <div class="text-block-82">Por apenas</div>
+                <div class="text-block-81">R$ 69,90 <span class="text-span-63">/mês</span></div>
+              </div>
+              <a href="https://adm.bestbarbers.app/cadastro" class="teste-gratuitamente-por-7-dias w-button">Teste gratuitamente por 7 dias</a>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-block-54-copy"><img alt="" loading="lazy" src="images/icon-4.webp" class="image-52"></div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Gestão de agendamentos</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Notificações de agendamentos (push-notification)</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Acesso exclusivo para o barbeiros</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">SMS de confirmação de agendamento</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Gestão de clientes</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Controle financeiro automatizado</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Link de agendamentos personalizado</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Número ilimitado de barbeiros</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Relatórios gerenciais</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+              <div class="div-55-mobile">
+                <div class="text-block-91">Gestão de agendamentos</div><img alt="" loading="lazy" src="images/icon-4.webp" class="image-53">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="div-planos-funcionalidades">
+      <div class="planos-desktop">
+        <div class="div-block-36">
+          <div class="titulo"><img src="images/icon-3.webp" loading="lazy" alt="" class="image-38">
+            <div class="text-block-76">Plano Básico</div>
+            <div class="text-plano-free-mobile">Plano Free</div>
+          </div>
+          <div class="text-block-77">Para você que está começando e precisa de organização e mais atendimentos na sua barbearia.</div>
+          <div class="text-block-78">R$ 0,00</div>
+          <div class="text-gratuito-mobile">Gratuito</div>
+          <div class="div-block-38"><img src="images/icon-4.webp" loading="lazy" alt="" class="image-39">
+            <div class="text-block-79">Gestão de agendamentos</div>
+          </div>
+          <div class="div-block-38"><img src="images/icon-4.webp" loading="lazy" alt="" class="image-39">
+            <div class="text-block-79">Acesso exclusivo para os barbeiros</div>
+          </div>
+          <div class="div-block-38"><img src="images/icon-4.webp" loading="lazy" alt="" class="image-39">
+            <div class="text-block-79">Notificações de agendamentos (push-notification)</div>
+          </div>
+        </div>
+        <div class="plano-premium">
+          <div class="titulo"><img src="images/icon.svg" loading="lazy" alt="" class="icon-plano-premium">
+            <div class="text-plano-premium">Plano Premium</div>
+          </div>
+          <div class="text-block-plano-premium">Para você que quer impulsionar os resultados financeiros da sua barbearia e ter todo o controle do seu negócio na palma da sua mão.</div>
+          <div class="text-block-82">Por apenas</div>
+          <div class="text-block-81">R$ 69,90 <span class="text-span-63">/mês</span></div>
+          <div class="div-block-41"><img src="images/icon-4.webp" loading="lazy" alt="" class="image-39">
+            <div class="text-block-80">Acesso exclusivo para os barbeiros</div>
+          </div>
+          <div class="div-block-41"><img src="images/icon-4.webp" loading="lazy" alt="" class="image-39">
+            <div class="text-block-80">Notificações de agendamentos (push-notification)</div>
+          </div>
+          <div class="div-block-41"><img src="images/icon-4.webp" loading="lazy" alt="" class="image-39">
+            <div class="text-block-80">SMS de confirmação de agendamento</div>
+          </div>
+          <div class="div-block-41"><img src="images/icon-4.webp" loading="lazy" alt="" class="image-39">
+            <div class="text-block-80">Gestão de clientes</div>
+          </div>
+          <div class="div-block-41"><img src="images/icon-4.webp" loading="lazy" alt="" class="image-39">
+            <div class="text-block-80">Controle financeiro automatizado</div>
+          </div>
+          <div class="div-block-41"><img src="images/icon-4.webp" loading="lazy" alt="" class="image-39">
+            <div class="text-block-80">Link de agendamentos personalizado</div>
+          </div>
+          <div class="div-block-41"><img src="images/icon-4.webp" loading="lazy" alt="" class="image-39">
+            <div class="text-block-80">Número ilimitado de barbeiros</div>
+          </div>
+          <div class="div-block-41"><img src="images/icon-4.webp" loading="lazy" alt="" class="image-39">
+            <div class="text-block-80">Relatórios gerenciais</div>
+          </div>
+          <a href="#" class="button-12 w-button">Teste gratuitamente por 7 dias</a>
+        </div>
+        <div class="div-conheca-as-funcionalidades"><img src="images/Logo-BestBarbers-branco_2.webp" loading="lazy" alt="" class="image-51">
+          <div class="text-block-89">Conheça nossos planos e funcionalidades</div>
+          <div class="text-block-90">Planos que se encaixam na sua necessidade.</div>
+        </div>
+        <div class="plan-div">
+          <div class="title-desc-div">
+            <div class="titulo"><img src="images/icon_TESOURA.webp" loading="lazy" alt="" class="image-38">
+              <div class="text-block-76">Premium</div>
+            </div>
+            <div class="text-desc">Para você que quer impulsionar os resultados financeiros da sua barbearia e ter todo o controle do seu negócio na palma da sua mão.</div>
+          </div>
+          <div class="price-button_div">
+            <div class="text-block-82">Por apenas</div>
+            <div class="text-block-81">R$ 69,90 <span class="text-span-63">/mês</span></div>
+            <a id="btn_criar_conta_premium_planos" href="https://adm.bestbarbers.app/cadastro" class="teste-gratuitamente-por-7-dias w-button">Teste grátis por 7 dias</a>
+          </div>
+        </div>
+        <div class="plan-div-copy">
+          <div class="title-desc-div">
+            <div class="titulo"><img src="images/FIRE_1FIRE.webp" loading="lazy" alt="" class="image-38">
+              <div class="text-block-76">App Exclusivo</div>
+            </div>
+            <div class="text-desc">Para você que quer oferecer uma <strong>experiência</strong> <strong>exclusiva</strong> para seus clientes, onde você terá seu <strong>próprio aplicativo</strong>, personalizado com <strong>suas cores e logo</strong>.</div>
+          </div>
+          <div class="price-button_div">
+            <div class="text-block-82">A partir de</div>
+            <div class="text-block-81">R$ 254<span class="text-span-63">/mês</span></div>
+            <div class="text-block-82-copy">+ taxa de implantação</div>
+            <a id="btn_criar_conta_premium_planos" href="https://www.bestbarbers.app/form?source=site&amp;desc=[Site]Fale-com-o-especialista" class="teste-gratuitamente-por-7-dias w-button">Quero saber mais!</a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="vantagens-line-head">
+          <div class="vantagem-div-copy">
+            <div class="vantagem-text-copy">Planos<br></div><img src="images/Logo-BestBarbers-branco_2.webp" loading="lazy" alt="" class="image-51-copy">
+          </div>
+          <div class="check-div"><img src="images/icon_TESOURA.webp" loading="lazy" alt="" class="image-38">
+            <div class="vantagem-text-copy">Plano<br>Premium</div>
+          </div>
+          <div class="check-div-copy"><img src="images/FIRE_1FIRE.webp" loading="lazy" alt="" class="image-38">
+            <div class="vantagem-text-copy">App<br>Exclusivo</div>
+          </div>
+        </div>
+        <div class="vantagens-line">
+          <div class="vantagem-div">
+            <div class="vantagem-text">Aplicativo próprio personalizado</div>
+          </div>
+          <div class="check-div"><img src="images/_CIRCULO_1_CIRCULO.webp" loading="lazy" alt="" class="image-52"></div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+        </div>
+        <div class="vantagens-line">
+          <div class="vantagem-div">
+            <div class="vantagem-text">Clube de Assinaturas<br></div>
+          </div>
+          <div class="check-div"><img src="images/_CIRCULO_1_CIRCULO.webp" loading="lazy" alt="" class="image-52"></div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+        </div>
+        <div class="vantagens-line">
+          <div class="vantagem-div">
+            <div class="vantagem-text">Emissão de Notas Fiscais<br></div>
+          </div>
+          <div class="check-div"><img src="images/_CIRCULO_1_CIRCULO.webp" loading="lazy" alt="" class="image-52"></div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+        </div>
+        <div class="vantagens-line">
+          <div class="vantagem-div">
+            <div class="vantagem-text">Os clientes conseguem acessar somente a minha barbearia</div>
+          </div>
+          <div class="check-div"><img src="images/_CIRCULO_1_CIRCULO.webp" loading="lazy" alt="" class="image-52"></div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+        </div>
+        <div class="vantagens-line">
+          <div class="vantagem-div">
+            <div class="vantagem-text">Número ilimitado de barbeiros</div>
+          </div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+        </div>
+        <div class="vantagens-line">
+          <div class="vantagem-div">
+            <div class="vantagem-text">Link de agendamentos personalizado</div>
+          </div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+        </div>
+        <div class="vantagens-line">
+          <div class="vantagem-div">
+            <div class="vantagem-text">Controle financeiro automatizado</div>
+          </div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+        </div>
+        <div class="vantagens-line">
+          <div class="vantagem-div">
+            <div class="vantagem-text">Gestão de clientes</div>
+          </div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+        </div>
+        <div class="vantagens-line">
+          <div class="vantagem-div">
+            <div class="vantagem-text">Relatórios e métricas do seu negócio</div>
+          </div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+        </div>
+        <div class="vantagens-line">
+          <div class="vantagem-div">
+            <div class="vantagem-text">Notificações de agendamentos (push-notification)</div>
+          </div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+        </div>
+        <div class="vantagens-line">
+          <div class="vantagem-div">
+            <div class="vantagem-text">Acesso exclusivo para os barbeiros</div>
+          </div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+        </div>
+        <div class="vantagens-line">
+          <div class="vantagem-div">
+            <div class="vantagem-text">Gestão de agendamentos</div>
+          </div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+          <div class="check-div"><img src="images/CIRCULO-VERDE_1CIRCULO-VERDE.webp" loading="lazy" alt="" class="image-52"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="Aplicativos" class="section-14">
+    <div class="container-14 w-container"><img src="images/dispositivos-1_1.webp" loading="lazy" sizes="(max-width: 767px) 100vw, (max-width: 991px) 728px, 940px" srcset="images/dispositivos-1_1dispositivos-1.webp 500w, images/dispositivos-1_1dispositivos-1.webp 800w, images/dispositivos-1_1dispositivos-1.webp 1080w, images/dispositivos-1_1dispositivos-1.webp 1600w, images/dispositivos-1_1.webp 1935w" alt="" class="image-40">
+      <div class="div-block-42">
+        <div class="div-apps"><img src="images/app-icon-1-1.webp" loading="lazy" alt="" class="image-36-copy">
+          <div class="text-block-65">APLICATIVOS</div>
+        </div>
+        <div class="text-block-67">Versão para smartphones e também no navegador.</div>
+        <div class="text-block-68">Nossa plataforma está disponível para iOS e Android, e também na Web. Tudo para facilitar ainda mais a gestão da sua barbearia de qualquer lugar.</div>
+        <div class="div-block-43"><img src="images/Mobile-app-store-badge.webp" loading="lazy" alt="" class="image-41"><img src="images/Mobile-app-store-badge-1.webp" loading="lazy" alt="" class="image-42"></div><img src="images/imagem.svg" loading="lazy" alt="" class="image-47">
+        <div class="div-block-50">
+          <a href="https://apps.apple.com/br/app/bestbarbers/id1501336370?l=en" class="link-block-6 w-inline-block"><img src="images/Mobile-app-store-badge.svg" loading="lazy" alt="" id="btn_app_store_apps" class="image-50"></a>
+          <a href="https://play.google.com/store/apps/details?id=bestbarbers.app&amp;hl=pt_BR&amp;gl=US" class="link-block-7 w-inline-block"><img src="images/Mobile-app-store-badge-1.svg" loading="lazy" alt="" id="btn_play_store_apps" class="image-49"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="Duvidas-frequentes" class="section-15">
+    <div class="container-17 w-container">
+      <div class="div-block-21"><img src="images/icon-1.svg" loading="lazy" alt="" class="icon-plan">
+        <div class="duvidas-frequentes">NOSSOS BARBEIROS</div>
+      </div>
+      <div class="text-block-71">Veja quem está com a gente</div>
+      <div id="youtube_autoridade" style="padding-top:56.17021276595745%" class="w-embed-youtubevideo youtube"><iframe src="https://www.youtube.com/embed/GA12o4D6DQ0?rel=0&amp;controls=1&amp;autoplay=0&amp;mute=0&amp;start=0" frameborder="0" style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:auto" allow="autoplay; encrypted-media" allowfullscreen="" title="Best Friday no BestBarbers 🚨"></iframe></div>
+      <div id="youtube_autoridade" style="padding-top:56.17021276595745%" class="w-embed-youtubevideo youtube"><iframe src="https://www.youtube.com/embed/Tmis9m1sDCQ?rel=0&amp;controls=1&amp;autoplay=0&amp;mute=0&amp;start=0" frameborder="0" style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:auto" allow="autoplay; encrypted-media" allowfullscreen="" title="Conheça o BestBarbers"></iframe></div>
+    </div>
+  </div>
+  <div id="faq" class="section-17">
+    <div class="div-block-21"><img src="images/ant-design_question-circle-outlined.webp" loading="lazy" alt="" class="icon-plan">
+      <div class="duvidas-frequentes">DUVIDAS FREQUENTES</div>
+    </div>
+    <div class="text-block-71">Entenda mais sobre o BestBarbers</div>
+    <div class="main-faq">
+      <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+        <div id="faq_qual_valor" class="dropdown-toggle-2 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96">Qual o valor?</div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="rich-text-block w-richtext">
+            <p>O aplicativo possui dois planos: </p>
+            <ul role="list">
+              <li>o<span> plano para aplicativos exclusivos, onde você terá um aplicativo próprio da sua barbearia 100% personalizado</span></li>
+              <li>o plano premium no valor de <strong>R$69,90</strong> por mês, com possibilidade de acesso a todas as funcionalidades, sem limitação de quantidade ou espaço de armazenamento.  </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-3 w-dropdown">
+        <div id="faq_link_agendamento" class="dropdown-toggle-3 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96">Link de agendamento</div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">O link de agendamento facilita a marcação de horários por parte dos usuários, funcionando como uma vitrine do seu trabalho. Para criá-lo, entre em sua conta através da versão web, clique em perfil &gt; link de agendamento &gt; crie conforme o nome que desejar &gt; confirme. Após, basta enviar aos seus clientes.</div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-3 w-dropdown">
+        <div id="faq_clientes_agendar" class="dropdown-toggle-3 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong>Como os clientes vão agendar?</strong></div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Eles poderão agendar pelo aplicativo nos dispositivos Android e IOS e também pela versão web. Na versão premium, você pode disponibilizar o link de agendamento para facilitar o agendamento pelo cliente.</div>
+        </nav>
+      </div>
+    </div>
+    <div class="toggle-faq">
+      <div data-hover="false" data-delay="0" id="faq_pagar_por_profissional" class="dropdown-2 w-dropdown">
+        <div class="dropdown-toggle-1 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong>É necessário pagar por cada profissional?</strong> </div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Não, na versão premium não há restrição e você pode convidar quantos barbeiros parceiros quiser para integrar sua equipe. Cada um deles terá um acesso exclusivo, no qual poderão verificar agendamentos feitos por clientes deles, fazer marcações quando necessário, avaliar o desempenho do mês e etc.</div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-3 w-dropdown">
+        <div id="faq_ativar_barbearia" class="dropdown-toggle-3 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong>Porque não consigo ativar a barbearia?</strong> </div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">O sistema possui algumas condições para ativação da sua barbearia. Para identificar quais são os campos ainda não finalizados, avalie um a um ou clique no local de status dentro do aplicativo para ser redirecionado.</div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-3 w-dropdown">
+        <div id="faq_notificacoes" class="dropdown-toggle-3 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong>Notificações de agendamento</strong></div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Ao agendar, receber agendamentos ou alterar algum dado da marcação, você e o cliente recebem notificações diretamente no seu dispositivo, no qual o aplicativo está instalado.</div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+        <div id="faq_comissao_barbeiros" class="dropdown-toggle-1 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong>O sistema calcula a comissão dos barbeiros?</strong> </div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Na versão premium são disponibilizadas no sistema os relatórios dos serviços prestados pelos parceiros, junto com os valores devidos a eles (levando em consideração a porcentagem que o dono de barbearia definir).</div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+        <div id="faq_convidar_barber_parceiro" class="dropdown-toggle-1 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong>Como convidar um barbeiro parceiro para sua equipe?</strong></div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">No aplicativo: Clique em ‘engrenagem’ &gt; equipe &gt; adicionar barbeiro &gt; convide-o. Em seguida, peça para que ele baixe o aplicativo no celular e clique em &quot;esqueci minha senha&quot;, usando os mesmos dados que você utilizou no convite. Chegará um e-mail com uma senha provisória de acesso e assim ele poderá fazer o login no aplicativo. Depois é só alterar a senha no perfil do barbeiro. <br></div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+        <div id="faq_criar_servico" class="dropdown-toggle-1 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96">Como criar um serviço?</div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Clique em ‘engrenagem’ &gt; serviços &gt; adicionar serviço &gt; nome do serviço &gt; tempo necessário (em minutos: exemplo: 00:40) e valor. Finalize com ‘adicionar’. </div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+        <div id="faq_cadastrar_cliente" class="dropdown-toggle-1 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96">Como cadastrar clientes?</div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Clique em ‘engrenagem’ &gt;  clientes &gt; adicionar cliente.</div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+        <div id="faq_fotos_barbearia" class="dropdown-toggle-1 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong>Como incluir fotos da barbearia e foto de perfil? </strong></div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Acesse o aplicativo &gt; clique em perfil &gt; fotos &gt; adicione pelo menos 4 fotos de sua barbearia ou serviços realizados</div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+        <div id="faq_cancelar_app" class="dropdown-toggle-1 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong>Como realizar o cancelamento do aplicativo?</strong></div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Sua assinatura será renovada automaticamente até você cancelá-la. O cancelamento pode ser realizado a qualquer momento. Entre em contato com a equipe através do WhatsApp (31) 97222-9690.</div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+        <div id="faq_alterar_email_senha" class="dropdown-toggle-1 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong>Como alterar email e senha?</strong> </div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Clique em ‘engrenagem’ &gt; perfil &gt; senha &gt; alterar senha</div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+        <div id="faq_formas_de_pagamento" class="dropdown-toggle-1 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong>Quais as formas de pagamento?</strong></div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Aceitamos a forma de pagamento ‘cartão de crédito’ recorrente e PIX para a assinatura do plano mensal do aplicativo BestBarbers.</div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+        <div id="faq_alterar_formas_de_pagamento" class="dropdown-toggle-1 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong>Como alterar a forma de pagamento?</strong></div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Aplicativo: Você pode alterar a forma de pagamento clicando em menu &gt; engrenagem &gt; meu plano Ou você pode chamar-nos no whatsapp. </div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+        <div id="faq_nao_consegue_logar" class="dropdown-toggle-1 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong>Não consigo fazer login</strong></div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Você precisa conferir os seguintes dados: O sistema diferencia letras maiúsculas, minúsculas, espaçamentos e caracteres especiais. Confirme se esses pontos estão corretos. Confirme se o email utilizado ou número de telefone estão corretos. Você pode solicitar apoio da equipe de suporte através do WhatsApp (31) 97222-9690.</div>
+        </nav>
+      </div>
+      <div data-hover="false" data-delay="0" class="dropdown-2 w-dropdown">
+        <div id="faq_barbearia_desativada" class="dropdown-toggle-1 w-dropdown-toggle">
+          <div class="icon-2 w-icon-dropdown-toggle"></div>
+          <div class="text-block-96"><strong class="bold-text-8">Minha barbearia está desativada, qual o problema?</strong></div>
+        </div>
+        <nav class="dropdown-list w-dropdown-list">
+          <div class="text-block-97">Para que o aplicativo funcione corretamente e permita a alteração de seu status (ativação) é necessário que tenham sido preenchidos os requisitos mínimos. Avalie se em seu sistema estão completos os campos: Mínimo 4 fotos da barbearia ou de seus serviços Foto de logomarca Ao menos 1 serviço cadastradoEndereço correto da barbearia</div>
+        </nav>
+      </div>
+    </div>
+    <a id="faq_carregar_mais_perguntas" href="#" class="link-block-14 w-inline-block">
+      <div id="faq_carregar_mais_perguntas" class="div-block-59">
+        <div class="text-block-98">Carregar mais perguntas</div><img src="images/icon-7.webp" loading="lazy" alt="" class="image-54">
+      </div>
+    </a>
+    <a href="#" class="ocultar-perguntas w-inline-block">
+      <div class="div-block-59">
+        <div class="text-block-98">Ocultar perguntas</div>
+        <div class="icon-2 w-icon-dropdown-toggle"></div>
+        <div class="icon-2 w-icon-dropdown-toggle"></div>
+        <div class="icon-2 w-icon-dropdown-toggle"></div>
+        <div class="icon-2 w-icon-dropdown-toggle"></div>
+        <div class="icon-2 w-icon-dropdown-toggle"></div>
+        <div class="icon-2 w-icon-dropdown-toggle"></div><img src="images/icon-8.png" loading="lazy" alt="" class="image-54">
+      </div>
+    </a>
+    <div class="div-block-1892606"><img src="images/logo-Asaas_Azul.png" loading="lazy" width="Auto" sizes="(max-width: 7898px) 100vw, 7898px" alt="" srcset="images/logo-Asaas_Azul-p-500.png 500w, images/logo-Asaas_Azul-p-800.png 800w, images/logo-Asaas_Azul-p-1080.png 1080w, images/logo-Asaas_Azul-p-1600.png 1600w, images/logo-Asaas_Azul-p-2000.png 2000w, images/logo-Asaas_Azul.png 7898w" class="image-700101">
+      <div class="text-block-5334382">Asaas é a instituição de pagamento responsável pela intermediação<br>das transações de pagamentos onlines realizados no BestBarbers</div>
+    </div>
+  </div>
+  <div class="section-16">
+    <div class="container-15 w-container"><img src="images/Logo-BestBarbers-branco_2.webp" loading="lazy" alt="" class="image-43 margin-right">
+      <div class="div-block-44 ocultar">
+        <div class="text-block-86">BestBarbers</div>
+        <a id="footer_barbeiro_barbearia" href="#" class="link-block-8 w-inline-block">
+          <div class="text-block-87">Barbearias e barbeiros</div>
+        </a>
+        <a href="#Clientes" id="footer_clientes" class="link-block-9 w-inline-block">
+          <div class="text-block-87">Clientes</div>
+        </a>
+        <a href="#Nossos-Planos" id="footer_planos" class="link-block-10 w-inline-block">
+          <div class="text-block-87">Nossos planos</div>
+        </a>
+        <a href="#faq" id="footer_faq" class="link-block-11 w-inline-block">
+          <div class="text-block-87">Duvidas frequentes</div>
+        </a>
+      </div>
+      <div class="div-block-44">
+        <div class="text-block-86">Transparência</div>
+        <a id="footer_termos" href="termos-de-uso.html" class="link-block-12 w-inline-block">
+          <div class="text-block-87">Termos de uso</div>
+        </a>
+        <a id="footer_politica" href="politica-de-privacidade.html" class="link-block-13 w-inline-block">
+          <div class="text-block-87">Política de privacidade</div>
+        </a>
+      </div>
+      <div class="div-block-44">
+        <div class="text-block-86">Fale conosco</div>
+        <a id="footer_wpp" href="https://wa.me/5531990657164?text=Olá!%20Gostaria%20de%20falar%20com%20um%20especialista%20para%20saber%20mais%20sobre%20o%20BestBarbers!" class="link-block-18 w-inline-block"><img src="images/icon-5.webp" loading="lazy" alt="" class="image-44">
+          <div class="text-block-88">+55 31 99065-7164</div>
+        </a>
+        <div class="div-block-45"><img src="images/icon-6.webp" loading="lazy" alt="" class="image-44">
+          <div id="footer_email" class="text-block-88">help@bestbarbers.app</div>
+        </div>
+      </div>
+      <div class="div-block-46">
+        <div class="rodap1-mobile ocultar">
+          <div class="text-block-86">BestBarbers</div>
+          <div class="text-block-87">Barbearias e barbeiros</div>
+          <div class="text-block-87">Clientes</div>
+          <div class="text-block-87">Nossos planos</div>
+          <div class="text-block-87">Duvidas frequentes</div>
+        </div>
+        <div class="rodap2-mobile">
+          <div class="text-block-86">Transparência</div>
+          <div class="text-block-87">Termos de uso</div>
+          <div class="text-block-87">Política de privacidade</div>
+        </div>
+        <div class="rodap3-mobile">
+          <div class="text-block-86">Fale conosco</div>
+          <div class="div-block-45"><img src="images/icon-5.webp" loading="lazy" alt="" class="image-44">
+            <div class="text-block-88">+55 31 99065-7164</div>
+          </div>
+          <div class="div-block-45"><img src="images/icon-6.webp" loading="lazy" alt="" class="image-44">
+            <div class="text-block-88">help@bestbarbers.app</div>
+          </div>
+        </div>
+      </div>
+      <div class="rodap4-mobile"></div>
+      <div class="div-block-43"><img src="images/Mobile-app-store-badge.webp" loading="lazy" alt="" class="image-41"><img src="images/Mobile-app-store-badge-1.webp" loading="lazy" alt="" class="image-42"></div>
+      <div class="download-footer">
+        <div class="text-block-86">Baixe o BestBarbers</div>
+        <a id="footer_app_store" href="https://apps.apple.com/br/app/bestbarbers/id1501336370?l=en" class="link-app-store-footer w-inline-block"><img src="images/Mobile-app-store-badge.svg" loading="lazy" alt="" class="image-50"></a>
+        <a id="footer_play_store" href="https://play.google.com/store/apps/details?id=bestbarbers.app&amp;hl=pt_BR&amp;gl=US" class="link-google-play-footer w-inline-block"><img src="images/Mobile-app-store-badge-1.svg" loading="lazy" alt="" class="image-49"></a>
+      </div>
+    </div>
+  </div>
+  <script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=6087192d180a065532046cc7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+  <script src="js/webflow.js" type="text/javascript"></script><!--  Google Tag Manager (noscript)  -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XL2VDK" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!--  End Google Tag Manager (noscript)  --><!--  Google Tag Manager (noscript)  -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5XL2VDK" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!--  End Google Tag Manager (noscript)  -->
+</body>
+</html>
