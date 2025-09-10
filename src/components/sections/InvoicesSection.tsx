@@ -19,11 +19,11 @@ export function InvoicesSection() {
             
             <div className="space-y-1">
               {invoices.features.map((feature, index) => (
-                <div key={index} className="text-sm lg:text-base">
+                <div key={index} className="text-sm lg:text-sm">
                   <strong className="text-white font-bold">
                     {feature.title}
                   </strong>
-                  <span className="text-neutral-dark-grey font-normal" style={{ color: '#f0f0f0' }}>
+                  <span className="text-neutral-dark-grey font-medium" style={{ color: '#f0f0f0' }}>
                     {" "}{feature.description}
                   </span>
                   {index < invoices.features.length - 1 && (

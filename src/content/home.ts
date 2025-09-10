@@ -322,15 +322,6 @@ export const homeContent = {
     },
     sections: [
       {
-        title: "BestBarbers",
-        links: [
-          { text: "Barbearias e barbeiros", href: "#" },
-          { text: "Clientes", href: "#" },
-          { text: "Nossos planos", href: "#" },
-          { text: "Duvidas frequentes", href: "#" },
-        ],
-      },
-      {
         title: "Transparência",
         links: [
           { text: "Termos de uso", href: "/termos-de-uso" },

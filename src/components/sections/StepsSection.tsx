@@ -35,7 +35,7 @@ export function StepsSection() {
                     <h3 className="text-lg lg:text-xl font-bold text-white leading-tight">
                       {step.title}
                     </h3>
-                    <p className="text-sm lg:text-base text-neutral-dark-grey font-medium leading-normal" style={{ color: '#f0f0f0' }}>
+                    <p className="text-sm lg:text-sm text-neutral-dark-grey font-medium leading-normal" style={{ color: '#f0f0f0' }}>
                       {step.description}
                     </p>
                   </div>
@@ -57,7 +57,7 @@ export function StepsSection() {
           </div>
 
           {/* CTA */}
-          <div className="mt-2">
+          <div className="mt-0">
             <Button
               asChild
               className="btn-primary text-xs font-bold leading-tight px-6 py-4 rounded-2xl transition-colors hover:bg-primary-hover"

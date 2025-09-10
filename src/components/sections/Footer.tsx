@@ -8,7 +8,7 @@ export function Footer() {
   return (
     <footer className="section-dark section-padding">
       <div className="container-custom">
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-16">
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-8 lg:gap-32">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Image

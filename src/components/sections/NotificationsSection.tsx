@@ -33,7 +33,7 @@ export function NotificationsSection() {
             
             <div className="space-y-0">
               {notifications.features.map((feature, index) => (
-                <div key={index} className="text-sm lg:text-base">
+                <div key={index} className="text-sm lg:text-sm">
                   <strong className="text-neutral-bg2 font-bold">
                     {feature.title}
                   </strong>

@@ -9,7 +9,7 @@ export function Navbar() {
   const { navbar } = homeContent;
 
   return (
-    <nav className="section-dark fixed top-0 left-0 right-0 z-fixed py-4" >
+    <nav className="section-dark fixed top-0 left-0 right-0 z-fixed py-4 z-50">
       <div className="container-custom flex justify-between items-center h-navbar">
         <Link href="/" className="flex-shrink-0">
           <Image
@@ -22,10 +22,11 @@ export function Navbar() {
           />
         </Link>
         
-        <div className="hidden md:flex items-center space-x-3">
+        <div className="hidden md:flex items-center space-x-0">
           <Button
             asChild
             className="btn-primary text-xs font-bold leading-tight px-6 py-3 rounded-2xl transition-colors hover:bg-primary-hover"
+            style={{ backgroundColor: '#ffaf02', color: '#121212' }}
           >
             <Link href={navbar.buttons.primary.href} target="_blank" rel="noopener noreferrer">
               {navbar.buttons.primary.text}

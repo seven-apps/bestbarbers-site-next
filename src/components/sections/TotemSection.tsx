@@ -30,7 +30,7 @@ export function TotemSection() {
                       className="w-5 h-5"
                     />
                   </div>
-                  <p className="text-sm lg:text-base text-white font-normal leading-normal">
+                  <p className="text-sm lg:text-sm text-white font-medium leading-normal">
                     {feature}
                   </p>
                 </div>

@@ -11,29 +11,29 @@ export function SubscriptionsSection() {
       <div className="container-custom">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
           {/* Mockup da imagem - desktop */}
-          <div className="hidden lg:block flex-1 w-full lg:w-2/5">
+          <div className="hidden lg:block flex-1 w-full lg:w-[55%]">
             <Image
               src={subscriptions.image.src}
               alt={subscriptions.image.alt}
               width={subscriptions.image.width}
               height={subscriptions.image.height}
-              className="w-full h-auto max-w-[70%]"
-              sizes="(max-width: 1200px) 70vw, 70vw"
+              className="w-full h-auto max-w-[80%]"
+              sizes="(max-width: 2000px) 80vw, 80vw"
             />
           </div>
 
           {/* Conteúdo textual */}
           <div className="flex-1 flex flex-col justify-center items-start w-full lg:w-3/5 space-y-3">
-            <h2 className="text-4xl lg:text-5xl font-bold leading-tight text-neutral-black-text">
+            <h2 className="text-4xl lg:text-4xl font-bold leading-tight text-neutral-black-text">
               {subscriptions.title.main}
               <br />
-              <span className="text-primary">{subscriptions.title.highlight}</span>
+              <span className="text-primary" style={{ color: '#ffaf02' }}>{subscriptions.title.highlight}</span>
             </h2>
             
             <div className="space-y-0">
               {subscriptions.features.map((feature, index) => (
-                <div key={index} className="text-sm lg:text-base">
-                  <strong className="text-neutral-black-text font-medium">
+                <div key={index} className="text-sm lg:text-sm">
+                  <strong className="text-neutral-black-text font-bold">
                     {feature.title}
                   </strong>
                   <span className="text-neutral-dark-grey font-normal">

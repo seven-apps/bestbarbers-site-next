@@ -18,7 +18,7 @@ export function BasicPlanSection() {
               {basicPlan.title.subtitle}
             </h2>
             
-            <div className="text-sm lg:text-base text-neutral-black-text mt-2 whitespace-pre-line">
+            <div className="text-sm lg:text-base font-medium text-neutral-black-text mt-2 whitespace-pre-line">
               {basicPlan.description}
             </div>
             
