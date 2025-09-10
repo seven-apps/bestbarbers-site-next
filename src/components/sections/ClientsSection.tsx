@@ -51,7 +51,7 @@ export function ClientsSection() {
   }, [logoGroups.length]);
 
   return (
-    <section className="bg-white section-padding flex justify-center items-center">
+    <section className="bg-white py-12 flex justify-center items-center w-[100%]">
       <div className="container-custom">
         <div className="flex flex-col items-center justify-center w-full space-y-12">
           {/* Título */}
@@ -63,7 +63,7 @@ export function ClientsSection() {
           </div>
 
           {/* Slider de logos - Desktop */}
-          <div className="hidden lg:block w-full max-w-6xl overflow-hidden">
+          <div className="hidden lg:block overflow-hidden">
             <div 
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -71,13 +71,13 @@ export function ClientsSection() {
               {logoGroups.map((group, groupIndex) => (
                 <div key={groupIndex} className="flex justify-center items-center space-x-8 w-full flex-shrink-0">
                   {group.map((logo, logoIndex) => (
-                    <div key={logoIndex} className="w-20 h-20 lg:w-24 lg:h-24 flex items-center justify-center">
+                    <div key={logoIndex} className="w-20 h-20 lg:w-28 lg:h-28 flex items-center justify-center">
                       <Image
                         src={logo}
                         alt={`Logo barbearia ${logoIndex + 1}`}
-                        width={96}
-                        height={96}
-                        className="w-full h-full object-contain opacity-80 hover:opacity-100 transition-opacity"
+                        width={180}
+                        height={180}
+                        className="w-full h-full object-contain"
                       />
                     </div>
                   ))}
@@ -102,7 +102,7 @@ export function ClientsSection() {
           </div>
 
           {/* Indicadores do slider - Desktop */}
-          <div className="hidden lg:flex justify-center space-x-2 mt-6">
+          {/* <div className="hidden lg:flex justify-center space-x-2 mt-6">
             {logoGroups.map((_, index) => (
               <button
                 key={index}
@@ -112,7 +112,7 @@ export function ClientsSection() {
                 }`}
               />
             ))}
-          </div>
+          </div> */}
 
           {/* CTA */}
           <div className="mt-2">

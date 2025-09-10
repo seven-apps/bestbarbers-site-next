@@ -55,7 +55,7 @@ export function TotemSection() {
               alt={totem.image.alt}
               width={totem.image.width}
               height={totem.image.height}
-              className="w-full h-auto max-w-[90%] lg:max-w-full object-contain"
+              className="w-[80%] h-auto max-w-[90%] lg:max-w-full object-contain"
               sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 50vw"
             />
           </div>
