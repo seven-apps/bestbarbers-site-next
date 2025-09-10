@@ -9,15 +9,15 @@ export function Navbar() {
   const { navbar } = homeContent;
 
   return (
-    <nav className="section-dark fixed top-0 left-0 right-0 z-fixed py-4 z-50">
-      <div className="container-custom flex justify-between items-center h-navbar">
+    <nav className="section-dark fixed top-0 left-0 right-0 z-fixed py-3 md:py-4 z-50">
+      <div className="container-custom flex justify-between items-center min-h-[60px] md:h-navbar">
         <Link href="/" className="flex-shrink-0">
           <Image
             src={navbar.logo.src}
             alt={navbar.logo.alt}
             width={navbar.logo.width}
             height={navbar.logo.height}
-            className="w-[140px] h-auto"
+            className="w-[120px] md:w-[140px] h-auto"
             priority
           />
         </Link>
@@ -44,11 +44,12 @@ export function Navbar() {
           </Button>
         </div>
 
-        {/* Mobile menu button - pode ser implementado posteriormente */}
+        {/* Mobile menu button */}
         <div className="md:hidden">
           <Button
             asChild
-            className="btn-primary text-xs font-bold leading-tight px-4 py-2 rounded-2xl"
+            className="btn-primary text-xs font-bold leading-tight px-3 py-2 rounded-xl"
+            style={{ backgroundColor: '#ffaf02', color: '#121212' }}
           >
             <Link href={navbar.buttons.primary.href} target="_blank" rel="noopener noreferrer">
               APP PRÓPRIO

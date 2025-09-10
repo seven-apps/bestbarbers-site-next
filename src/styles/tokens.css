@@ -119,14 +119,43 @@
 
 /* ===== CLASSES UTILITÁRIAS ===== */
 .container-custom {
-  width: 70%;
+  width: 90%;
   max-width: var(--container-max);
   margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .container-custom {
+    width: 85%;
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-custom {
+    width: 70%;
+    padding: 0;
+  }
 }
 
 .section-padding {
   padding-top: var(--section-padding);
   padding-bottom: var(--section-padding);
+}
+
+@media (max-width: 768px) {
+  .section-padding {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .section-padding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
 }
 
 .text-gradient-primary {

@@ -7,38 +7,32 @@ export function InvoicesSection() {
   const { invoices } = homeContent;
 
   return (
-    <section className="section-dark section-padding flex justify-center items-center">
+    <section className="section-dark py-16 md:py-20 lg:section-padding flex justify-center items-center">
       <div className="container-custom">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 lg:gap-16">
           {/* Conteúdo textual */}
-          <div className="flex-1 flex flex-col justify-center items-start w-full lg:w-1/2 space-y-3">
-            <h2 className="text-4xl lg:text-4xl font-bold leading-tight text-white whitespace-pre-line">
+          <div className="flex-1 flex flex-col justify-center items-center lg:items-start w-full lg:w-1/2 space-y-4 md:space-y-5 text-center lg:text-left order-first lg:order-first">
+            <h2 className="text-3xl md:text-4xl lg:text-4xl font-bold leading-tight text-white whitespace-pre-line max-w-lg lg:max-w-none">
               {invoices.title.main}
               <span className="text-primary" style={{ color: '#ffaf02' }}>{invoices.title.highlight}</span>
             </h2>
             
-            <div className="space-y-1">
+            <div className="space-y-3 md:space-y-4 max-w-lg lg:max-w-none">
               {invoices.features.map((feature, index) => (
-                <div key={index} className="text-sm lg:text-sm">
+                <div key={index} className="text-sm md:text-lg lg:text-base">
                   <strong className="text-white font-bold">
                     {feature.title}
                   </strong>
                   <span className="text-neutral-dark-grey font-medium" style={{ color: '#f0f0f0' }}>
                     {" "}{feature.description}
                   </span>
-                  {index < invoices.features.length - 1 && (
-                    <>
-                      <br />
-                      <br />
-                    </>
-                  )}
                 </div>
               ))}
             </div>
             
             <Button
               asChild
-              className="btn-primary text-xs font-bold leading-tight px-6 py-4 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
+              className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
               style={{ backgroundColor: '#ffaf02', color: '#121212' }}
             >
               <Link href={invoices.cta.href} target="_blank" rel="noopener noreferrer">
@@ -48,14 +42,14 @@ export function InvoicesSection() {
           </div>
 
           {/* Mockup da imagem */}
-          <div className="flex-1 w-full lg:w-1/2 flex justify-center lg:justify-end">
+          <div className="flex-1 w-full lg:w-1/2 flex justify-center lg:justify-end order-last lg:order-last mt-6 lg:mt-0">
             <Image
               src={invoices.image.src}
               alt={invoices.image.alt}
               width={invoices.image.width}
               height={invoices.image.height}
-              className="w-full h-auto max-w-[50%] lg:max-w-full max-h-[500px] object-contain"
-              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 50vw, 50vw"
+              className="w-full h-auto max-w-[90%] md:max-w-[80%] lg:max-w-full max-h-[400px] md:max-h-[500px] lg:max-h-[500px] object-contain"
+              sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 50vw"
             />
           </div>
         </div>
