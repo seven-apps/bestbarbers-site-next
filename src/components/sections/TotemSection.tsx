@@ -7,7 +7,7 @@ export function TotemSection() {
   const { totem } = homeContent;
 
   return (
-    <section className="section-dark pt-16 pb-0 md:py-20 lg:section-padding flex justify-center items-center">
+    <section className="section-dark py-0 lg:section-padding flex justify-center items-center">
       <div className="container-custom">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 lg:gap-16">
           {/* Conteúdo textual */}
