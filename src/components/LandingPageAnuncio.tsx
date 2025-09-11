@@ -25,7 +25,7 @@ export default function LandingPageAnuncio() {
   return (
     <div className="w-full">
       {/* Section 1 - Hero */}
-      <section className="bg-[#f3b23e] px-6 pt-8 pb-0 md:px-12 lg:px-24 lg:py-16">
+      <section className="bg-[#ebad04] px-6 pt-8 pb-0 md:px-12 lg:px-24 lg:py-16">
         <div className="max-w-7xl mx-auto">
           {/* Logo */}
           <div className="mb-5 lg:mb-10">
@@ -58,7 +58,7 @@ export default function LandingPageAnuncio() {
               {/* CTA Button */}
               <button 
                 onClick={scrollToForm}
-                className="w-full md:w-auto bg-[#111111] text-[#f3b23e] font-extrabold text-[16px] leading-[24px] tracking-[-0.48px] px-2 py-4 rounded-[54px] hover:bg-[#222] transition-colors lg:text-[18px] lg:px-10 lg:py-5"
+                className="w-full md:w-auto bg-[#111111] text-[#ebad04] font-extrabold text-[16px] leading-[24px] tracking-[-0.48px] px-2 py-4 rounded-[54px] hover:bg-[#222] transition-colors lg:text-[18px] lg:px-10 lg:py-5"
               >
                 QUERO MEU APP PERSONALIZADO
               </button>
@@ -125,7 +125,7 @@ export default function LandingPageAnuncio() {
       </section>
 
       {/* Section 3 - Solução */}
-      <section className="bg-[#f3b23e] px-6 py-8 md:px-12 md:py-12 lg:px-24 lg:py-20">
+      <section className="bg-[#ebad04] px-6 py-8 md:px-12 md:py-12 lg:px-24 lg:py-20">
         <div className="max-w-7xl mx-auto">
           <h2 className="font-extrabold text-[32px] leading-[40px] tracking-[-0.96px] text-[#111111] mb-5 md:text-[40px] md:leading-[48px] lg:text-[48px] lg:leading-[56px] lg:tracking-[-1.44px] lg:mb-10">
             O sistema completo para escalar sua barbearia com{' '}
@@ -183,7 +183,7 @@ export default function LandingPageAnuncio() {
           {/* CTA Button */}
           <button 
             onClick={scrollToForm}
-            className="w-full md:w-auto bg-[#111111] text-[#f3b23e] font-extrabold text-[16px] leading-[24px] tracking-[-0.48px] px-2 py-4 rounded-[54px] hover:bg-[#222] transition-colors mt-5 lg:mt-8 lg:text-[18px] lg:px-10 lg:py-5"
+            className="w-full md:w-auto bg-[#111111] text-[#ebad04] font-extrabold text-[16px] leading-[24px] tracking-[-0.48px] px-2 py-4 rounded-[54px] hover:bg-[#222] transition-colors mt-5 lg:mt-8 lg:text-[18px] lg:px-10 lg:py-5"
           >
             QUERO MEU APP + ASSINATURA
           </button>
@@ -195,7 +195,7 @@ export default function LandingPageAnuncio() {
         <div className="max-w-3xl mx-auto">
           <h2 className="font-extrabold text-[32px] leading-[40px] tracking-[-0.96px] text-white mb-5 md:text-[40px] md:leading-[48px] lg:text-[48px] lg:leading-[56px] lg:tracking-[-1.44px]">
             Garanta já sua{' '}
-            <span className="text-[#f3b23e]">oferta exclusiva</span>{' '}
+            <span className="text-[#ebad04]">oferta exclusiva</span>{' '}
             para ter o app da sua barbearia
           </h2>
 
@@ -225,7 +225,7 @@ export default function LandingPageAnuncio() {
                 onChange={handleInputChange}
                 placeholder="Digite o nome da sua barbearia"
                 required
-                className="w-full bg-[#20242a] border-2 border-[#f3b23e] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#f3b23e] transition-colors"
+                className="w-full bg-[#20242a] border-2 border-[#ebad04] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#ebad04] transition-colors"
               />
             </div>
 
@@ -241,7 +241,7 @@ export default function LandingPageAnuncio() {
                 onChange={handleInputChange}
                 placeholder="Digite o nome do dono da barbearia"
                 required
-                className="w-full bg-[#20242a] border-2 border-[#f3b23e] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#f3b23e] transition-colors"
+                className="w-full bg-[#20242a] border-2 border-[#ebad04] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#ebad04] transition-colors"
               />
             </div>
 
@@ -257,7 +257,7 @@ export default function LandingPageAnuncio() {
                 onChange={handleInputChange}
                 placeholder="Celular - whatsapp do dono da barbearia"
                 required
-                className="w-full bg-[#20242a] border-2 border-[#f3b23e] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#f3b23e] transition-colors"
+                className="w-full bg-[#20242a] border-2 border-[#ebad04] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#ebad04] transition-colors"
               />
             </div>
 
@@ -273,7 +273,7 @@ export default function LandingPageAnuncio() {
                 onChange={handleInputChange}
                 placeholder="Quanto sua barbearia fatura por mês"
                 required
-                className="w-full bg-[#20242a] border-2 border-[#f3b23e] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#f3b23e] transition-colors"
+                className="w-full bg-[#20242a] border-2 border-[#ebad04] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#ebad04] transition-colors"
               />
             </div>
 
@@ -289,7 +289,7 @@ export default function LandingPageAnuncio() {
                 onChange={handleInputChange}
                 placeholder="Quantos colaboradores tem na barbearia"
                 required
-                className="w-full bg-[#20242a] border-2 border-[#f3b23e] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#f3b23e] transition-colors"
+                className="w-full bg-[#20242a] border-2 border-[#ebad04] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#ebad04] transition-colors"
               />
             </div>
 
@@ -297,7 +297,7 @@ export default function LandingPageAnuncio() {
             <button 
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-[#f3b23e] text-[#181b20] font-extrabold text-[16px] leading-[24px] tracking-[-0.48px] px-2 py-4 rounded-[54px] hover:bg-[#f3b23e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+              className="w-full bg-[#ebad04] text-[#181b20] font-extrabold text-[16px] leading-[24px] tracking-[-0.48px] px-2 py-4 rounded-[54px] hover:bg-[#ebad04] transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
             >
               {isSubmitting ? 'ENVIANDO...' : 'GARANTIR MINHA OFERTA'}
             </button>
@@ -306,7 +306,7 @@ export default function LandingPageAnuncio() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#f3b23e] px-6 py-8 md:px-12 lg:px-24">
+      <footer className="bg-[#ebad04] px-6 py-8 md:px-12 lg:px-24">
         <div className="max-w-7xl mx-auto">
           <div className="mb-5">
             <Image 
@@ -321,7 +321,14 @@ export default function LandingPageAnuncio() {
           <p className="font-medium text-[16px] leading-[24px] tracking-[-0.16px] text-[#111111]">
             Para saber mais, acesse:
             <br />
-            <span className="font-bold">www.bestbarbers.app</span>
+            <a 
+              href="https://www.bestbarbers.app" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="font-bold hover:underline transition-all duration-200"
+            >
+              www.bestbarbers.app
+            </a>
           </p>
         </div>
       </footer>
