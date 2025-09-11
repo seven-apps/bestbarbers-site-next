@@ -1,4 +1,4 @@
-import LandingPageAnuncio from "@/components/sections/LandingPageAnuncio";
+import LandingPageAnuncio from "@/components/LandingPageAnuncio";
 
 export default function AnuncioPage() {
   return <LandingPageAnuncio />;

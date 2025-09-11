@@ -1,45 +1,22 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
 import Image from 'next/image';
-
-interface FormData {
-  barbershopName: string;
-  ownerName: string;
-  whatsapp: string;
-  monthlyRevenue: string;
-  employeeCount: string;
-}
+import { useLeadForm } from '@/hooks';
 
 export default function LandingPageAnuncio() {
-  const [formData, setFormData] = useState<FormData>({
-    barbershopName: '',
-    ownerName: '',
-    whatsapp: '',
-    monthlyRevenue: '',
-    employeeCount: ''
+  // Hook principal que gerencia todo o formulário
+  const {
+    formData,
+    isSubmitting,
+    submitError,
+    handleInputChange,
+    handleSubmit
+  } = useLeadForm({
+    onError: (error) => {
+      console.error('Erro ao enviar formulário:', error);
+      alert('Erro ao enviar formulário. Tente novamente.');
+    }
   });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Aqui você pode adicionar a lógica de envio do formulário
-    console.log('Form submitted:', formData);
-    
-    // Simular envio
-    setTimeout(() => {
-      setIsSubmitting(false);
-      alert('Formulário enviado com sucesso!');
-    }, 1000);
-  };
 
   const scrollToForm = () => {
     document.getElementById('form-section')?.scrollIntoView({ behavior: 'smooth' });
@@ -227,6 +204,13 @@ export default function LandingPageAnuncio() {
             <br /><br />
             O BestBarbers faz isso rápido, simples e sem custo absurdo.
           </p>
+
+          {/* Exibição de erro */}
+          {submitError && (
+            <div className="bg-red-500/10 border border-red-500 rounded-lg p-4 mb-6">
+              <p className="text-red-400 text-sm font-medium">{submitError}</p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Nome da Barbearia */}
