@@ -5,10 +5,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 
+interface NavbarProps {
+  onCtaClick?: () => void;
+}
 export function Navbar({ onCtaClick }: NavbarProps) {
-  interface NavbarProps {
-    onCtaClick?: () => void;
-  }
   const { navbar } = homeContent;
 
   return (

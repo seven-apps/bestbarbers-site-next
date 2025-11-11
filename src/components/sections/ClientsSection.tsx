@@ -6,10 +6,10 @@ import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 import { useState, useEffect } from "react";
 
+interface ClientsSectionProps {
+  onCtaClick?: () => void;
+}
 export function ClientsSection({ onCtaClick }: ClientsSectionProps) {
-  interface ClientsSectionProps {
-    onCtaClick?: () => void;
-  }
   const { clients } = homeContent;
 
   // Logos organizados em grupos para o slider
