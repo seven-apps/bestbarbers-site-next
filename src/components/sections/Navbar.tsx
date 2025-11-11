@@ -5,7 +5,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 
-export function Navbar() {
+export function Navbar({ onCtaClick }: NavbarProps) {
+  interface NavbarProps {
+    onCtaClick?: () => void;
+  }
   const { navbar } = homeContent;
 
   return (
@@ -21,24 +24,42 @@ export function Navbar() {
             priority
           />
         </Link>
-        
+
         <div className="hidden md:flex items-center space-x-0">
-          <Button
-            asChild
-            className="btn-primary text-xs font-bold leading-tight px-6 py-3 rounded-2xl transition-colors hover:bg-primary-hover"
-            style={{ backgroundColor: '#ffaf02', color: '#121212' }}
-          >
-            <Link href={navbar.buttons.primary.href} target="_blank" rel="noopener noreferrer">
+          {onCtaClick ? (
+            <Button
+              onClick={onCtaClick}
+              className="btn-primary text-xs font-bold leading-tight px-6 py-3 rounded-2xl transition-colors hover:bg-primary-hover"
+              style={{ backgroundColor: "#ffaf02", color: "#121212" }}
+            >
               {navbar.buttons.primary.text}
-            </Link>
-          </Button>
-          
+            </Button>
+          ) : (
+            <Button
+              asChild
+              className="btn-primary text-xs font-bold leading-tight px-6 py-3 rounded-2xl transition-colors hover:bg-primary-hover"
+              style={{ backgroundColor: "#ffaf02", color: "#121212" }}
+            >
+              <Link
+                href={navbar.buttons.primary.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {navbar.buttons.primary.text}
+              </Link>
+            </Button>
+          )}
+
           <Button
             asChild
             variant="outline"
             className="btn-ghost text-xs font-bold leading-tight px-6 py-3 rounded-2xl border-white text-white bg-transparent hover:bg-white hover:text-neutral-bg2 transition-all ml-3"
           >
-            <Link href={navbar.buttons.secondary.href} target="_blank" rel="noopener noreferrer">
+            <Link
+              href={navbar.buttons.secondary.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {navbar.buttons.secondary.text}
             </Link>
           </Button>
@@ -49,9 +70,13 @@ export function Navbar() {
           <Button
             asChild
             className="btn-primary text-xs font-bold leading-tight px-3 py-2 rounded-xl"
-            style={{ backgroundColor: '#ffaf02', color: '#121212' }}
+            style={{ backgroundColor: "#ffaf02", color: "#121212" }}
           >
-            <Link href={navbar.buttons.primary.href} target="_blank" rel="noopener noreferrer">
+            <Link
+              href={navbar.buttons.primary.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               APP PRÓPRIO
             </Link>
           </Button>

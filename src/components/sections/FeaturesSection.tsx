@@ -3,7 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 
-export function FeaturesSection() {
+interface FeaturesSectionProps {
+  onCtaClick?: () => void;
+}
+
+export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
   const { features } = homeContent;
 
   return (
@@ -40,15 +44,25 @@ export function FeaturesSection() {
 
           {/* CTA */}
           <div className="mt-0">
-            <Button
-              asChild
-              className="btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
-              style={{ backgroundColor: '#ffaf02', color: '#121212' }}
-            >
-              <Link href={features.cta.href} target="_blank" rel="noopener noreferrer">
+            {onCtaClick ? (
+              <Button
+                onClick={onCtaClick}
+                className="btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
+                style={{ backgroundColor: '#ffaf02', color: '#121212' }}
+              >
                 {features.cta.text}
-              </Link>
-            </Button>
+              </Button>
+            ) : (
+              <Button
+                asChild
+                className="btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
+                style={{ backgroundColor: '#ffaf02', color: '#121212' }}
+              >
+                <Link href={features.cta.href} target="_blank" rel="noopener noreferrer">
+                  {features.cta.text}
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>

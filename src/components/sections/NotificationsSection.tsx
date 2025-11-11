@@ -3,7 +3,12 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 
-export function NotificationsSection() {
+interface NotificationsSectionProps {
+  onCtaClick?: () => void;
+}
+export function NotificationsSection({
+  onCtaClick,
+}: NotificationsSectionProps) {
   const { notifications } = homeContent;
 
   return (
@@ -28,9 +33,11 @@ export function NotificationsSection() {
           <div className="flex-1 flex flex-col justify-center items-center lg:items-start w-full lg:w-1/2 space-y-3 md:space-y-5 text-center lg:text-left order-last lg:order-last">
             <h2 className="text-3xl md:text-4xl lg:text-4xl font-bold leading-tight text-neutral-bg2 whitespace-pre-line max-w-lg lg:max-w-none">
               {notifications.title.main}
-              <span className="text-white">{notifications.title.highlight}</span>
+              <span className="text-white">
+                {notifications.title.highlight}
+              </span>
             </h2>
-            
+
             <div className="space-y-3 md:space-y-4 max-w-lg lg:max-w-none">
               {notifications.features.map((feature, index) => (
                 <div key={index} className="text-sm md:text-lg lg:text-base">
@@ -38,21 +45,36 @@ export function NotificationsSection() {
                     {feature.title}
                   </strong>
                   <span className="text-neutral-bg2 font-medium">
-                    {" "}{feature.description}
+                    {" "}
+                    {feature.description}
                   </span>
                 </div>
               ))}
             </div>
-            
-            <Button
-              asChild
-              className="btn-primary bg-white text-neutral-bg2 hover:bg-neutral-card-grey text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors mt-6"
-              style={{ backgroundColor: '#121212', color: '#ffaf02' }}
-            >
-              <Link href={notifications.cta.href} target="_blank" rel="noopener noreferrer">
+
+            {onCtaClick ? (
+              <Button
+                onClick={onCtaClick}
+                className="btn-primary bg-white text-neutral-bg2 hover:bg-neutral-card-grey text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors mt-6"
+                style={{ backgroundColor: "#121212", color: "#ffaf02" }}
+              >
                 {notifications.cta.text}
-              </Link>
-            </Button>
+              </Button>
+            ) : (
+              <Button
+                asChild
+                className="btn-primary bg-white text-neutral-bg2 hover:bg-neutral-card-grey text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors mt-6"
+                style={{ backgroundColor: "#121212", color: "#ffaf02" }}
+              >
+                <Link
+                  href={notifications.cta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {notifications.cta.text}
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>

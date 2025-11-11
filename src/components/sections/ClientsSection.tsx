@@ -6,19 +6,22 @@ import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 import { useState, useEffect } from "react";
 
-export function ClientsSection() {
+export function ClientsSection({ onCtaClick }: ClientsSectionProps) {
+  interface ClientsSectionProps {
+    onCtaClick?: () => void;
+  }
   const { clients } = homeContent;
-  
+
   // Logos organizados em grupos para o slider
   const logoGroups = [
     [
       "/images/Barber-Style.webp",
-      "/images/Sr-Barbearia.webp", 
+      "/images/Sr-Barbearia.webp",
       "/images/Premium.webp",
       "/images/Rapha_2.webp",
       "/images/Black-House.webp",
       "/images/James.webp",
-      "/images/Ferrari.webp"
+      "/images/Ferrari.webp",
     ],
     [
       "/images/T.webp",
@@ -27,7 +30,7 @@ export function ClientsSection() {
       "/images/Seu-Oziel.webp",
       "/images/Vicente.webp",
       "/images/R.webp",
-      "/images/o.webp"
+      "/images/o.webp",
     ],
     [
       "/images/Camilos.webp",
@@ -36,7 +39,7 @@ export function ClientsSection() {
       "/images/Igor.webp",
       "/images/Vicente.webp",
       "/images/Urus.webp",
-      "/images/Vitor.webp"
+      "/images/Vitor.webp",
     ],
   ];
 
@@ -57,21 +60,29 @@ export function ClientsSection() {
           {/* Título */}
           <div className="text-center">
             <h2 className="text-xl md:text-2xl lg:text-3xl font-medium leading-normal text-neutral-black-text text-center">
-              <span className="text-primary font-bold">{clients.title.highlight}</span>
+              <span className="text-primary font-bold">
+                {clients.title.highlight}
+              </span>
               {clients.title.main}
             </h2>
           </div>
 
           {/* Slider de logos - Desktop */}
           <div className="hidden lg:block overflow-hidden">
-            <div 
+            <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
               {logoGroups.map((group, groupIndex) => (
-                <div key={groupIndex} className="flex justify-center items-center space-x-8 w-full flex-shrink-0">
+                <div
+                  key={groupIndex}
+                  className="flex justify-center items-center space-x-8 w-full flex-shrink-0"
+                >
                   {group.map((logo, logoIndex) => (
-                    <div key={logoIndex} className="w-20 h-20 lg:w-28 lg:h-28 flex items-center justify-center">
+                    <div
+                      key={logoIndex}
+                      className="w-20 h-20 lg:w-28 lg:h-28 flex items-center justify-center"
+                    >
                       <Image
                         src={logo}
                         alt={`Logo barbearia ${logoIndex + 1}`}
@@ -88,14 +99,20 @@ export function ClientsSection() {
 
           {/* Slider de logos - Mobile (4 por vez) */}
           <div className="lg:hidden overflow-hidden">
-            <div 
+            <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
               {logoGroups.map((group, groupIndex) => (
-                <div key={groupIndex} className="flex justify-center items-center space-x-6 w-full flex-shrink-0">
+                <div
+                  key={groupIndex}
+                  className="flex justify-center items-center space-x-6 w-full flex-shrink-0"
+                >
                   {group.slice(0, 4).map((logo, logoIndex) => (
-                    <div key={logoIndex} className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center">
+                    <div
+                      key={logoIndex}
+                      className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center"
+                    >
                       <Image
                         src={logo}
                         alt={`Logo barbearia ${logoIndex + 1}`}
@@ -112,15 +129,29 @@ export function ClientsSection() {
 
           {/* CTA */}
           <div className="mt-2">
-            <Button
-              asChild
-              className="btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
-              style={{ backgroundColor: '#ffaf02', color: '#121212' }}
-            >
-              <Link href={clients.cta.href} target="_blank" rel="noopener noreferrer">
+            {onCtaClick ? (
+              <Button
+                onClick={onCtaClick}
+                className="btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
+                style={{ backgroundColor: "#ffaf02", color: "#121212" }}
+              >
                 {clients.cta.text}
-              </Link>
-            </Button>
+              </Button>
+            ) : (
+              <Button
+                asChild
+                className="btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
+                style={{ backgroundColor: "#ffaf02", color: "#121212" }}
+              >
+                <Link
+                  href={clients.cta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {clients.cta.text}
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>

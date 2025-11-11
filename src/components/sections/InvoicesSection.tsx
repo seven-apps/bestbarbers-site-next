@@ -3,7 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 
-export function InvoicesSection() {
+interface InvoicesSectionProps {
+  onCtaClick?: () => void;
+}
+
+export function InvoicesSection({ onCtaClick }: InvoicesSectionProps) {
   const { invoices } = homeContent;
 
   return (
@@ -14,31 +18,51 @@ export function InvoicesSection() {
           <div className="flex-1 flex flex-col justify-center items-center lg:items-start w-full lg:w-1/2 space-y-4 md:space-y-5 text-center lg:text-left order-first lg:order-first">
             <h2 className="text-3xl md:text-4xl lg:text-4xl font-bold leading-tight text-white whitespace-pre-line max-w-lg lg:max-w-none">
               {invoices.title.main}
-              <span className="text-primary" style={{ color: '#ffaf02' }}>{invoices.title.highlight}</span>
+              <span className="text-primary" style={{ color: "#ffaf02" }}>
+                {invoices.title.highlight}
+              </span>
             </h2>
-            
+
             <div className="space-y-3 md:space-y-4 max-w-lg lg:max-w-none">
               {invoices.features.map((feature, index) => (
                 <div key={index} className="text-sm md:text-lg lg:text-base">
                   <strong className="text-white font-bold">
                     {feature.title}
                   </strong>
-                  <span className="text-neutral-dark-grey font-medium" style={{ color: '#f0f0f0' }}>
-                    {" "}{feature.description}
+                  <span
+                    className="text-neutral-dark-grey font-medium"
+                    style={{ color: "#f0f0f0" }}
+                  >
+                    {" "}
+                    {feature.description}
                   </span>
                 </div>
               ))}
             </div>
-            
-            <Button
-              asChild
-              className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
-              style={{ backgroundColor: '#ffaf02', color: '#121212' }}
-            >
-              <Link href={invoices.cta.href} target="_blank" rel="noopener noreferrer">
+
+            {onCtaClick ? (
+              <Button
+                onClick={onCtaClick}
+                className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
+                style={{ backgroundColor: "#ffaf02", color: "#121212" }}
+              >
                 {invoices.cta.text}
-              </Link>
-            </Button>
+              </Button>
+            ) : (
+              <Button
+                asChild
+                className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
+                style={{ backgroundColor: "#ffaf02", color: "#121212" }}
+              >
+                <Link
+                  href={invoices.cta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {invoices.cta.text}
+                </Link>
+              </Button>
+            )}
           </div>
 
           {/* Mockup da imagem */}

@@ -3,7 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 
-export function HeroSection() {
+interface HeroSectionProps {
+  onCtaClick?: () => void;
+}
+
+export function HeroSection({ onCtaClick }: HeroSectionProps) {
   const { hero } = homeContent;
 
   return (
@@ -23,15 +27,25 @@ export function HeroSection() {
               {hero.description}
             </p>
 
-            <Button
-              asChild
-              className="text-sm font-bold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
-              style={{ backgroundColor: '#121212', color: '#ffaf02' }}
-            >
-              <Link href={hero.cta.href} target="_blank" rel="noopener noreferrer">
+            {onCtaClick ? (
+              <Button
+                onClick={onCtaClick}
+                className="text-sm font-bold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
+                style={{ backgroundColor: '#121212', color: '#ffaf02' }}
+              >
                 {hero.cta.text}
-              </Link>
-            </Button>
+              </Button>
+            ) : (
+              <Button
+                asChild
+                className="text-sm font-bold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
+                style={{ backgroundColor: '#121212', color: '#ffaf02' }}
+              >
+                <Link href={hero.cta.href} target="_blank" rel="noopener noreferrer">
+                  {hero.cta.text}
+                </Link>
+              </Button>
+            )}
           </div>
 
           {/* Mockup da imagem - Mobile Last */}

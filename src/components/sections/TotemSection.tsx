@@ -3,7 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 
-export function TotemSection() {
+interface TotemSectionProps {
+  onCtaClick?: () => void;
+}
+
+export function TotemSection({ onCtaClick }: TotemSectionProps) {
   const { totem } = homeContent;
 
   return (
@@ -37,15 +41,25 @@ export function TotemSection() {
               ))}
             </div>
             
-            <Button
-              asChild
-              className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6 whitespace-pre-line text-center"
-              style={{ backgroundColor: '#ffaf02', color: '#121212' }}
-            >
-              <Link href={totem.cta.href} target="_blank" rel="noopener noreferrer">
+            {onCtaClick ? (
+              <Button
+                onClick={onCtaClick}
+                className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6 whitespace-pre-line text-center"
+                style={{ backgroundColor: '#ffaf02', color: '#121212' }}
+              >
                 {totem.cta.text}
-              </Link>
-            </Button>
+              </Button>
+            ) : (
+              <Button
+                asChild
+                className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6 whitespace-pre-line text-center"
+                style={{ backgroundColor: '#ffaf02', color: '#121212' }}
+              >
+                <Link href={totem.cta.href} target="_blank" rel="noopener noreferrer">
+                  {totem.cta.text}
+                </Link>
+              </Button>
+            )}
           </div>
 
           {/* Mockup da imagem */}

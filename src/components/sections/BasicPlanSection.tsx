@@ -3,7 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 
-export function BasicPlanSection() {
+interface BasicPlanSectionProps {
+  onCtaClick?: () => void;
+}
+
+export function BasicPlanSection({ onCtaClick }: BasicPlanSectionProps) {
   const { basicPlan } = homeContent;
 
   return (
@@ -14,20 +18,26 @@ export function BasicPlanSection() {
           <div className="flex-1 flex flex-col justify-center items-center lg:items-start w-full lg:w-1/2 space-y-4 md:space-y-5 text-center lg:text-left order-first lg:order-first">
             <h2 className="text-3xl md:text-4xl lg:text-4xl font-bold leading-tight text-neutral-black-text max-w-lg lg:max-w-none">
               {basicPlan.title.main}
-              <span className="text-primary" style={{ color: '#ffaf02' }}>{basicPlan.title.highlight}</span>
+              <span className="text-primary" style={{ color: "#ffaf02" }}>
+                {basicPlan.title.highlight}
+              </span>
               {basicPlan.title.subtitle}
             </h2>
-            
+
             <div className="text-base md:text-lg lg:text-base font-medium text-neutral-black-text whitespace-pre-line max-w-lg lg:max-w-none">
               {basicPlan.description}
             </div>
-            
+
             <Button
               asChild
               className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
-              style={{ backgroundColor: '#ffaf02', color: '#121212' }}
+              style={{ backgroundColor: "#ffaf02", color: "#121212" }}
             >
-              <Link href={basicPlan.cta.href} target="_blank" rel="noopener noreferrer">
+              <Link
+                href={basicPlan.cta.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {basicPlan.cta.text}
               </Link>
             </Button>

@@ -3,7 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 
-export function SubscriptionsSection() {
+interface SubscriptionsSectionProps {
+  onCtaClick?: () => void;
+}
+
+export function SubscriptionsSection({ onCtaClick }: SubscriptionsSectionProps) {
   const { subscriptions } = homeContent;
 
   return (
@@ -43,15 +47,25 @@ export function SubscriptionsSection() {
               ))}
             </div>
             
-            <Button
-              asChild
-              className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
-              style={{ backgroundColor: '#ffaf02', color: '#121212' }}
-            >
-              <Link href={subscriptions.cta.href} target="_blank" rel="noopener noreferrer">
+            {onCtaClick ? (
+              <Button
+                onClick={onCtaClick}
+                className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
+                style={{ backgroundColor: '#ffaf02', color: '#121212' }}
+              >
                 {subscriptions.cta.text}
-              </Link>
-            </Button>
+              </Button>
+            ) : (
+              <Button
+                asChild
+                className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
+                style={{ backgroundColor: '#ffaf02', color: '#121212' }}
+              >
+                <Link href={subscriptions.cta.href} target="_blank" rel="noopener noreferrer">
+                  {subscriptions.cta.text}
+                </Link>
+              </Button>
+            )}
           </div>
 
           {/* Mockup da imagem - mobile last */}
