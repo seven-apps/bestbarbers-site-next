@@ -11,7 +11,7 @@ export function InvoicesSection({ onCtaClick }: InvoicesSectionProps) {
   const { invoices } = homeContent;
 
   return (
-    <section className="section-dark py-16 md:py-20 lg:section-padding flex justify-center items-center">
+    <section className="section-dark py-16 md:py-20 lg:section-padding flex justify-center items-center overflow-x-hidden">
       <div className="container-custom">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 lg:gap-16">
           {/* Conteúdo textual */}

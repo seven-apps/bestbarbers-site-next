@@ -72,7 +72,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className="scroll-smooth">
+    <html lang="pt-BR" className="scroll-smooth overflow-x-hidden">
       <head>
         {/* Meta Pixel Code */}
         <script
@@ -102,7 +102,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body
-        className={`${montserrat.variable} font-primary antialiased`}
+        className={`${montserrat.variable} font-primary antialiased overflow-x-hidden max-w-[100vw]`}
       >
         {children}
       </body>

@@ -11,7 +11,7 @@ export function HeroSection({ onCtaClick }: HeroSectionProps) {
   const { hero } = homeContent;
 
   return (
-    <section className="section-primary pt-32 pb-8 md:pb-12 lg:pb-12 flex justify-center items-end relative" style={{ backgroundColor: "#ffaf02" }}>
+    <section className="section-primary pt-32 pb-8 md:pb-12 lg:pb-12 flex justify-center items-end relative overflow-x-hidden" style={{ backgroundColor: "#ffaf02" }}>
       <div className="container-custom flex items-center">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-0 lg:gap-16 w-full">
           {/* Conteúdo textual */}

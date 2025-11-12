@@ -6,7 +6,7 @@ export function Footer() {
   const { footer } = homeContent;
 
   return (
-    <footer className="section-dark py-12 md:py-16 lg:section-padding">
+    <footer className="section-dark py-12 md:py-16 lg:section-padding overflow-x-hidden">
       <div className="container-custom">
         <div className="flex flex-col lg:flex-row justify-between items-start gap-6 md:gap-8 lg:gap-32">
           {/* Logo */}

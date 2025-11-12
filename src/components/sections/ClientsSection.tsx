@@ -54,7 +54,7 @@ export function ClientsSection({ onCtaClick }: ClientsSectionProps) {
   }, [logoGroups.length]);
 
   return (
-    <section className="bg-white py-12 md:py-16 lg:py-12 flex justify-center items-center w-[100%]">
+    <section className="bg-white py-12 md:py-16 lg:py-12 flex justify-center items-center w-full overflow-x-hidden">
       <div className="container-custom">
         <div className="flex flex-col items-center justify-center w-full space-y-8 md:space-y-10 lg:space-y-12">
           {/* Título */}
@@ -68,7 +68,7 @@ export function ClientsSection({ onCtaClick }: ClientsSectionProps) {
           </div>
 
           {/* Slider de logos - Desktop */}
-          <div className="hidden lg:block overflow-hidden">
+          <div className="hidden lg:block overflow-hidden w-full max-w-full">
             <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -98,7 +98,7 @@ export function ClientsSection({ onCtaClick }: ClientsSectionProps) {
           </div>
 
           {/* Slider de logos - Mobile (4 por vez) */}
-          <div className="lg:hidden overflow-hidden">
+          <div className="lg:hidden overflow-hidden w-full max-w-full">
             <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}

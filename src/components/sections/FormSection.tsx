@@ -30,7 +30,7 @@ export function FormSection({
   return (
     <section
       id="form-section"
-      className="bg-[#181b20] px-6 py-8 md:px-12 md:py-12 lg:px-24 lg:py-20"
+      className="bg-[#181b20] px-6 py-8 md:px-12 md:py-12 lg:px-24 lg:py-20 overflow-x-hidden"
     >
       <div className="max-w-3xl mx-auto">
         <h2 className="font-extrabold text-[32px] leading-[40px] tracking-[-0.96px] text-white mb-5 md:text-[40px] md:leading-[48px] lg:text-[48px] lg:leading-[56px] lg:tracking-[-1.44px]">

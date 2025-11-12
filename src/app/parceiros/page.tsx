@@ -8,7 +8,6 @@ import { FeaturesSection } from "@/components/sections/FeaturesSection";
 import { TotemSection } from "@/components/sections/TotemSection";
 import { NotificationsSection } from "@/components/sections/NotificationsSection";
 import { ClientsSection } from "@/components/sections/ClientsSection";
-import { StepsSection } from "@/components/sections/StepsSection";
 import { BasicPlanSection } from "@/components/sections/BasicPlanSection";
 import { FormSection } from "@/components/sections/FormSection";
 import { Footer } from "@/components/sections/Footer";
@@ -22,7 +21,7 @@ export default function Parceiros() {
   };
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen overflow-x-hidden max-w-[100vw] w-full">
       <Navbar onCtaClick={scrollToForm} />
       <HeroSection onCtaClick={scrollToForm} />
       <SubscriptionsSection onCtaClick={scrollToForm} />

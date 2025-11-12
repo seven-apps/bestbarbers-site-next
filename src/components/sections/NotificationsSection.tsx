@@ -12,18 +12,18 @@ export function NotificationsSection({
   const { notifications } = homeContent;
 
   return (
-    <section className="section-primary-hover py-16 md:py-20 lg:section-padding flex justify-center items-center">
+    <section className="section-primary-hover py-16 md:py-20 lg:section-padding flex justify-center items-center overflow-x-hidden">
       <div className="container-custom">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 lg:gap-16">
           {/* Mockup da imagem - mobile first */}
-          <div className="w-screen lg:w-1/2 flex justify-center lg:justify-start order-first lg:order-first mb-0 lg:mb-0 -mx-4 md:-mx-8 lg:mx-0">
+          <div className="w-full lg:w-1/2 flex justify-center lg:justify-start order-first lg:order-first mb-0 lg:mb-0">
             <div className="relative w-full flex justify-center">
               <Image
                 src={notifications.image.src}
                 alt={notifications.image.alt}
                 width={notifications.image.width}
                 height={notifications.image.height}
-                className="w-full h-auto max-w-[95%] md:max-w-[85%] lg:max-w-full object-contain lg:ml-[-64px]"
+                className="w-full h-auto max-w-[95%] md:max-w-[85%] lg:max-w-full object-contain"
                 sizes="(max-width: 768px) 95vw, (max-width: 1200px) 85vw, 55vw"
               />
             </div>

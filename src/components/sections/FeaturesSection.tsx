@@ -11,7 +11,7 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
   const { features } = homeContent;
 
   return (
-    <section className="bg-white py-12 md:py-16 lg:section-padding flex justify-center items-center">
+    <section className="bg-white py-12 md:py-16 lg:section-padding flex justify-center items-center overflow-x-hidden">
       <div className="container-custom">
         <div className="flex flex-col items-center justify-center w-full space-y-8 md:space-y-10 lg:space-y-12">
           {/* Título */}

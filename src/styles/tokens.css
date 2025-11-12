@@ -120,9 +120,10 @@
 /* ===== CLASSES UTILITÁRIAS ===== */
 .container-custom {
   width: 90%;
-  max-width: var(--container-max);
+  max-width: min(var(--container-max), 100vw);
   margin: 0 auto;
   padding: 0 1rem;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {

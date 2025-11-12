@@ -11,7 +11,7 @@ export function BasicPlanSection({ onCtaClick }: BasicPlanSectionProps) {
   const { basicPlan } = homeContent;
 
   return (
-    <section className="bg-white py-12 md:py-16 lg:section-padding flex justify-center items-center">
+    <section className="bg-white py-12 md:py-16 lg:section-padding flex justify-center items-center overflow-x-hidden">
       <div className="container-custom">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 lg:gap-16">
           {/* Conteúdo textual */}
