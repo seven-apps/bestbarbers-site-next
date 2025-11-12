@@ -67,19 +67,29 @@ export function Navbar({ onCtaClick }: NavbarProps) {
 
         {/* Mobile menu button */}
         <div className="md:hidden">
-          <Button
-            asChild
-            className="btn-primary text-xs font-bold leading-tight px-3 py-2 rounded-xl"
-            style={{ backgroundColor: "#ffaf02", color: "#121212" }}
-          >
-            <Link
-              href={navbar.buttons.primary.href}
-              target="_blank"
-              rel="noopener noreferrer"
+          {onCtaClick ? (
+            <Button
+              onClick={onCtaClick}
+              className="btn-primary text-xs font-bold leading-tight px-3 py-2 rounded-xl"
+              style={{ backgroundColor: "#ffaf02", color: "#121212" }}
             >
-              APP PRÓPRIO
-            </Link>
-          </Button>
+              {navbar.buttons.primary.text}
+            </Button>
+          ) : (
+            <Button
+              asChild
+              className="btn-primary text-xs font-bold leading-tight px-3 py-2 rounded-xl"
+              style={{ backgroundColor: "#ffaf02", color: "#121212" }}
+            >
+              <Link
+                href={navbar.buttons.primary.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {navbar.buttons.primary.text}
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
     </nav>
