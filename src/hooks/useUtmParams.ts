@@ -38,6 +38,7 @@ export const useUtmParams = () => {
       ads: 40210173,
       "gabriel-gordovisk": 120000841,
       santiago: 120000842,
+      rapha: 40211075,
     }),
     []
   );
@@ -54,6 +55,7 @@ export const useUtmParams = () => {
       "gabriel-gordovisk": "LP Gabriel Gordovisk - Programa de indicações",
       santiago: "LP Santiago - Programa de indicações",
       james: "LP James - Programa de indicações",
+      rapha: "LP - Link através de postagens do Rapha",
     }),
     []
   );
