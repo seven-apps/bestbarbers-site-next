@@ -1,7 +1,7 @@
 "use client";
 
 import { Navbar } from "@/components/sections/Navbar";
-import { HeroSection } from "@/components/sections/HeroSection";
+import { HeroPartnerSection } from "@/components/sections/HeroPartnerSection";
 import { SubscriptionsSection } from "@/components/sections/SubscriptionsSection";
 import { InvoicesSection } from "@/components/sections/InvoicesSection";
 import { FeaturesSection } from "@/components/sections/FeaturesSection";
@@ -11,8 +11,12 @@ import { ClientsSection } from "@/components/sections/ClientsSection";
 import { BasicPlanSection } from "@/components/sections/BasicPlanSection";
 import { FormSection } from "@/components/sections/FormSection";
 import { Footer } from "@/components/sections/Footer";
+import { useSearchParams } from "next/navigation";
 
 export default function Parceiros() {
+  const searchParams = useSearchParams();
+  const source = searchParams.get("source");
+
   const scrollToForm = () => {
     const formSection = document.getElementById("form-section");
     if (formSection) {
@@ -23,7 +27,7 @@ export default function Parceiros() {
   return (
     <main className="min-h-screen overflow-x-hidden max-w-[100vw] w-full">
       <Navbar onCtaClick={scrollToForm} />
-      <HeroSection onCtaClick={scrollToForm} />
+      <HeroPartnerSection onCtaClick={scrollToForm} source={source} />
       <SubscriptionsSection onCtaClick={scrollToForm} />
       <InvoicesSection onCtaClick={scrollToForm} />
       <FeaturesSection onCtaClick={scrollToForm} />

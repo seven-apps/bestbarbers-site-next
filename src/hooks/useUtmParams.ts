@@ -39,6 +39,8 @@ export const useUtmParams = () => {
       "gabriel-gordovisk": 120000841,
       santiago: 120000842,
       rapha: 40211075,
+      "maurilio-sr-bigode": 120000869,
+      "edson-lapa": 120000870,
     }),
     []
   );
@@ -56,6 +58,8 @@ export const useUtmParams = () => {
       santiago: "LP Santiago - Programa de indicações",
       james: "LP James - Programa de indicações",
       rapha: "LP - Link através de postagens do Rapha",
+      "maurilio-sr-bigode": "LP - Maurilio Sr. Bigode - Programa de indicações",
+      "edson-lapa": "LP - Edson Lapa (Club Barbearia) - Programa de indicações",
     }),
     []
   );
