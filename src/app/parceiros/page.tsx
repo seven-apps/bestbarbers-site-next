@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { Navbar } from "@/components/sections/Navbar";
 import { HeroPartnerSection } from "@/components/sections/HeroPartnerSection";
 import { SubscriptionsSection } from "@/components/sections/SubscriptionsSection";
@@ -13,7 +14,7 @@ import { FormSection } from "@/components/sections/FormSection";
 import { Footer } from "@/components/sections/Footer";
 import { useSearchParams } from "next/navigation";
 
-export default function Parceiros() {
+function ParceirosContent() {
   const searchParams = useSearchParams();
   const source = searchParams.get("source");
 
@@ -25,7 +26,7 @@ export default function Parceiros() {
   };
 
   return (
-    <main className="min-h-screen overflow-x-hidden max-w-[100vw] w-full">
+    <>
       <Navbar onCtaClick={scrollToForm} />
       <HeroPartnerSection onCtaClick={scrollToForm} source={source} />
       <SubscriptionsSection onCtaClick={scrollToForm} />
@@ -37,6 +38,20 @@ export default function Parceiros() {
       <FormSection />
       <BasicPlanSection onCtaClick={scrollToForm} />
       <Footer />
+    </>
+  );
+}
+
+export default function Parceiros() {
+  return (
+    <main className="min-h-screen overflow-x-hidden max-w-[100vw] w-full">
+      <Suspense fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="animate-pulse text-lg">Carregando...</div>
+        </div>
+      }>
+        <ParceirosContent />
+      </Suspense>
     </main>
   );
 }
