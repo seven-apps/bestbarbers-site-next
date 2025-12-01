@@ -7,7 +7,7 @@ import { useUtmParams } from "./useUtmParams";
 export const useWhatsAppRedirect = () => {
   const { getUtmParams } = useUtmParams();
 
-  const WHATSAPP_NUMBER = "5531990657164";
+  const WHATSAPP_NUMBER = "5531990613861";
   const BASE_MESSAGE =
     "Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20aplicativo%20personalizado%20para%20barbearias.";
 
