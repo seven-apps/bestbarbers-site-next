@@ -41,6 +41,7 @@ export const useUtmParams = () => {
       rapha: 40211075,
       "maurilio-sr-bigode": 120000869,
       "edson-lapa": 120000870,
+      mileno: 120000940,
     }),
     []
   );
@@ -60,6 +61,7 @@ export const useUtmParams = () => {
       rapha: "LP - Link através de postagens do Rapha",
       "maurilio-sr-bigode": "LP - Maurilio Sr. Bigode - Programa de indicações",
       "edson-lapa": "LP - Edson Lapa (Club Barbearia) - Programa de indicações",
+      mileno: "LP Mileno - Parceria",
     }),
     []
   );

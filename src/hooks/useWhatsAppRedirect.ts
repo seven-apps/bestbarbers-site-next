@@ -51,6 +51,7 @@ export const useWhatsAppRedirect = () => {
         santiago: baseLink + "%0AConheci%20através%20do%20Santiago",
         "gabriel-gordovisk":
           baseLink + "%0AConheci%20através%20do%20Gabriel%20Gordovisk",
+        mileno: baseLink + "%0AConheci%20através%20do%20Mileno",
       };
 
       // Verifica UTM inf primeiro (tem prioridade)

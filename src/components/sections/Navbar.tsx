@@ -50,7 +50,7 @@ export function Navbar({ onCtaClick }: NavbarProps) {
             </Button>
           )}
 
-          <Button
+          {/* <Button
             asChild
             variant="outline"
             className="btn-ghost text-xs font-bold leading-tight px-6 py-3 rounded-2xl border-white text-white bg-transparent hover:bg-white hover:text-neutral-bg2 transition-all ml-3"
@@ -62,7 +62,7 @@ export function Navbar({ onCtaClick }: NavbarProps) {
             >
               {navbar.buttons.secondary.text}
             </Link>
-          </Button>
+          </Button> */}
         </div>
 
         {/* Mobile menu button */}
