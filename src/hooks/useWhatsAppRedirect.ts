@@ -52,6 +52,12 @@ export const useWhatsAppRedirect = () => {
         "gabriel-gordovisk":
           baseLink + "%0AConheci%20através%20do%20Gabriel%20Gordovisk",
         mileno: baseLink + "%0AConheci%20através%20do%20Mileno",
+        "henrique-daniels":
+          baseLink + "%0AConheci%20através%20do%20Henrique%20Daniels",
+        "maurilio-sr-bigode":
+          baseLink + "%0AConheci%20através%20do%20Maurilio%20Sr.%20Bigode",
+        "edson-lapa": baseLink + "%0AConheci%20através%20do%20Edson%20Lapa",
+        kaleo: baseLink + "%0AConheci%20através%20do%20Kaleo",
       };
 
       // Verifica UTM inf primeiro (tem prioridade)
@@ -111,8 +117,15 @@ export const useWhatsAppRedirect = () => {
           baseLink + "%0AConheci%20através%20do%20João%20Contador",
         rapha: baseLink + "%0AConheci%20através%20do%20Rapha",
         santiago: baseLink + "%0AConheci%20através%20do%20Santiago",
+        "maurilio-sr-bigode":
+          baseLink + "%0AConheci%20através%20do%20Maurilio%20Sr.%20Bigode",
+        "edson-lapa": baseLink + "%0AConheci%20através%20do%20Edson%20Lapa",
         "gabriel-gordovisk":
           baseLink + "%0AConheci%20através%20do%20Gabriel%20Gordovisk",
+        mileno: baseLink + "%0AConheci%20através%20do%20Mileno",
+        "henrique-daniels":
+          baseLink + "%0AConheci%20através%20do%20Henrique%20Daniels",
+        kaleo: baseLink + "%0AConheci%20através%20do%20Kaleo",
       };
 
       // Verifica UTM inf primeiro

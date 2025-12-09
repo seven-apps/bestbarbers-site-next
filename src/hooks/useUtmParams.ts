@@ -42,6 +42,8 @@ export const useUtmParams = () => {
       "maurilio-sr-bigode": 120000869,
       "edson-lapa": 120000870,
       mileno: 120000940,
+      "henrique-daniels": 120000378,
+      kaleo: 120000944,
     }),
     []
   );
@@ -62,6 +64,8 @@ export const useUtmParams = () => {
       "maurilio-sr-bigode": "LP - Maurilio Sr. Bigode - Programa de indicações",
       "edson-lapa": "LP - Edson Lapa (Club Barbearia) - Programa de indicações",
       mileno: "LP Mileno - Parceria",
+      "henrique-daniels": "LP Henrique Daniels - Programa de indicações",
+      kaleo: "LP Kaleo - Programa de indicações",
     }),
     []
   );
