@@ -14,16 +14,14 @@ export function Navbar({ onCtaClick }: NavbarProps) {
   return (
     <nav className="section-dark fixed top-0 left-0 right-0 z-fixed py-3 md:py-4 z-50">
       <div className="container-custom flex justify-between items-center min-h-[60px] md:h-navbar">
-        <Link href="/" className="flex-shrink-0">
-          <Image
-            src={navbar.logo.src}
-            alt={navbar.logo.alt}
-            width={navbar.logo.width}
-            height={navbar.logo.height}
-            className="w-[120px] md:w-[140px] h-auto"
-            priority
-          />
-        </Link>
+        <Image
+          src={navbar.logo.src}
+          alt={navbar.logo.alt}
+          width={navbar.logo.width}
+          height={navbar.logo.height}
+          className="w-[120px] md:w-[140px] h-auto"
+          priority
+        />
 
         <div className="hidden md:flex items-center space-x-0">
           {onCtaClick ? (
