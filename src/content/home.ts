@@ -18,7 +18,7 @@ export const homeContent = {
         href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Header",
       },
       secondary: {
-        text: "JÁ SOU CLIENTE", 
+        text: "JÁ SOU CLIENTE",
         href: "https://adm.bestbarbers.app/login",
       },
     },
@@ -31,13 +31,14 @@ export const homeContent = {
       highlight: " Personalizado",
       subtitle: "com a cara da sua Barbearia",
     },
-    description: "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias!",
+    description:
+      "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias!",
     cta: {
       text: "QUERO UM APP PRÓPRIO\nPARA MINHA BARBEARIA",
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Rapha",
     },
     image: {
-      src: "/images/rapha_1.webp",
+      src: "/images/hero-best-5-influencers.png",
       alt: "Mockup do aplicativo BestBarbers",
       width: 1712,
       height: 450,
@@ -53,15 +54,18 @@ export const homeContent = {
     features: [
       {
         title: "Facilidade para os clientes:",
-        description: "assinatura, pagamentos e troca de planos diretamente pelo aplicativo próprio da sua barbearia",
+        description:
+          "assinatura, pagamentos e troca de planos diretamente pelo aplicativo próprio da sua barbearia",
       },
       {
         title: "Controle Total para a barbearia:",
-        description: "gerencie todos os aspectos das assinaturas em um único sistema",
+        description:
+          "gerencie todos os aspectos das assinaturas em um único sistema",
       },
       {
         title: "Monitoramento automático:",
-        description: "frequência de uso e status de pagamento tudo por conta do sistema",
+        description:
+          "frequência de uso e status de pagamento tudo por conta do sistema",
       },
     ],
     cta: {
@@ -85,15 +89,18 @@ export const homeContent = {
     features: [
       {
         title: "Facilidade para os clientes:",
-        description: "assinatura, pagamentos e troca de planos diretamente pelo aplicativo próprio da sua barbearia",
+        description:
+          "assinatura, pagamentos e troca de planos diretamente pelo aplicativo próprio da sua barbearia",
       },
       {
         title: "Controle Total para a barbearia:",
-        description: "gerencie todos os aspectos das assinaturas em um único sistema",
+        description:
+          "gerencie todos os aspectos das assinaturas em um único sistema",
       },
       {
         title: "Monitoramento automático:",
-        description: "frequência de uso e status de pagamento tudo por conta do sistema",
+        description:
+          "frequência de uso e status de pagamento tudo por conta do sistema",
       },
     ],
     cta: {
@@ -120,7 +127,7 @@ export const homeContent = {
         title: "Gestão de agenda completa",
       },
       {
-        icon: "/images/número-ilimitado.svg", 
+        icon: "/images/número-ilimitado.svg",
         title: "Número ilimitado de barbeiros",
       },
       {
@@ -202,15 +209,18 @@ export const homeContent = {
     features: [
       {
         title: "Facilidade para os clientes:",
-        description: "assinatura, pagamentos e troca de planos diretamente pelo aplicativo próprio da sua barbearia",
+        description:
+          "assinatura, pagamentos e troca de planos diretamente pelo aplicativo próprio da sua barbearia",
       },
       {
         title: "Controle Total para a barbearia:",
-        description: "gerencie todos os aspectos das assinaturas em um único sistema",
+        description:
+          "gerencie todos os aspectos das assinaturas em um único sistema",
       },
       {
         title: "Monitoramento automático:",
-        description: "frequência de uso e status de pagamento tudo por conta do sistema",
+        description:
+          "frequência de uso e status de pagamento tudo por conta do sistema",
       },
     ],
     cta: {
@@ -237,7 +247,7 @@ export const homeContent = {
     },
     logos: [
       "/images/Barber-Style.webp",
-      "/images/Sr-Barbearia.webp", 
+      "/images/Sr-Barbearia.webp",
       "/images/Premium.webp",
       "/images/Rapha_2.webp",
       "/images/Black-House.webp",
@@ -257,27 +267,32 @@ export const homeContent = {
       {
         number: "1",
         title: "Preencha o formulário",
-        description: "Nosso especialista trabalhará com você para entender seus objetivos, necessidades técnicas e a dinâmica da equipe.",
+        description:
+          "Nosso especialista trabalhará com você para entender seus objetivos, necessidades técnicas e a dinâmica da equipe.",
       },
       {
-        number: "2", 
+        number: "2",
         title: "Assinatura do contrato",
-        description: "Hora de formalizarmos a nossa parceria e oficializarmos esse grande passo da sua barbearia.",
+        description:
+          "Hora de formalizarmos a nossa parceria e oficializarmos esse grande passo da sua barbearia.",
       },
       {
         number: "3",
         title: "Desenvolvimento e homologação",
-        description: "Contamos com um time de desenvolvedores experts na produção de aplicativos. Seu app ficará pronto mais rápido do que você imagina!",
+        description:
+          "Contamos com um time de desenvolvedores experts na produção de aplicativos. Seu app ficará pronto mais rápido do que você imagina!",
       },
       {
         number: "4",
-        title: "Revisão do aplicativo", 
-        description: "Neste momento subiremos uma versão Beta do seu aplicativo para que você possa validar junto com seu time.",
+        title: "Revisão do aplicativo",
+        description:
+          "Neste momento subiremos uma versão Beta do seu aplicativo para que você possa validar junto com seu time.",
       },
       {
         number: "5",
         title: "Entrega do App Personalizado",
-        description: "Desfrute de todos os benefícios da exclusividade do aplicativo próprio e proporcione uma experiência fantástica para seus clientes!",
+        description:
+          "Desfrute de todos os benefícios da exclusividade do aplicativo próprio e proporcione uma experiência fantástica para seus clientes!",
       },
     ],
     cta: {
@@ -299,7 +314,8 @@ export const homeContent = {
       highlight: "começando",
       subtitle: " o seu negócio agora?",
     },
-    description: "Também temos o Plano Básico BestBarbers!\nGestão de agenda + Gestão financeira da sua barbearia!",
+    description:
+      "Também temos o Plano Básico BestBarbers!\nGestão de agenda + Gestão financeira da sua barbearia!",
     cta: {
       text: "QUERO O PLANO BÁSICO PARA COMEÇAR",
       href: "https://adm.bestbarbers.app/cadastro",
@@ -359,8 +375,16 @@ export const homeContent = {
   // ===== SEO E METADATA =====
   seo: {
     title: "BestBarbers - App Próprio Personalizado para Barbearias",
-    description: "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias! Mais de 700 barbearias ativaram o modo Best!",
-    keywords: ["barbearia", "app", "agendamento", "sistema de gestão", "aplicativo móvel", "barbeiro"],
+    description:
+      "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias! Mais de 700 barbearias ativaram o modo Best!",
+    keywords: [
+      "barbearia",
+      "app",
+      "agendamento",
+      "sistema de gestão",
+      "aplicativo móvel",
+      "barbeiro",
+    ],
     ogImage: "/og-image.jpg",
   },
 } as const;
