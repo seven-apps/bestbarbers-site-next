@@ -16,6 +16,7 @@ export interface PloomesAPIResponse {
   }>;
 }
 
+
 /**
  * Hook para integração com a API do Ploomes CRM
  */

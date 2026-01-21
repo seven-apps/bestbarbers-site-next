@@ -16,6 +16,8 @@ import edsonImg from "@/app/parceiros/assets/edson-lapa.png";
 import milenoImg from "@/app/parceiros/assets/mileno.png";
 import henriqueImg from "@/app/parceiros/assets/henrique.png";
 import kaleoImg from "@/app/parceiros/assets/kaleo.png";
+import araujoSalvianoImg from "@/app/parceiros/assets/araujo-salviano.png";
+import brunoEstevaoImg from "@/app/parceiros/assets/bruno-estevao.png";
 
 interface HeroPartnerSectionProps {
   onCtaClick?: () => void;
@@ -39,6 +41,8 @@ export function HeroPartnerSection({
       mileno: milenoImg,
       "henrique-daniels": henriqueImg,
       kaleo: kaleoImg,
+      "araujo-salviano": araujoSalvianoImg,
+      "bruno-estevao": brunoEstevaoImg,
     };
 
     // Return partner image if source is valid, otherwise return default hero image

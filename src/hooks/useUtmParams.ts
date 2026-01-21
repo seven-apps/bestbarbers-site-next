@@ -44,6 +44,8 @@ export const useUtmParams = () => {
       mileno: 120000940,
       "henrique-daniels": 120000378,
       kaleo: 120000944,
+      "araujo-salviano": 120001037,
+      "bruno-estevao": 120001038,
     }),
     []
   );
@@ -66,6 +68,8 @@ export const useUtmParams = () => {
       mileno: "LP Mileno - Parceria",
       "henrique-daniels": "LP Henrique Daniels - Programa de indicações",
       kaleo: "LP Kaleo - Programa de indicações",
+      "araujo-salviano": "Araújo Salviano - Programa de indicações",
+      "bruno-estevao": "Bruno Estêvão - Programa de indicações",
     }),
     []
   );
