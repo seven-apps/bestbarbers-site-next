@@ -15,15 +15,15 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
   return (
     <section
       className="relative pt-24 md:pt-28 lg:pt-32 pb-10 md:pb-14 lg:pb-16 flex justify-center items-center overflow-hidden"
-      style={{ 
+      style={{
         background: "linear-gradient(135deg, #ffaf02 0%, #ffbe33 50%, #ffaf02 100%)"
       }}
     >
       {/* Animated background pattern */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full opacity-[0.03]" 
-          style={{ 
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` 
+        <div className="absolute top-0 left-0 w-full h-full opacity-[0.03]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
           }}
         />
       </div>
@@ -65,7 +65,7 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
               transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
               className="flex flex-col gap-2"
             >
-              <motion.span 
+              <motion.span
                 initial={{ x: -20 }}
                 animate={{ x: 0 }}
                 transition={{ duration: 0.5, delay: 0.3 }}
@@ -73,7 +73,7 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
               >
                 Mas seu lucro
               </motion.span>
-              <motion.span 
+              <motion.span
                 initial={{ x: -20 }}
                 animate={{ x: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
@@ -102,7 +102,7 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
             >
               {/* Glow effect behind video */}
               <div className="absolute -inset-3 bg-black/20 rounded-2xl lg:rounded-3xl blur-2xl" />
-              
+
               {/* Video container */}
               <div className="relative aspect-video rounded-xl lg:rounded-2xl overflow-hidden shadow-[0_25px_80px_-15px_rgba(0,0,0,0.5)] border-4 border-white/20">
                 <iframe
@@ -136,7 +136,7 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
           </div>
 
           {/* CTA com destaque máximo */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.7 }}
@@ -144,7 +144,7 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
           >
             {/* Pulse animation wrapper */}
             <motion.div
-              animate={{ 
+              animate={{
                 boxShadow: [
                   "0 0 0 0 rgba(2, 171, 21, 0)",
                   "0 0 0 10px rgba(2, 171, 21, 0.2)",
@@ -162,7 +162,7 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
                   icon={true}
                   className="w-full sm:w-auto !shadow-[0_8px_40px_rgba(2,171,21,0.5)] hover:!shadow-[0_12px_50px_rgba(2,171,21,0.6)]"
                 >
-                  QUERO GANHAR MAIS COM A MINHA BARBEARIA
+                  QUERO LUCRAR MAIS COM A MINHA BARBEARIA
                 </CTAButton>
               ) : (
                 <CTAButton

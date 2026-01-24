@@ -12,6 +12,13 @@ interface BarbershopPainSectionProps {
 export function BarbershopPainSection({ onCtaClick }: BarbershopPainSectionProps) {
   const { subscriptions } = homeContent;
 
+  const scrollToNextSection = () => {
+    const growthSection = document.getElementById("growth-section");
+    if (growthSection) {
+      growthSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <section className="bg-[#fafafa] py-12 md:py-16 lg:py-20 flex justify-center items-center overflow-hidden">
       <div className="container-custom">
@@ -89,25 +96,14 @@ export function BarbershopPainSection({ onCtaClick }: BarbershopPainSectionProps
               transition={{ duration: 0.4, delay: 0.35 }}
               className="pt-2"
             >
-              {onCtaClick ? (
-                <CTAButton
-                  onClick={onCtaClick}
-                  variant="secondary"
-                  size="md"
-                  icon={true}
-                >
-                  QUERO ESTRUTURAR A MINHA GESTÃO E LUCRAR MAIS
-                </CTAButton>
-              ) : (
-                <CTAButton
-                  href={subscriptions.cta.href}
-                  variant="dark"
-                  size="md"
-                  icon={true}
-                >
-                  {subscriptions.cta.text}
-                </CTAButton>
-              )}
+              <CTAButton
+                onClick={scrollToNextSection}
+                variant="secondary"
+                size="md"
+                icon={true}
+              >
+                QUERO SABER COMO LUCRAR MAIS
+              </CTAButton>
             </motion.div>
           </div>
 

@@ -66,6 +66,7 @@ export function BarbershopGrowthSection() {
 
   return (
     <section
+      id="growth-section"
       className="pt-16 md:pt-20 lg:pt-24 pb-4 md:pb-6 overflow-hidden"
       style={{ backgroundColor: "#ffaf02" }}
     >
