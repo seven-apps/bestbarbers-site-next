@@ -39,11 +39,11 @@ export function CTAButton({
     dark: "bg-[#ffaf02] text-[#121212] hover:bg-[#e69f00] shadow-[0_4px_20px_rgba(255,175,2,0.4)]",
   };
 
-  // Size styles
+  // Size styles - mobile-first responsive
   const sizeStyles = {
     sm: "px-5 py-3 text-xs",
-    md: "px-8 py-4 text-sm",
-    lg: "px-10 py-5 text-base",
+    md: "px-5 py-3 text-[11px] md:px-8 md:py-4 md:text-sm",
+    lg: "px-6 py-4 text-[13px] md:px-10 md:py-5 md:text-base",
   };
 
   // Icon sizes
@@ -56,12 +56,12 @@ export function CTAButton({
   const IconComponent = iconType === "arrow" ? ArrowRight : ChevronRight;
 
   const baseStyles = `
-    inline-flex items-center justify-center gap-3
+    inline-flex items-center justify-center gap-2 md:gap-3
     font-extrabold leading-tight
     rounded-full
     transition-all duration-300
     transform
-    whitespace-pre-line text-center
+    text-center
     ${variantStyles[variant]}
     ${sizeStyles[size]}
     ${fullWidth ? "w-full" : ""}

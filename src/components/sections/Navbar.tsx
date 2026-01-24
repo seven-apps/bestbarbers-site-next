@@ -7,9 +7,10 @@ import { ArrowRight } from "lucide-react";
 
 interface NavbarProps {
   onCtaClick?: () => void;
+  withoutCta?: boolean;
 }
 
-export function Navbar({ onCtaClick }: NavbarProps) {
+export function Navbar({ onCtaClick, withoutCta = false }: NavbarProps) {
   const { navbar } = homeContent;
 
   return (
@@ -30,7 +31,7 @@ export function Navbar({ onCtaClick }: NavbarProps) {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden md:flex items-center">
+        {!withoutCta && <div className="hidden md:flex items-center">
           {onCtaClick ? (
             <button
               onClick={onCtaClick}
@@ -50,10 +51,10 @@ export function Navbar({ onCtaClick }: NavbarProps) {
               <ArrowRight className="w-4 h-4" />
             </Link>
           )}
-        </div>
+        </div>}
 
         {/* Mobile CTA */}
-        <div className="md:hidden">
+        {!withoutCta && <div className="md:hidden">
           {onCtaClick ? (
             <button
               onClick={onCtaClick}
@@ -73,7 +74,7 @@ export function Navbar({ onCtaClick }: NavbarProps) {
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           )}
-        </div>
+        </div>}
       </div>
     </nav>
   );

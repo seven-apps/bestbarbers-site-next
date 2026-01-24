@@ -12,7 +12,6 @@ import { FormSection } from "@/components/sections/FormSection";
 import { PlanComparisonSection } from "@/components/sections/PlanComparisonSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { FooterSimple } from "@/components/sections/FooterSimple";
-import { StickyCtaMobile } from "@/components/sections/StickyCtaMobile";
 import { useSearchParams } from "next/navigation";
 
 function ParceirosContent() {
@@ -28,7 +27,7 @@ function ParceirosContent() {
 
   return (
     <>
-      <Navbar onCtaClick={scrollToForm} />
+      <Navbar withoutCta />
       <HeroAdsSection onCtaClick={scrollToForm} />
       <TrustBar />
       <BarbershopPainSection onCtaClick={scrollToForm} />
@@ -39,7 +38,6 @@ function ParceirosContent() {
       <PlanComparisonSection />
       <FAQSection />
       <FooterSimple />
-      <StickyCtaMobile onCtaClick={scrollToForm} />
     </>
   );
 }

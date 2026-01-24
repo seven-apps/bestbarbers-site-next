@@ -171,12 +171,12 @@ function CollapsibleFeatureGroup({
       >
         <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm relative">
           {/* Subtle highlight on App Exclusivo column */}
-          <div className="absolute top-0 right-0 w-[70px] md:w-[120px] h-full bg-gradient-to-l from-[#ffaf02]/5 to-transparent pointer-events-none" />
+          <div className="absolute top-0 right-0 w-[50px] md:w-[120px] h-full bg-gradient-to-l from-[#ffaf02]/5 to-transparent pointer-events-none" />
 
           {group.features.map((feature, featureIndex) => (
             <div
               key={feature.name}
-              className={`grid grid-cols-[1fr_70px_70px] md:grid-cols-[1fr_100px_140px] gap-2 md:gap-4 items-center px-4 py-3 md:py-3.5 hover:bg-gray-50 transition-colors ${featureIndex !== group.features.length - 1
+              className={`grid grid-cols-[1fr_50px_50px] md:grid-cols-[1fr_100px_140px] gap-2 md:gap-4 items-center px-3 md:px-4 py-3 md:py-3.5 hover:bg-gray-50 transition-colors ${featureIndex !== group.features.length - 1
                 ? "border-b border-gray-100"
                 : ""
                 }`}
@@ -289,21 +289,21 @@ export function PlanComparisonSection() {
       >
         <div className="px-4 py-3 pt-5">
           <div className="bg-white rounded-xl border border-gray-200 p-3 shadow-sm">
-            <div className="grid grid-cols-[1fr_70px_70px] gap-2 items-center">
+            <div className="grid grid-cols-[1fr_50px_50px] gap-2 items-center">
               <div className="text-xs font-medium text-gray-500">
                 Funcionalidades
               </div>
               <div className="flex flex-col items-center justify-center text-center">
-                <h3 className="text-xs font-bold text-gray-800">Básico</h3>
+                <h3 className="text-[10px] font-bold text-gray-800">Básico</h3>
               </div>
               <div className="flex flex-col items-center justify-center text-center relative">
                 <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-gradient-to-r from-[#ffaf02] to-[#ffc233] rounded-full">
-                  <span className="text-[9px] font-bold text-black flex items-center gap-0.5">
-                    <Crown className="w-2.5 h-2.5" />
+                  <span className="text-[8px] font-bold text-black flex items-center gap-0.5">
+                    <Crown className="w-2 h-2" />
                     TOP
                   </span>
                 </div>
-                <h3 className="text-xs font-bold text-[#d4940a]">App Exclusivo</h3>
+                <h3 className="text-[10px] font-bold text-[#d4940a]">App</h3>
               </div>
             </div>
           </div>
@@ -359,22 +359,22 @@ export function PlanComparisonSection() {
           <div className="md:hidden mb-6">
             <div className="py-3">
               <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-md">
-                <div className="grid grid-cols-[1fr_70px_70px] gap-2 items-center">
+                <div className="grid grid-cols-[1fr_50px_50px] gap-2 items-center">
                   <div className="text-xs font-medium text-gray-500">
                     Funcionalidades
                   </div>
                   <div className="flex flex-col items-center justify-center text-center">
-                    <h3 className="text-xs font-bold text-gray-800">Básico</h3>
+                    <h3 className="text-[10px] font-bold text-gray-800">Básico</h3>
                   </div>
                   <div className="flex flex-col items-center justify-center text-center relative">
                     {/* Badge with CSS floating animation */}
-                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2.5 py-0.5 bg-gradient-to-r from-[#ffaf02] to-[#ffc233] rounded-full shadow-md animate-float-subtle">
-                      <span className="text-[9px] font-bold text-black flex items-center gap-0.5">
-                        <Crown className="w-2.5 h-2.5" />
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-gradient-to-r from-[#ffaf02] to-[#ffc233] rounded-full shadow-md animate-float-subtle">
+                      <span className="text-[8px] font-bold text-black flex items-center gap-0.5">
+                        <Crown className="w-2 h-2" />
                         TOP
                       </span>
                     </div>
-                    <h3 className="text-xs font-bold text-[#d4940a]">App Exclusivo</h3>
+                    <h3 className="text-[10px] font-bold text-[#d4940a]">App</h3>
                   </div>
                 </div>
               </div>

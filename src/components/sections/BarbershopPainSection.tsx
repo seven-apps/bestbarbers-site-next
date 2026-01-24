@@ -71,6 +71,7 @@ export function BarbershopPainSection({ onCtaClick }: BarbershopPainSectionProps
                 variant="secondary"
                 size="md"
                 icon={true}
+                className="whitespace-nowrap"
               >
                 QUERO SABER COMO LUCRAR MAIS
               </CTAButton>
