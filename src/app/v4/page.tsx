@@ -11,7 +11,8 @@ import { ClientsSection } from "@/components/sections/ClientsSection";
 import { FormSection } from "@/components/sections/FormSection";
 import { PlanComparisonSection } from "@/components/sections/PlanComparisonSection";
 import { FAQSection } from "@/components/sections/FAQSection";
-import { Footer } from "@/components/sections/Footer";
+import { FooterSimple } from "@/components/sections/FooterSimple";
+import { StickyCtaMobile } from "@/components/sections/StickyCtaMobile";
 import { useSearchParams } from "next/navigation";
 
 function ParceirosContent() {
@@ -37,7 +38,8 @@ function ParceirosContent() {
       <FormSection />
       <PlanComparisonSection />
       <FAQSection />
-      <Footer />
+      <FooterSimple />
+      <StickyCtaMobile onCtaClick={scrollToForm} />
     </>
   );
 }

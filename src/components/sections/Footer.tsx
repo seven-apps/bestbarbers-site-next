@@ -53,7 +53,7 @@ export function Footer() {
               />
             </motion.div>
             <p className="text-gray-500 text-sm max-w-xs mt-4 hidden lg:block">
-              Transformando barbearias em negócios lucrativos desde 2020.
+              Transformando barbeiros em empresários e barbearias em grandes empresas desde 2020.Transformando barbearias em negócios lucrativos desde 2020.
             </p>
           </motion.div>
 
@@ -68,7 +68,7 @@ export function Footer() {
                 <h3 className="text-white font-semibold text-base mb-2">
                   {section.title}
                 </h3>
-                
+
                 {'links' in section && section.links && (
                   <div className="flex flex-col space-y-3">
                     {section.links.map((link, linkIndex) => (
@@ -112,7 +112,7 @@ export function Footer() {
                         <span className="text-sm">{section.contact.whatsapp.text}</span>
                       </Link>
                     </motion.div>
-                    
+
                     <div className="flex items-center space-x-3 text-gray-400">
                       <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
                         <Image
@@ -180,7 +180,7 @@ export function Footer() {
               <h3 className="text-white font-semibold text-base">
                 {section.title}
               </h3>
-              
+
               {'links' in section && section.links && (
                 <div className="flex flex-col space-y-2">
                   {section.links.map((link, linkIndex) => (
@@ -214,7 +214,7 @@ export function Footer() {
                     </div>
                     <span className="text-sm">{section.contact.whatsapp.text}</span>
                   </Link>
-                  
+
                   <div className="flex items-center space-x-3 text-gray-400">
                     <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center">
                       <Image

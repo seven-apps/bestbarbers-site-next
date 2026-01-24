@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useLeadForm } from "@/hooks";
-import { ArrowRight, Check, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Shield, Clock, Users } from "lucide-react";
 
 interface FormSectionProps {
   title?: string;
@@ -23,6 +23,12 @@ const formFields = [
   { name: "whatsapp", label: "WhatsApp do Dono da barbearia", placeholder: "Celular - whatsapp do dono da barbearia", type: "tel" },
   { name: "monthlyRevenue", label: "Faturamento médio mensal (R$)", placeholder: "Quanto sua barbearia fatura por mês", type: "text" },
   { name: "employeeCount", label: "Número de colaboradores", placeholder: "Quantos colaboradores tem na barbearia", type: "number" },
+];
+
+const trustBadges = [
+  { icon: Shield, text: "Dados seguros" },
+  { icon: Clock, text: "Resposta em 24h" },
+  { icon: Users, text: "+1000 barbearias" },
 ];
 
 export function FormSection({
@@ -46,27 +52,45 @@ export function FormSection({
   return (
     <section
       id="form-section"
-      className="relative bg-[#121212] px-6 py-12 md:px-12 md:py-16 lg:px-24 lg:py-24 overflow-hidden"
+      className="relative bg-[#121212] px-6 py-14 md:px-12 md:py-20 lg:px-24 lg:py-28 overflow-hidden"
     >
       {/* Background decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#ffaf02]/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#ffaf02]/5 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#ffaf02]/8 rounded-full blur-[100px]" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#ffaf02]/8 rounded-full blur-[100px]" />
+        {/* Subtle grid pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,175,2,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,175,2,0.1) 1px, transparent 1px)`,
+            backgroundSize: "50px 50px"
+          }}
+        />
       </div>
 
       <div className="max-w-3xl mx-auto relative z-10">
         {/* Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 20, scale: 0.9 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           className="flex justify-center mb-6"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-2 bg-[#ffaf02]/10 rounded-full text-[#ffaf02] text-sm font-semibold border border-[#ffaf02]/20">
+          <motion.span 
+            animate={{ 
+              boxShadow: [
+                "0 0 20px rgba(255,175,2,0.2)",
+                "0 0 40px rgba(255,175,2,0.3)",
+                "0 0 20px rgba(255,175,2,0.2)"
+              ]
+            }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#ffaf02]/15 to-[#ffc233]/15 rounded-full text-[#ffaf02] text-sm font-bold border border-[#ffaf02]/30"
+          >
             <Sparkles className="w-4 h-4" />
             Oferta por tempo limitado
-          </span>
+          </motion.span>
         </motion.div>
 
         {/* Title */}
@@ -81,7 +105,7 @@ export function FormSection({
             i === 0 ? (
               <span key={i}>
                 {part}
-                <span className="text-[#ffaf02]">oferta exclusiva</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffaf02] to-[#ffc233]">oferta exclusiva</span>
               </span>
             ) : (
               part
@@ -100,97 +124,139 @@ export function FormSection({
           {description}
         </motion.p>
 
+        {/* Trust Badges */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.25 }}
+          className="flex justify-center gap-4 md:gap-8 mb-8"
+        >
+          {trustBadges.map((badge, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: 0.3 + index * 0.1 }}
+              className="flex items-center gap-1.5 text-gray-400"
+            >
+              <badge.icon className="w-4 h-4 text-[#ffaf02]" />
+              <span className="text-xs font-medium">{badge.text}</span>
+            </motion.div>
+          ))}
+        </motion.div>
+
 
         {/* Error display */}
         {submitError && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-6"
+            className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-6 backdrop-blur-sm"
           >
             <p className="text-red-400 text-sm font-medium text-center">{submitError}</p>
           </motion.div>
         )}
 
-        {/* Form */}
-        <motion.form
+        {/* Form Card */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          onSubmit={handleSubmit}
-          className="space-y-5"
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="bg-gradient-to-br from-[#1a1a1a]/80 to-[#1e1e1e]/80 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-gray-800/50 p-6 md:p-8 shadow-2xl"
         >
-          {formFields.map((field, index) => (
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {formFields.map((field, index) => (
+              <motion.div
+                key={field.name}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.4 + index * 0.05 }}
+                className="space-y-2"
+              >
+                <label className="block font-semibold text-[13px] md:text-[14px] leading-[20px] text-white/90">
+                  {field.label}
+                </label>
+                <motion.input
+                  type={field.type}
+                  name={field.name}
+                  value={formData[field.name as keyof typeof formData]}
+                  onChange={handleInputChange}
+                  placeholder={field.placeholder}
+                  required
+                  whileFocus="focus"
+                  variants={inputVariants}
+                  className="w-full bg-[#0f1015] border-2 border-[#2a2d35] rounded-xl px-5 py-4 text-white placeholder-gray-500 font-medium text-[15px] leading-[20px] focus:outline-none focus:border-[#ffaf02] focus:bg-[#12141a] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45]"
+                />
+              </motion.div>
+            ))}
+
+            {/* Submit Button */}
             <motion.div
-              key={field.name}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.5 + index * 0.05 }}
-              className="space-y-2"
+              transition={{ duration: 0.5, delay: 0.7 }}
+              className="pt-4"
             >
-              <label className="block font-medium text-[14px] leading-[20px] text-white/90">
-                {field.label}
-              </label>
-              <motion.input
-                type={field.type}
-                name={field.name}
-                value={formData[field.name as keyof typeof formData]}
-                onChange={handleInputChange}
-                placeholder={field.placeholder}
-                required
-                whileFocus="focus"
-                variants={inputVariants}
-                className="w-full bg-[#1a1d23] border-2 border-[#2a2d33] rounded-xl px-5 py-4 text-white placeholder-gray-500 font-medium text-[15px] leading-[20px] focus:outline-none focus:border-[#ffaf02] focus:bg-[#1e2127] transition-all duration-300 hover:border-[#3a3d43]"
-              />
+              <motion.div
+                animate={!isSubmitting ? { 
+                  boxShadow: [
+                    "0 0 0 0 rgba(255,175,2,0)",
+                    "0 0 0 8px rgba(255,175,2,0.15)",
+                    "0 0 0 16px rgba(255,175,2,0)"
+                  ]
+                } : {}}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="rounded-full"
+              >
+                <motion.button
+                  type="submit"
+                  disabled={isSubmitting}
+                  whileHover={isSubmitting ? {} : { scale: 1.02, y: -2 }}
+                  whileTap={isSubmitting ? {} : { scale: 0.98 }}
+                  className="w-full bg-gradient-to-r from-[#ffaf02] to-[#ffc233] text-[#121212] font-extrabold text-[15px] md:text-[16px] leading-[24px] px-6 py-5 rounded-full hover:from-[#e69f00] hover:to-[#ffaf02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-[0_8px_40px_rgba(255,175,2,0.35)] hover:shadow-[0_12px_50px_rgba(255,175,2,0.45)]"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        className="w-5 h-5 border-2 border-[#121212] border-t-transparent rounded-full"
+                      />
+                      ENVIANDO...
+                    </>
+                  ) : (
+                    <>
+                      {ctaText}
+                      <motion.span
+                        animate={{ x: [0, 4, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      >
+                        <ArrowRight className="w-5 h-5" />
+                      </motion.span>
+                    </>
+                  )}
+                </motion.button>
+              </motion.div>
             </motion.div>
-          ))}
 
-          {/* Submit Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-            className="pt-4"
-          >
-            <motion.button
-              type="submit"
-              disabled={isSubmitting}
-              whileHover={isSubmitting ? {} : { scale: 1.02, y: -2 }}
-              whileTap={isSubmitting ? {} : { scale: 0.98 }}
-              className="w-full bg-[#ffaf02] text-[#121212] font-extrabold text-[16px] leading-[24px] px-6 py-5 rounded-full hover:bg-[#e69f00] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-[0_4px_20px_rgba(255,175,2,0.3)] hover:shadow-[0_8px_30px_rgba(255,175,2,0.4)]"
+            {/* Trust text */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+              className="text-center text-gray-500 text-xs mt-4 flex items-center justify-center gap-1.5"
             >
-              {isSubmitting ? (
-                <>
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    className="w-5 h-5 border-2 border-[#121212] border-t-transparent rounded-full"
-                  />
-                  ENVIANDO...
-                </>
-              ) : (
-                <>
-                  {ctaText}
-                  <ArrowRight className="w-5 h-5" />
-                </>
-              )}
-            </motion.button>
-          </motion.div>
-
-          {/* Trust text */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.9 }}
-            className="text-center text-gray-500 text-xs mt-4"
-          >
-            Seus dados estão seguros e não serão compartilhados
-          </motion.p>
-        </motion.form>
+              <Shield className="w-3.5 h-3.5" />
+              Seus dados estão seguros e não serão compartilhados
+            </motion.p>
+          </form>
+        </motion.div>
       </div>
     </section>
   );

@@ -22,7 +22,7 @@ export function BarbershopPainSection({ onCtaClick }: BarbershopPainSectionProps
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="hidden lg:block lg:w-[50%]"
+            className="hidden lg:block lg:w-[45%]"
           >
             <Image
               src={subscriptions.image.src}
@@ -35,7 +35,7 @@ export function BarbershopPainSection({ onCtaClick }: BarbershopPainSectionProps
           </motion.div>
 
           {/* Conteúdo textual */}
-          <div className="flex-1 flex flex-col justify-center items-center lg:items-start w-full lg:w-[50%] space-y-4 text-center lg:text-left order-first lg:order-last">
+          <div className="flex-1 flex flex-col justify-center items-center lg:items-start w-full lg:w-[55%] space-y-4 text-center lg:text-left order-first lg:order-last">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -57,7 +57,7 @@ export function BarbershopPainSection({ onCtaClick }: BarbershopPainSectionProps
               <p className="text-neutral-black-text font-bold text-base md:text-lg leading-relaxed">
                 Porque a maioria das barbearias cresce tentando atender mais clientes — e não estruturando a gestão e novas formas de ganhar mais com quem já atende.
               </p>
-              
+
               <p className="text-gray-500 font-normal text-sm md:text-base leading-relaxed">
                 Sem gestão clara, controle financeiro e fontes de receita recorrente, o crescimento vira volume — não lucro. O dinheiro entra, gira, paga custos… e no fim sobra pouco para o dono.
               </p>
@@ -69,14 +69,14 @@ export function BarbershopPainSection({ onCtaClick }: BarbershopPainSectionProps
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.25 }}
-              className="flex flex-wrap gap-2 justify-center lg:justify-start"
+              className="flex flex-nowrap gap-1.5 sm:gap-2 justify-center lg:justify-start"
             >
               {["Gestão estruturada", "Receita recorrente", "Lucro real"].map((item) => (
                 <span
                   key={item}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#ffaf02]/10 rounded-full text-xs md:text-sm font-semibold text-[#121212] border border-[#ffaf02]/20"
+                  className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 bg-[#ffaf02]/10 rounded-full text-[10px] sm:text-xs md:text-sm font-semibold text-[#121212] border border-[#ffaf02]/20 whitespace-nowrap"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#ffaf02]" />
+                  <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-[#ffaf02]" />
                   {item}
                 </span>
               ))}

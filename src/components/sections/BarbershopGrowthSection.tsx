@@ -104,8 +104,8 @@ export function BarbershopGrowthSection() {
                 setTimeout(() => setIsPaused(false), 10000);
               }}
               className={`flex items-center gap-2 px-5 py-3 md:px-6 md:py-3.5 rounded-full font-semibold text-sm md:text-base transition-all duration-300 ${activeTab === index
-                  ? "bg-black text-white shadow-xl"
-                  : "bg-white/90 text-neutral-bg2 hover:bg-white hover:shadow-lg"
+                ? "bg-black text-white shadow-xl"
+                : "bg-white/90 text-neutral-bg2 hover:bg-white hover:shadow-lg"
                 }`}
             >
               <benefit.icon className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
@@ -132,8 +132,11 @@ export function BarbershopGrowthSection() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className="flex flex-col md:flex-row min-h-[280px] md:min-h-[320px] lg:min-h-[360px]"
+                className="flex flex-col md:flex-row min-h-[280px] md:min-h-[320px] lg:min-h-[360px] relative"
               >
+                {/* Vertical divider line - desktop only */}
+                <div className="hidden md:block absolute left-1/2 top-[10%] bottom-[10%] w-px bg-gray-200" />
+
                 {/* Text Content */}
                 <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-center">
                   <div className="flex items-center gap-3 mb-3">
@@ -168,14 +171,16 @@ export function BarbershopGrowthSection() {
                 </div>
 
                 {/* Image */}
-                <div className="flex-1 flex items-center justify-center p-4 md:p-6 bg-gray-50 min-h-[200px] md:min-h-full">
-                  <Image
-                    src={activeBenefit.src}
-                    alt={activeBenefit.title}
-                    width={400}
-                    height={300}
-                    className="w-full max-w-[350px] h-auto max-h-[280px] rounded-2xl object-contain"
-                  />
+                <div className="flex-1 flex items-center justify-center p-4 md:p-6 lg:p-8 min-h-[200px] md:min-h-full !bg-[#FFFFFF]">
+                  <div className="overflow-hidden rounded-2xl">
+                    <Image
+                      src={activeBenefit.src}
+                      alt={activeBenefit.title}
+                      width={400}
+                      height={300}
+                      className="w-full max-w-[350px] h-auto max-h-[280px] object-contain"
+                    />
+                  </div>
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -192,8 +197,8 @@ export function BarbershopGrowthSection() {
                   setTimeout(() => setIsPaused(false), 10000);
                 }}
                 className={`relative h-2 rounded-full transition-all duration-300 overflow-hidden ${activeTab === index
-                    ? "w-12 bg-neutral-bg2/30"
-                    : "w-2 bg-neutral-bg2/30 hover:bg-neutral-bg2/50"
+                  ? "w-12 bg-neutral-bg2/30"
+                  : "w-2 bg-neutral-bg2/30 hover:bg-neutral-bg2/50"
                   }`}
               >
                 {activeTab === index && (
