@@ -1,5 +1,7 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { motion } from "framer-motion";
+import { CTAButton } from "@/components/ui/cta-button";
 import { homeContent } from "@/content/home";
 
 interface HeroAdsSectionProps {
@@ -11,56 +13,57 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
 
   return (
     <section
-      className="section-primary pt-32 pb-8 md:pb-12 lg:pb-12 flex justify-center items-end relative overflow-x-hidden"
+      className="relative pt-24 md:pt-28 lg:pt-32 pb-8 md:pb-12 lg:pb-14 flex justify-center items-center overflow-hidden"
       style={{ backgroundColor: "#ffaf02" }}
     >
-      <div className="container-custom flex items-center">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-0 lg:gap-16 w-full">
-          {/* Conteúdo textual */}
-          <div className="w-full lg:w-[50%] flex flex-col justify-center items-center lg:items-start space-y-3 text-center lg:text-left order-first lg:order-first mb-8 lg:mb-0">
-            <h1 className="text-2xl md:text-5xl lg:text-3xl font-extrabold leading-tight text-neutral-bg2 max-w-lg lg:max-w-none">
-              Sua barbearia está crescendo, o dinheiro entrando...
-            </h1>
-            <h1 className="">
-              <span className="text-white bg-black px-5 rounded-md font-extrabold text-4xl">{"Mas seu lucro"}</span>
-              <br />
-              <span className="text-white bg-black px-5 rounded-md font-extrabold text-4xl">{"não aumenta "}</span>
-            </h1>
-            <p className="text-medium font-bold leading-normal text-neutral-bg2 ">
-              Não é sobre atender mais clientes. É sobre ganhar mais dinheiro e lucrar mais, com a barbearia que você já tem.
-            </p>
-            <p className="text-sm font-medium leading-normal text-neutral-bg2 ">
-              O BestBarbers ajuda barbearias a organizarem a gestão, criarem novas fontes de receita e transformarem faturamento em lucro real.
-            </p>
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/5 pointer-events-none" />
 
-            {onCtaClick ? (
-              <Button
-                onClick={onCtaClick}
-                className="text-sm font-extrabold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
-                style={{ backgroundColor: "#02ab15", color: "#ffffff" }}
-              >
-                QUERO GANHAR MAIS COM A MINHA BARBEARIA
-              </Button>
-            ) : (
-              <Button
-                asChild
-                className="text-sm font-bold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
-                style={{ backgroundColor: "#121212", color: "#ffaf02" }}
-              >
-                <Link
-                  href={hero.cta.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {hero.cta.text}
-                </Link>
-              </Button>
-            )}
+      <div className="container-custom relative z-10">
+        {/* Row 1: Headlines + Video */}
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-6 lg:gap-10 w-full mb-6 lg:mb-0 ">
+          {/* Headlines */}
+          <div className="w-full lg:w-[42%] flex flex-col items-center lg:items-start text-center lg:text-left">
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="text-[22px] md:text-[28px] lg:text-[32px] font-extrabold leading-[1.2] text-neutral-bg2 mb-4"
+            >
+              Sua barbearia está crescendo, <span className="text-white text-3xl">o dinheiro entrando...</span>
+            </motion.h1>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+              className="flex flex-col gap-1.5"
+            >
+              <span className="inline-block text-white bg-black px-5 py-2 rounded-lg font-extrabold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.1] shadow-lg">
+                Mas seu lucro
+              </span>
+              <span className="inline-block text-white bg-black px-5 py-2 rounded-lg font-extrabold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.1] shadow-lg">
+                não aumenta
+              </span>
+            </motion.div>
           </div>
 
-          {/* Video do YouTube */}
-          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end order-last lg:order-last mb-8 lg:mb-0">
-            <div className="w-full aspect-video rounded-xl overflow-hidden shadow-[0_20px_60px_-10px_rgba(0,0,0,0.5)]">
+          {/* Video */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+            className="w-full lg:w-[58%] flex justify-center lg:justify-end"
+          >
+            <motion.div
+              animate={{ y: [0, -6, 0] }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="w-full max-w-md lg:max-w-none aspect-video rounded-xl lg:rounded-2xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.45)]"
+            >
               <iframe
                 src="https://www.youtube.com/embed/ZnicnaPdui0?autoplay=1&mute=1&loop=1&playlist=ZnicnaPdui0&rel=0"
                 title="Best Barbers"
@@ -68,9 +71,53 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
                 allowFullScreen
                 className="w-full h-full"
               />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
+
+        {/* Row 2: Description + CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+          className="w-full flex flex-col lg:flex-row items-center  justify-between gap-4 "
+        >
+          {/* Textos */}
+          <div className="w-full lg:w-[40%]  flex flex-col items-center lg:items-start gap-2 text-center lg:text-left lg:max-w-xl">
+            <p className="text-[15px] md:text-base lg:text-[17px] font-bold leading-relaxed text-neutral-bg2">
+              Não é sobre atender mais clientes. É sobre ganhar mais dinheiro e lucrar mais, com a barbearia que você já tem.
+            </p>
+
+            <p className="text-[13px] md:text-sm lg:text-[15px] font-medium leading-relaxed text-neutral-bg2/75">
+              O BestBarbers ajuda barbearias a organizarem a gestão, criarem novas fontes de receita e transformarem faturamento em lucro real.
+            </p>
+          </div>
+
+          {/* CTA */}
+          <div className="flex-shrink-0 w-full sm:w-auto">
+            {onCtaClick ? (
+              <CTAButton
+                onClick={onCtaClick}
+                variant="secondary"
+                size="lg"
+                icon={true}
+                className="w-full sm:w-auto"
+              >
+                QUERO GANHAR MAIS COM A MINHA BARBEARIA
+              </CTAButton>
+            ) : (
+              <CTAButton
+                href={hero.cta.href}
+                variant="primary"
+                size="lg"
+                icon={true}
+                className="w-full sm:w-auto"
+              >
+                {hero.cta.text}
+              </CTAButton>
+            )}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

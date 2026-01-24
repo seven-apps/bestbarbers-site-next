@@ -238,7 +238,7 @@ export const homeContent = {
   // ===== CLIENTES =====
   clients: {
     title: {
-      highlight: "Mais de 700",
+      highlight: "Mais de 1.000",
       main: " barbearias\nativaram o modo Best!",
     },
     cta: {
@@ -376,7 +376,7 @@ export const homeContent = {
   seo: {
     title: "BestBarbers - App Próprio Personalizado para Barbearias",
     description:
-      "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias! Mais de 700 barbearias ativaram o modo Best!",
+      "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias! Mais de 1.000 barbearias ativaram o modo Best!",
     keywords: [
       "barbearia",
       "app",

@@ -1,160 +1,139 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { homeContent } from "@/content/home";
-import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { CountUp } from "@/components/ui/motion";
 
 interface ClientsSectionProps {
   onCtaClick?: () => void;
 }
-export function ClientsSection({ onCtaClick }: ClientsSectionProps) {
-  const { clients } = homeContent;
 
-  // Logos organizados em grupos para o slider
-  const logoGroups = [
-    [
-      "/images/Barber-Style.webp",
-      "/images/Sr-Barbearia.webp",
-      "/images/Premium.webp",
-      "/images/Rapha_2.webp",
-      "/images/Black-House.webp",
-      "/images/James.webp",
-      "/images/Ferrari.webp",
-    ],
-    [
-      "/images/T.webp",
-      "/images/Spartano.webp",
-      "/images/Sr-Freitas.webp",
-      "/images/Seu-Oziel.webp",
-      "/images/Vicente.webp",
-      "/images/R.webp",
-      "/images/o.webp",
-    ],
-    [
-      "/images/Camilos.webp",
-      "/images/Sr-Joao.webp",
-      "/images/Kadosh.webp",
-      "/images/Igor.webp",
-      "/images/Vicente.webp",
-      "/images/Urus.webp",
-      "/images/Vitor.webp",
-    ],
+export function ClientsSection({ }: ClientsSectionProps) {
+
+  // All logos for marquee
+  const allLogos = [
+    "/images/Barber-Style.webp",
+    "/images/Sr-Barbearia.webp",
+    "/images/Premium.webp",
+    "/images/Rapha_2.webp",
+    "/images/Black-House.webp",
+    "/images/James.webp",
+    "/images/Ferrari.webp",
+    "/images/T.webp",
+    "/images/Spartano.webp",
+    "/images/Sr-Freitas.webp",
+    "/images/Seu-Oziel.webp",
+    "/images/Vicente.webp",
+    "/images/R.webp",
+    "/images/o.webp",
+    "/images/Camilos.webp",
+    "/images/Sr-Joao.webp",
+    "/images/Kadosh.webp",
+    "/images/Igor.webp",
+    "/images/Urus.webp",
+    "/images/Vitor.webp",
   ];
 
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % logoGroups.length);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [logoGroups.length]);
-
   return (
-    <section className="bg-white py-12 md:py-16 lg:py-12 flex justify-center items-center w-full overflow-x-hidden">
-      <div className="container-custom">
-        <div className="flex flex-col items-center justify-center w-full space-y-8 md:space-y-10 lg:space-y-12">
-          {/* Título */}
-          <div className="text-center">
-            <h2 className="text-xl md:text-2xl lg:text-3xl font-medium leading-normal text-neutral-black-text text-center">
-              <span className="text-primary font-bold">
-                {clients.title.highlight}
-              </span>
-              {clients.title.main}
-            </h2>
-          </div>
-
-          {/* Slider de logos - Desktop */}
-          <div className="hidden lg:block overflow-hidden w-full max-w-full">
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {logoGroups.map((group, groupIndex) => (
-                <div
-                  key={groupIndex}
-                  className="flex justify-center items-center space-x-8 w-full flex-shrink-0"
-                >
-                  {group.map((logo, logoIndex) => (
-                    <div
-                      key={logoIndex}
-                      className="w-20 h-20 lg:w-28 lg:h-28 flex items-center justify-center"
-                    >
-                      <Image
-                        src={logo}
-                        alt={`Logo barbearia ${logoIndex + 1}`}
-                        width={180}
-                        height={180}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Slider de logos - Mobile (4 por vez) */}
-          <div className="lg:hidden overflow-hidden w-full max-w-full">
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {logoGroups.map((group, groupIndex) => (
-                <div
-                  key={groupIndex}
-                  className="flex justify-center items-center space-x-6 w-full flex-shrink-0"
-                >
-                  {group.slice(0, 4).map((logo, logoIndex) => (
-                    <div
-                      key={logoIndex}
-                      className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center"
-                    >
-                      <Image
-                        src={logo}
-                        alt={`Logo barbearia ${logoIndex + 1}`}
-                        width={80}
-                        height={80}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="mt-2">
-            {onCtaClick ? (
-              <Button
-                onClick={onCtaClick}
-                className="btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
-                style={{ backgroundColor: "#ffaf02", color: "#121212" }}
-              >
-                {clients.cta.text}
-              </Button>
-            ) : (
-              <Button
-                asChild
-                className="btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
-                style={{ backgroundColor: "#ffaf02", color: "#121212" }}
-              >
-                <Link
-                  href={clients.cta.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {clients.cta.text}
-                </Link>
-              </Button>
-            )}
-          </div>
-        </div>
+    <section className="bg-gradient-to-b from-white to-gray-50 py-12 md:py-20 lg:py-24 w-full overflow-hidden">
+      {/* Título com Count-up */}
+      <div className="px-4 md:container-custom">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-8 md:mb-12"
+        >
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-normal text-neutral-black-text text-center">
+            <span className="text-[#ffaf02] font-extrabold">
+              Mais de <CountUp end={1000} duration={2} suffix="+" />
+            </span>
+            {" barbearias"}
+            <br className="hidden md:block" />
+            {" ativaram o modo Best!"}
+          </h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-gray-500 mt-3 text-sm md:text-base"
+          >
+            Junte-se às barbearias que já transformaram seus resultados
+          </motion.p>
+        </motion.div>
       </div>
+
+      {/* Marquee de logos - Full width no mobile */}
+      <div className="w-full max-w-6xl mx-auto overflow-hidden mb-8 md:mb-12 py-2">
+            {/* Row 1 - Left to Right */}
+            <div className="relative mb-4 md:mb-6">
+              <div className="absolute left-0 top-0 bottom-0 w-6 md:w-16 bg-gradient-to-r from-white to-transparent z-10" />
+              <div className="absolute right-0 top-0 bottom-0 w-6 md:w-16 bg-gradient-to-l from-white to-transparent z-10" />
+
+              <motion.div
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{
+                  duration: 14,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                className="flex gap-3 md:gap-6 items-center"
+              >
+                {[...allLogos.slice(0, 10), ...allLogos.slice(0, 10)].map((logo, index) => (
+                  <motion.div
+                    key={index}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.2 }}
+                    className="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 flex-shrink-0 flex items-center justify-center bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 p-2 md:p-3"
+                  >
+                    <Image
+                      src={logo}
+                      alt={`Logo barbearia ${index + 1}`}
+                      width={100}
+                      height={100}
+                      className="w-full h-full object-contain hover:grayscale-0 transition-all duration-300"
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Row 2 - Right to Left */}
+            <div className="relative">
+              <div className="absolute left-0 top-0 bottom-0 w-6 md:w-16 bg-gradient-to-r from-gray-50 to-transparent z-10" />
+              <div className="absolute right-0 top-0 bottom-0 w-6 md:w-16 bg-gradient-to-l from-gray-50 to-transparent z-10" />
+
+              <motion.div
+                animate={{ x: ["-50%", "0%"] }}
+                transition={{
+                  duration: 16,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                className="flex gap-3 md:gap-6 items-center"
+              >
+                {[...allLogos.slice(10), ...allLogos.slice(10)].map((logo, index) => (
+                  <motion.div
+                    key={index}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.2 }}
+                    className="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 flex-shrink-0 flex items-center justify-center bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 p-2 md:p-3"
+                  >
+                    <Image
+                      src={logo}
+                      alt={`Logo barbearia ${index + 1}`}
+                      width={100}
+                      height={100}
+                      className="w-full h-full object-contain  hover:grayscale-0 transition-all duration-300"
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+
     </section>
   );
 }

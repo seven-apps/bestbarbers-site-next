@@ -14,7 +14,7 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "BestBarbers - App Próprio Personalizado para Barbearias",
-  description: "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias! Mais de 700 barbearias ativaram o modo Best!",
+  description: "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias! Mais de 1.000 barbearias ativaram o modo Best!",
   keywords: ["barbearia", "app", "agendamento", "sistema de gestão", "aplicativo móvel", "barbeiro"],
   authors: [{ name: "BestBarbers" }],
   creator: "BestBarbers",
@@ -32,8 +32,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pt_BR",
     url: "https://www.bestbarbers.app",
-    title: "BestBarbers - App Próprio Personalizado para Barbearias", 
-    description: "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias! Mais de 700 barbearias ativaram o modo Best!",
+    title: "BestBarbers - App Próprio Personalizado para Barbearias",
+    description: "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias! Mais de 1.000 barbearias ativaram o modo Best!",
     siteName: "BestBarbers",
     images: [
       {
@@ -120,15 +120,15 @@ export default function RootLayout({
       >
         {/* Google Tag Manager (noscript) */}
         <noscript>
-          <iframe 
+          <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-5D39P7HS"
-            height="0" 
-            width="0" 
+            height="0"
+            width="0"
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
         {/* End Google Tag Manager (noscript) */}
-        
+
         {children}
       </body>
     </html>

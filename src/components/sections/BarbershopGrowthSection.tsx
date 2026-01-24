@@ -1,142 +1,217 @@
+"use client";
+
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { Repeat, Smartphone, MonitorSmartphone, FileText } from "lucide-react";
 
 const benefits = [
   {
+    id: "assinaturas",
     title: "Clube de assinaturas",
     highlight: "Receita recorrente, todos os meses",
     subtitle: "Transforme clientes em assinantes e traga previsibilidade para o caixa da sua barbearia.",
     description: "Menos sazonalidade e mais estabilidade financeira",
     src: "/images/gerenciamento-de-assinaturas_1.webp",
-    imageMaxWidth: "400px",
+    icon: Repeat,
+    accentColor: "#02ab15",
   },
   {
-    title: "App próprio personalizado",
-    highlight: "Ofereça uma experiência única para seus clientes",
+    id: "app",
+    title: "App próprio",
+    highlight: "Experiência única para seus clientes",
     subtitle: "Faça o cliente voltar sem depender de promoções e ofertas.",
-    description: "Um app da sua barbearia não é status. É retenção, relacionamento e mais faturamento com quem você já atende.",
+    description: "Retenção, relacionamento e mais faturamento com quem você já atende.",
     src: "/images/Passo-a-passo-mockup-hoonigans_1.webp",
-    imageMaxWidth: "350px",
+    icon: Smartphone,
+    accentColor: "#3b82f6",
   },
   {
-    title: "Totem de autoatendimento",
-    highlight: "Inovação que impressiona, fideliza e reduz custos",
+    id: "totem",
+    title: "Totem",
+    highlight: "Inovação que impressiona e reduz custos",
     subtitle: "O totem agiliza check-in e pagamento, organiza fluxo e profissionaliza a experiência.",
-    description: "Menos tempo resolvendo rotina, mais tempo atendendo. Menos gargalo, mais eficiência.",
+    description: "Menos tempo resolvendo rotina, mais tempo atendendo.",
     src: "/images/totem.png",
-    imageMaxWidth: "300px",
+    icon: MonitorSmartphone,
+    accentColor: "#8b5cf6",
   },
   {
-    title: "Notas fiscais + Relatórios",
-    highlight: "Gestão financeira eficiente e livre de burocracias",
-    subtitle: "Se você não enxerga o financeiro com clareza, você não controla a operação e não consegue aumentar seu lucro.",
-    description: "Gerencie como uma empresa grande, emitindo notas fiscais de forma automática e acessando relatórios para tomar decisões estratégicas.",
+    id: "financeiro",
+    title: "Financeiro",
+    highlight: "Gestão eficiente e livre de burocracias",
+    subtitle: "Enxergue o financeiro com clareza para aumentar seu lucro.",
+    description: "Notas fiscais automáticas e relatórios para decisões estratégicas.",
     src: "/images/Nota-fiscal_1.webp",
-    imageMaxWidth: "450px",
+    icon: FileText,
+    accentColor: "#f59e0b",
   },
 ];
 
 export function BarbershopGrowthSection() {
+  const [activeTab, setActiveTab] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const activeBenefit = benefits[activeTab];
+
+  // Auto-rotate every 5 seconds
+  useEffect(() => {
+    if (isPaused) return;
+
+    const interval = setInterval(() => {
+      setActiveTab((prev) => (prev + 1) % benefits.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
   return (
     <section
-      className="py-16 md:py-20 lg:py-24 overflow-x-hidden"
+      className="pt-16 md:pt-20 lg:pt-24 pb-4 md:pb-6 overflow-hidden"
       style={{ backgroundColor: "#ffaf02" }}
     >
       <div className="container-custom">
-        {/* Título da seção */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-4xl font-extrabold text-neutral-bg2 mb-4">
+        {/* Section Title */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-8 md:mb-10"
+        >
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-neutral-bg2 mb-3">
             Tudo o que você precisa para{" "}
-            <span className="text-white">lucrar mais</span>
+            <span className="text-white drop-shadow-sm">lucrar mais</span>
           </h2>
-          <p className="text-lg md:text-xl text-neutral-bg2 font-medium max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-neutral-bg2 font-medium max-w-2xl mx-auto">
             Ferramentas completas para transformar sua barbearia em um negócio lucrativo
           </p>
-        </div>
+        </motion.div>
 
-        {/* Layout flexível de benefícios */}
-        <div className="flex flex-col gap-6 lg:gap-8">
-          {/* Linha 1 - 2 cards */}
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-            {benefits.slice(0, 2).map((benefit, index) => (
-              <div
-                key={index}
-                className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.6)] hover:shadow-[0_35px_100px_-15px_rgba(0,0,0,0.7)] transition-shadow duration-300"
+        {/* Tabs Navigation */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="flex flex-wrap justify-center gap-2 md:gap-3 mb-8 md:mb-10"
+        >
+          {benefits.map((benefit, index) => (
+            <button
+              key={benefit.id}
+              onClick={() => {
+                setActiveTab(index);
+                setIsPaused(true);
+                setTimeout(() => setIsPaused(false), 10000);
+              }}
+              className={`flex items-center gap-2 px-5 py-3 md:px-6 md:py-3.5 rounded-full font-semibold text-sm md:text-base transition-all duration-300 ${activeTab === index
+                  ? "bg-black text-white shadow-xl"
+                  : "bg-white/90 text-neutral-bg2 hover:bg-white hover:shadow-lg"
+                }`}
+            >
+              <benefit.icon className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />
+              <span className="text-xs sm:text-sm md:text-base">{benefit.title}</span>
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Content Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="max-w-5xl mx-auto"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <div className="bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col md:flex-row min-h-[280px] md:min-h-[320px] lg:min-h-[360px]"
               >
-                <div className="flex flex-col">
-                  <div className="space-y-3 mb-6">
-                    <h3 className="text-2xl md:text-3xl font-bold leading-tight text-black">
-                      {benefit.title}
-                    </h3>
-                    <span
-                      className="block text-xl md:text-2xl font-bold"
-                      style={{ color: "#ffaf02" }}
+                {/* Text Content */}
+                <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div
+                      className="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center"
+                      style={{ backgroundColor: `${activeBenefit.accentColor}15` }}
                     >
-                      {benefit.highlight}
-                    </span>
-                    <p className="text-black font-semibold text-base md:text-lg">
-                      {benefit.subtitle}
-                    </p>
-                    <p className="text-gray-600 font-normal text-sm md:text-base">
-                      {benefit.description}
-                    </p>
+                      <activeBenefit.icon
+                        className="w-5 h-5 md:w-6 md:h-6"
+                        style={{ color: activeBenefit.accentColor }}
+                      />
+                    </div>
+                    <h3 className="text-lg md:text-xl font-extrabold text-black">
+                      {activeBenefit.title}
+                    </h3>
                   </div>
-                  <div className="w-full flex justify-center">
-                    <Image
-                      src={benefit.src}
-                      alt={benefit.title}
-                      width={500}
-                      height={400}
-                      className="w-full h-auto rounded-lg"
-                      style={{ maxWidth: benefit.imageMaxWidth }}
-                      sizes="(max-width: 768px) 90vw, 400px"
-                    />
-                  </div>
+
+                  <h4
+                    className="text-xl md:text-2xl lg:text-3xl font-bold mb-3"
+                    style={{ color: "#ffaf02" }}
+                  >
+                    {activeBenefit.highlight}
+                  </h4>
+
+                  <p className="text-black font-medium text-sm md:text-base mb-2">
+                    {activeBenefit.subtitle}
+                  </p>
+
+                  <p className="text-gray-500 text-sm">
+                    {activeBenefit.description}
+                  </p>
                 </div>
-              </div>
-            ))}
+
+                {/* Image */}
+                <div className="flex-1 flex items-center justify-center p-4 md:p-6 bg-gray-50 min-h-[200px] md:min-h-full">
+                  <Image
+                    src={activeBenefit.src}
+                    alt={activeBenefit.title}
+                    width={400}
+                    height={300}
+                    className="w-full max-w-[350px] h-auto max-h-[280px] rounded-2xl object-contain"
+                  />
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
-          {/* Linha 2 - 2 cards */}
-          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
-            {benefits.slice(2, 4).map((benefit, index) => (
-              <div
+          {/* Navigation Dots with Progress */}
+          <div className="flex justify-center gap-3 mt-6">
+            {benefits.map((_, index) => (
+              <button
                 key={index}
-                className="flex-1 bg-white rounded-2xl p-6 md:p-8 shadow-[0_25px_80px_-15px_rgba(0,0,0,0.6)] hover:shadow-[0_35px_100px_-15px_rgba(0,0,0,0.7)] transition-shadow duration-300"
+                onClick={() => {
+                  setActiveTab(index);
+                  setIsPaused(true);
+                  setTimeout(() => setIsPaused(false), 10000);
+                }}
+                className={`relative h-2 rounded-full transition-all duration-300 overflow-hidden ${activeTab === index
+                    ? "w-12 bg-neutral-bg2/30"
+                    : "w-2 bg-neutral-bg2/30 hover:bg-neutral-bg2/50"
+                  }`}
               >
-                <div className="flex flex-col">
-                  <div className="space-y-3 mb-6">
-                    <h3 className="text-2xl md:text-3xl font-bold leading-tight text-black">
-                      {benefit.title}
-                    </h3>
-                    <span
-                      className="block text-xl md:text-2xl font-bold"
-                      style={{ color: "#ffaf02" }}
-                    >
-                      {benefit.highlight}
-                    </span>
-                    <p className="text-black font-semibold text-base md:text-lg">
-                      {benefit.subtitle}
-                    </p>
-                    <p className="text-gray-600 font-normal text-sm md:text-base">
-                      {benefit.description}
-                    </p>
-                  </div>
-                  <div className="w-full flex justify-center">
-                    <Image
-                      src={benefit.src}
-                      alt={benefit.title}
-                      width={500}
-                      height={400}
-                      className="w-full h-auto rounded-lg"
-                      style={{ maxWidth: benefit.imageMaxWidth }}
-                      sizes="(max-width: 768px) 90vw, 400px"
-                    />
-                  </div>
-                </div>
-              </div>
+                {activeTab === index && (
+                  <motion.div
+                    className="absolute inset-0 bg-neutral-bg2 rounded-full"
+                    initial={{ width: "0%" }}
+                    animate={{ width: isPaused ? "100%" : "100%" }}
+                    transition={{
+                      duration: isPaused ? 0 : 5,
+                      ease: "linear"
+                    }}
+                    key={`${activeTab}-${isPaused}`}
+                  />
+                )}
+              </button>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
