@@ -16,6 +16,10 @@ export interface UseLeadFormOptions {
   onSuccess?: () => void;
   onError?: (error: Error) => void;
   redirectToWhatsApp?: boolean;
+  /** ID de origem customizado para o Ploomes - sobrescreve o mapeamento de UTM */
+  originId?: number;
+  /** Descrição de origem customizada para o Ploomes - sobrescreve o mapeamento de UTM */
+  originDesc?: string;
 }
 
 /**
@@ -26,7 +30,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const { 
     onSuccess, 
     onError, 
-    redirectToWhatsApp = true 
+    redirectToWhatsApp = true,
+    originId,
+    originDesc
   } = options;
 
   const [formData, setFormData] = useState<FormData>({
@@ -41,7 +47,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
-  const { submitLead } = usePloomesAPI();
+  const { submitLead } = usePloomesAPI({ originId, originDesc });
   const { redirectToWhatsApp: redirect } = useWhatsAppRedirect();
   const { trackLead, trackCompleteRegistration } = useMetaPixel();
 

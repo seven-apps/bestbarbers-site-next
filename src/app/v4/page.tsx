@@ -34,7 +34,10 @@ function ParceirosContent() {
       <BarbershopGrowthSection />
       <FeaturesSection onCtaClick={scrollToForm} />
       <ClientsSection onCtaClick={scrollToForm} />
-      <FormSection />
+      <FormSection
+        originId={120000957}
+        originDesc="LP V4 - Tráfego Pago"
+      />
       <PlanComparisonSection />
       <FAQSection />
       <FooterSimple />

@@ -7,6 +7,10 @@ interface FormSectionProps {
   title?: string;
   description?: string;
   ctaText?: string;
+  /** ID de origem customizado para o Ploomes - sobrescreve o mapeamento de UTM */
+  originId?: number;
+  /** Descrição de origem customizada para o Ploomes - sobrescreve o mapeamento de UTM */
+  originDesc?: string;
 }
 
 const formFields = [
@@ -27,6 +31,8 @@ export function FormSection({
   title = "Garanta já sua oferta exclusiva para ter o app da sua barbearia",
   description = "Você pode continuar no improviso, ou pode dar o próximo passo e ter seu app, sua marca e sua receita recorrente.\n\nO BestBarbers faz isso rápido, simples e sem custo absurdo.",
   ctaText = "GARANTIR MINHA OFERTA",
+  originId,
+  originDesc,
 }: FormSectionProps) {
   const {
     formData,
@@ -39,6 +45,8 @@ export function FormSection({
       console.error("Erro ao enviar formulário:", error);
       alert("Erro ao enviar formulário. Tente novamente.");
     },
+    originId,
+    originDesc,
   });
 
   return (
@@ -51,7 +59,7 @@ export function FormSection({
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#ffaf02]/8 rounded-full blur-[100px]" />
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#ffaf02]/8 rounded-full blur-[100px]" />
         {/* Subtle grid pattern */}
-        <div 
+        <div
           className="absolute inset-0 opacity-[0.02]"
           style={{
             backgroundImage: `linear-gradient(rgba(255,175,2,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,175,2,0.1) 1px, transparent 1px)`,
@@ -168,7 +176,7 @@ export function FormSection({
           </form>
         </div>
       </div>
-      
+
       {/* CSS animations for form-specific effects */}
       <style jsx>{`
         @keyframes glow-pulse {

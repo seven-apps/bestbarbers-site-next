@@ -16,11 +16,19 @@ export interface PloomesAPIResponse {
   }>;
 }
 
+export interface UsePloomesAPIOptions {
+  /** ID de origem customizado - se fornecido, sobrescreve o mapeamento de UTM */
+  originId?: number;
+  /** Descrição de origem customizada - se fornecido, sobrescreve o mapeamento de UTM */
+  originDesc?: string;
+}
 
 /**
  * Hook para integração com a API do Ploomes CRM
+ * @param options - Opções para customizar o originId e originDesc
  */
-export const usePloomesAPI = () => {
+export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
+  const { originId: customOriginId, originDesc: customOriginDesc } = options;
   const { getUtmParams, getOriginMapping } = useUtmParams();
 
   const PLOOMES_API_KEY = 'B59785E2FC60B0D69BFE51222FE4516699B00F0F97420BBA48E25F648510FB55245A64F7CDB0C89E438AC6C0C56D973F73F99DB7FEF93422E040A2B8816B323B';
@@ -28,7 +36,11 @@ export const usePloomesAPI = () => {
 
   const createContact = useCallback(async (data: PloomesContactData): Promise<PloomesAPIResponse> => {
     const utmParams = getUtmParams();
-    const { originId, originDesc } = getOriginMapping(utmParams);
+    const utmMapping = getOriginMapping(utmParams);
+    
+    // Usa valores customizados se fornecidos, senão usa o mapeamento de UTM
+    const originId = customOriginId ?? utmMapping.originId;
+    const originDesc = customOriginDesc ?? utmMapping.originDesc;
 
     const ploomesData = {
       Name: data.barbershopName,
@@ -76,14 +88,17 @@ export const usePloomesAPI = () => {
     }
 
     return response.json();
-  }, [getUtmParams, getOriginMapping]);
+  }, [getUtmParams, getOriginMapping, customOriginId, customOriginDesc]);
 
   const createDeal = useCallback(async (
     contactId: number, 
     data: PloomesContactData
   ): Promise<{ Id: number; [key: string]: string | number | boolean | null | undefined }> => {
     const utmParams = getUtmParams();
-    const { originId } = getOriginMapping(utmParams);
+    const utmMapping = getOriginMapping(utmParams);
+    
+    // Usa valor customizado se fornecido, senão usa o mapeamento de UTM
+    const originId = customOriginId ?? utmMapping.originId;
 
     const dealData = {
       Title: data.barbershopName,
@@ -118,7 +133,7 @@ export const usePloomesAPI = () => {
     }
 
     return response.json();
-  }, [getUtmParams, getOriginMapping]);
+  }, [getUtmParams, getOriginMapping, customOriginId]);
 
   const submitLead = useCallback(async (data: PloomesContactData): Promise<void> => {
     try {
