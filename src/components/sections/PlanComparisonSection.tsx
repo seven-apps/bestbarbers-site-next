@@ -303,7 +303,7 @@ export function PlanComparisonSection() {
                     TOP
                   </span>
                 </div>
-                <h3 className="text-[10px] font-bold text-[#d4940a]">App</h3>
+                <h3 className="text-[10px] font-bold text-[#d4940a]">App exclusivo</h3>
               </div>
             </div>
           </div>
@@ -374,7 +374,7 @@ export function PlanComparisonSection() {
                         TOP
                       </span>
                     </div>
-                    <h3 className="text-[10px] font-bold text-[#d4940a]">App</h3>
+                    <h3 className="text-[10px] font-bold text-[#d4940a]">App Exclusivo</h3>
                   </div>
                 </div>
               </div>
@@ -421,7 +421,7 @@ export function PlanComparisonSection() {
               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#121212] to-[#2a2a2a] text-[#ffaf02] rounded-full text-sm font-bold shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.3)] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200"
             >
               <Crown className="w-5 h-5" />
-              QUERO O APP EXCLUSIVO
+              QUERO O APP PERSONALIZADO
             </a>
           </div>
         </div>
