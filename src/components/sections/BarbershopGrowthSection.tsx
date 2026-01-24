@@ -95,7 +95,7 @@ export function BarbershopGrowthSection() {
   return (
     <section
       id="growth-section"
-      className="pt-16 md:pt-20 lg:pt-24 pb-4 md:pb-6 overflow-hidden h-[102vh]"
+      className="pt-16 md:pt-20 lg:pt-24 pb-4 md:pb-6 overflow-hidden"
       style={{ backgroundColor: "#ffaf02" }}
     >
       <div className="container-custom">
@@ -137,7 +137,7 @@ export function BarbershopGrowthSection() {
             setProgressKey(prev => prev + 1);
           }}
         >
-          <div className="bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] overflow-hidden">
+          <div className="bg-white h-[470px] md:h-auto lg:h-auto rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.25)] overflow-hidden">
             {/* Content with CSS transitions instead of AnimatePresence */}
             <div className="flex flex-col md:flex-row min-h-[280px] md:min-h-[320px] lg:min-h-[360px] relative">
               {/* Vertical divider line - desktop only */}
@@ -178,13 +178,13 @@ export function BarbershopGrowthSection() {
 
               {/* Image */}
               <div className="flex-1 flex items-center justify-center p-4 md:p-6 lg:p-8 min-h-[200px] md:min-h-full !bg-[#FFFFFF]">
-                <div className="overflow-hidden rounded-2xl">
+                <div className="overflow-hidden rounded-xl">
                   <Image
                     src={activeBenefit.src}
                     alt={activeBenefit.title}
                     width={400}
                     height={300}
-                    className="w-full max-w-[350px] h-auto max-h-[250px] object-contain transition-opacity duration-300"
+                    className="w-full max-w-[350px] h-[180px] md:h-auto lg:h-auto max-h-[250px] object-contain transition-opacity duration-300"
                     loading="lazy"
                   />
                 </div>
