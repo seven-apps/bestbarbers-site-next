@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { CTAButton } from "@/components/ui/cta-button";
 import { homeContent } from "@/content/home";
 import { Sparkles } from "lucide-react";
@@ -19,7 +18,7 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
         background: "linear-gradient(135deg, #ffaf02 0%, #ffbe33 50%, #ffaf02 100%)"
       }}
     >
-      {/* Animated background pattern */}
+      {/* Static background pattern - no animation needed */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-full opacity-[0.03]"
           style={{
@@ -35,71 +34,46 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
       <div className="container-custom relative z-10">
         {/* Row 1: Headlines + Video */}
         <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-12 w-full mb-8 lg:mb-0">
-          {/* Headlines */}
-          <div className="w-full lg:w-[42%] flex flex-col items-center lg:items-start text-center lg:text-left">
+          {/* Headlines - CSS animations for initial load */}
+          <div className="w-full lg:w-[42%] flex flex-col items-center lg:items-start text-center lg:text-left animate-fade-in-up">
             {/* Badge */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-              className="mb-4"
-            >
+            <div className="mb-4 animate-scale-in" style={{ animationDelay: '0.1s' }}>
               <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-black/90 rounded-full text-white text-xs md:text-sm font-bold shadow-lg">
                 <Sparkles className="w-3.5 h-3.5 text-[#ffaf02]" />
                 Sistema #1 para Barbearias
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="text-[22px] md:text-[28px] lg:text-[32px] font-extrabold leading-[1.2] text-neutral-bg2 mb-4"
+            <h1 
+              className="text-[22px] md:text-[28px] lg:text-[32px] font-extrabold leading-[1.2] text-neutral-bg2 mb-4 animate-fade-in-up"
+              style={{ animationDelay: '0.15s' }}
             >
               Sua barbearia está crescendo, <span className="text-white text-3xl drop-shadow-md">o dinheiro entrando...</span>
-            </motion.h1>
+            </h1>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
-              className="flex flex-col gap-2"
-            >
-              <motion.span
-                initial={{ x: -20 }}
-                animate={{ x: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="inline-block text-white bg-black px-5 py-2.5 rounded-xl font-extrabold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.1] shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
+            <div className="flex flex-col gap-2">
+              <span 
+                className="inline-block text-white bg-black px-5 py-2.5 rounded-xl font-extrabold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.1] shadow-[0_8px_30px_rgba(0,0,0,0.35)] animate-fade-in-up"
+                style={{ animationDelay: '0.25s' }}
               >
                 Mas seu lucro
-              </motion.span>
-              <motion.span
-                initial={{ x: -20 }}
-                animate={{ x: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="inline-block text-white bg-black px-5 py-2.5 rounded-xl font-extrabold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.1] shadow-[0_8px_30px_rgba(0,0,0,0.35)]"
+              </span>
+              <span 
+                className="inline-block text-white bg-black px-5 py-2.5 rounded-xl font-extrabold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.1] shadow-[0_8px_30px_rgba(0,0,0,0.35)] animate-fade-in-up"
+                style={{ animationDelay: '0.35s' }}
               >
                 não aumenta
-              </motion.span>
-            </motion.div>
+              </span>
+            </div>
           </div>
 
-          {/* Video */}
-          <motion.div
-            initial={{ opacity: 0, x: 30, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-            className="w-full lg:w-[58%] flex justify-center lg:justify-end"
+          {/* Video - CSS floating animation (GPU accelerated) */}
+          <div 
+            className="w-full lg:w-[58%] flex justify-center lg:justify-end animate-fade-in-up"
+            style={{ animationDelay: '0.2s' }}
           >
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{
-                duration: 4,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="relative w-full max-w-md lg:max-w-none"
-            >
+            {/* Floating container using CSS animation */}
+            <div className="relative w-full max-w-md lg:max-w-none animate-float gpu-accelerated">
               {/* Glow effect behind video */}
               <div className="absolute -inset-3 bg-black/20 rounded-2xl lg:rounded-3xl blur-2xl" />
 
@@ -111,18 +85,17 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   className="w-full h-full"
+                  loading="lazy"
                 />
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
 
         {/* Row 2: Description + CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
-          className="w-full flex flex-col lg:flex-row items-center justify-between gap-6 mt-6 lg:mt-8"
+        <div 
+          className="w-full flex flex-col lg:flex-row items-center justify-between gap-6 mt-6 lg:mt-8 animate-fade-in-up"
+          style={{ animationDelay: '0.4s' }}
         >
           {/* Textos */}
           <div className="w-full lg:w-[40%] flex flex-col items-center lg:items-start gap-3 text-center lg:text-left lg:max-w-xl">
@@ -135,25 +108,10 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
             </p>
           </div>
 
-          {/* CTA com destaque máximo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-            className="flex-shrink-0 w-full sm:w-auto"
-          >
-            {/* Pulse animation wrapper */}
-            <motion.div
-              animate={{
-                boxShadow: [
-                  "0 0 0 0 rgba(2, 171, 21, 0)",
-                  "0 0 0 10px rgba(2, 171, 21, 0.2)",
-                  "0 0 0 20px rgba(2, 171, 21, 0)"
-                ]
-              }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="rounded-full"
-            >
+          {/* CTA com destaque máximo - CSS pulse animation */}
+          <div className="flex-shrink-0 w-full sm:w-auto">
+            {/* Pulse animation wrapper using CSS (GPU accelerated) */}
+            <div className="rounded-full animate-pulse-glow">
               {onCtaClick ? (
                 <CTAButton
                   onClick={onCtaClick}
@@ -175,9 +133,9 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
                   {hero.cta.text}
                 </CTAButton>
               )}
-            </motion.div>
-          </motion.div>
-        </motion.div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

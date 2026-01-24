@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
 import { Check, X, ChevronDown, Crown, Sparkles } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
@@ -118,18 +117,14 @@ function FeatureIndicator({ value, highlight = false }: { value: FeatureValue; h
 
   if (value) {
     return (
-      <motion.div
-        initial={{ scale: 0 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.3, type: "spring" }}
+      <div
         className={`w-6 h-6 md:w-7 md:h-7 rounded-full flex items-center justify-center ${highlight
           ? "bg-gradient-to-br from-green-400 to-green-600 shadow-[0_0_12px_rgba(34,197,94,0.3)]"
           : "bg-green-100"
           }`}
       >
         <Check className={`w-4 h-4 md:w-5 md:h-5 ${highlight ? "text-white" : "text-green-600"}`} />
-      </motion.div>
+      </div>
     );
   }
 
@@ -154,12 +149,7 @@ function CollapsibleFeatureGroup({
   const isOpen = openGroups.has(groupIndex);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4, delay: groupIndex * 0.05 }}
-    >
+    <div className="animate-fade-in-up" style={{ animationDelay: `${groupIndex * 0.05}s` }}>
       {/* Group Header - Clickable */}
       <button
         onClick={() => toggleGroup(groupIndex)}
@@ -168,56 +158,43 @@ function CollapsibleFeatureGroup({
         <h4 className="text-sm md:text-base font-bold text-[#121212] uppercase tracking-wide group-hover:text-[#ffaf02] transition-colors">
           {group.title}
         </h4>
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.3 }}
-          className="p-1.5 rounded-full bg-gray-100 group-hover:bg-[#ffaf02]/20 transition-colors"
+        <div
+          className={`p-1.5 rounded-full bg-gray-100 group-hover:bg-[#ffaf02]/20 transition-all duration-300 ${isOpen ? 'rotate-180' : ''}`}
         >
           <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-[#ffaf02]" />
-        </motion.div>
+        </div>
       </button>
 
-      {/* Features - Collapsible */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm relative">
-              {/* Subtle highlight on App Exclusivo column */}
-              <div className="absolute top-0 right-0 w-[70px] md:w-[120px] h-full bg-gradient-to-l from-[#ffaf02]/5 to-transparent pointer-events-none" />
+      {/* Features - Collapsible with CSS transitions */}
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}
+      >
+        <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm relative">
+          {/* Subtle highlight on App Exclusivo column */}
+          <div className="absolute top-0 right-0 w-[70px] md:w-[120px] h-full bg-gradient-to-l from-[#ffaf02]/5 to-transparent pointer-events-none" />
 
-              {group.features.map((feature, featureIndex) => (
-                <motion.div
-                  key={feature.name}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.2, delay: featureIndex * 0.03 }}
-                  className={`grid grid-cols-[1fr_70px_70px] md:grid-cols-[1fr_100px_140px] gap-2 md:gap-4 items-center px-4 py-3 md:py-3.5 hover:bg-gray-50 transition-colors ${featureIndex !== group.features.length - 1
-                    ? "border-b border-gray-100"
-                    : ""
-                    }`}
-                >
-                  <span className="text-xs md:text-sm text-gray-700 pr-2 leading-relaxed">
-                    {feature.name}
-                  </span>
-                  <div className="flex justify-center">
-                    <FeatureIndicator value={feature.premium} />
-                  </div>
-                  <div className="flex justify-center">
-                    <FeatureIndicator value={feature.appExclusivo} highlight={true} />
-                  </div>
-                </motion.div>
-              ))}
+          {group.features.map((feature, featureIndex) => (
+            <div
+              key={feature.name}
+              className={`grid grid-cols-[1fr_70px_70px] md:grid-cols-[1fr_100px_140px] gap-2 md:gap-4 items-center px-4 py-3 md:py-3.5 hover:bg-gray-50 transition-colors ${featureIndex !== group.features.length - 1
+                ? "border-b border-gray-100"
+                : ""
+                }`}
+            >
+              <span className="text-xs md:text-sm text-gray-700 pr-2 leading-relaxed">
+                {feature.name}
+              </span>
+              <div className="flex justify-center">
+                <FeatureIndicator value={feature.premium} />
+              </div>
+              <div className="flex justify-center">
+                <FeatureIndicator value={feature.appExclusivo} highlight={true} />
+              </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -335,29 +312,18 @@ export function PlanComparisonSection() {
 
       <div className="container-custom">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10 md:mb-14"
-        >
-          <motion.span
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#121212] text-[#ffaf02] text-xs md:text-sm font-semibold mb-4"
-          >
+        <div className="text-center mb-10 md:mb-14 animate-fade-in-up">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#121212] text-[#ffaf02] text-xs md:text-sm font-semibold mb-4">
             <Sparkles className="w-4 h-4" />
             NOSSOS PLANOS
-          </motion.span>
+          </span>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#121212] mb-3">
             Conheça nossos planos e funcionalidades
           </h2>
           <p className="text-sm md:text-base text-gray-600 max-w-xl mx-auto">
             Planos que se encaixam na sua necessidade. Escolha o melhor para sua barbearia.
           </p>
-        </motion.div>
+        </div>
 
         {/* Comparison Table Container */}
         <div ref={tableContainerRef} className="max-w-4xl mx-auto">
@@ -374,16 +340,13 @@ export function PlanComparisonSection() {
                     <p className="text-[11px] text-gray-500">Sistema padrão</p>
                   </div>
                   <div className="flex flex-col items-center justify-center text-center relative">
-                    <motion.div
-                      animate={{ y: [0, -2, 0] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="absolute -top-7 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-gradient-to-r from-[#ffaf02] to-[#ffc233] rounded-full shadow-md"
-                    >
+                    {/* Badge with CSS floating animation */}
+                    <div className="absolute -top-7 left-1/2 -translate-x-1/2 px-3 py-0.5 bg-gradient-to-r from-[#ffaf02] to-[#ffc233] rounded-full shadow-md animate-float-subtle">
                       <span className="text-[10px] font-bold text-black whitespace-nowrap flex items-center gap-1">
                         <Crown className="w-3 h-3" />
                         RECOMENDADO
                       </span>
-                    </motion.div>
+                    </div>
                     <h3 className="text-base font-bold text-[#d4940a] whitespace-nowrap">App Exclusivo</h3>
                     <p className="text-[11px] text-gray-600">Experiência única</p>
                   </div>
@@ -404,16 +367,13 @@ export function PlanComparisonSection() {
                     <h3 className="text-xs font-bold text-gray-800">Básico</h3>
                   </div>
                   <div className="flex flex-col items-center justify-center text-center relative">
-                    <motion.div
-                      animate={{ y: [0, -2, 0] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="absolute -top-8 left-1/2 -translate-x-1/2 px-2.5 py-0.5 bg-gradient-to-r from-[#ffaf02] to-[#ffc233] rounded-full shadow-md"
-                    >
+                    {/* Badge with CSS floating animation */}
+                    <div className="absolute -top-8 left-1/2 -translate-x-1/2 px-2.5 py-0.5 bg-gradient-to-r from-[#ffaf02] to-[#ffc233] rounded-full shadow-md animate-float-subtle">
                       <span className="text-[9px] font-bold text-black flex items-center gap-0.5">
                         <Crown className="w-2.5 h-2.5" />
                         TOP
                       </span>
-                    </motion.div>
+                    </div>
                     <h3 className="text-xs font-bold text-[#d4940a]">App Exclusivo</h3>
                   </div>
                 </div>
@@ -422,12 +382,7 @@ export function PlanComparisonSection() {
           </div>
 
           {/* Expand/Collapse All Button */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="flex justify-end mb-4 gap-2"
-          >
+          <div className="flex justify-end mb-4 gap-2 animate-fade-in">
             <button
               onClick={expandAll}
               className="text-xs text-gray-500 hover:text-[#d4940a] transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-100"
@@ -441,7 +396,7 @@ export function PlanComparisonSection() {
             >
               Recolher tudo
             </button>
-          </motion.div>
+          </div>
 
           {/* Feature Groups */}
           <div className="space-y-6 md:space-y-8">
@@ -457,26 +412,18 @@ export function PlanComparisonSection() {
           </div>
 
           {/* Bottom CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mt-12 text-center"
-          >
+          <div className="mt-12 text-center animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             <p className="text-sm text-gray-600 mb-4">
               Pronto para transformar sua barbearia?
             </p>
-            <motion.a
+            <a
               href="#form-section"
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#121212] to-[#2a2a2a] text-[#ffaf02] rounded-full text-sm font-bold shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.3)] transition-shadow"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#121212] to-[#2a2a2a] text-[#ffaf02] rounded-full text-sm font-bold shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.3)] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200"
             >
               <Crown className="w-5 h-5" />
               QUERO O APP EXCLUSIVO
-            </motion.a>
-          </motion.div>
+            </a>
+          </div>
         </div>
       </div>
     </section>

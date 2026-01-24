@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { CTAButton } from "@/components/ui/cta-button";
 import { homeContent } from "@/content/home";
 
@@ -23,30 +22,18 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
       }}
     >
       <div className="px-4 md:container-custom">
-        {/* Título */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-8 md:mb-10"
-        >
-          <motion.span
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4 }}
-            className="inline-block px-4 py-1.5 bg-black/10 rounded-full text-neutral-bg2 text-xs md:text-sm font-bold mb-3"
-          >
+        {/* Título - CSS animation */}
+        <div className="text-center mb-8 md:mb-10 animate-fade-in-up">
+          <span className="inline-block px-4 py-1.5 bg-black/10 rounded-full text-neutral-bg2 text-xs md:text-sm font-bold mb-3">
             FUNCIONALIDADES
-          </motion.span>
+          </span>
           <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-neutral-bg2">
             E muito mais!
           </h2>
           <p className="text-sm md:text-base text-neutral-bg2/80 mt-2 max-w-md mx-auto">
             Tudo que sua barbearia precisa em um só lugar
           </p>
-        </motion.div>
+        </div>
       </div>
 
       {/* Carrossel container - full width no mobile */}
@@ -58,68 +45,39 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
           {/* Gradient fade direita */}
           <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[#ffbe33] to-transparent z-10 pointer-events-none" />
 
-          {/* Carousel track */}
-          <motion.div
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{
-              duration: 15,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            className="flex gap-3 md:gap-5 items-center"
+          {/* Carousel track - CSS animation (GPU accelerated) */}
+          <div 
+            className="flex gap-3 md:gap-5 items-center animate-marquee-left gpu-accelerated"
+            style={{ '--marquee-duration': '20s' } as React.CSSProperties}
           >
             {duplicatedItems.map((item, index) => (
-              <motion.div
+              <div
                 key={index}
-                whileHover={{ 
-                  scale: 1.08, 
-                  y: -5,
-                  boxShadow: "0 20px 40px -10px rgba(0,0,0,0.2)"
-                }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-                className="flex-shrink-0 flex flex-col items-center justify-center text-center gap-2.5 md:gap-3.5 p-4 md:p-5 bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.15)] transition-all duration-300 w-[130px] h-[120px] md:w-[170px] md:h-[160px] border border-white/50 cursor-pointer group"
+                className="flex-shrink-0 flex flex-col items-center justify-center text-center gap-2.5 md:gap-3.5 p-4 md:p-5 bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.15)] hover:scale-105 hover:-translate-y-1 transition-all duration-300 w-[130px] h-[120px] md:w-[170px] md:h-[160px] border border-white/50 cursor-pointer group"
               >
-                <motion.div 
-                  className="w-11 h-11 md:w-14 md:h-14 flex items-center justify-center"
-                  whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
-                  transition={{ duration: 0.3 }}
-                >
+                <div className="w-11 h-11 md:w-14 md:h-14 flex items-center justify-center">
                   <Image
                     src={item.icon}
                     alt={`Ícone ${item.title}`}
                     width={48}
                     height={48}
-                    className="w-full h-full object-contain transition-transform group-hover:scale-105"
+                    className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
+                    loading="lazy"
                   />
-                </motion.div>
+                </div>
                 <p className="text-[11px] md:text-sm font-bold text-neutral-black-text leading-tight px-1 group-hover:text-[#121212] transition-colors">
                   {item.title}
                 </p>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
 
-      {/* CTA Button */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="flex justify-center mt-10 md:mt-12 px-4"
-      >
-        <motion.div
-          animate={{ 
-            boxShadow: [
-              "0 0 0 0 rgba(2, 171, 21, 0)",
-              "0 0 0 8px rgba(2, 171, 21, 0.15)",
-              "0 0 0 16px rgba(2, 171, 21, 0)"
-            ]
-          }}
-          transition={{ duration: 2.5, repeat: Infinity }}
-          className="rounded-full"
-        >
+      {/* CTA Button - CSS animation */}
+      <div className="flex justify-center mt-10 md:mt-12 px-4 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        {/* Pulse animation wrapper using CSS (GPU accelerated) */}
+        <div className="rounded-full animate-pulse-glow-subtle">
           {onCtaClick ? (
             <CTAButton
               onClick={onCtaClick}
@@ -141,8 +99,8 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
               QUERO UM APP PRÓPRIO
             </CTAButton>
           )}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

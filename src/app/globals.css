@@ -161,6 +161,115 @@ html {
   outline-offset: 2px;
 }
 
+/* ====================================
+   PERFORMANCE-OPTIMIZED CSS ANIMATIONS
+   Rodam na compositor thread (GPU)
+   ==================================== */
+
+/* Floating animation - para elementos que flutuam */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes float-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-float-subtle {
+  animation: float-subtle 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Pulse animation - para CTAs */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(2, 171, 21, 0); }
+  50% { box-shadow: 0 0 0 12px rgba(2, 171, 21, 0.15); }
+}
+
+@keyframes pulse-glow-subtle {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(2, 171, 21, 0); }
+  50% { box-shadow: 0 0 0 8px rgba(2, 171, 21, 0.1); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
+.animate-pulse-glow-subtle {
+  animation: pulse-glow-subtle 2.5s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
+/* Marquee animations - para carrosséis infinitos */
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-marquee-left {
+  animation: marquee-left var(--marquee-duration, 15s) linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-right {
+  animation: marquee-right var(--marquee-duration, 16s) linear infinite;
+  will-change: transform;
+}
+
+/* Fade in animations - single trigger */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+/* Scale in animation */
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s ease-out forwards;
+}
+
 /* Animation performance optimization */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -169,5 +278,28 @@ html {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  
+  .animate-float,
+  .animate-float-subtle,
+  .animate-pulse-glow,
+  .animate-pulse-glow-subtle,
+  .animate-marquee-left,
+  .animate-marquee-right {
+    animation: none !important;
+  }
+}
+
+/* GPU acceleration hints para elementos animados */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Pausar animações quando não visível (battery saving) */
+@media (prefers-reduced-motion: no-preference) {
+  .pause-when-hidden:not(:hover) {
+    animation-play-state: running;
   }
 }

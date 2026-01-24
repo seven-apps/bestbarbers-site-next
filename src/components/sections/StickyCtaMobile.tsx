@@ -1,6 +1,5 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 
@@ -50,33 +49,35 @@ export function StickyCtaMobile({
   };
 
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
-          className="md:hidden fixed bottom-0 left-0 right-0 z-50 p-4 pb-6 bg-gradient-to-t from-black via-black/95 to-transparent"
-        >
-          {/* Glow effect */}
-          <div className="absolute inset-x-4 bottom-4 h-14 bg-[#ffaf02]/20 rounded-full blur-xl" />
-          
-          <motion.button
-            onClick={handleClick}
-            whileTap={{ scale: 0.98 }}
-            className="relative w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#ffaf02] to-[#ffc233] text-black font-bold text-sm py-4 px-6 rounded-full shadow-[0_8px_30px_rgba(255,175,2,0.4)]"
-          >
-            <span>{ctaText}</span>
-            <motion.span
-              animate={{ x: [0, 4, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              <ArrowRight className="w-5 h-5" />
-            </motion.span>
-          </motion.button>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div
+      className={`md:hidden fixed bottom-0 left-0 right-0 z-50 p-4 pb-6 bg-gradient-to-t from-black via-black/95 to-transparent transition-all duration-300 ${
+        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0 pointer-events-none'
+      }`}
+    >
+      {/* Glow effect */}
+      <div className="absolute inset-x-4 bottom-4 h-14 bg-[#ffaf02]/20 rounded-full blur-xl" />
+      
+      <button
+        onClick={handleClick}
+        className="relative w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[#ffaf02] to-[#ffc233] text-black font-bold text-sm py-4 px-6 rounded-full shadow-[0_8px_30px_rgba(255,175,2,0.4)] active:scale-[0.98] transition-transform duration-200"
+      >
+        <span>{ctaText}</span>
+        {/* CSS animated arrow */}
+        <span className="animate-bounce-x">
+          <ArrowRight className="w-5 h-5" />
+        </span>
+      </button>
+      
+      {/* CSS animation for arrow bounce */}
+      <style jsx>{`
+        @keyframes bounce-x {
+          0%, 100% { transform: translateX(0); }
+          50% { transform: translateX(4px); }
+        }
+        .animate-bounce-x {
+          animation: bounce-x 1.5s ease-in-out infinite;
+        }
+      `}</style>
+    </div>
   );
 }
