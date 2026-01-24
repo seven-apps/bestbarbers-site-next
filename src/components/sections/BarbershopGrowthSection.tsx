@@ -58,12 +58,12 @@ export function BarbershopGrowthSection() {
     setActiveTab(index);
     setIsPaused(true);
     setProgressKey(prev => prev + 1);
-    
+
     // Clear existing timeout
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
-    
+
     // Resume after 10 seconds
     timeoutRef.current = setTimeout(() => {
       setIsPaused(false);
@@ -95,7 +95,7 @@ export function BarbershopGrowthSection() {
   return (
     <section
       id="growth-section"
-      className="pt-16 md:pt-20 lg:pt-24 pb-4 md:pb-6 overflow-hidden"
+      className="pt-16 md:pt-20 lg:pt-24 pb-4 md:pb-6 overflow-hidden h-[102vh]"
       style={{ backgroundColor: "#ffaf02" }}
     >
       <div className="container-custom">
@@ -144,7 +144,7 @@ export function BarbershopGrowthSection() {
               <div className="hidden md:block absolute left-1/2 top-[10%] bottom-[10%] w-px bg-gray-200" />
 
               {/* Text Content */}
-              <div className="flex-1 p-6 md:p-8 lg:p-10 flex flex-col justify-center">
+              <div className="flex-1 p-6 md:p-8 lg:p-10 pb-0 flex flex-col justify-center">
                 <div className="flex items-center gap-3 mb-3">
                   <div
                     className="w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center transition-colors duration-300"
@@ -184,7 +184,7 @@ export function BarbershopGrowthSection() {
                     alt={activeBenefit.title}
                     width={400}
                     height={300}
-                    className="w-full max-w-[350px] h-auto max-h-[280px] object-contain transition-opacity duration-300"
+                    className="w-full max-w-[350px] h-auto max-h-[250px] object-contain transition-opacity duration-300"
                     loading="lazy"
                   />
                 </div>
@@ -218,7 +218,7 @@ export function BarbershopGrowthSection() {
           </div>
         </div>
       </div>
-      
+
       {/* CSS for progress animation */}
       <style jsx>{`
         @keyframes progress-fill {

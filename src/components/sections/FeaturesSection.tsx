@@ -11,12 +11,9 @@ interface FeaturesSectionProps {
 export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
   const { features } = homeContent;
 
-  // Duplicate items for infinite scroll effect
-  const duplicatedItems = [...features.items, ...features.items];
-
   return (
     <section
-      className="pt-6 md:pt-8 pb-12 md:pb-14 lg:pb-16 overflow-hidden"
+      className="pt-0 md:pt-8 pb-12 md:pb-14 lg:pb-16 overflow-hidden"
       style={{
         background: "linear-gradient(180deg, #ffaf02 0%, #ffbe33 100%)"
       }}
@@ -45,29 +42,33 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
           {/* Gradient fade direita */}
           <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[#ffbe33] to-transparent z-10 pointer-events-none" />
 
-          {/* Carousel track - CSS animation (GPU accelerated) */}
+          {/* Carousel track - CSS animation (GPU accelerated) - 3 sets for seamless loop */}
           <div
-            className="flex gap-3 md:gap-4 py-8 items-center animate-marquee-left gpu-accelerated"
-            style={{ '--marquee-duration': '10s' } as React.CSSProperties}
+            className="py-8 items-center animate-marquee-left gpu-accelerated"
+            style={{ '--marquee-duration': '30s' } as React.CSSProperties}
           >
-            {duplicatedItems.map((item, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 flex flex-col items-center justify-center text-center gap-2.5 md:gap-3.5 p-4 md:p-5 bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.15)] hover:scale-105 hover:-translate-y-1 transition-all duration-300 w-[130px] h-[120px] md:w-[170px] md:h-[160px] border border-white/50 cursor-pointer group"
-              >
-                <div className="w-11 h-11 md:w-14 md:h-14 flex items-center justify-center">
-                  <Image
-                    src={item.icon}
-                    alt={`Ícone ${item.title}`}
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
-                    loading="lazy"
-                  />
-                </div>
-                <p className="text-[11px] md:text-sm font-bold text-neutral-black-text leading-tight px-1 group-hover:text-[#121212] transition-colors">
-                  {item.title}
-                </p>
+            {[0, 1, 2].map((setIndex) => (
+              <div key={setIndex} className="inline-flex gap-3 md:gap-4 items-center pr-3 md:pr-4">
+                {features.items.map((item, index) => (
+                  <div
+                    key={`${setIndex}-${index}`}
+                    className="flex-shrink-0 flex flex-col items-center justify-center text-center gap-2.5 md:gap-3.5 p-4 md:p-5 bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_15px_40px_rgba(0,0,0,0.15)] hover:scale-105 hover:-translate-y-1 transition-all duration-300 w-[130px] h-[120px] md:w-[170px] md:h-[160px] border border-white/50 cursor-pointer group"
+                  >
+                    <div className="w-11 h-11 md:w-14 md:h-14 flex items-center justify-center">
+                      <Image
+                        src={item.icon}
+                        alt={`Ícone ${item.title}`}
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                    </div>
+                    <p className="text-[11px] md:text-sm font-bold text-neutral-black-text leading-tight px-1 group-hover:text-[#121212] transition-colors">
+                      {item.title}
+                    </p>
+                  </div>
+                ))}
               </div>
             ))}
           </div>

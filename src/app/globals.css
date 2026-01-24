@@ -208,23 +208,25 @@ html {
   will-change: box-shadow;
 }
 
-/* Marquee animations - para carrosséis infinitos */
+/* Marquee animations - para carrosséis infinitos (triplicados para seamless loop) */
 @keyframes marquee-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-33.333%, 0, 0); }
 }
 
 @keyframes marquee-right {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  0% { transform: translate3d(-33.333%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
 
 .animate-marquee-left {
+  display: inline-flex;
   animation: marquee-left var(--marquee-duration, 15s) linear infinite;
   will-change: transform;
 }
 
 .animate-marquee-right {
+  display: inline-flex;
   animation: marquee-right var(--marquee-duration, 16s) linear infinite;
   will-change: transform;
 }
