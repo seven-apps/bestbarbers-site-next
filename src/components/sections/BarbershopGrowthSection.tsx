@@ -28,9 +28,9 @@ const benefits = [
   {
     id: "totem",
     title: "Totem",
-    highlight: "Inovação que impressiona e reduz custos",
-    subtitle: "O totem agiliza check-in e pagamento, organiza fluxo e profissionaliza a experiência.",
-    description: "Menos tempo resolvendo rotina, mais tempo atendendo.",
+    highlight: "Tecnologia, autonomia e redução de custos",
+    subtitle: "O totem agiliza check-in, pagamento e eleva a experiência do seu cliente.",
+    description: "Menos tempo resolvendo rotina, mais tempo para atender seu cliente melhor.",
     src: "/images/totem.png",
     icon: MonitorSmartphone,
     accentColor: "#8b5cf6",
