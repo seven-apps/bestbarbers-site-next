@@ -287,7 +287,7 @@ export function PlanComparisonSection() {
         className={`md:hidden fixed top-[70px] left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm transition-all duration-300 ${showFixedHeader ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
           }`}
       >
-        <div className="px-4 py-3 pt-5">
+        <div className="px-8 py-3 pt-5">
           <div className="bg-white rounded-xl border border-gray-200 p-3 shadow-sm">
             <div className="grid grid-cols-[1fr_50px_50px] gap-2 items-center">
               <div className="text-xs font-medium text-gray-500">

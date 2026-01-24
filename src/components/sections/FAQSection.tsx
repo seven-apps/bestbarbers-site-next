@@ -253,8 +253,8 @@ export function FAQSection() {
                   setOpenItems(new Set([0]));
                 }}
                 className={`flex-shrink-0 px-4 py-2.5 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] animate-fade-in ${activeCategory === category
-                    ? "bg-gradient-to-r from-[#ffaf02] to-[#ffc233] text-black shadow-[0_4px_20px_rgba(255,175,2,0.3)]"
-                    : "bg-[#1a1a1a]/80 backdrop-blur-sm text-gray-300 hover:bg-[#252525] border border-gray-800/50 hover:border-gray-700"
+                  ? "bg-gradient-to-r from-[#ffaf02] to-[#ffc233] text-black "
+                  : "bg-[#1a1a1a]/80 backdrop-blur-sm text-gray-300 hover:bg-[#252525] border border-gray-800/50 hover:border-gray-700"
                   }`}
                 style={{ animationDelay: `${index * 0.05}s` }}
               >

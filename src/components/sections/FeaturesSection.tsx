@@ -17,7 +17,7 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
   return (
     <section
       className="pt-6 md:pt-8 pb-12 md:pb-14 lg:pb-16 overflow-hidden"
-      style={{ 
+      style={{
         background: "linear-gradient(180deg, #ffaf02 0%, #ffbe33 100%)"
       }}
     >
@@ -46,9 +46,9 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
           <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 bg-gradient-to-l from-[#ffbe33] to-transparent z-10 pointer-events-none" />
 
           {/* Carousel track - CSS animation (GPU accelerated) */}
-          <div 
-            className="flex gap-3 md:gap-5 items-center animate-marquee-left gpu-accelerated"
-            style={{ '--marquee-duration': '20s' } as React.CSSProperties}
+          <div
+            className="flex gap-3 md:gap-4 py-8 items-center animate-marquee-left gpu-accelerated"
+            style={{ '--marquee-duration': '10s' } as React.CSSProperties}
           >
             {duplicatedItems.map((item, index) => (
               <div

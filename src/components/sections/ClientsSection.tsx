@@ -59,9 +59,9 @@ export function ClientsSection({ }: ClientsSectionProps) {
           <div className="absolute left-0 top-0 bottom-0 w-6 md:w-16 bg-gradient-to-r from-white to-transparent z-10" />
           <div className="absolute right-0 top-0 bottom-0 w-6 md:w-16 bg-gradient-to-l from-white to-transparent z-10" />
 
-          <div 
+          <div
             className="flex gap-3 md:gap-6 items-center animate-marquee-left gpu-accelerated"
-            style={{ '--marquee-duration': '18s' } as React.CSSProperties}
+            style={{ '--marquee-duration': '10s' } as React.CSSProperties}
           >
             {[...allLogos.slice(0, 10), ...allLogos.slice(0, 10)].map((logo, index) => (
               <div
@@ -86,7 +86,7 @@ export function ClientsSection({ }: ClientsSectionProps) {
           <div className="absolute left-0 top-0 bottom-0 w-6 md:w-16 bg-gradient-to-r from-gray-50 to-transparent z-10" />
           <div className="absolute right-0 top-0 bottom-0 w-6 md:w-16 bg-gradient-to-l from-gray-50 to-transparent z-10" />
 
-          <div 
+          <div
             className="flex gap-3 md:gap-6 items-center animate-marquee-right gpu-accelerated"
             style={{ '--marquee-duration': '20s' } as React.CSSProperties}
           >
