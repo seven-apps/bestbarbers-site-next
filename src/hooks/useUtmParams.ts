@@ -46,6 +46,7 @@ export const useUtmParams = () => {
       kaleo: 120000944,
       "araujo-salviano": 120001037,
       "bruno-estevao": 120001038,
+      "igor-bezerra": 120001060,
     }),
     []
   );
@@ -68,8 +69,9 @@ export const useUtmParams = () => {
       mileno: "LP Mileno - Parceria",
       "henrique-daniels": "LP Henrique Daniels - Programa de indicações",
       kaleo: "LP Kaleo - Programa de indicações",
-      "araujo-salviano": "Araújo Salviano - Programa de indicações",
-      "bruno-estevao": "Bruno Estêvão - Programa de indicações",
+      "araujo-salviano": "LP - Araújo Salviano - Programa de indicações",
+      "bruno-estevao": "LP - Bruno Estêvão - Programa de indicações",
+      "igor-bezerra": "LP - Igor Bezerra - Programa de indicações",
     }),
     []
   );
