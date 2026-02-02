@@ -38,7 +38,7 @@ export function BarbershopPainSection({ onCtaClick }: BarbershopPainSectionProps
           {/* Conteúdo textual */}
           <div className="flex-1 flex flex-col justify-center items-center lg:items-start w-full lg:w-[55%] space-y-4 text-center lg:text-left order-first lg:order-last">
             <h2 className="text-[23px] md:text-3xl lg:text-[32px] font-extrabold text-neutral-black-text animate-fade-in-up">
-              SABE POR QUE O FATURAMENTO DA SUA BARBEARIA CRECE,{" "}
+              SABE POR QUE O FATURAMENTO DA SUA BARBEARIA CRESCE,{" "}
               <span className="text-[#ffaf02]">MAS O LUCRO NÃO ACOMPANHA?</span>
             </h2>
 
