@@ -48,7 +48,7 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
               className="text-[22px] md:text-[28px] lg:text-[32px] font-extrabold leading-[1.2] text-neutral-bg2 mb-4 animate-fade-in-up"
               style={{ animationDelay: '0.15s' }}
             >
-              SUA BARBEARIA ESTÁ CRESCENDO, <span className="text-white text-3xl drop-shadow-md">O DINHEIRO ENTRANDO...</span>
+              SUA BARBEARIA ESTÁ CRESCENDO, <span className="text-white text-2xl lg:text-[32px] drop-shadow-md">O DINHEIRO ENTRANDO...</span>
             </h1>
 
             <div className="flex flex-col gap-2">
@@ -94,8 +94,8 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
           style={{ animationDelay: '0.4s' }}
         >
           {/* Textos */}
-          <div className="w-full lg:w-[40%] flex flex-col items-center lg:items-start text-center lg:text-left lg:max-w-xl">
-            <p className="text-[16px] md:text-base lg:text-[18px] font-extrabold leading-relaxed text-neutral-bg2">
+          <div className="w-full lg:w-[40%] flex flex-col items-center lg:items-start text-center lg:text-left lg:max-w-xl mt-6 lg:mt-0">
+            <p className="text-[15px] md:text-base lg:text-[18px] font-extrabold leading-relaxed text-neutral-bg2">
               Não é sobre atender mais clientes. É sobre{" "}
               <span className="text-white bg-black px-2 py-1 rounded-md">ganhar mais dinheiro e lucrar mais</span>,
               com a barbearia que você já tem.
