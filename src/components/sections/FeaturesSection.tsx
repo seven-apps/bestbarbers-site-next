@@ -83,7 +83,7 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
             <CTAButton
               onClick={onCtaClick}
               variant="secondary"
-              size="md"
+              size="lg"
               icon={true}
               className="!shadow-[0_8px_30px_rgba(2,171,21,0.4)]"
             >
@@ -93,7 +93,7 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
             <CTAButton
               href={features.cta.href}
               variant="secondary"
-              size="md"
+              size="lg"
               icon={true}
               className="!shadow-[0_8px_30px_rgba(2,171,21,0.4)]"
             >

@@ -418,7 +418,7 @@ export function PlanComparisonSection() {
             </p>
             <a
               href="#form-section"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#121212] to-[#2a2a2a] text-[#ffaf02] rounded-full text-sm font-bold shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.3)] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200"
+              className="inline-flex items-center gap-2 px-10 py-6 bg-gradient-to-r from-[#02ab15] to-[#029912] text-white rounded-full text-md font-bold shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.3)] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200"
             >
               <Crown className="w-5 h-5" />
               QUERO O APP PERSONALIZADO

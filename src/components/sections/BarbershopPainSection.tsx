@@ -37,9 +37,9 @@ export function BarbershopPainSection({ onCtaClick }: BarbershopPainSectionProps
 
           {/* Conteúdo textual */}
           <div className="flex-1 flex flex-col justify-center items-center lg:items-start w-full lg:w-[55%] space-y-4 text-center lg:text-left order-first lg:order-last">
-            <h2 className="text-2xl md:text-3xl lg:text-[36px] font-bold leading-[1.2] text-neutral-black-text animate-fade-in-up">
-              Sabe por que o faturamento da sua barbearia cresce,{" "}
-              <span className="text-[#ffaf02]">mas o lucro não acompanha?</span>
+            <h2 className="text-2xl md:text-3xl lg:text-[32px] font-extrabold text-neutral-black-text animate-fade-in-up">
+              SABE POR QUE O FATURAMENTO DA SUA BARBEARIA CRECE,{" "}
+              <span className="text-[#ffaf02]">MAS O LUCRO NÃO ACOMPANHA?</span>
             </h2>
 
             <div className="space-y-3 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
@@ -69,7 +69,7 @@ export function BarbershopPainSection({ onCtaClick }: BarbershopPainSectionProps
               <CTAButton
                 onClick={scrollToNextSection}
                 variant="secondary"
-                size="md"
+                size="lg"
                 icon={true}
                 className="whitespace-nowrap"
               >

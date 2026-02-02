@@ -33,7 +33,7 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
 
       <div className="container-custom relative z-10">
         {/* Row 1: Headlines + Video */}
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-12 w-full mb-8 lg:mb-0">
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-12 w-full">
           {/* Headlines - CSS animations for initial load */}
           <div className="w-full lg:w-[42%] flex flex-col items-center lg:items-start text-center lg:text-left animate-fade-in-up">
             {/* Badge */}
@@ -48,7 +48,7 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
               className="text-[22px] md:text-[28px] lg:text-[32px] font-extrabold leading-[1.2] text-neutral-bg2 mb-4 animate-fade-in-up"
               style={{ animationDelay: '0.15s' }}
             >
-              Sua barbearia está crescendo, <span className="text-white text-3xl drop-shadow-md">o dinheiro entrando...</span>
+              SUA BARBEARIA ESTÁ CRESCENDO, <span className="text-white text-3xl drop-shadow-md">O DINHEIRO ENTRANDO...</span>
             </h1>
 
             <div className="flex flex-col gap-2">
@@ -57,12 +57,8 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
                 style={{ animationDelay: '0.25s' }}
               >
                 Mas seu lucro
-              </span>
-              <span 
-                className="inline-block text-white bg-black px-5 py-2.5 rounded-xl font-extrabold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.1] shadow-[0_8px_30px_rgba(0,0,0,0.35)] animate-fade-in-up"
-                style={{ animationDelay: '0.35s' }}
-              >
-                não aumenta
+                <br />
+                não aumenta!
               </span>
             </div>
           </div>
@@ -94,13 +90,15 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
 
         {/* Row 2: Description + CTA */}
         <div 
-          className="w-full flex flex-col lg:flex-row items-center justify-between gap-6 mt-6 lg:mt-8 animate-fade-in-up"
+          className="w-full flex flex-col lg:flex-row items-center justify-between gap-6  animate-fade-in-up"
           style={{ animationDelay: '0.4s' }}
         >
           {/* Textos */}
-          <div className="w-full lg:w-[40%] flex flex-col items-center lg:items-start gap-3 text-center lg:text-left lg:max-w-xl">
-            <p className="text-[15px] md:text-base lg:text-[17px] font-bold leading-relaxed text-neutral-bg2">
-              Não é sobre atender mais clientes. É sobre ganhar mais dinheiro e lucrar mais, com a barbearia que você já tem.
+          <div className="w-full lg:w-[40%] flex flex-col items-center lg:items-start text-center lg:text-left lg:max-w-xl">
+            <p className="text-[16px] md:text-base lg:text-[18px] font-extrabold leading-relaxed text-neutral-bg2">
+              Não é sobre atender mais clientes. É sobre{" "}
+              <span className="text-white bg-black px-2 py-1 rounded-md">ganhar mais dinheiro e lucrar mais</span>,
+              com a barbearia que você já tem.
             </p>
 
             <p className="text-[13px] md:text-sm lg:text-[15px] font-medium leading-relaxed text-neutral-bg2/80">
