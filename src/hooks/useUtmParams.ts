@@ -47,6 +47,7 @@ export const useUtmParams = () => {
       "araujo-salviano": 120001037,
       "bruno-estevao": 120001038,
       "igor-bezerra": 120001060,
+      "kaique-alves": 120001128,
     }),
     []
   );
@@ -72,6 +73,7 @@ export const useUtmParams = () => {
       "araujo-salviano": "LP - Araújo Salviano - Programa de indicações",
       "bruno-estevao": "LP - Bruno Estêvão - Programa de indicações",
       "igor-bezerra": "LP - Igor Bezerra - Programa de indicações",
+      "kaique-alves": "LP - Kaique Alves - Programa de indicações",
     }),
     []
   );
