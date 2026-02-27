@@ -48,6 +48,7 @@ export const useUtmParams = () => {
       "bruno-estevao": 120001038,
       "igor-bezerra": 120001060,
       "kaique-alves": 120001128,
+      "thais-dantunes": 40215957,
     }),
     []
   );
@@ -74,6 +75,7 @@ export const useUtmParams = () => {
       "bruno-estevao": "LP - Bruno Estêvão - Programa de indicações",
       "igor-bezerra": "LP - Igor Bezerra - Programa de indicações",
       "kaique-alves": "LP - Kaique Alves - Programa de indicações",
+      "thais-dantunes": "LP - Thais D'Antunes - Programa de indicações",
     }),
     []
   );

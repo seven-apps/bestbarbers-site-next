@@ -21,6 +21,7 @@ import brunoEstevaoImg from "@/app/parceiros/assets/bruno-estevao.png";
 import jamesImg from "@/app/parceiros/assets/james.png";
 import igorBezerraImg from "@/app/parceiros/assets/igor-bezerra.png";
 import kaiqueAlvesImg from "@/app/parceiros/assets/kaique-alves.png";
+import thaisDantunesImg from "@/app/parceiros/assets/thais-dantunes.png";
 
 
 interface HeroPartnerSectionProps {
@@ -50,6 +51,7 @@ export function HeroPartnerSection({
       james: jamesImg,
       "igor-bezerra": igorBezerraImg,
       "kaique-alves": kaiqueAlvesImg,
+      "thais-dantunes": thaisDantunesImg,
     };
 
     // Return partner image if source is valid, otherwise return default hero image
