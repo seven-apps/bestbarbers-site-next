@@ -3,6 +3,7 @@ import { usePhoneMask } from './usePhoneMask';
 import { usePloomesAPI, type PloomesContactData } from './usePloomesAPI';
 import { useWhatsAppRedirect } from './useWhatsAppRedirect';
 import { useMetaPixel } from './useMetaPixel';
+import { useUtmParams } from './useUtmParams';
 
 export interface FormData {
   barbershopName: string;
@@ -50,6 +51,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const { submitLead } = usePloomesAPI({ originId, originDesc });
   const { redirectToWhatsApp: redirect } = useWhatsAppRedirect();
   const { trackLead, trackCompleteRegistration } = useMetaPixel();
+  const { getUtmParams } = useUtmParams();
 
   const handleInputChange = useCallback((
     e: React.ChangeEvent<HTMLInputElement>
@@ -114,13 +116,17 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         employeeCount: formData.employeeCount
       };
 
+      // Lê UTM params para incluir grupo do anúncio nos eventos
+      const utmParams = getUtmParams();
+
       // Dispara evento de Lead no Meta Pixel
       trackLead({
         content_name: 'BestBarbers Lead Form Submission',
         content_category: 'lead_generation',
         barbershop_name: formData.barbershopName,
         monthly_revenue: formData.monthlyRevenue,
-        employee_count: formData.employeeCount
+        employee_count: formData.employeeCount,
+        ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
       });
 
       // Envia dados para o Ploomes CRM
@@ -130,7 +136,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       trackCompleteRegistration({
         content_name: 'BestBarbers Registration Complete',
         content_category: 'lead_generation',
-        barbershop_name: formData.barbershopName
+        barbershop_name: formData.barbershopName,
+        ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
       });
       
       // Chama callback de sucesso se fornecido
@@ -149,15 +156,16 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       setIsSubmitting(false);
     }
   }, [
-    formData, 
-    validateForm, 
-    submitLead, 
-    onSuccess, 
-    onError, 
-    redirectToWhatsApp, 
+    formData,
+    validateForm,
+    submitLead,
+    onSuccess,
+    onError,
+    redirectToWhatsApp,
     redirect,
     trackLead,
-    trackCompleteRegistration
+    trackCompleteRegistration,
+    getUtmParams
   ]);
 
   const resetForm = useCallback(() => {

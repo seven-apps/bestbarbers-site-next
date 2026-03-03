@@ -4,6 +4,9 @@ export interface UtmParams {
   utm_source: string | null;
   utm_desc: string | null;
   utm_inf: string | null;
+  utm_medium: string | null;
+  utm_campaign: string | null;
+  utm_content: string | null;
 }
 
 export interface OriginMapping {
@@ -86,14 +89,30 @@ export const useUtmParams = () => {
         utm_source: null,
         utm_desc: null,
         utm_inf: null,
+        utm_medium: null,
+        utm_campaign: null,
+        utm_content: null,
       };
     }
 
     const urlParams = new URLSearchParams(window.location.search);
+
+    // UTM padrão (Meta Ads: ?utm_source=meta&utm_medium=paid&utm_campaign=lead-machine&utm_content=grupo-a)
+    const utmSource = urlParams.get("utm_source");
+    const utmMedium = urlParams.get("utm_medium");
+    const utmCampaign = urlParams.get("utm_campaign");
+    const utmContent = urlParams.get("utm_content");
+
+    // Param legado de parceiros (?source=mileno) — compatibilidade mantida
+    const legacySource = urlParams.get("source");
+
     return {
-      utm_source: urlParams.get("source"),
+      utm_source: utmSource || legacySource,
       utm_desc: urlParams.get("desc"),
       utm_inf: urlParams.get("inf"),
+      utm_medium: utmMedium,
+      utm_campaign: utmCampaign,
+      utm_content: utmContent,
     };
   }, []);
 
@@ -101,12 +120,15 @@ export const useUtmParams = () => {
     (utmParams: UtmParams): OriginMapping => {
       const { utm_source, utm_desc } = utmParams;
 
-      const originId = utm_source
-        ? originMap[utm_source as keyof typeof originMap] || null
+      // utm_source=meta usa o mesmo originId de "ads" (40210173)
+      const sourceKey = utm_source === "meta" ? "ads" : utm_source;
+
+      const originId = sourceKey
+        ? originMap[sourceKey as keyof typeof originMap] || null
         : null;
 
-      const originDesc = utm_source
-        ? descMap[utm_source as keyof typeof descMap] || utm_desc
+      const originDesc = sourceKey
+        ? descMap[sourceKey as keyof typeof descMap] || utm_desc
         : utm_desc;
 
       return {
