@@ -119,8 +119,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // Lê UTM params para incluir grupo do anúncio nos eventos
       const utmParams = getUtmParams();
 
-      // Dispara evento de Lead no Meta Pixel
-      trackLead({
+      // Dispara evento de Lead no Meta Pixel (não bloqueia — roda em paralelo com a API)
+      const leadPixelPromise = trackLead({
         content_name: 'BestBarbers Lead Form Submission',
         content_category: 'lead_generation',
         barbershop_name: formData.barbershopName,
@@ -133,17 +133,21 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       await submitLead(ploomesData);
 
       // Dispara evento de CompleteRegistration no Meta Pixel após sucesso
-      trackCompleteRegistration({
+      const regPixelPromise = trackCompleteRegistration({
         content_name: 'BestBarbers Registration Complete',
         content_category: 'lead_generation',
         barbershop_name: formData.barbershopName,
         ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
       });
-      
+
+      // Aguarda confirmação de que AMBOS os pixel events foram enviados ao Facebook
+      // antes de redirecionar (window.location.href cancela requests pendentes)
+      await Promise.all([leadPixelPromise, regPixelPromise]);
+
       // Chama callback de sucesso se fornecido
       onSuccess?.();
-      
-      // Redireciona para WhatsApp se habilitado
+
+      // Redireciona para WhatsApp
       if (redirectToWhatsApp) {
         redirect();
       }
