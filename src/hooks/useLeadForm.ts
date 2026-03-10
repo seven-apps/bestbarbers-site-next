@@ -119,20 +119,21 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // Lê UTM params para incluir grupo do anúncio nos eventos
       const utmParams = getUtmParams();
 
-      // Dispara evento de Lead no Meta Pixel (não bloqueia — roda em paralelo com a API)
-      const leadPixelPromise = trackLead({
+      // Envia dados para o Ploomes CRM PRIMEIRO — só dispara pixel se o contato for criado
+      await submitLead(ploomesData);
+
+      // Dispara eventos de Lead + CompleteRegistration no Meta Pixel APÓS sucesso do Ploomes
+      // Isso garante que Meta e Ploomes fiquem sincronizados (sem leads fantasma)
+      const pixelData = {
         content_name: 'BestBarbers Lead Form Submission',
         content_category: 'lead_generation',
         barbershop_name: formData.barbershopName,
         monthly_revenue: formData.monthlyRevenue,
         employee_count: formData.employeeCount,
         ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
-      });
+      };
 
-      // Envia dados para o Ploomes CRM
-      await submitLead(ploomesData);
-
-      // Dispara evento de CompleteRegistration no Meta Pixel após sucesso
+      const leadPixelPromise = trackLead(pixelData);
       const regPixelPromise = trackCompleteRegistration({
         content_name: 'BestBarbers Registration Complete',
         content_category: 'lead_generation',
