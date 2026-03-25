@@ -1,27 +1,31 @@
 "use client";
 
-import { Smartphone, RefreshCcw, BarChart3, Headphones } from "lucide-react";
+import { TrendingUp, MessageSquareOff, Eye, Headphones } from "lucide-react";
 
 const benefits = [
   {
-    icon: Smartphone,
-    title: "App Próprio na App Store",
-    description: "Sua marca, seus clientes, sem concorrentes. Um aplicativo exclusivo publicado com o nome da sua barbearia.",
+    icon: TrendingUp,
+    title: "Faturamento previsivel todo mes",
+    description: "Clube de assinaturas com cobranca automatica. Seus clientes pagam no automatico — voce sabe exatamente quanto entra antes de abrir a porta.",
+    stat: "353 assinantes = R$31.690/mes",
   },
   {
-    icon: RefreshCcw,
-    title: "Clube de Assinaturas",
-    description: "Receita recorrente e previsível todo mês. Seus clientes pagam automaticamente e você fideliza com facilidade.",
+    icon: MessageSquareOff,
+    title: "Zero tempo no WhatsApp",
+    description: "Agenda online com confirmacao automatica. Seus clientes marcam sozinhos, recebem lembrete e voce para de perder 2h por dia respondendo mensagem.",
+    stat: "6M de agendamentos por mes",
   },
   {
-    icon: BarChart3,
-    title: "Gestão Inteligente",
-    description: "Dashboard com as métricas que importam. Controle financeiro, comissões e relatórios em tempo real.",
+    icon: Eye,
+    title: "Veja seu lucro real em tempo real",
+    description: "Dashboard financeiro com comissoes, ticket medio e margem por servico. Descubra em 5 minutos se voce esta lucrando ou pagando pra trabalhar.",
+    stat: "Controle de cada centavo",
   },
   {
     icon: Headphones,
-    title: "Suporte Dedicado",
-    description: "Time real que resolve, não robôs. Gerente de contas exclusivo para te ajudar a crescer.",
+    title: "Gerente dedicado do dia 1",
+    description: "Nao e chatbot. E uma pessoa real via WhatsApp que monta seu clube, migra seus dados e acompanha seus primeiros resultados.",
+    stat: "Onboarding completo incluso",
   },
 ];
 
@@ -32,11 +36,11 @@ export function BenefitsGrid() {
         {/* Section Header */}
         <div className="text-center mb-10 md:mb-14 animate-fade-in-up">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-3">
-            Por que barbearias escolhem o{" "}
+            O que muda na sua barbearia com o{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffaf02] to-[#ffc233]">BestBarbers</span>
           </h2>
           <p className="text-sm md:text-base text-gray-400 max-w-xl mx-auto">
-            Tudo que você precisa para transformar faturamento em lucro real
+            Resultados reais de 1.200+ barbearias que ja usam
           </p>
         </div>
 
@@ -57,9 +61,12 @@ export function BenefitsGrid() {
               <h3 className="text-lg md:text-xl font-extrabold text-white mb-2">
                 {benefit.title}
               </h3>
-              <p className="text-sm md:text-[15px] text-gray-400 leading-relaxed">
+              <p className="text-sm md:text-[15px] text-gray-400 leading-relaxed mb-3">
                 {benefit.description}
               </p>
+              <span className="inline-block text-xs font-bold text-[#ffaf02] bg-[#ffaf02]/10 px-3 py-1 rounded-full">
+                {benefit.stat}
+              </span>
             </div>
           ))}
         </div>

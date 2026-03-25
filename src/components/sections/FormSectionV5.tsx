@@ -11,8 +11,8 @@ const formFields = [
 
 const trustBadges = [
   { icon: Shield, text: "Sem cartao necessario" },
-  { icon: Clock, text: "Resposta em 24h" },
-  { icon: Users, text: "+1.200 barbearias" },
+  { icon: Clock, text: "Retorno em minutos" },
+  { icon: Users, text: "1.200+ barbearias" },
 ];
 
 export function FormSectionV5() {
@@ -54,7 +54,7 @@ export function FormSectionV5() {
         <div className="flex justify-center mb-6 animate-fade-in-up">
           <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#ffaf02]/15 to-[#ffc233]/15 rounded-full text-[#ffaf02] text-sm font-bold border border-[#ffaf02]/30 animate-glow-pulse">
             <Sparkles className="w-4 h-4" />
-            Vagas limitadas — resposta em até 24h
+            1.200+ barbearias ja usam — vagas de onboarding limitadas
           </span>
         </div>
 
@@ -90,22 +90,22 @@ export function FormSectionV5() {
           </div>
         )}
 
-        {/* Pricing Banner */}
+        {/* ROI Framing Banner */}
         <div className="bg-gradient-to-r from-[#ffaf02]/10 to-[#ffc233]/10 border border-[#ffaf02]/30 rounded-2xl p-5 mb-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-          <div className="grid grid-cols-2 gap-4 text-center">
-            <div>
-              <div className="text-xs text-gray-400 font-medium mb-1">ANTES</div>
-              <div className="text-red-400 font-bold text-sm line-through">R$2.400 taxa</div>
-              <div className="text-gray-400 text-xs">+ R$199/mês = R$4.788/ano</div>
+          <div className="text-center space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ffaf02]/20 rounded-full">
+              <Shield className="w-3.5 h-3.5 text-[#ffaf02]" />
+              <span className="text-[#ffaf02] text-xs font-bold uppercase">Sem taxa de implantacao</span>
             </div>
-            <div>
-              <div className="text-xs text-[#ffaf02] font-medium mb-1">AGORA</div>
-              <div className="text-[#ffaf02] font-bold text-sm">R$0 taxa</div>
-              <div className="text-gray-300 text-xs">+ R$299/mês = R$3.588/ano</div>
+            <div className="text-white font-extrabold text-lg md:text-xl">
+              A partir de R$299/mes
             </div>
-          </div>
-          <div className="text-center mt-3 pt-3 border-t border-[#ffaf02]/20">
-            <span className="text-[#ffaf02] font-extrabold text-sm">ECONOMIZE R$1.200 NO 1º ANO</span>
+            <div className="text-gray-300 text-sm font-medium">
+              3 assinantes no clube ja pagam o sistema inteiro.
+            </div>
+            <div className="text-[#ffaf02] font-bold text-sm">
+              Os outros 350? Lucro.
+            </div>
           </div>
         </div>
 
@@ -136,7 +136,7 @@ export function FormSectionV5() {
             {/* Zero implantation badge */}
             <div className="flex justify-center py-2">
               <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#ffaf02]/15 rounded-full text-[#ffaf02] text-xs font-bold border border-[#ffaf02]/30">
-                ZERO IMPLANTAÇÃO — R$299/MÊS
+SEM TAXA DE IMPLANTACAO — A PARTIR DE R$299/MES
               </span>
             </div>
 
