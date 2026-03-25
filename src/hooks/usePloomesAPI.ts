@@ -140,6 +140,37 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     return response.json();
   }, [getUtmParams, getOriginMapping, customOriginId]);
 
+  const checkPhoneExists = useCallback(async (phone: string): Promise<boolean> => {
+    try {
+      const digits = phone.replace(/\D/g, '');
+      const searchDigits = digits.length > 8 ? digits.slice(-9) : digits;
+
+      const filter = encodeURIComponent(
+        `Phones/any(p: contains(p/PhoneNumber, '${searchDigits}'))`
+      );
+      const url = `${PLOOMES_BASE_URL}/Contacts?$filter=${filter}&$top=1&$select=Id,Name`;
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 3000);
+
+      const response = await fetch(url, {
+        headers: {
+          'Accept': 'application/json',
+          'user-key': PLOOMES_API_KEY,
+        },
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeout);
+
+      if (!response.ok) return false;
+      const data = await response.json();
+      return (data.value?.length || 0) > 0;
+    } catch {
+      return false;
+    }
+  }, []);
+
   const submitLead = useCallback(async (data: PloomesContactData): Promise<void> => {
     try {
       // Cria o contato no Ploomes
@@ -159,6 +190,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
   return {
     createContact,
     createDeal,
+    checkPhoneExists,
     submitLead
   };
 };

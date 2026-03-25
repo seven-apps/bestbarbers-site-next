@@ -44,7 +44,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
-  const { submitLead } = usePloomesAPI({ originId, originDesc });
+  const { submitLead, checkPhoneExists } = usePloomesAPI({ originId, originDesc });
   const { redirectToWhatsApp: redirect } = useWhatsAppRedirect();
   const { trackLead, trackCompleteRegistration } = useMetaPixel();
   const { getUtmParams } = useUtmParams();
@@ -111,6 +111,17 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         } catch {
           // Non-blocking: se dedup falhar, segue com submit normal
         }
+      }
+
+      // Dedup check 2: verifica direto no Ploomes (fallback se BBAI API falhou + cobre leads de outras fontes)
+      try {
+        const existsInPloomes = await checkPhoneExists(formData.whatsapp);
+        if (existsInPloomes) {
+          setSubmitError('Você já tem um diagnóstico agendado! Entraremos em contato em breve.');
+          return;
+        }
+      } catch {
+        // Non-blocking: se Ploomes check falhar, segue com submit normal
       }
 
       // Converte FormData para PloomesContactData
@@ -187,6 +198,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   }, [
     formData,
     validateForm,
+    checkPhoneExists,
     submitLead,
     onSuccess,
     onError,
