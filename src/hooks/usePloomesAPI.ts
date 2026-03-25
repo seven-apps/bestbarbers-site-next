@@ -143,10 +143,18 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
   const checkPhoneExists = useCallback(async (phone: string): Promise<boolean> => {
     try {
       const digits = phone.replace(/\D/g, '');
-      const searchDigits = digits.length > 8 ? digits.slice(-9) : digits;
+      // Telefones no Ploomes têm formatação (ex: "(31) 97226-8877").
+      // contains() faz match literal, então "972268877" NÃO encontra por causa do traço.
+      // Solução: buscar por 2 chunks que são sempre contíguos em qualquer formato:
+      //   - últimos 4 dígitos (sempre após o traço)
+      //   - 5 dígitos anteriores (sempre antes do traço, para celular BR)
+      const last4 = digits.slice(-4);
+      const firstChunk = digits.slice(-9, -4);
 
       const filter = encodeURIComponent(
-        `Phones/any(p: contains(p/PhoneNumber, '${searchDigits}'))`
+        firstChunk.length >= 4
+          ? `Phones/any(p: contains(p/PhoneNumber, '${last4}') and contains(p/PhoneNumber, '${firstChunk}'))`
+          : `Phones/any(p: contains(p/PhoneNumber, '${last4}'))`
       );
       const url = `${PLOOMES_BASE_URL}/Contacts?$filter=${filter}&$top=1&$select=Id,Name`;
 
