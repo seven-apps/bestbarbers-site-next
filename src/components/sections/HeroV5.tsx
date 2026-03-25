@@ -34,7 +34,7 @@ export function HeroV5({ onCtaClick }: HeroV5Props) {
           <div className="mb-5 animate-scale-in" style={{ animationDelay: '0.1s' }}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-black/90 rounded-full text-white text-xs md:text-sm font-bold shadow-lg">
               <Sparkles className="w-3.5 h-3.5 text-[#ffaf02]" />
-              Sistema #1 para Barbearias
+              1.200 barbearias ja usam
             </span>
           </div>
 
@@ -43,12 +43,12 @@ export function HeroV5({ onCtaClick }: HeroV5Props) {
             className="text-[24px] md:text-[36px] lg:text-[44px] font-extrabold leading-[1.15] text-neutral-bg2 mb-4 animate-fade-in-up"
             style={{ animationDelay: '0.15s' }}
           >
-            Sua Barbearia Fatura Bem,
+            Seu App. Seus Clientes. Receita Todo Mes.
           </h1>
 
           <div className="mb-6 animate-fade-in-up" style={{ animationDelay: '0.25s' }}>
             <span className="inline-block text-white bg-black px-5 py-3 rounded-xl font-extrabold text-[28px] md:text-[40px] lg:text-[48px] leading-[1.1] shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
-              Mas o Lucro Não Aparece?
+              R$0 de Implantação.
             </span>
           </div>
 
@@ -57,10 +57,9 @@ export function HeroV5({ onCtaClick }: HeroV5Props) {
             className="text-[15px] md:text-[17px] lg:text-[19px] font-extrabold leading-relaxed text-neutral-bg2 max-w-2xl mb-8 animate-fade-in-up"
             style={{ animationDelay: '0.35s' }}
           >
-            O BestBarbers transforma faturamento em lucro real com{" "}
-            <span className="text-white bg-black/80 px-2 py-0.5 rounded-md">app próprio</span>,{" "}
-            <span className="text-white bg-black/80 px-2 py-0.5 rounded-md">clube de assinaturas</span> e{" "}
-            <span className="text-white bg-black/80 px-2 py-0.5 rounded-md">gestão inteligente</span>.
+            <span className="text-white bg-black/80 px-2 py-0.5 rounded-md">R$299/mes</span>.{" "}
+            <span className="text-white bg-black/80 px-2 py-0.5 rounded-md">3 assinantes ja pagam</span>.{" "}
+            <span className="text-white bg-black/80 px-2 py-0.5 rounded-md">Nota 5.0</span>.
           </p>
 
           {/* CTA */}
@@ -73,14 +72,14 @@ export function HeroV5({ onCtaClick }: HeroV5Props) {
                 icon={true}
                 className="w-full sm:w-auto !shadow-[0_8px_40px_rgba(2,171,21,0.5)] hover:!shadow-[0_12px_50px_rgba(2,171,21,0.6)]"
               >
-                QUERO MEU DIAGNÓSTICO GRATUITO
+                DESCOBRIR MEU POTENCIAL DE LUCRO
               </CTAButton>
             </div>
 
             {/* Trust badge */}
             <div className="flex items-center gap-2 text-neutral-bg2/80 animate-fade-in" style={{ animationDelay: '0.55s' }}>
               <BadgeCheck className="w-4 h-4" />
-              <span className="text-xs md:text-sm font-semibold">Diagnóstico Gratuito — Sem Compromisso</span>
+              <span className="text-xs md:text-sm font-semibold">Zero Implantação — Antes era R$2.400</span>
             </div>
           </div>
         </div>

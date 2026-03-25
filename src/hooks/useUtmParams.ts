@@ -7,6 +7,7 @@ export interface UtmParams {
   utm_medium: string | null;
   utm_campaign: string | null;
   utm_content: string | null;
+  utm_term: string | null;
 }
 
 export interface OriginMapping {
@@ -92,6 +93,7 @@ export const useUtmParams = () => {
         utm_medium: null,
         utm_campaign: null,
         utm_content: null,
+        utm_term: null,
       };
     }
 
@@ -102,6 +104,7 @@ export const useUtmParams = () => {
     const utmMedium = urlParams.get("utm_medium");
     const utmCampaign = urlParams.get("utm_campaign");
     const utmContent = urlParams.get("utm_content");
+    const utmTerm = urlParams.get("utm_term");
 
     // Param legado de parceiros (?source=mileno) — compatibilidade mantida
     const legacySource = urlParams.get("source");
@@ -113,6 +116,7 @@ export const useUtmParams = () => {
       utm_medium: utmMedium,
       utm_campaign: utmCampaign,
       utm_content: utmContent,
+      utm_term: utmTerm,
     };
   }, []);
 

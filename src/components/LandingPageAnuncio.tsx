@@ -229,65 +229,33 @@ export default function LandingPageAnuncio() {
               />
             </div>
 
-            {/* Nome do Dono */}
-            <div className="space-y-1">
-              <label className="block font-medium text-[14px] leading-[20px] tracking-[-0.14px] text-white">
-                Nome do Dono da barbearia
-              </label>
-              <input
-                type="text"
-                name="ownerName"
-                value={formData.ownerName}
-                onChange={handleInputChange}
-                placeholder="Digite o nome do dono da barbearia"
-                required
-                className="w-full bg-[#20242a] border-2 border-[#ebad04] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#ebad04] transition-colors"
-              />
-            </div>
-
             {/* WhatsApp */}
             <div className="space-y-1">
               <label className="block font-medium text-[14px] leading-[20px] tracking-[-0.14px] text-white">
-                WhatsApp do Dono da barbearia
+                WhatsApp
               </label>
               <input
                 type="tel"
                 name="whatsapp"
                 value={formData.whatsapp}
                 onChange={handleInputChange}
-                placeholder="Celular - whatsapp do dono da barbearia"
+                placeholder="(11) 99999-9999"
                 required
                 className="w-full bg-[#20242a] border-2 border-[#ebad04] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#ebad04] transition-colors"
               />
             </div>
 
-            {/* Faturamento */}
+            {/* Cadeiras */}
             <div className="space-y-1">
               <label className="block font-medium text-[14px] leading-[20px] tracking-[-0.14px] text-white">
-                Faturamento médio mensal (R$)
-              </label>
-              <input
-                type="text"
-                name="monthlyRevenue"
-                value={formData.monthlyRevenue}
-                onChange={handleInputChange}
-                placeholder="Quanto sua barbearia fatura por mês"
-                required
-                className="w-full bg-[#20242a] border-2 border-[#ebad04] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#ebad04] transition-colors"
-              />
-            </div>
-
-            {/* Colaboradores */}
-            <div className="space-y-1">
-              <label className="block font-medium text-[14px] leading-[20px] tracking-[-0.14px] text-white">
-                Número de colaboradores
+                Quantas cadeiras?
               </label>
               <input
                 type="number"
                 name="employeeCount"
                 value={formData.employeeCount}
                 onChange={handleInputChange}
-                placeholder="Quantos colaboradores tem na barbearia"
+                placeholder="Ex: 4"
                 required
                 className="w-full bg-[#20242a] border-2 border-[#ebad04] rounded-[8px] px-4 py-4 text-white placeholder-[#aeb0b2] font-medium text-[14px] leading-[20px] tracking-[-0.14px] focus:outline-none focus:border-[#ebad04] transition-colors"
               />

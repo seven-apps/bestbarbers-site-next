@@ -3,9 +3,9 @@ import { useUtmParams } from './useUtmParams';
 
 export interface PloomesContactData {
   barbershopName: string;
-  ownerName: string;
+  ownerName?: string;
   whatsapp: string;
-  monthlyRevenue: string;
+  monthlyRevenue?: string;
   employeeCount: string;
 }
 
@@ -60,7 +60,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       OtherProperties: [
         {
           FieldKey: "contact_DA6F2406-FE50-4EFC-BBB5-A3463435B427",
-          StringValue: data.ownerName
+          StringValue: data.ownerName || data.barbershopName
         },
         {
           FieldKey: "contact_2D7EF0B1-E99E-414A-A7DA-4106F05DD4BB",
@@ -70,10 +70,10 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
           FieldKey: "contact_51143832-6126-4F8F-9453-D6EEFFE2A352",
           StringValue: data.employeeCount
         },
-        {
+        ...(data.monthlyRevenue ? [{
           FieldKey: "contact_0748BA26-23E6-41CA-8C7A-A3568B28AC75",
           StringValue: data.monthlyRevenue
-        }
+        }] : [])
       ]
     };
 
@@ -111,10 +111,10 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       ContactId: contactId,
       OriginId: originId,
       OtherProperties: [
-        {
+        ...(data.monthlyRevenue ? [{
           FieldKey: "deal_1AE384B9-A46A-4935-B751-67FEB42B0054",
           StringValue: data.monthlyRevenue
-        },
+        }] : []),
         {
           FieldKey: "deal_A48BFA65-1923-469D-8B33-51C759A06F04",
           StringValue: data.employeeCount

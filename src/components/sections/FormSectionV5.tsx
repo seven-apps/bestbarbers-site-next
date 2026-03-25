@@ -4,17 +4,15 @@ import { useLeadForm } from "@/hooks";
 import { ArrowRight, Sparkles, Shield, Clock, Users } from "lucide-react";
 
 const formFields = [
-  { name: "barbershopName", label: "Nome da Barbearia", placeholder: "Digite o nome da sua barbearia", type: "text" },
-  { name: "ownerName", label: "Nome do Dono da barbearia", placeholder: "Digite o nome do dono da barbearia", type: "text" },
-  { name: "whatsapp", label: "WhatsApp do Dono da barbearia", placeholder: "Celular - whatsapp do dono da barbearia", type: "tel" },
-  { name: "monthlyRevenue", label: "Faturamento médio mensal (R$)", placeholder: "Quanto sua barbearia fatura por mês", type: "text" },
-  { name: "employeeCount", label: "Número de colaboradores", placeholder: "Quantos colaboradores tem na barbearia", type: "number" },
+  { name: "barbershopName", label: "Nome da Barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
+  { name: "whatsapp", label: "WhatsApp", placeholder: "(11) 99999-9999", type: "tel" },
+  { name: "employeeCount", label: "Quantas cadeiras?", placeholder: "Ex: 4", type: "number" },
 ];
 
 const trustBadges = [
-  { icon: Shield, text: "Dados seguros" },
+  { icon: Shield, text: "Sem cartao necessario" },
   { icon: Clock, text: "Resposta em 24h" },
-  { icon: Users, text: "+1000 barbearias" },
+  { icon: Users, text: "+1.200 barbearias" },
 ];
 
 export function FormSectionV5() {
@@ -62,13 +60,13 @@ export function FormSectionV5() {
 
         {/* Title */}
         <h2 className="font-extrabold text-[28px] leading-[36px] md:text-[36px] md:leading-[44px] lg:text-[44px] lg:leading-[52px] tracking-tight text-white mb-6 text-center animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-          Receba seu{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffaf02] to-[#ffc233]">Diagnóstico Gratuito</span>
+          Descubra quanto sua barbearia{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffaf02] to-[#ffc233]">pode lucrar</span>
         </h2>
 
         {/* Description */}
         <p className="font-medium text-[15px] leading-[24px] md:text-[17px] md:leading-[28px] text-gray-300 mb-8 text-center max-w-xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-          Preencha abaixo e um especialista vai analisar como sua barbearia pode lucrar mais — sem compromisso.
+          Analise gratuita e personalizada em ate 24h. Sem cartao, sem compromisso.
         </p>
 
         {/* Trust Badges */}
@@ -91,6 +89,25 @@ export function FormSectionV5() {
             <p className="text-red-400 text-sm font-medium text-center">{submitError}</p>
           </div>
         )}
+
+        {/* Pricing Banner */}
+        <div className="bg-gradient-to-r from-[#ffaf02]/10 to-[#ffc233]/10 border border-[#ffaf02]/30 rounded-2xl p-5 mb-6 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          <div className="grid grid-cols-2 gap-4 text-center">
+            <div>
+              <div className="text-xs text-gray-400 font-medium mb-1">ANTES</div>
+              <div className="text-red-400 font-bold text-sm line-through">R$2.400 taxa</div>
+              <div className="text-gray-400 text-xs">+ R$199/mês = R$4.788/ano</div>
+            </div>
+            <div>
+              <div className="text-xs text-[#ffaf02] font-medium mb-1">AGORA</div>
+              <div className="text-[#ffaf02] font-bold text-sm">R$0 taxa</div>
+              <div className="text-gray-300 text-xs">+ R$299/mês = R$3.588/ano</div>
+            </div>
+          </div>
+          <div className="text-center mt-3 pt-3 border-t border-[#ffaf02]/20">
+            <span className="text-[#ffaf02] font-extrabold text-sm">ECONOMIZE R$1.200 NO 1º ANO</span>
+          </div>
+        </div>
 
         {/* Form Card */}
         <div className="bg-gradient-to-br from-[#1a1a1a]/80 to-[#1e1e1e]/80 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-gray-800/50 p-6 md:p-8 shadow-2xl animate-fade-in-up" style={{ animationDelay: '0.35s' }}>
@@ -116,6 +133,13 @@ export function FormSectionV5() {
               </div>
             ))}
 
+            {/* Zero implantation badge */}
+            <div className="flex justify-center py-2">
+              <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#ffaf02]/15 rounded-full text-[#ffaf02] text-xs font-bold border border-[#ffaf02]/30">
+                ZERO IMPLANTAÇÃO — R$299/MÊS
+              </span>
+            </div>
+
             {/* Submit Button */}
             <div className="pt-4 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
               <div className={`rounded-full ${!isSubmitting ? 'animate-pulse-glow-gold' : ''}`}>
@@ -131,7 +155,7 @@ export function FormSectionV5() {
                     </>
                   ) : (
                     <>
-                      QUERO MEU DIAGNÓSTICO GRATUITO
+                      DESCOBRIR MEU POTENCIAL DE LUCRO
                       <span className="animate-bounce-x">
                         <ArrowRight className="w-5 h-5" />
                       </span>

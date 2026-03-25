@@ -7,9 +7,7 @@ import { useUtmParams } from './useUtmParams';
 
 export interface FormData {
   barbershopName: string;
-  ownerName: string;
   whatsapp: string;
-  monthlyRevenue: string;
   employeeCount: string;
 }
 
@@ -38,9 +36,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
 
   const [formData, setFormData] = useState<FormData>({
     barbershopName: '',
-    ownerName: '',
     whatsapp: '',
-    monthlyRevenue: '',
     employeeCount: ''
   });
 
@@ -76,20 +72,14 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     if (!formData.barbershopName.trim()) {
       return 'Nome da barbearia é obrigatório';
     }
-    if (!formData.ownerName.trim()) {
-      return 'Nome do dono é obrigatório';
-    }
     if (!formData.whatsapp.trim()) {
       return 'WhatsApp é obrigatório';
     }
     if (!isValidPhone(formData.whatsapp)) {
       return 'WhatsApp deve ter formato válido';
     }
-    if (!formData.monthlyRevenue.trim()) {
-      return 'Faturamento mensal é obrigatório';
-    }
     if (!formData.employeeCount.trim()) {
-      return 'Número de colaboradores é obrigatório';
+      return 'Número de cadeiras é obrigatório';
     }
     return null;
   }, [formData, isValidPhone]);
@@ -107,12 +97,26 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     setSubmitError(null);
     
     try {
+      // Dedup check: verifica se lead já existe antes de enviar
+      const aiApiUrl = process.env.NEXT_PUBLIC_BBAI_API_URL;
+      if (aiApiUrl) {
+        try {
+          const phoneDigits = formData.whatsapp.replace(/\D/g, '');
+          const checkRes = await fetch(`${aiApiUrl}/api/leads/check?phone=${phoneDigits}`);
+          const checkData = await checkRes.json();
+          if (checkData?.data?.exists) {
+            setSubmitError('Você já tem um diagnóstico agendado! Entraremos em contato em breve.');
+            return;
+          }
+        } catch {
+          // Non-blocking: se dedup falhar, segue com submit normal
+        }
+      }
+
       // Converte FormData para PloomesContactData
       const ploomesData: PloomesContactData = {
         barbershopName: formData.barbershopName,
-        ownerName: formData.ownerName,
         whatsapp: formData.whatsapp,
-        monthlyRevenue: formData.monthlyRevenue,
         employeeCount: formData.employeeCount
       };
 
@@ -122,13 +126,33 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // Envia dados para o Ploomes CRM PRIMEIRO — só dispara pixel se o contato for criado
       await submitLead(ploomesData);
 
+      // Envia lead para BestBarbers AI (CAPI + SDR priority + revenue attribution)
+      // Non-blocking: não trava o fluxo se falhar
+      if (aiApiUrl) {
+        const phoneDigits = formData.whatsapp.replace(/\D/g, '');
+        fetch(`${aiApiUrl}/api/leads/simple`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: formData.barbershopName,
+            phone: phoneDigits,
+            chairs: formData.employeeCount,
+            source: 'lp_v5',
+            utm_source: utmParams.utm_source || undefined,
+            utm_medium: utmParams.utm_medium || undefined,
+            utm_campaign: utmParams.utm_campaign || undefined,
+            utm_content: utmParams.utm_content || undefined,
+            utm_term: utmParams.utm_term || undefined,
+          }),
+        }).catch(() => { /* non-blocking */ });
+      }
+
       // Dispara eventos de Lead + CompleteRegistration no Meta Pixel APÓS sucesso do Ploomes
       // Isso garante que Meta e Ploomes fiquem sincronizados (sem leads fantasma)
       const pixelData = {
         content_name: 'BestBarbers Lead Form Submission',
         content_category: 'lead_generation',
         barbershop_name: formData.barbershopName,
-        monthly_revenue: formData.monthlyRevenue,
         employee_count: formData.employeeCount,
         ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
       };
@@ -176,9 +200,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const resetForm = useCallback(() => {
     setFormData({
       barbershopName: '',
-      ownerName: '',
       whatsapp: '',
-      monthlyRevenue: '',
       employeeCount: ''
     });
     setSubmitError(null);

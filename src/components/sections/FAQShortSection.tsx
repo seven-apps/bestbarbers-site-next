@@ -10,8 +10,8 @@ interface FAQItem {
 
 const faqItems: FAQItem[] = [
   {
-    question: "O que é o diagnóstico gratuito?",
-    answer: "É uma análise personalizada da sua barbearia feita por um dos nossos especialistas. Vamos avaliar seu faturamento, estrutura e oportunidades de lucro — tudo sem compromisso e sem custo nenhum.",
+    question: "O que é a análise gratuita?",
+    answer: "Um especialista analisa sua barbearia e entrega em até 24h via WhatsApp: (1) quanto você pode faturar com clube de assinaturas, (2) como organizar sua agenda sem WhatsApp, (3) plano de implementação com timeline. Sem cartão, sem compromisso — 100% gratuito.",
   },
   {
     question: "Preciso pagar algo para começar?",
@@ -23,7 +23,19 @@ const faqItems: FAQItem[] = [
   },
   {
     question: "Funciona para barbearia pequena?",
-    answer: "Sim! O BestBarbers funciona para barbearias a partir de 2 cadeiras. Na verdade, barbearias menores costumam sentir o impacto mais rápido, porque a gestão organizada faz diferença imediata no lucro.",
+    answer: "Funciona melhor para pequenas. A Pirajussara tem 4 cadeiras e fatura R$31.690/mês com clube. Gestão organizada faz mais diferença quando o time é enxuto — cada hora que você para de agendar pelo WhatsApp vira hora cortando.",
+  },
+  {
+    question: "Quanto custa o BestBarbers?",
+    answer: "R$0 de implantação (antes era R$2.400). A mensalidade do plano App Exclusivo é R$299/mês com tudo incluso: app próprio, clube de assinaturas automático, dashboard financeiro, NF-e e suporte dedicado. Sem fidelidade — cancela quando quiser.",
+  },
+  {
+    question: "É mais barato que antes?",
+    answer: "Sim! R$1.200 mais barato no primeiro ano. Antes: R$2.400 (taxa) + 12 × R$199 = R$4.788/ano. Agora: R$0 (taxa) + 12 × R$299 = R$3.588/ano. Economia de 25%.",
+  },
+  {
+    question: "O clube se paga?",
+    answer: "Com apenas 3 assinantes de R$100, você já cobre o custo do sistema (3 × R$100 = R$300 > R$299). A Pirajussara, barbearia de 4 cadeiras em Embu das Artes, tem 353 assinantes e fatura R$31.690/mês só com clube.",
   },
   {
     question: "Como funciona o App Próprio?",
