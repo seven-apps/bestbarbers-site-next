@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next'
+import { cities } from '@/data/cities'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.bestbarbers.app'
@@ -26,6 +27,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.9,
+    })),
+    ...cities.map((city) => ({
+      url: `${baseUrl}/sistema-para-barbearia/${city.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     })),
     {
       url: `${baseUrl}/termos-de-uso`,
