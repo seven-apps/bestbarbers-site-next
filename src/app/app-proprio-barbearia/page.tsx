@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
+import { FeatureCTA } from "@/components/FeatureCTA";
 import {
   Smartphone,
   Palette,
@@ -139,9 +140,6 @@ const processSteps = [
   },
 ];
 
-const CTA_URL =
-  "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-AppProprio";
-
 export default function AppProprioBarbearia() {
   return (
     <>
@@ -204,15 +202,13 @@ export default function AppProprioBarbearia() {
                 app proprio com BestBarbers.
               </p>
 
-              <Link
-                href={CTA_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <FeatureCTA
+                originDesc="[Site]BT-AppProprio"
                 className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm md:text-base font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_4px_20px_rgba(255,175,2,0.3)]"
               >
                 QUERO UM APP PROPRIO PARA MINHA BARBEARIA
                 <ArrowRight className="w-5 h-5" />
-              </Link>
+              </FeatureCTA>
             </div>
           </div>
         </section>
@@ -439,15 +435,13 @@ export default function AppProprioBarbearia() {
               Pare de dividir tela com concorrentes. Tenha um app exclusivo com
               a cara da sua barbearia na App Store e Play Store.
             </p>
-            <Link
-              href={CTA_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <FeatureCTA
+              originDesc="[Site]BT-AppProprio"
               className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm md:text-base font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_4px_20px_rgba(255,175,2,0.3)]"
             >
               QUERO UM APP PROPRIO PARA MINHA BARBEARIA
               <ArrowRight className="w-5 h-5" />
-            </Link>
+            </FeatureCTA>
             <p className="text-xs text-gray-600 mt-4">
               A partir de R$299/mes no plano App Exclusivo
             </p>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FeatureCTA } from "@/components/FeatureCTA";
 import {
   Calendar,
   Clock,
@@ -83,12 +84,6 @@ const faqJsonLd = {
 };
 
 /* ------------------------------------------------------------------ */
-/*  CTA link                                                          */
-/* ------------------------------------------------------------------ */
-const CTA_HREF =
-  "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Agendamento";
-
-/* ------------------------------------------------------------------ */
 /*  Page component (Server Component)                                 */
 /* ------------------------------------------------------------------ */
 export default function AgendamentoOnlinePage() {
@@ -154,15 +149,13 @@ export default function AgendamentoOnlinePage() {
                 </p>
               </div>
 
-              <a
-                href={CTA_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
+              <FeatureCTA
+                originDesc="[Site]BT-Agendamento"
                 className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm md:text-base font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
               >
                 QUERO AGENDAMENTO ONLINE NA MINHA BARBEARIA
                 <ArrowRight className="w-5 h-5" />
-              </a>
+              </FeatureCTA>
             </div>
           </div>
         </section>
@@ -339,15 +332,13 @@ export default function AgendamentoOnlinePage() {
               </p>
 
               <div className="text-center">
-                <a
-                  href={CTA_HREF}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <FeatureCTA
+                  originDesc="[Site]BT-Agendamento"
                   className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm md:text-base font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
                 >
                   QUERO AGENDAMENTO ONLINE NA MINHA BARBEARIA
                   <ArrowRight className="w-5 h-5" />
-                </a>
+                </FeatureCTA>
               </div>
             </div>
           </div>
@@ -441,15 +432,13 @@ export default function AgendamentoOnlinePage() {
               Configure o agendamento online da sua barbearia em menos de 24
               horas e comece a receber agendamentos automaticamente.
             </p>
-            <a
-              href={CTA_HREF}
-              target="_blank"
-              rel="noopener noreferrer"
+            <FeatureCTA
+              originDesc="[Site]BT-Agendamento"
               className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm md:text-base font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
             >
               QUERO AGENDAMENTO ONLINE NA MINHA BARBEARIA
               <ArrowRight className="w-5 h-5" />
-            </a>
+            </FeatureCTA>
           </div>
         </section>
       </main>

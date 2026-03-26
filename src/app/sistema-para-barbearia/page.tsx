@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
+import { FeatureCTA } from "@/components/FeatureCTA";
 
 export const metadata: Metadata = {
   title:
@@ -52,14 +53,12 @@ export default function SistemaParaBarbearia() {
             para gerenciar suas operacoes e multiplicar seu faturamento.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4">
-            <Link
-              href="https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Sistema"
-              target="_blank"
-              rel="noopener noreferrer"
+            <FeatureCTA
+              originDesc="[Site]BT-Sistema"
               className="inline-flex items-center justify-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
             >
               QUERO UM APP PROPRIO PARA MINHA BARBEARIA
-            </Link>
+            </FeatureCTA>
           </div>
         </div>
       </section>
@@ -691,14 +690,12 @@ export default function SistemaParaBarbearia() {
             equipe e descubra como o sistema pode transformar o seu negocio.
           </p>
           <div className="mt-10">
-            <Link
-              href="https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Sistema"
-              target="_blank"
-              rel="noopener noreferrer"
+            <FeatureCTA
+              originDesc="[Site]BT-Sistema"
               className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-10 py-5 rounded-full text-base font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
             >
               QUERO UM APP PROPRIO PARA MINHA BARBEARIA
-            </Link>
+            </FeatureCTA>
           </div>
           <p className="mt-4 text-gray-500 text-sm">
             Sem compromisso. Fale com um especialista e tire todas as suas

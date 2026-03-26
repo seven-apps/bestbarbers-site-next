@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FeatureCTA } from "@/components/FeatureCTA";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 
@@ -44,14 +45,12 @@ export default function TotemAutoatendimento() {
             importa: cortar cabelo.
           </p>
           <div className="mt-10">
-            <Link
-              href="https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Totem-Page"
-              target="_blank"
-              rel="noopener noreferrer"
+            <FeatureCTA
+              originDesc="[Site]BT-Totem-Page"
               className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
             >
               QUERO TOTEM NA MINHA BARBEARIA
-            </Link>
+            </FeatureCTA>
           </div>
         </div>
       </section>
@@ -319,14 +318,12 @@ export default function TotemAutoatendimento() {
             tudo sozinho.
           </p>
           <div className="mt-8">
-            <Link
-              href="https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Totem-Page"
-              target="_blank"
-              rel="noopener noreferrer"
+            <FeatureCTA
+              originDesc="[Site]BT-Totem-Page"
               className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
             >
               QUERO TOTEM NA MINHA BARBEARIA
-            </Link>
+            </FeatureCTA>
           </div>
         </div>
       </section>

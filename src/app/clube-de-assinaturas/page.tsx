@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
+import { FeatureCTA } from "@/components/FeatureCTA";
 import {
   ArrowRight,
   ChevronRight,
@@ -92,10 +93,6 @@ const faqJsonLd = {
   })),
 };
 
-/* ─── CTA link ─── */
-const CTA_HREF =
-  "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Clube";
-
 /* ─── Page Component ─── */
 export default function ClubeDeAssinaturasPage() {
   return (
@@ -174,15 +171,13 @@ export default function ClubeDeAssinaturasPage() {
                 ))}
               </div>
 
-              <Link
-                href={CTA_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
+              <FeatureCTA
+                originDesc="[Site]BT-Clube"
                 className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_4px_20px_rgba(255,175,2,0.3)]"
               >
                 QUERO VER O POTENCIAL DA MINHA BARBEARIA
                 <ArrowRight className="w-4 h-4" />
-              </Link>
+              </FeatureCTA>
             </div>
           </div>
         </section>
@@ -313,15 +308,13 @@ export default function ClubeDeAssinaturasPage() {
 
             {/* Mid-page CTA */}
             <div className="text-center mt-12">
-              <Link
-                href={CTA_HREF}
-                target="_blank"
-                rel="noopener noreferrer"
+              <FeatureCTA
+                originDesc="[Site]BT-Clube"
                 className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_4px_20px_rgba(255,175,2,0.3)]"
               >
                 QUERO VER O POTENCIAL DA MINHA BARBEARIA
                 <ArrowRight className="w-4 h-4" />
-              </Link>
+              </FeatureCTA>
             </div>
           </div>
         </section>
@@ -605,15 +598,13 @@ export default function ClubeDeAssinaturasPage() {
               Descubra quanto sua barbearia pode faturar com receita
               recorrente. Sem compromisso.
             </p>
-            <Link
-              href={CTA_HREF}
-              target="_blank"
-              rel="noopener noreferrer"
+            <FeatureCTA
+              originDesc="[Site]BT-Clube"
               className="inline-flex items-center gap-2 bg-[#121212] text-white px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:bg-[#1a1a1a] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
             >
               QUERO VER O POTENCIAL DA MINHA BARBEARIA
               <ArrowRight className="w-4 h-4" />
-            </Link>
+            </FeatureCTA>
           </div>
         </section>
 
