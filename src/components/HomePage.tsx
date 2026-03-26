@@ -9,8 +9,10 @@ import { FeaturesSection } from "@/components/sections/FeaturesSection";
 import { TotemSection } from "@/components/sections/TotemSection";
 import { NotificationsSection } from "@/components/sections/NotificationsSection";
 import { ClientsSection } from "@/components/sections/ClientsSection";
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { StepsSection } from "@/components/sections/StepsSection";
 import { BasicPlanSection } from "@/components/sections/BasicPlanSection";
+import { FAQSection } from "@/components/sections/FAQSection";
 import { Footer } from "@/components/sections/Footer";
 import { LeadFormModal } from "@/components/sections/LeadFormModal";
 
@@ -37,8 +39,10 @@ export function HomePage() {
       <TotemSection onCtaClick={() => openModal("[Site]BT-Totem")} />
       <NotificationsSection onCtaClick={() => openModal("[Site]BT-Notificacoes")} />
       <ClientsSection />
+      <TestimonialsSection />
       <StepsSection onCtaClick={() => openModal("[Site]BT-Passos")} />
       <BasicPlanSection />
+      <FAQSection />
       <Footer />
 
       <LeadFormModal

@@ -1,5 +1,11 @@
 import { HomePage } from "@/components/HomePage";
+import { JsonLd } from "@/components/JsonLd";
 
 export default function Home() {
-  return <HomePage />;
+  return (
+    <>
+      <JsonLd />
+      <HomePage />
+    </>
+  );
 }

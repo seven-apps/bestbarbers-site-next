@@ -8,7 +8,7 @@ export const homeContent = {
   navbar: {
     logo: {
       src: "/images/Logo-BestBarbers-branco_1.webp",
-      alt: "BestBarbers Logo",
+      alt: "BestBarbers — Sistema para Barbearia",
       width: 140,
       height: 32,
     },
@@ -39,7 +39,7 @@ export const homeContent = {
     },
     image: {
       src: "/images/hero-best-5-influencers.png",
-      alt: "Mockup do aplicativo BestBarbers",
+      alt: "App próprio para barbearia — BestBarbers na App Store e Play Store",
       width: 1712,
       height: 450,
     },
@@ -74,7 +74,7 @@ export const homeContent = {
     },
     image: {
       src: "/images/gerenciamento-de-assinaturas_1.webp",
-      alt: "Gerenciamento de assinaturas",
+      alt: "Clube de assinaturas para barbearia — Gestão automática BestBarbers",
       width: 800,
       height: 600,
     },
@@ -88,19 +88,19 @@ export const homeContent = {
     },
     features: [
       {
-        title: "Facilidade para os clientes:",
+        title: "Emissão automática:",
         description:
-          "assinatura, pagamentos e troca de planos diretamente pelo aplicativo próprio da sua barbearia",
+          "NFS-e gerada após cada atendimento ou pagamento de assinatura, sem trabalho manual",
       },
       {
-        title: "Controle Total para a barbearia:",
+        title: "Compliance simplificado:",
         description:
-          "gerencie todos os aspectos das assinaturas em um único sistema",
+          "configuração única dos dados fiscais com integração direta à prefeitura da sua cidade",
       },
       {
-        title: "Monitoramento automático:",
+        title: "Histórico completo:",
         description:
-          "frequência de uso e status de pagamento tudo por conta do sistema",
+          "exportação em PDF e XML para seu contador, tudo organizado automaticamente",
       },
     ],
     cta: {
@@ -109,7 +109,7 @@ export const homeContent = {
     },
     image: {
       src: "/images/Nota-fiscal_1.webp",
-      alt: "Emissão de notas fiscais",
+      alt: "Emissão automática de nota fiscal NFS-e para barbearia",
       width: 735,
       height: 500,
     },
@@ -118,8 +118,8 @@ export const homeContent = {
   // ===== FUNCIONALIDADES =====
   features: {
     title: {
-      highlight: "O BestBarbers",
-      main: " te ajuda com:",
+      highlight: "Funcionalidades",
+      main: " do Sistema para Barbearia",
     },
     items: [
       {
@@ -194,7 +194,7 @@ export const homeContent = {
     },
     image: {
       src: "/images/Totem-Rapha_1.webp",
-      alt: "Totem de autoatendimento",
+      alt: "Totem de autoatendimento para barbearia — check-in e pagamento automático",
       width: 1457,
       height: 600,
     },
@@ -208,19 +208,19 @@ export const homeContent = {
     },
     features: [
       {
-        title: "Facilidade para os clientes:",
+        title: "Push notifications personalizadas:",
         description:
-          "assinatura, pagamentos e troca de planos diretamente pelo aplicativo próprio da sua barbearia",
+          "envie promoções, lembretes e novidades direto no celular do cliente pelo app da sua barbearia",
       },
       {
-        title: "Controle Total para a barbearia:",
+        title: "Lembretes automáticos:",
         description:
-          "gerencie todos os aspectos das assinaturas em um único sistema",
+          "redução de faltas com notificação de agendamento configurável antes do horário marcado",
       },
       {
-        title: "Monitoramento automático:",
+        title: "Reativação inteligente:",
         description:
-          "frequência de uso e status de pagamento tudo por conta do sistema",
+          "alcance clientes inativos com comunicação segmentada pelo app próprio da sua barbearia",
       },
     ],
     cta: {
@@ -229,7 +229,7 @@ export const homeContent = {
     },
     image: {
       src: "/images/notifications.webp",
-      alt: "Notificações personalizadas",
+      alt: "Notificações push personalizadas para clientes da barbearia",
       width: 1640,
       height: 800,
     },
@@ -301,7 +301,7 @@ export const homeContent = {
     },
     image: {
       src: "/images/Passo-a-passo-mockup-hoonigans_1.webp",
-      alt: "Passo a passo desenvolvimento do app",
+      alt: "Como ter um app próprio para sua barbearia — passo a passo BestBarbers",
       width: 587,
       height: 800,
     },
@@ -322,7 +322,7 @@ export const homeContent = {
     },
     image: {
       src: "/images/começando-agora-mockup-celular-e-notebook_1.webp",
-      alt: "Plano básico BestBarbers",
+      alt: "Plano básico BestBarbers — sistema de gestão para barbearia iniciante",
       width: 627,
       height: 400,
     },
@@ -332,7 +332,7 @@ export const homeContent = {
   footer: {
     logo: {
       src: "/images/Logo-BestBarbers-branco_2.webp",
-      alt: "BestBarbers Logo",
+      alt: "BestBarbers — Sistema completo para barbearia",
       width: 200,
       height: 60,
     },
@@ -373,16 +373,24 @@ export const homeContent = {
 
   // ===== SEO E METADATA =====
   seo: {
-    title: "BestBarbers - App Próprio Personalizado para Barbearias",
+    title: "BestBarbers — Sistema para Barbearia com App Próprio, Clube de Assinaturas e Agendamento Online",
     description:
-      "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias! Mais de 1.000 barbearias ativaram o modo Best!",
+      "Sistema completo para barbearia: app próprio na App Store, clube de assinaturas, agendamento 24h, nota fiscal automática e financeiro. 1.200+ barbearias confiam.",
     keywords: [
-      "barbearia",
-      "app",
-      "agendamento",
-      "sistema de gestão",
-      "aplicativo móvel",
-      "barbeiro",
+      "sistema para barbearia",
+      "app para barbearia",
+      "app proprio barbearia",
+      "clube de assinaturas barbearia",
+      "agendamento online barbearia",
+      "nota fiscal barbearia",
+      "gestao barbearia",
+      "software barbearia",
+      "totem autoatendimento barbearia",
+      "comissao barbeiro",
+      "controle financeiro barbearia",
+      "plataforma barbearia",
+      "sistema gestao barbearia",
+      "app personalizado barbearia",
     ],
     ogImage: "/og-image.jpg",
   },

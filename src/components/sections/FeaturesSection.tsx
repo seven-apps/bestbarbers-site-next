@@ -25,7 +25,7 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
             FUNCIONALIDADES
           </span>
           <h2 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-neutral-bg2">
-            E muito mais!
+            Funcionalidades do Sistema para Barbearia
           </h2>
           <p className="text-sm md:text-base text-neutral-bg2/80 mt-2 max-w-md mx-auto">
             Tudo que sua barbearia precisa em um só lugar

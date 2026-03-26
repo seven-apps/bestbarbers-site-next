@@ -13,9 +13,24 @@ const montserrat = Montserrat({
 // Usando apenas Montserrat para ambas as variáveis CSS (primary e secondary)
 
 export const metadata: Metadata = {
-  title: "BestBarbers - App Próprio Personalizado para Barbearias",
-  description: "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias! Mais de 1.000 barbearias ativaram o modo Best!",
-  keywords: ["barbearia", "app", "agendamento", "sistema de gestão", "aplicativo móvel", "barbeiro"],
+  title: "BestBarbers — Sistema para Barbearia com App Próprio, Clube de Assinaturas e Agendamento Online",
+  description: "Sistema completo para barbearia: app próprio na App Store, clube de assinaturas, agendamento 24h, nota fiscal automática e financeiro. 1.200+ barbearias confiam.",
+  keywords: [
+    "sistema para barbearia",
+    "app para barbearia",
+    "app proprio barbearia",
+    "clube de assinaturas barbearia",
+    "agendamento online barbearia",
+    "nota fiscal barbearia",
+    "gestao barbearia",
+    "software barbearia",
+    "totem autoatendimento barbearia",
+    "comissao barbeiro",
+    "controle financeiro barbearia",
+    "plataforma barbearia",
+    "sistema gestao barbearia",
+    "app personalizado barbearia",
+  ],
   authors: [{ name: "BestBarbers" }],
   creator: "BestBarbers",
   publisher: "BestBarbers",
@@ -27,27 +42,31 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.bestbarbers.app"),
   alternates: {
     canonical: "/",
+    languages: {
+      "pt-BR": "https://www.bestbarbers.app",
+      "x-default": "https://www.bestbarbers.app",
+    },
   },
   openGraph: {
     type: "website",
     locale: "pt_BR",
     url: "https://www.bestbarbers.app",
-    title: "BestBarbers - App Próprio Personalizado para Barbearias",
-    description: "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias! Mais de 1.000 barbearias ativaram o modo Best!",
+    title: "BestBarbers — Sistema para Barbearia com App Próprio e Clube de Assinaturas",
+    description: "Sistema completo para barbearia: app próprio na App Store, clube de assinaturas, agendamento 24h, nota fiscal automática e financeiro. 1.200+ barbearias confiam.",
     siteName: "BestBarbers",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "BestBarbers - App Próprio para Barbearias",
+        alt: "BestBarbers — Sistema completo para barbearia com app próprio personalizado",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "BestBarbers - App Próprio Personalizado para Barbearias",
-    description: "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias!",
+    title: "BestBarbers — Sistema para Barbearia com App Próprio",
+    description: "Sistema completo para barbearia: app próprio, clube de assinaturas, agendamento 24h e nota fiscal automática. 1.200+ barbearias confiam.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -60,9 +79,6 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
-  },
-  verification: {
-    google: "google-site-verification-code",
   },
 };
 

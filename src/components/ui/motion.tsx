@@ -302,9 +302,15 @@ export function CountUp({
   suffix = "",
   className,
 }: CountUpProps) {
-  const [count, setCount] = useState(0);
+  // SSR renders the real number so Google crawls correct value (e.g., "1.200+")
+  const [count, setCount] = useState(end);
   const [hasStarted, setHasStarted] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    // Reset to 0 on mount so animation plays from 0 → end
+    setCount(0);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -332,10 +338,10 @@ export function CountUp({
     const updateCount = () => {
       const now = Date.now();
       const progress = Math.min((now - startTime) / (duration * 1000), 1);
-      
+
       // Easing function (ease out cubic)
       const easeOutCubic = 1 - Math.pow(1 - progress, 3);
-      
+
       setCount(Math.floor(easeOutCubic * end));
 
       if (now < endTime) {
@@ -351,7 +357,7 @@ export function CountUp({
   return (
     <span ref={ref} className={className}>
       {prefix}
-      {count}
+      {count.toLocaleString('pt-BR')}
       {suffix}
     </span>
   );
