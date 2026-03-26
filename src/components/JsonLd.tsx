@@ -117,6 +117,10 @@ const organizationSchema = {
   numberOfEmployees: { "@type": "QuantitativeValue", value: 50 },
   sameAs: [
     "https://www.instagram.com/bestbarbersapp/",
+    "https://www.linkedin.com/company/bestbarbers/",
+    "https://www.youtube.com/@bestbarbers",
+    "https://www.facebook.com/bestbarbersapp",
+    "https://www.tiktok.com/@bestbarbersapp",
     "https://apps.apple.com/br/app/bestbarbers/id1501336370",
     "https://play.google.com/store/apps/details?id=bestbarbers.app",
   ],
@@ -188,6 +192,15 @@ const websiteSchema = {
   "@type": "WebSite",
   name: "BestBarbers",
   url: "https://www.bestbarbers.app",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate:
+        "https://www.bestbarbers.app/sistema-para-barbearia?q={search_term_string}",
+    },
+    "query-input": "required name=search_term_string",
+  },
 };
 
 const productSchema = {
