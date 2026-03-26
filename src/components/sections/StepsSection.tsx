@@ -3,7 +3,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 
-export function StepsSection() {
+interface StepsSectionProps {
+  onCtaClick?: () => void;
+}
+
+export function StepsSection({ onCtaClick }: StepsSectionProps) {
   const { steps } = homeContent;
 
   return (
@@ -58,15 +62,25 @@ export function StepsSection() {
 
           {/* CTA */}
           <div className="mt-0">
-            <Button
-              asChild
-              className="btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
-              style={{ backgroundColor: '#ffaf02', color: '#121212' }}
-            >
-              <Link href={steps.cta.href} target="_blank" rel="noopener noreferrer">
+            {onCtaClick ? (
+              <Button
+                onClick={onCtaClick}
+                className="btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
+                style={{ backgroundColor: '#ffaf02', color: '#121212' }}
+              >
                 {steps.cta.text}
-              </Link>
-            </Button>
+              </Button>
+            ) : (
+              <Button
+                asChild
+                className="btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
+                style={{ backgroundColor: '#ffaf02', color: '#121212' }}
+              >
+                <Link href={steps.cta.href} target="_blank" rel="noopener noreferrer">
+                  {steps.cta.text}
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>

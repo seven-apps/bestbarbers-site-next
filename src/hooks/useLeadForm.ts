@@ -7,7 +7,9 @@ import { useUtmParams } from './useUtmParams';
 
 export interface FormData {
   barbershopName: string;
+  ownerName: string;
   whatsapp: string;
+  monthlyRevenue: string;
   employeeCount: string;
 }
 
@@ -36,7 +38,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
 
   const [formData, setFormData] = useState<FormData>({
     barbershopName: '',
+    ownerName: '',
     whatsapp: '',
+    monthlyRevenue: '',
     employeeCount: ''
   });
 
@@ -127,7 +131,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // Converte FormData para PloomesContactData
       const ploomesData: PloomesContactData = {
         barbershopName: formData.barbershopName,
+        ownerName: formData.ownerName || undefined,
         whatsapp: formData.whatsapp,
+        monthlyRevenue: formData.monthlyRevenue || undefined,
         employeeCount: formData.employeeCount
       };
 
@@ -212,7 +218,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const resetForm = useCallback(() => {
     setFormData({
       barbershopName: '',
+      ownerName: '',
       whatsapp: '',
+      monthlyRevenue: '',
       employeeCount: ''
     });
     setSubmitError(null);

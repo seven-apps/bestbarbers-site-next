@@ -341,7 +341,6 @@ export const homeContent = {
         title: "Transparência",
         links: [
           { text: "Termos de uso", href: "/termos-de-uso" },
-          { text: "Política de privacidade", href: "/politica-de-privacidade" },
         ],
       },
       {
