@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   title:
     "Clube de Assinaturas para Barbearia — Receita Recorrente | BestBarbers",
   description:
-    "Crie planos de assinatura na sua barbearia e gere receita previsivel. 51.000+ assinantes ativos. De R$15K para R$31K/mes. Sistema completo com cobranca automatica.",
+    "Crie planos de assinatura na sua barbearia e gere receita previsível. 51.000+ assinantes ativos. De R$15K para R$31K/mês. Sistema completo com cobrança automática.",
   alternates: {
     canonical: "/clube-de-assinaturas",
   },
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     title:
       "Clube de Assinaturas para Barbearia — Receita Recorrente | BestBarbers",
     description:
-      "Crie planos de assinatura na sua barbearia e gere receita previsivel. 51.000+ assinantes ativos. De R$15K para R$31K/mes.",
+      "Crie planos de assinatura na sua barbearia e gere receita previsível. 51.000+ assinantes ativos. De R$15K para R$31K/mês.",
     url: "https://www.bestbarbers.app/clube-de-assinaturas",
     type: "website",
     locale: "pt_BR",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Clube de Assinaturas para Barbearia | BestBarbers",
     description:
-      "Crie planos de assinatura na sua barbearia e gere receita previsivel. 51.000+ assinantes ativos.",
+      "Crie planos de assinatura na sua barbearia e gere receita previsível. 51.000+ assinantes ativos.",
     images: ["/og-image.jpg"],
   },
 };
@@ -59,23 +59,23 @@ const faqItems = [
   {
     question: "Quanto tempo leva para montar o clube de assinaturas?",
     answer:
-      "No mesmo dia. Voce cria os planos, define precos e ja pode comecar a cadastrar assinantes. O sistema cuida da cobranca automatica, bloqueio de inadimplentes e relatorios.",
+      "No mesmo dia. Você cria os planos, define preços e já pode começar a cadastrar assinantes. O sistema cuida da cobrança automática, bloqueio de inadimplentes e relatórios.",
   },
   {
     question: "E se o assinante quiser trocar de plano?",
     answer:
-      "O proprio cliente troca de plano direto pelo app, sem precisar falar com ninguem. O sistema calcula o pro-rata automaticamente e ajusta a proxima cobranca.",
+      "O próprio cliente troca de plano direto pelo app, sem precisar falar com ninguém. O sistema calcula o pro-rata automaticamente e ajusta a próxima cobrança.",
   },
   {
     question:
       "Posso ter planos diferentes (limitado e ilimitado) ao mesmo tempo?",
     answer:
-      "Sim! Voce pode criar quantos planos quiser. Exemplos comuns: plano basico (4 cortes/mes), plano premium (ilimitado), plano VIP (ilimitado + barba). Cada plano com preco e servicos diferentes.",
+      "Sim! Você pode criar quantos planos quiser. Exemplos comuns: plano básico (4 cortes/mês), plano premium (ilimitado), plano VIP (ilimitado + barba). Cada plano com preço e serviços diferentes.",
   },
   {
-    question: "Como funciona a cobranca automatica?",
+    question: "Como funciona a cobrança automática?",
     answer:
-      "O sistema cobra automaticamente no dia de vencimento via cartao de credito, Pix ou boleto. Se o pagamento falhar, o cliente recebe lembretes automaticos. Apos o prazo de tolerancia, o agendamento e bloqueado ate a regularizacao.",
+      "O sistema cobra automaticamente no dia de vencimento via cartão de crédito, Pix ou boleto. Se o pagamento falhar, o cliente recebe lembretes automáticos. Após o prazo de tolerância, o agendamento é bloqueado até a regularização.",
   },
 ];
 
@@ -135,22 +135,22 @@ export default function ClubeDeAssinaturasPage() {
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-6">
                 Clube de Assinaturas para Barbearia{" "}
                 <span className="text-gradient-primary">
-                  — Receita Recorrente no Automatico
+                  — Receita Recorrente no Automático
                 </span>
               </h1>
 
               <p className="text-base md:text-lg text-gray-300 leading-relaxed mb-4">
                 <span className="text-[#ffaf02] font-semibold">
-                  &ldquo;No fim do mes nunca sobra nada&rdquo;
+                  &ldquo;No fim do mês nunca sobra nada&rdquo;
                 </span>{" "}
                 — Essa frase apareceu em 47 conversas com donos de barbearia.
-                Se voce se identifica, o clube de assinaturas e a resposta.
+                Se você se identifica, o clube de assinaturas é a resposta.
               </p>
 
               <p className="text-sm md:text-base text-gray-400 leading-relaxed mb-8">
-                Com o clube, voce sabe no dia 1 do mes quanto vai faturar.
+                Com o clube, você sabe no dia 1 do mês quanto vai faturar.
                 Seus clientes pagam automaticamente, voltam com mais
-                frequencia e gastam 2.8x mais por ano. Sem planilha, sem
+                frequência e gastam 2.8x mais por ano. Sem planilha, sem
                 cobrar no WhatsApp, sem surpresas.
               </p>
 
@@ -159,7 +159,7 @@ export default function ClubeDeAssinaturasPage() {
                 {[
                   { label: "51.000+ assinantes ativos", icon: Users },
                   { label: "2.8x mais receita/cliente", icon: TrendingUp },
-                  { label: "2.1 visitas/mes (media)", icon: Repeat },
+                  { label: "2.1 visitas/mês (média)", icon: Repeat },
                 ].map(({ label, icon: Icon }) => (
                   <span
                     key={label}
@@ -192,7 +192,7 @@ export default function ClubeDeAssinaturasPage() {
               <span style={{ color: "#ffaf02" }}>2x Mais</span>
             </h2>
             <p className="text-gray-500 text-sm md:text-base text-center max-w-2xl mx-auto mb-12 md:mb-16">
-              Nao e teoria. Sao numeros reais de barbearias que usam o
+              Não é teoria. São números reais de barbearias que usam o
               BestBarbers hoje.
             </p>
 
@@ -200,27 +200,27 @@ export default function ClubeDeAssinaturasPage() {
               {[
                 {
                   icon: TrendingUp,
-                  stat: "R$15.892 → R$31.690/mes",
+                  stat: "R$15.892 → R$31.690/mês",
                   title: "Barbearia de 4 cadeiras",
-                  desc: "Mesmas 4 cadeiras, mesma equipe. A unica mudanca foi criar o clube de assinaturas. Dobraram o faturamento em 6 meses.",
+                  desc: "Mesmas 4 cadeiras, mesma equipe. A única mudança foi criar o clube de assinaturas. Dobraram o faturamento em 6 meses.",
                 },
                 {
                   icon: DollarSign,
                   stat: "R$1.536/ano vs R$540 avulso",
                   title: "Assinante gasta 2.8x mais",
-                  desc: "O cliente avulso vem quando lembra. O assinante vem porque ja pagou — e aproveita para fazer barba, sobrancelha, produtos.",
+                  desc: "O cliente avulso vem quando lembra. O assinante vem porque já pagou — e aproveita para fazer barba, sobrancelha, produtos.",
                 },
                 {
                   icon: Repeat,
-                  stat: "2.1 visitas/mes",
-                  title: "Frequencia media do assinante",
-                  desc: "Cliente avulso vem a cada 45 dias. Assinante vem a cada 14 dias. Mais visitas = mais servicos adicionais = mais receita.",
+                  stat: "2.1 visitas/mês",
+                  title: "Frequência média do assinante",
+                  desc: "Cliente avulso vem a cada 45 dias. Assinante vem a cada 14 dias. Mais visitas = mais serviços adicionais = mais receita.",
                 },
                 {
                   icon: Users,
                   stat: "51.000+",
                   title: "Assinantes ativos na plataforma",
-                  desc: "Mais de 51 mil clientes ja usam o clube de assinaturas no BestBarbers. O modelo funciona — e os numeros provam.",
+                  desc: "Mais de 51 mil clientes já usam o clube de assinaturas no BestBarbers. O modelo funciona — e os números provam.",
                 },
               ].map(({ icon: Icon, stat, title, desc }) => (
                 <div
@@ -257,7 +257,7 @@ export default function ClubeDeAssinaturasPage() {
               <span className="text-gradient-primary">no BestBarbers</span>
             </h2>
             <p className="text-gray-400 text-sm md:text-base text-center max-w-2xl mx-auto mb-12 md:mb-16">
-              Tudo automatizado. Voce configura uma vez e o sistema cuida
+              Tudo automatizado. Você configura uma vez e o sistema cuida
               do resto.
             </p>
 
@@ -265,28 +265,28 @@ export default function ClubeDeAssinaturasPage() {
               {[
                 {
                   icon: Smartphone,
-                  title: "Crie planos flexiveis",
-                  desc: "Planos limitados (4 cortes/mes) ou ilimitados. Defina servicos, precos e regras de cada plano. Mude quando quiser.",
+                  title: "Crie planos flexíveis",
+                  desc: "Planos limitados (4 cortes/mês) ou ilimitados. Defina serviços, preços e regras de cada plano. Mude quando quiser.",
                 },
                 {
                   icon: Repeat,
-                  title: "Cobranca automatica",
-                  desc: "Cartao, Pix ou boleto. O sistema cobra no vencimento, envia lembretes e registra tudo. Zero inadimplencia manual.",
+                  title: "Cobrança automática",
+                  desc: "Cartão, Pix ou boleto. O sistema cobra no vencimento, envia lembretes e registra tudo. Zero inadimplência manual.",
                 },
                 {
                   icon: Ban,
-                  title: "Bloqueio automatico de inadimplentes",
-                  desc: "Se o pagamento nao cai, o agendamento e bloqueado automaticamente. Sem conversa constrangedora com o cliente.",
+                  title: "Bloqueio automático de inadimplentes",
+                  desc: "Se o pagamento não cai, o agendamento é bloqueado automaticamente. Sem conversa constrangedora com o cliente.",
                 },
                 {
                   icon: BarChart3,
-                  title: "Relatorios de churn, frequencia e receita",
-                  desc: "Saiba quem cancelou, quem nunca vem e quanto entra por mes. Dados reais para tomar decisao, nao achismo.",
+                  title: "Relatórios de churn, frequência e receita",
+                  desc: "Saiba quem cancelou, quem nunca vem e quanto entra por mês. Dados reais para tomar decisão, não achismo.",
                 },
                 {
                   icon: ShieldCheck,
                   title: "Troca de plano direto pelo app",
-                  desc: "O cliente muda de plano sozinho, sem te ligar. Upgrade, downgrade, cancelamento — tudo pelo app com pro-rata automatico.",
+                  desc: "O cliente muda de plano sozinho, sem te ligar. Upgrade, downgrade, cancelamento — tudo pelo app com pro-rata automático.",
                 },
               ].map(({ icon: Icon, title, desc }) => (
                 <div
@@ -325,10 +325,10 @@ export default function ClubeDeAssinaturasPage() {
         <section className="bg-white py-16 md:py-24">
           <div className="container-custom">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#121212] mb-4 text-center">
-              Objecoes Respondidas
+              Objeções Respondidas
             </h2>
             <p className="text-gray-500 text-sm md:text-base text-center max-w-2xl mx-auto mb-12 md:mb-16">
-              As 3 duvidas que todo dono de barbearia tem antes de criar o
+              As 3 dúvidas que todo dono de barbearia tem antes de criar o
               clube — respondidas com dados.
             </p>
 
@@ -336,10 +336,10 @@ export default function ClubeDeAssinaturasPage() {
               {/* Objection 1 */}
               <div className="bg-[#f8f8f8] rounded-2xl p-6 md:p-8 border border-gray-100">
                 <p className="text-sm font-semibold text-red-500 uppercase tracking-wide mb-2">
-                  Objecao
+                  Objeção
                 </p>
                 <p className="text-base md:text-lg font-bold text-[#121212] mb-3">
-                  &ldquo;Cliente vai vir todos os dias e nao vai
+                  &ldquo;Cliente vai vir todos os dias e não vai
                   compensar&rdquo;
                 </p>
                 <div className="flex items-start gap-3">
@@ -347,13 +347,13 @@ export default function ClubeDeAssinaturasPage() {
                   <div>
                     <p className="text-sm text-gray-600 leading-relaxed">
                       <strong className="text-[#121212]">Dado real:</strong>{" "}
-                      A media de frequencia dos assinantes e de{" "}
+                      A média de frequência dos assinantes é de{" "}
                       <strong className="text-[#121212]">
-                        2.1 visitas por mes
+                        2.1 visitas por mês
                       </strong>
-                      . Ninguem vem todo dia. O medo e natural, mas os
-                      numeros nao mentem — em 51.000+ assinantes, a media se
-                      mantem estavel.
+                      . Ninguém vem todo dia. O medo é natural, mas os
+                      números não mentem — em 51.000+ assinantes, a média se
+                      mantém estável.
                     </p>
                   </div>
                 </div>
@@ -362,7 +362,7 @@ export default function ClubeDeAssinaturasPage() {
               {/* Objection 2 */}
               <div className="bg-[#f8f8f8] rounded-2xl p-6 md:p-8 border border-gray-100">
                 <p className="text-sm font-semibold text-red-500 uppercase tracking-wide mb-2">
-                  Objecao
+                  Objeção
                 </p>
                 <p className="text-base md:text-lg font-bold text-[#121212] mb-3">
                   &ldquo;Barbeiro ganha menos na assinatura&rdquo;
@@ -372,22 +372,22 @@ export default function ClubeDeAssinaturasPage() {
                   <div>
                     <p className="text-sm text-gray-600 leading-relaxed">
                       <strong className="text-[#121212]">Dado real:</strong>{" "}
-                      Barbeiro que atende so avulso fatura em media{" "}
+                      Barbeiro que atende só avulso fatura em média{" "}
                       <strong className="text-[#121212]">
-                        R$2.625/mes
+                        R$2.625/mês
                       </strong>
                       . Barbeiro com assinantes fatura{" "}
                       <strong className="text-[#121212]">
-                        R$4.805/mes
+                        R$4.805/mês
                       </strong>
-                      . Isso e{" "}
+                      . Isso é{" "}
                       <span
                         className="font-extrabold"
                         style={{ color: "#ffaf02" }}
                       >
                         83% MAIS
                       </span>
-                      . Assinante volta mais, faz mais servicos e o
+                      . Assinante volta mais, faz mais serviços e o
                       profissional tem agenda cheia garantida.
                     </p>
                   </div>
@@ -397,17 +397,17 @@ export default function ClubeDeAssinaturasPage() {
               {/* Objection 3 */}
               <div className="bg-[#f8f8f8] rounded-2xl p-6 md:p-8 border border-gray-100">
                 <p className="text-sm font-semibold text-red-500 uppercase tracking-wide mb-2">
-                  Objecao
+                  Objeção
                 </p>
                 <p className="text-base md:text-lg font-bold text-[#121212] mb-3">
-                  &ldquo;Barbearia por assinatura e dar desconto&rdquo;
+                  &ldquo;Barbearia por assinatura é dar desconto&rdquo;
                 </p>
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm text-gray-600 leading-relaxed">
                       <strong className="text-[#121212]">Dado real:</strong>{" "}
-                      Cliente avulso gasta em media{" "}
+                      Cliente avulso gasta em média{" "}
                       <strong className="text-[#121212]">
                         R$360/ano
                       </strong>
@@ -415,15 +415,15 @@ export default function ClubeDeAssinaturasPage() {
                       <strong className="text-[#121212]">
                         R$900/ano
                       </strong>
-                      . Isso e{" "}
+                      . Isso é{" "}
                       <span
                         className="font-extrabold"
                         style={{ color: "#ffaf02" }}
                       >
                         2.5x MAIS
                       </span>
-                      . O desconto no unitario e uma ilusao — o LTV (valor
-                      no tempo) e drasticamente maior na assinatura.
+                      . O desconto no unitário é uma ilusão — o LTV (valor
+                      no tempo) é drasticamente maior na assinatura.
                     </p>
                   </div>
                 </div>
@@ -442,32 +442,32 @@ export default function ClubeDeAssinaturasPage() {
             </h2>
             <p className="text-gray-400 text-sm md:text-base text-center max-w-2xl mx-auto mb-12 md:mb-16">
               Barbearias reais usando o clube de assinaturas do BestBarbers.
-              Numeros reais, nao projecoes.
+              Números reais, não projeções.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
               {[
                 {
                   name: "Barbearia com 4 cadeiras",
-                  highlight: "R$31.690/mes",
+                  highlight: "R$31.690/mês",
                   details: [
                     "4 cadeiras",
                     "353 assinantes",
-                    "De R$15.892 para R$31.690/mes",
+                    "De R$15.892 para R$31.690/mês",
                   ],
                   quote:
                     "Dobramos o faturamento com as mesmas 4 cadeiras. O clube mudou tudo.",
                 },
                 {
                   name: "Rede com 6 unidades",
-                  highlight: "R$176K/mes",
+                  highlight: "R$176K/mês",
                   details: [
                     "6 unidades",
                     "1.000 assinantes",
-                    "R$176K/mes so no clube",
+                    "R$176K/mês só no clube",
                   ],
                   quote:
-                    "O clube de assinaturas e o coracao da operacao. Receita previsivel em 6 lojas.",
+                    "O clube de assinaturas é o coração da operação. Receita previsível em 6 lojas.",
                 },
                 {
                   name: "Barbearia single-unit",
@@ -478,7 +478,7 @@ export default function ClubeDeAssinaturasPage() {
                     "Maior clube single-unit do Brasil",
                   ],
                   quote:
-                    "Uma unica loja com 700 assinantes. Prova que nao precisa de rede para escalar.",
+                    "Uma única loja com 700 assinantes. Prova que não precisa de rede para escalar.",
                 },
               ].map(({ name, highlight, details, quote }) => (
                 <div
@@ -523,7 +523,7 @@ export default function ClubeDeAssinaturasPage() {
               Perguntas Frequentes sobre Clube de Assinaturas
             </h2>
             <p className="text-gray-500 text-sm md:text-base text-center max-w-2xl mx-auto mb-12 md:mb-16">
-              As duvidas mais comuns sobre o clube de assinaturas no
+              As dúvidas mais comuns sobre o clube de assinaturas no
               BestBarbers.
             </p>
 
@@ -565,11 +565,11 @@ export default function ClubeDeAssinaturasPage() {
                   href: "/agendamento-online",
                 },
                 {
-                  label: "Gestao Financeira",
+                  label: "Gestão Financeira",
                   href: "/gestao-financeira-barbearia",
                 },
                 {
-                  label: "App Proprio",
+                  label: "App Próprio",
                   href: "/app-proprio-barbearia",
                 },
               ].map(({ label, href }) => (

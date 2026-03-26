@@ -23,14 +23,14 @@ import { Footer } from "@/components/sections/Footer";
 export const metadata: Metadata = {
   title: "Agendamento Online para Barbearia — 24h/7 dias | BestBarbers",
   description:
-    "Agendamento online para barbearia que funciona 24h. 6 milhoes de agendamentos/mes. Chega de perder cliente no WhatsApp. Link personalizado + app + lembretes automaticos.",
+    "Agendamento online para barbearia que funciona 24h. 6 milhões de agendamentos/mês. Chega de perder cliente no WhatsApp. Link personalizado + app + lembretes automáticos.",
   alternates: {
     canonical: "https://www.bestbarbers.app/agendamento-online",
   },
   openGraph: {
     title: "Agendamento Online para Barbearia — 24h/7 dias | BestBarbers",
     description:
-      "Agendamento online para barbearia que funciona 24h. 6 milhoes de agendamentos/mes. Chega de perder cliente no WhatsApp.",
+      "Agendamento online para barbearia que funciona 24h. 6 milhões de agendamentos/mês. Chega de perder cliente no WhatsApp.",
     url: "https://www.bestbarbers.app/agendamento-online",
     siteName: "BestBarbers",
     locale: "pt_BR",
@@ -52,21 +52,21 @@ export const metadata: Metadata = {
 const faqItems = [
   {
     question:
-      "O agendamento online funciona mesmo fora do horario comercial?",
+      "O agendamento online funciona mesmo fora do horário comercial?",
     answer:
-      "Sim. O sistema fica disponivel 24 horas por dia, 7 dias por semana. Seus clientes podem agendar de madrugada, no fim de semana ou em feriados — sem depender de ninguem responder no WhatsApp.",
+      "Sim. O sistema fica disponível 24 horas por dia, 7 dias por semana. Seus clientes podem agendar de madrugada, no fim de semana ou em feriados — sem depender de ninguém responder no WhatsApp.",
   },
   {
     question:
       "Meus clientes precisam baixar um aplicativo para agendar?",
     answer:
-      "Nao obrigatoriamente. Voce recebe um link personalizado (ex: bestbarbers.app/suabarbearia) que pode ser compartilhado em qualquer lugar — Instagram, WhatsApp, Google. Alem disso, com o plano App Exclusivo, sua barbearia tem um app proprio na App Store e Play Store com agendamento integrado.",
+      "Não obrigatoriamente. Você recebe um link personalizado (ex: bestbarbers.app/suabarbearia) que pode ser compartilhado em qualquer lugar — Instagram, WhatsApp, Google. Além disso, com o plano App Exclusivo, sua barbearia tem um app próprio na App Store e Play Store com agendamento integrado.",
   },
   {
     question:
       "Como o sistema reduz faltas e no-show dos clientes?",
     answer:
-      "O BestBarbers envia lembretes automaticos por push notification e SMS antes do horario agendado. Barbearias que usam o recurso reportam reducao de ate 40% nos no-shows. Voce tambem pode configurar politicas de cancelamento e bloqueio de clientes recorrentes.",
+      "O BestBarbers envia lembretes automáticos por push notification e SMS antes do horário agendado. Barbearias que usam o recurso reportam redução de até 40% nos no-shows. Você também pode configurar políticas de cancelamento e bloqueio de clientes recorrentes.",
   },
 ];
 
@@ -131,21 +131,21 @@ export default function AgendamentoOnlinePage() {
                 <div className="flex items-start gap-3 mb-4">
                   <MessageSquare className="w-5 h-5 text-[#ffaf02] mt-1 flex-shrink-0" />
                   <div className="space-y-2 text-gray-300 text-base md:text-lg leading-relaxed italic">
-                    <p>&quot;Tem horario?&quot;</p>
+                    <p>&quot;Tem horário?&quot;</p>
                     <p>&quot;15h pode?&quot;</p>
-                    <p>&quot;Nao da.&quot;</p>
-                    <p>&quot;Deixa pra la.&quot;</p>
+                    <p>&quot;Não dá.&quot;</p>
+                    <p>&quot;Deixa pra lá.&quot;</p>
                   </div>
                 </div>
                 <p className="text-gray-400 text-sm md:text-base leading-relaxed">
                   Essa conversa acontece{" "}
                   <strong className="text-white">30 vezes por dia</strong> no
-                  WhatsApp de barbearias sem agendamento online. Sao{" "}
+                  WhatsApp de barbearias sem agendamento online. São{" "}
                   <strong className="text-white">
                     2+ horas do seu dia
                   </strong>{" "}
                   respondendo mensagem — enquanto poderia estar cortando cabelo
-                  ou gerenciando o negocio.
+                  ou gerenciando o negócio.
                 </p>
               </div>
 
@@ -166,22 +166,22 @@ export default function AgendamentoOnlinePage() {
         <section className="bg-white py-16 md:py-24">
           <div className="container-custom">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#121212] text-center mb-4">
-              6 Milhoes de Agendamentos por Mes no BestBarbers
+              6 Milhões de Agendamentos por Mês no BestBarbers
             </h2>
             <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12 md:mb-16 text-base md:text-lg">
-              Sem WhatsApp. Sem ligacoes. Sem perder cliente.
+              Sem WhatsApp. Sem ligações. Sem perder cliente.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto mb-12">
               {[
                 {
                   value: "6M+",
-                  label: "agendamentos por mes",
+                  label: "agendamentos por mês",
                   icon: Calendar,
                 },
                 {
                   value: "24/7",
-                  label: "disponivel para seus clientes",
+                  label: "disponível para seus clientes",
                   icon: Clock,
                 },
                 {
@@ -205,8 +205,8 @@ export default function AgendamentoOnlinePage() {
 
             <p className="text-gray-600 text-center max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
               O agendamento online do BestBarbers substitui o WhatsApp, as
-              ligacoes e as anotacoes em papel. Seu cliente escolhe profissional,
-              servico, data e horario — tudo em menos de 30 segundos. Voce so
+              ligações e as anotações em papel. Seu cliente escolhe profissional,
+              serviço, data e horário — tudo em menos de 30 segundos. Você só
               precisa abrir a agenda e atender.
             </p>
           </div>
@@ -221,7 +221,7 @@ export default function AgendamentoOnlinePage() {
               Como Funciona o Agendamento Online
             </h2>
             <p className="text-gray-400 text-center max-w-2xl mx-auto mb-12 md:mb-16 text-base">
-              Tudo o que voce precisa para nunca mais perder cliente por falta de
+              Tudo o que você precisa para nunca mais perder cliente por falta de
               resposta.
             </p>
 
@@ -229,33 +229,33 @@ export default function AgendamentoOnlinePage() {
               {[
                 {
                   icon: Link2,
-                  title: "Link Personalizado Compartilhavel",
+                  title: "Link Personalizado Compartilhável",
                   description:
-                    "Sua barbearia recebe um link unico (ex: bestbarbers.app/suabarbearia). Coloque no Instagram, no WhatsApp, no Google — o cliente clica e agenda direto, sem precisar baixar nada.",
+                    "Sua barbearia recebe um link único (ex: bestbarbers.app/suabarbearia). Coloque no Instagram, no WhatsApp, no Google — o cliente clica e agenda direto, sem precisar baixar nada.",
                 },
                 {
                   icon: Smartphone,
-                  title: "App Proprio com Agendamento Integrado",
+                  title: "App Próprio com Agendamento Integrado",
                   description:
                     "No plano App Exclusivo, sua barbearia tem um app na App Store e Play Store com a sua marca. O cliente baixa, agenda, recebe lembretes e faz tudo pelo celular.",
                 },
                 {
                   icon: Bell,
-                  title: "Lembretes Automaticos (Reduz No-Show)",
+                  title: "Lembretes Automáticos (Reduz No-Show)",
                   description:
-                    "O sistema envia lembretes automaticos por push notification antes do horario agendado. Menos faltas, menos buraco na agenda, mais faturamento previsivel.",
+                    "O sistema envia lembretes automáticos por push notification antes do horário agendado. Menos faltas, menos buraco na agenda, mais faturamento previsível.",
                 },
                 {
                   icon: Users,
-                  title: "Gestao de Agenda por Profissional",
+                  title: "Gestão de Agenda por Profissional",
                   description:
-                    "Cada barbeiro tem sua propria agenda. O cliente escolhe o profissional que preferir e ve apenas os horarios disponiveis daquele barbeiro — sem conflito.",
+                    "Cada barbeiro tem sua própria agenda. O cliente escolhe o profissional que preferir e vê apenas os horários disponíveis daquele barbeiro — sem conflito.",
                 },
                 {
                   icon: ShieldCheck,
-                  title: "Bloqueio de Horarios e Folgas",
+                  title: "Bloqueio de Horários e Folgas",
                   description:
-                    "Barbeiro de folga? Reuniao? Almoco? Bloqueie horarios individualmente. A agenda atualiza em tempo real e o cliente so ve o que esta disponivel.",
+                    "Barbeiro de folga? Reunião? Almoço? Bloqueie horários individualmente. A agenda atualiza em tempo real e o cliente só vê o que está disponível.",
                 },
               ].map((feature) => (
                 <div
@@ -296,21 +296,21 @@ export default function AgendamentoOnlinePage() {
                 </p>
                 <blockquote className="border-l-4 border-[#ffaf02] pl-4 md:pl-6">
                   <p className="text-[#121212] font-semibold text-lg md:text-xl italic">
-                    &quot;Perco 1, 2, 3 clientes por dia porque nao consigo
+                    &quot;Perco 1, 2, 3 clientes por dia porque não consigo
                     responder a tempo.&quot;
                   </p>
                 </blockquote>
                 <p className="text-gray-500 text-sm mt-4">
-                  21 mencoes dessa dor em entrevistas com donos de barbearia (FDO
+                  21 menções dessa dor em entrevistas com donos de barbearia (FDO
                   — Field Data Observation).
                 </p>
               </div>
 
               <div className="space-y-4 mb-10">
                 {[
-                  "Cliente manda mensagem as 22h — voce so ve as 8h, ele ja agendou em outro lugar",
-                  "3 clientes mandam ao mesmo tempo — voce demora pra responder e perde 2",
-                  "Barbeiro desmarca e voce precisa avisar 1 por 1 no WhatsApp",
+                  "Cliente manda mensagem às 22h — você só vê às 8h, ele já agendou em outro lugar",
+                  "3 clientes mandam ao mesmo tempo — você demora pra responder e perde 2",
+                  "Barbeiro desmarca e você precisa avisar 1 por 1 no WhatsApp",
                   "Feriado, domingo, madrugada — sem agendamento, sem faturamento",
                 ].map((pain) => (
                   <div
@@ -327,7 +327,7 @@ export default function AgendamentoOnlinePage() {
 
               <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8">
                 Com o agendamento online do BestBarbers, seu cliente agenda
-                sozinho — a qualquer hora, de qualquer lugar. Voce para de
+                sozinho — a qualquer hora, de qualquer lugar. Você para de
                 perder tempo e para de perder dinheiro.
               </p>
 
@@ -350,10 +350,10 @@ export default function AgendamentoOnlinePage() {
         <section className="bg-[#121212] py-16 md:py-24">
           <div className="container-custom">
             <h2 className="text-2xl md:text-3xl font-extrabold text-white text-center mb-4">
-              O Agendamento e So o Comeco
+              O Agendamento é Só o Começo
             </h2>
             <p className="text-gray-400 text-center max-w-2xl mx-auto mb-10 md:mb-14 text-base">
-              O BestBarbers e uma plataforma completa. Explore as outras
+              O BestBarbers é uma plataforma completa. Explore as outras
               funcionalidades que transformam sua barbearia:
             </p>
 
@@ -362,16 +362,16 @@ export default function AgendamentoOnlinePage() {
                 {
                   href: "/clube-de-assinaturas",
                   title: "Clube de Assinaturas",
-                  desc: "Receita recorrente e fidelizacao automatica",
+                  desc: "Receita recorrente e fidelização automática",
                 },
                 {
                   href: "/app-proprio-barbearia",
-                  title: "App Proprio",
+                  title: "App Próprio",
                   desc: "Seu app na App Store e Play Store com sua marca",
                 },
                 {
                   href: "/nota-fiscal-barbearia",
-                  title: "Nota Fiscal Automatica",
+                  title: "Nota Fiscal Automática",
                   desc: "NFS-e emitida automaticamente a cada atendimento",
                 },
               ].map((link) => (

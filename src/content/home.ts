@@ -184,7 +184,7 @@ export const homeContent = {
       highlight: "Totem de Autoatendimento",
     },
     features: [
-      "Seu cliente faz o check-in e o barbeiro recebe um notificação de que ele chegou",
+      "Seu cliente faz o check-in e o barbeiro recebe uma notificação de que ele chegou",
       "Você pode adicionar produtos e serviços na comanda e seu cliente efetua o pagamento após o atendimento",
       "Após o pagamento, seu cliente pode fazer o seu próximo agendamento, tudo de forma autônoma",
     ],

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title:
     "Totem de Autoatendimento para Barbearia — Check-in + Pagamento | BestBarbers",
   description:
-    "Totem para barbearia: check-in automatico, comanda digital, pagamento e reagendamento. Sem filas no caixa. O cliente faz tudo sozinho.",
+    "Totem para barbearia: check-in automático, comanda digital, pagamento e reagendamento. Sem filas no caixa. O cliente faz tudo sozinho.",
   alternates: {
     canonical: "/totem-autoatendimento",
   },
@@ -24,7 +24,7 @@ export default function TotemAutoatendimento() {
         <div className="container-custom">
           <nav aria-label="Breadcrumb" className="text-sm text-gray-400">
             <Link href="/" className="hover:text-[#ffaf02] transition-colors">
-              Inicio
+              Início
             </Link>
             <span className="mx-2">/</span>
             <span className="text-white">Totem de Autoatendimento</span>
@@ -40,7 +40,7 @@ export default function TotemAutoatendimento() {
             <span className="text-[#ffaf02]">para Barbearia</span>
           </h1>
           <p className="mt-6 text-lg md:text-xl text-gray-300 max-w-3xl leading-relaxed">
-            Check-in automatico, comanda digital, pagamento e reagendamento — o
+            Check-in automático, comanda digital, pagamento e reagendamento — o
             cliente faz tudo sozinho, sem fila no caixa. Seu time foca no que
             importa: cortar cabelo.
           </p>
@@ -55,17 +55,17 @@ export default function TotemAutoatendimento() {
         </div>
       </section>
 
-      {/* O que e o Totem */}
+      {/* O que é o Totem */}
       <section className="bg-white py-16 md:py-20">
         <div className="container-custom">
           <h2 className="text-2xl md:text-4xl font-bold text-[#121212]">
-            O que e o Totem BestBarbers?
+            O que é o Totem BestBarbers?
           </h2>
           <p className="mt-6 text-gray-600 text-lg leading-relaxed max-w-3xl">
-            O totem e um equipamento fisico instalado na sua barbearia — como os
-            que voce ja viu no McDonald&apos;s, em aeroportos ou em
-            estacionamentos. O cliente chega, faz check-in, adiciona produtos a
-            comanda, paga e agenda o proximo corte. Tudo sozinho.
+            O totem é um equipamento físico instalado na sua barbearia — como os
+            que você já viu no McDonald&apos;s, em aeroportos ou em
+            estacionamentos. O cliente chega, faz check-in, adiciona produtos à
+            comanda, paga e agenda o próximo corte. Tudo sozinho.
           </p>
           <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 text-center">
@@ -73,11 +73,11 @@ export default function TotemAutoatendimento() {
                 <span className="text-3xl">&#128100;</span>
               </div>
               <h3 className="text-lg font-bold text-[#121212] mb-2">
-                Check-in Automatico
+                Check-in Automático
               </h3>
               <p className="text-gray-600 text-sm">
-                Cliente confirma presenca ao chegar — sem precisar falar com
-                ninguem.
+                Cliente confirma presença ao chegar — sem precisar falar com
+                ninguém.
               </p>
             </div>
             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 text-center">
@@ -88,7 +88,7 @@ export default function TotemAutoatendimento() {
                 Comanda Digital
               </h3>
               <p className="text-gray-600 text-sm">
-                Adiciona produtos e servicos extras direto no totem durante a
+                Adiciona produtos e serviços extras direto no totem durante a
                 visita.
               </p>
             </div>
@@ -100,7 +100,7 @@ export default function TotemAutoatendimento() {
                 Pagamento
               </h3>
               <p className="text-gray-600 text-sm">
-                Paga no totem com Pix, cartao ou debita do clube de assinaturas.
+                Paga no totem com Pix, cartão ou debita do clube de assinaturas.
               </p>
             </div>
             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 text-center">
@@ -111,22 +111,22 @@ export default function TotemAutoatendimento() {
                 Reagendamento
               </h3>
               <p className="text-gray-600 text-sm">
-                Antes de sair, ja agenda o proximo corte — aumenta a recorrencia.
+                Antes de sair, já agenda o próximo corte — aumenta a recorrência.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Quebrando a objecao */}
+      {/* Quebrando a objeção */}
       <section className="bg-[#121212] py-16 md:py-20">
         <div className="container-custom">
           <h2 className="text-2xl md:text-4xl font-bold text-white">
-            &ldquo;Meu Cliente Nao Vai Usar Totem&rdquo;
+            &ldquo;Meu Cliente Não Vai Usar Totem&rdquo;
           </h2>
           <p className="mt-6 text-gray-300 text-lg leading-relaxed max-w-3xl">
-            O mercado mudou. Seu cliente ja usa totem de autoatendimento no
-            McDonald&apos;s, no aeroporto, no estacionamento e no cinema. Ele ja
+            O mercado mudou. Seu cliente já usa totem de autoatendimento no
+            McDonald&apos;s, no aeroporto, no estacionamento e no cinema. Ele já
             sabe como funciona — e prefere a praticidade.
           </p>
           <div className="mt-10 bg-white/5 rounded-2xl p-8 border border-white/10 max-w-3xl">
@@ -138,7 +138,7 @@ export default function TotemAutoatendimento() {
                     Elimina filas no caixa
                   </p>
                   <p className="text-gray-400 text-sm mt-1">
-                    O barbeiro nao para de atender para cobrar. O cliente resolve
+                    O barbeiro não para de atender para cobrar. O cliente resolve
                     sozinho.
                   </p>
                 </div>
@@ -147,10 +147,10 @@ export default function TotemAutoatendimento() {
                 <span className="text-[#ffaf02] text-xl mt-1">&#10003;</span>
                 <div>
                   <p className="text-white font-semibold">
-                    Aumenta o ticket medio
+                    Aumenta o ticket médio
                   </p>
                   <p className="text-gray-400 text-sm mt-1">
-                    Produtos na tela, sem pressao de vendedor. O cliente adiciona
+                    Produtos na tela, sem pressão de vendedor. O cliente adiciona
                     o que quer.
                   </p>
                 </div>
@@ -162,8 +162,8 @@ export default function TotemAutoatendimento() {
                     Passa imagem profissional
                   </p>
                   <p className="text-gray-400 text-sm mt-1">
-                    Barbearia com totem transmite modernidade. E diferente de
-                    qualquer concorrente da regiao.
+                    Barbearia com totem transmite modernidade. É diferente de
+                    qualquer concorrente da região.
                   </p>
                 </div>
               </div>
@@ -176,24 +176,24 @@ export default function TotemAutoatendimento() {
       <section className="bg-white py-16 md:py-20">
         <div className="container-custom">
           <h2 className="text-2xl md:text-4xl font-bold text-[#121212]">
-            Como Funciona a Contratacao
+            Como Funciona a Contratação
           </h2>
           <p className="mt-6 text-gray-600 text-lg leading-relaxed max-w-3xl">
-            O totem e um add-on opcional ao{" "}
+            O totem é um add-on opcional ao{" "}
             <Link
               href="/sistema-para-barbearia"
               className="text-[#ffaf02] hover:underline font-semibold"
             >
               plano App Exclusivo
             </Link>{" "}
-            do BestBarbers. Voce recebe o equipamento configurado e pronto para
+            do BestBarbers. Você recebe o equipamento configurado e pronto para
             uso — basta ligar na tomada e conectar ao Wi-Fi.
           </p>
           <div className="mt-8 bg-[#121212] rounded-2xl p-8">
             <div className="grid md:grid-cols-2 gap-8">
               <div>
                 <h3 className="text-lg font-bold text-white mb-4">
-                  O que esta incluso
+                  O que está incluso
                 </h3>
                 <ul className="space-y-3 text-gray-300">
                   <li className="flex items-start gap-3">
@@ -202,15 +202,15 @@ export default function TotemAutoatendimento() {
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Instalacao e configuracao remota
+                    Instalação e configuração remota
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Integracao com seu sistema BestBarbers
+                    Integração com seu sistema BestBarbers
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Suporte tecnico dedicado
+                    Suporte técnico dedicado
                   </li>
                 </ul>
               </div>
@@ -248,7 +248,7 @@ export default function TotemAutoatendimento() {
                       href="/nota-fiscal-barbearia"
                       className="text-[#ffaf02] hover:underline"
                     >
-                      Nota Fiscal Automatica
+                      Nota Fiscal Automática
                     </Link>
                     <span className="text-gray-400">
                       {" "}
@@ -260,7 +260,7 @@ export default function TotemAutoatendimento() {
                       href="/gestao-financeira-barbearia"
                       className="text-[#ffaf02] hover:underline"
                     >
-                      Gestao Financeira
+                      Gestão Financeira
                     </Link>
                     <span className="text-gray-400">
                       {" "}
@@ -286,7 +286,7 @@ export default function TotemAutoatendimento() {
                 Preciso de internet no local?
               </h3>
               <p className="mt-3 text-gray-400 leading-relaxed">
-                Sim, o totem precisa de conexao Wi-Fi para se comunicar com o
+                Sim, o totem precisa de conexão Wi-Fi para se comunicar com o
                 sistema BestBarbers em tempo real — check-in, pagamentos e
                 agendamentos. Funciona com qualquer internet comercial.
               </p>
@@ -296,9 +296,9 @@ export default function TotemAutoatendimento() {
                 Posso usar o totem sem o plano App Exclusivo?
               </h3>
               <p className="mt-3 text-gray-400 leading-relaxed">
-                O totem e um add-on do plano App Exclusivo porque depende das
+                O totem é um add-on do plano App Exclusivo porque depende das
                 funcionalidades integradas — agendamento, clube, pagamentos e
-                comanda. Sem essas funcionalidades, o totem nao teria o que
+                comanda. Sem essas funcionalidades, o totem não teria o que
                 oferecer ao cliente.
               </p>
             </div>
@@ -314,7 +314,7 @@ export default function TotemAutoatendimento() {
             <span className="text-[#ffaf02]">Autoatendimento</span>
           </h2>
           <p className="mt-4 text-gray-600 text-lg max-w-2xl mx-auto">
-            Sem filas, sem confusao no caixa, sem perder tempo. O cliente faz
+            Sem filas, sem confusão no caixa, sem perder tempo. O cliente faz
             tudo sozinho.
           </p>
           <div className="mt-8">

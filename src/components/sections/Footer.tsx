@@ -53,7 +53,7 @@ export function Footer() {
               />
             </motion.div>
             <p className="text-gray-500 text-sm max-w-xs mt-4 hidden lg:block">
-              Transformando barbeiros em empresários e barbearias em grandes empresas desde 2020.Transformando barbearias em negócios lucrativos desde 2020.
+              Transformando barbearias em negócios lucrativos desde 2020.
             </p>
           </motion.div>
 

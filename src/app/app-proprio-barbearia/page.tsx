@@ -20,16 +20,16 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "App Proprio para Barbearia na App Store e Play Store | BestBarbers",
+  title: "App Próprio para Barbearia na App Store e Play Store | BestBarbers",
   description:
-    "Unico sistema que cria um app exclusivo da sua barbearia, com sua marca, publicado na App Store e Play Store. Seus clientes so veem sua barbearia, sem concorrentes.",
+    "Único sistema que cria um app exclusivo da sua barbearia, com sua marca, publicado na App Store e Play Store. Seus clientes só veem sua barbearia, sem concorrentes.",
   alternates: {
     canonical: "/app-proprio-barbearia",
   },
   openGraph: {
-    title: "App Proprio para Barbearia na App Store e Play Store | BestBarbers",
+    title: "App Próprio para Barbearia na App Store e Play Store | BestBarbers",
     description:
-      "Unico sistema que cria um app exclusivo da sua barbearia, com sua marca, publicado na App Store e Play Store. Seus clientes so veem sua barbearia, sem concorrentes.",
+      "Único sistema que cria um app exclusivo da sua barbearia, com sua marca, publicado na App Store e Play Store. Seus clientes só veem sua barbearia, sem concorrentes.",
     url: "https://www.bestbarbers.app/app-proprio-barbearia",
     type: "website",
     locale: "pt_BR",
@@ -39,20 +39,20 @@ export const metadata: Metadata = {
 
 const faqItems = [
   {
-    question: "O que e o App Proprio personalizado?",
+    question: "O que é o App Próprio personalizado?",
     answer:
-      "E um aplicativo exclusivo da sua barbearia, publicado na App Store e Play Store com o nome e a identidade visual do seu negocio. Seus clientes baixam o app da sua barbearia e acessam apenas os servicos do seu estabelecimento, sem ver concorrentes.",
+      "É um aplicativo exclusivo da sua barbearia, publicado na App Store e Play Store com o nome e a identidade visual do seu negócio. Seus clientes baixam o app da sua barbearia e acessam apenas os serviços do seu estabelecimento, sem ver concorrentes.",
   },
   {
     question:
-      "Quanto tempo leva para ter meu App Proprio publicado nas lojas?",
+      "Quanto tempo leva para ter meu App Próprio publicado nas lojas?",
     answer:
-      "Apos a assinatura do contrato e envio das informacoes necessarias (logo, cores, dados do negocio), o processo de desenvolvimento e publicacao leva em media 15 a 30 dias uteis, dependendo da aprovacao das lojas (Apple e Google).",
+      "Após a assinatura do contrato e envio das informações necessárias (logo, cores, dados do negócio), o processo de desenvolvimento e publicação leva em média 15 a 30 dias úteis, dependendo da aprovação das lojas (Apple e Google).",
   },
   {
-    question: "Posso enviar notificacoes personalizadas para meus clientes?",
+    question: "Posso enviar notificações personalizadas para meus clientes?",
     answer:
-      "Sim! Com o App Proprio voce pode enviar push notifications personalizadas diretamente para o celular dos seus clientes. Ideal para avisar sobre promocoes, lembrar de agendamentos, comunicar novidades ou reativar clientes inativos.",
+      "Sim! Com o App Próprio você pode enviar push notifications personalizadas diretamente para o celular dos seus clientes. Ideal para avisar sobre promoções, lembrar de agendamentos, comunicar novidades ou reativar clientes inativos.",
   },
 ];
 
@@ -78,7 +78,7 @@ const features = [
   },
   {
     icon: Download,
-    title: "Publicacao na App Store e Play Store",
+    title: "Publicação na App Store e Play Store",
     description:
       'Seu app aparece nas lojas oficiais da Apple e Google. Cliente busca "sua barbearia" e encontra.',
   },
@@ -86,25 +86,25 @@ const features = [
     icon: CalendarCheck,
     title: "Agendamento online integrado",
     description:
-      "Seus clientes agendam 24h por dia, escolhem profissional, servico e horario direto no app.",
+      "Seus clientes agendam 24h por dia, escolhem profissional, serviço e horário direto no app.",
   },
   {
     icon: Crown,
     title: "Clube de assinaturas no app",
     description:
-      "Planos recorrentes com cobranca automatica. Receita previsivel e cliente fidelizado sem esforco.",
+      "Planos recorrentes com cobrança automática. Receita previsível e cliente fidelizado sem esforço.",
   },
   {
     icon: Bell,
     title: "Push notifications personalizadas",
     description:
-      "Envie avisos de promocao, lembrete de agendamento e reative clientes inativos direto no celular.",
+      "Envie avisos de promoção, lembrete de agendamento e reative clientes inativos direto no celular.",
   },
   {
     icon: CreditCard,
     title: "Pagamento online pelo app",
     description:
-      "Pix, cartao de credito e debito. O cliente paga antes ou depois do atendimento, tudo registrado.",
+      "Pix, cartão de crédito e débito. O cliente paga antes ou depois do atendimento, tudo registrado.",
   },
 ];
 
@@ -112,29 +112,29 @@ const processSteps = [
   {
     step: "01",
     title: "Contrato",
-    description: "Assine o plano App Exclusivo e envie logo, cores e dados do negocio.",
+    description: "Assine o plano App Exclusivo e envie logo, cores e dados do negócio.",
   },
   {
     step: "02",
     title: "Desenvolvimento",
     description:
-      "Nossa equipe constroi o app com a identidade visual da sua barbearia.",
+      "Nossa equipe constrói o app com a identidade visual da sua barbearia.",
   },
   {
     step: "03",
-    title: "Homologacao",
+    title: "Homologação",
     description:
-      "Voce valida o app e solicita ajustes antes da publicacao nas lojas.",
+      "Você valida o app e solicita ajustes antes da publicação nas lojas.",
   },
   {
     step: "04",
     title: "Review das Lojas",
     description:
-      "Apple e Google analisam o app. Esse processo leva de 3 a 7 dias uteis.",
+      "Apple e Google analisam o app. Esse processo leva de 3 a 7 dias úteis.",
   },
   {
     step: "05",
-    title: "Publicacao",
+    title: "Publicação",
     description:
       "App publicado e pronto para seus clientes baixarem e agendarem.",
   },
@@ -165,7 +165,7 @@ export default function AppProprioBarbearia() {
                   </Link>
                 </li>
                 <li>/</li>
-                <li className="text-gray-400">App Proprio para Barbearia</li>
+                <li className="text-gray-400">App Próprio para Barbearia</li>
               </ol>
             </nav>
           </div>
@@ -181,32 +181,32 @@ export default function AppProprioBarbearia() {
               </span>
 
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-6">
-                App Proprio para Barbearia{" "}
+                App Próprio para Barbearia{" "}
                 <span className="text-[#ffaf02]">
                   — Sua Marca na App Store e Play Store
                 </span>
               </h1>
 
               <p className="text-base md:text-lg text-gray-300 leading-relaxed mb-4">
-                Seus clientes abrem um app generico para agendar com voce — e veem{" "}
+                Seus clientes abrem um app genérico para agendar com você — e veem{" "}
                 <strong className="text-white">
                   15 concorrentes na mesma tela
                 </strong>
-                . Com o App Proprio BestBarbers, eles abrem{" "}
-                <strong className="text-[#ffaf02]">O SEU APP</strong>. So sua
-                marca. So seus servicos.
+                . Com o App Próprio BestBarbers, eles abrem{" "}
+                <strong className="text-[#ffaf02]">O SEU APP</strong>. Só sua
+                marca. Só seus serviços.
               </p>
 
               <p className="text-sm md:text-base text-gray-400 mb-8">
-                <strong className="text-white">1.200+ barbearias</strong> ja tem
-                app proprio com BestBarbers.
+                <strong className="text-white">1.200+ barbearias</strong> já tem
+                app próprio com BestBarbers.
               </p>
 
               <FeatureCTA
                 originDesc="[Site]BT-AppProprio"
                 className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm md:text-base font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_4px_20px_rgba(255,175,2,0.3)]"
               >
-                QUERO UM APP PROPRIO PARA MINHA BARBEARIA
+                QUERO UM APP PRÓPRIO PARA MINHA BARBEARIA
                 <ArrowRight className="w-5 h-5" />
               </FeatureCTA>
             </div>
@@ -218,11 +218,11 @@ export default function AppProprioBarbearia() {
           <div className="container-custom">
             <div className="text-center mb-12 md:mb-16">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#121212] mb-4">
-                Por que Ter um App Proprio e Nao Usar um App Generico
+                Por que Ter um App Próprio e Não Usar um App Genérico
               </h2>
               <p className="text-sm md:text-base text-gray-500 max-w-2xl mx-auto">
-                A diferenca entre perder clientes para concorrentes e ser a
-                unica opcao na tela do seu cliente.
+                A diferença entre perder clientes para concorrentes e ser a
+                única opção na tela do seu cliente.
               </p>
             </div>
 
@@ -236,10 +236,10 @@ export default function AppProprioBarbearia() {
                   23,1%
                 </p>
                 <p className="text-sm text-gray-300 leading-relaxed">
-                  Melhor conversao nas vendas quando o cliente descobre que tera
+                  Melhor conversão nas vendas quando o cliente descobre que terá
                   um{" "}
                   <strong className="text-white">
-                    app proprio com a marca dele
+                    app próprio com a marca dele
                   </strong>
                 </p>
               </div>
@@ -255,9 +255,9 @@ export default function AppProprioBarbearia() {
                 <p className="text-sm text-gray-300 leading-relaxed">
                   Seu app publicado na App Store e Play Store.{" "}
                   <strong className="text-white">
-                    Zero concorrentes visiveis
+                    Zero concorrentes visíveis
                   </strong>{" "}
-                  — o cliente so ve a sua barbearia
+                  — o cliente só vê a sua barbearia
                 </p>
               </div>
 
@@ -270,9 +270,9 @@ export default function AppProprioBarbearia() {
                   Push para SEUS clientes
                 </p>
                 <p className="text-sm text-gray-300 leading-relaxed">
-                  Envie notificacoes direto no celular.{" "}
+                  Envie notificações direto no celular.{" "}
                   <strong className="text-white">
-                    Promocoes, lembretes, reativacao
+                    Promoções, lembretes, reativação
                   </strong>{" "}
                   — sem depender de algoritmo
                 </p>
@@ -290,11 +290,11 @@ export default function AppProprioBarbearia() {
                 TUDO INCLUSO
               </span>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-4">
-                O que Vem no App Proprio BestBarbers
+                O que Vem no App Próprio BestBarbers
               </h2>
               <p className="text-sm md:text-base text-gray-400 max-w-2xl mx-auto">
                 Cada detalhe pensado para sua barbearia parecer uma franquia de
-                milhoes — com o investimento de uma assinatura.
+                milhões — com o investimento de uma assinatura.
               </p>
             </div>
 
@@ -339,7 +339,7 @@ export default function AppProprioBarbearia() {
                 href="/totem-autoatendimento"
                 className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-[#ffaf02] transition-colors"
               >
-                Conhea o Totem de Autoatendimento
+                Conheça o Totem de Autoatendimento
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
@@ -354,7 +354,7 @@ export default function AppProprioBarbearia() {
                 De 15 a 30 Dias para Seu App na Loja
               </h2>
               <p className="text-sm md:text-base text-gray-500 max-w-2xl mx-auto">
-                Do contrato a publicacao, acompanhamos cada etapa. Voce nao
+                Do contrato à publicação, acompanhamos cada etapa. Você não
                 precisa entender de tecnologia.
               </p>
             </div>
@@ -395,10 +395,10 @@ export default function AppProprioBarbearia() {
             <div className="text-center mb-10 md:mb-14">
               <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ffaf02]/10 text-[#ffaf02] text-xs md:text-sm font-semibold mb-4 border border-[#ffaf02]/20">
                 <ShieldCheck className="w-4 h-4" />
-                TIRE SUAS DUVIDAS
+                TIRE SUAS DÚVIDAS
               </span>
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-3">
-                Perguntas Frequentes sobre App Proprio
+                Perguntas Frequentes sobre App Próprio
               </h2>
             </div>
 
@@ -429,7 +429,7 @@ export default function AppProprioBarbearia() {
           <div className="container-custom text-center">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white mb-4">
               Pronto para ter{" "}
-              <span className="text-[#ffaf02]">seu proprio app</span>?
+              <span className="text-[#ffaf02]">seu próprio app</span>?
             </h2>
             <p className="text-sm md:text-base text-gray-400 max-w-xl mx-auto mb-8">
               Pare de dividir tela com concorrentes. Tenha um app exclusivo com
@@ -439,11 +439,11 @@ export default function AppProprioBarbearia() {
               originDesc="[Site]BT-AppProprio"
               className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm md:text-base font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_4px_20px_rgba(255,175,2,0.3)]"
             >
-              QUERO UM APP PROPRIO PARA MINHA BARBEARIA
+              QUERO UM APP PRÓPRIO PARA MINHA BARBEARIA
               <ArrowRight className="w-5 h-5" />
             </FeatureCTA>
             <p className="text-xs text-gray-600 mt-4">
-              A partir de R$299/mes no plano App Exclusivo
+              A partir de R$299/mês no plano App Exclusivo
             </p>
           </div>
         </section>

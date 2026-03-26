@@ -5,9 +5,9 @@ import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 
 export const metadata: Metadata = {
-  title: "Nota Fiscal Automatica para Barbearia (NFS-e 2026) | BestBarbers",
+  title: "Nota Fiscal Automática para Barbearia (NFS-e 2026) | BestBarbers",
   description:
-    "NFS-e automatica para barbearia — emissao apos cada atendimento, sem trabalho manual. Obrigatoria em 2026. Configure uma vez, o sistema faz o resto.",
+    "NFS-e automática para barbearia — emissão após cada atendimento, sem trabalho manual. Obrigatória em 2026. Configure uma vez, o sistema faz o resto.",
   alternates: {
     canonical: "/nota-fiscal-barbearia",
   },
@@ -23,7 +23,7 @@ export default function NotaFiscalBarbearia() {
         <div className="container-custom">
           <nav aria-label="Breadcrumb" className="text-sm text-gray-400">
             <Link href="/" className="hover:text-[#ffaf02] transition-colors">
-              Inicio
+              Início
             </Link>
             <span className="mx-2">/</span>
             <span className="text-white">Nota Fiscal Barbearia</span>
@@ -35,13 +35,13 @@ export default function NotaFiscalBarbearia() {
       <section className="bg-[#121212] py-16 md:py-24">
         <div className="container-custom">
           <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight max-w-4xl">
-            Nota Fiscal Automatica para Barbearia{" "}
+            Nota Fiscal Automática para Barbearia{" "}
             <span className="text-[#ffaf02]">— NFS-e sem Trabalho Manual</span>
           </h1>
           <p className="mt-6 text-lg md:text-xl text-gray-300 max-w-3xl leading-relaxed">
-            A emissao de NFS-e se tornou obrigatoria para barbearias em 2026.
-            Com o BestBarbers, voce configura uma unica vez e o sistema emite a
-            nota fiscal automaticamente apos cada atendimento — sem precisar
+            A emissão de NFS-e se tornou obrigatória para barbearias em 2026.
+            Com o BestBarbers, você configura uma única vez e o sistema emite a
+            nota fiscal automaticamente após cada atendimento — sem precisar
             lembrar, sem errar, sem atrasar.
           </p>
           <div className="mt-10">
@@ -49,7 +49,7 @@ export default function NotaFiscalBarbearia() {
               originDesc="[Site]BT-NF"
               className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
             >
-              QUERO NOTA FISCAL AUTOMATICA
+              QUERO NOTA FISCAL AUTOMÁTICA
             </FeatureCTA>
           </div>
         </div>
@@ -59,14 +59,14 @@ export default function NotaFiscalBarbearia() {
       <section className="bg-white py-16 md:py-20">
         <div className="container-custom">
           <h2 className="text-2xl md:text-4xl font-bold text-[#121212]">
-            NFS-e Obrigatoria em 2026 — Sua Barbearia Esta Pronta?
+            NFS-e Obrigatória em 2026 — Sua Barbearia Está Pronta?
           </h2>
           <p className="mt-6 text-gray-600 text-lg leading-relaxed max-w-3xl">
             A partir de 2026, todas as barbearias precisam emitir nota fiscal
-            eletronica de servico (NFS-e) a cada atendimento. Quem nao se
+            eletrônica de serviço (NFS-e) a cada atendimento. Quem não se
             adequar corre risco de multas e problemas com a Receita. O
-            BestBarbers ja esta preparado para isso — e faz tudo automaticamente
-            para voce.
+            BestBarbers já está preparado para isso — e faz tudo automaticamente
+            para você.
           </p>
           <div className="mt-8 grid md:grid-cols-3 gap-6">
             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
@@ -77,8 +77,8 @@ export default function NotaFiscalBarbearia() {
                 Obrigatoriedade Legal
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                A NFS-e passou a ser obrigatoria para prestadores de servico,
-                incluindo barbearias. Emitir manualmente nao e viavel com 20, 30
+                A NFS-e passou a ser obrigatória para prestadores de serviço,
+                incluindo barbearias. Emitir manualmente não é viável com 20, 30
                 atendimentos por dia.
               </p>
             </div>
@@ -90,8 +90,8 @@ export default function NotaFiscalBarbearia() {
                 Evite Multas
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Barbearias que nao emitem NFS-e podem receber autuacoes da
-                prefeitura. O sistema automatico garante que nenhum atendimento
+                Barbearias que não emitem NFS-e podem receber autuações da
+                prefeitura. O sistema automático garante que nenhum atendimento
                 fique sem nota.
               </p>
             </div>
@@ -104,7 +104,7 @@ export default function NotaFiscalBarbearia() {
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
                 Configure uma vez os dados fiscais no painel e pronto. Cada
-                atendimento finalizado gera a NFS-e automaticamente — voce nao
+                atendimento finalizado gera a NFS-e automaticamente — você não
                 precisa fazer nada.
               </p>
             </div>
@@ -116,7 +116,7 @@ export default function NotaFiscalBarbearia() {
       <section className="bg-[#121212] py-16 md:py-20">
         <div className="container-custom">
           <h2 className="text-2xl md:text-4xl font-bold text-white">
-            Como Funciona a Emissao Automatica
+            Como Funciona a Emissão Automática
           </h2>
           <div className="mt-10 space-y-8">
             <div className="flex gap-6 items-start">
@@ -128,8 +128,8 @@ export default function NotaFiscalBarbearia() {
                   Configure Seus Dados Fiscais
                 </h3>
                 <p className="mt-2 text-gray-400 leading-relaxed">
-                  Insira CNPJ, inscricao municipal e certificado digital no
-                  painel do BestBarbers. Isso e feito uma unica vez.
+                  Insira CNPJ, inscrição municipal e certificado digital no
+                  painel do BestBarbers. Isso é feito uma única vez.
                 </p>
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function NotaFiscalBarbearia() {
                 </h3>
                 <p className="mt-2 text-gray-400 leading-relaxed">
                   Assim que o barbeiro finaliza o atendimento no sistema, a
-                  NFS-e e gerada automaticamente e enviada para a prefeitura.
+                  NFS-e é gerada automaticamente e enviada para a prefeitura.
                 </p>
               </div>
             </div>
@@ -169,50 +169,50 @@ export default function NotaFiscalBarbearia() {
       <section className="bg-white py-16 md:py-20">
         <div className="container-custom">
           <h2 className="text-2xl md:text-4xl font-bold text-[#121212]">
-            Integracao com Sistemas das Prefeituras
+            Integração com Sistemas das Prefeituras
           </h2>
           <p className="mt-6 text-gray-600 text-lg leading-relaxed max-w-3xl">
             O BestBarbers se conecta diretamente aos sistemas de NFS-e das
-            prefeituras brasileiras. A nota e transmitida em tempo real, sem
-            necessidade de acessar portais externos ou preencher formularios.
+            prefeituras brasileiras. A nota é transmitida em tempo real, sem
+            necessidade de acessar portais externos ou preencher formulários.
           </p>
           <div className="mt-8 bg-gray-50 rounded-2xl p-8 border border-gray-100">
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h3 className="text-lg font-bold text-[#121212] mb-3">
-                  O que esta incluso
+                  O que está incluso
                 </h3>
                 <ul className="space-y-3 text-gray-600">
                   <li className="flex items-start gap-3">
                     <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Emissao automatica apos cada atendimento
+                    Emissão automática após cada atendimento
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Transmissao direta para a prefeitura
+                    Transmissão direta para a prefeitura
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Exportacao em PDF e XML
+                    Exportação em PDF e XML
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Historico completo de notas emitidas
+                    Histórico completo de notas emitidas
                   </li>
                 </ul>
               </div>
               <div>
                 <h3 className="text-lg font-bold text-[#121212] mb-3">
-                  Compativel com
+                  Compatível com
                 </h3>
                 <ul className="space-y-3 text-gray-600">
                   <li className="flex items-start gap-3">
                     <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Padrao Nacional NFS-e (ABRASF)
+                    Padrão Nacional NFS-e (ABRASF)
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Principais municipios do Brasil
+                    Principais municípios do Brasil
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#ffaf02] mt-1">&#10003;</span>
@@ -241,8 +241,8 @@ export default function NotaFiscalBarbearia() {
                 Minha barbearia realmente precisa emitir nota fiscal?
               </h3>
               <p className="mt-3 text-gray-400 leading-relaxed">
-                Sim. A partir de 2026, a NFS-e e obrigatoria para prestadores de
-                servico, incluindo barbearias e saloes. O descumprimento pode
+                Sim. A partir de 2026, a NFS-e é obrigatória para prestadores de
+                serviço, incluindo barbearias e salões. O descumprimento pode
                 gerar multas e impedimentos fiscais.
               </p>
             </div>
@@ -251,18 +251,18 @@ export default function NotaFiscalBarbearia() {
                 Preciso de certificado digital?
               </h3>
               <p className="mt-3 text-gray-400 leading-relaxed">
-                Depende do municipio. Alguns exigem certificado digital A1 ou A3
-                para a transmissao. O BestBarbers suporta ambos os tipos e te
-                orienta na configuracao.
+                Depende do município. Alguns exigem certificado digital A1 ou A3
+                para a transmissão. O BestBarbers suporta ambos os tipos e te
+                orienta na configuração.
               </p>
             </div>
             <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
               <h3 className="text-lg font-bold text-white">
-                A nota e emitida tambem para assinantes do clube?
+                A nota é emitida também para assinantes do clube?
               </h3>
               <p className="mt-3 text-gray-400 leading-relaxed">
                 Sim. O sistema emite nota fiscal tanto para atendimentos avulsos
-                quanto para servicos realizados dentro do{" "}
+                quanto para serviços realizados dentro do{" "}
                 <Link
                   href="/clube-de-assinaturas"
                   className="text-[#ffaf02] hover:underline"
@@ -283,14 +283,14 @@ export default function NotaFiscalBarbearia() {
             Faz Parte do Sistema Completo BestBarbers
           </h2>
           <p className="text-gray-600 text-lg mb-8 max-w-3xl">
-            A nota fiscal automatica e apenas uma das funcionalidades do{" "}
+            A nota fiscal automática é apenas uma das funcionalidades do{" "}
             <Link
               href="/sistema-para-barbearia"
               className="text-[#ffaf02] hover:underline font-semibold"
             >
               sistema completo para barbearias
             </Link>
-            . Conheca tambem:
+            . Conheça também:
           </p>
           <div className="grid md:grid-cols-3 gap-4">
             <Link
@@ -298,7 +298,7 @@ export default function NotaFiscalBarbearia() {
               className="bg-gray-50 rounded-xl p-5 border border-gray-100 hover:border-[#ffaf02]/30 transition-colors group"
             >
               <h3 className="font-bold text-[#121212] group-hover:text-[#ffaf02] transition-colors">
-                App Proprio Personalizado
+                App Próprio Personalizado
               </h3>
               <p className="text-sm text-gray-500 mt-1">
                 Seu app na App Store e Google Play
@@ -309,10 +309,10 @@ export default function NotaFiscalBarbearia() {
               className="bg-gray-50 rounded-xl p-5 border border-gray-100 hover:border-[#ffaf02]/30 transition-colors group"
             >
               <h3 className="font-bold text-[#121212] group-hover:text-[#ffaf02] transition-colors">
-                Gestao Financeira
+                Gestão Financeira
               </h3>
               <p className="text-sm text-gray-500 mt-1">
-                Fluxo de caixa, comissoes e relatorios
+                Fluxo de caixa, comissões e relatórios
               </p>
             </Link>
             <Link
@@ -320,10 +320,10 @@ export default function NotaFiscalBarbearia() {
               className="bg-gray-50 rounded-xl p-5 border border-gray-100 hover:border-[#ffaf02]/30 transition-colors group"
             >
               <h3 className="font-bold text-[#121212] group-hover:text-[#ffaf02] transition-colors">
-                Gestao de Comissoes
+                Gestão de Comissões
               </h3>
               <p className="text-sm text-gray-500 mt-1">
-                Calculo automatico por barbeiro
+                Cálculo automático por barbeiro
               </p>
             </Link>
           </div>
@@ -346,7 +346,7 @@ export default function NotaFiscalBarbearia() {
               originDesc="[Site]BT-NF"
               className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
             >
-              QUERO NOTA FISCAL AUTOMATICA
+              QUERO NOTA FISCAL AUTOMÁTICA
             </FeatureCTA>
           </div>
         </div>

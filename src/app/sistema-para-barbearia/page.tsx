@@ -6,9 +6,9 @@ import { FeatureCTA } from "@/components/FeatureCTA";
 
 export const metadata: Metadata = {
   title:
-    "Sistema para Barbearia Completo — App Proprio + Gestao | BestBarbers",
+    "Sistema para Barbearia Completo — App Próprio + Gestão | BestBarbers",
   description:
-    "Sistema completo para barbearia: app proprio, clube de assinaturas, agendamento 24h, nota fiscal automatica, comissoes, financeiro e totem. 1.200+ barbearias confiam no BestBarbers.",
+    "Sistema completo para barbearia: app próprio, clube de assinaturas, agendamento 24h, nota fiscal automática, comissões, financeiro e totem. 1.200+ barbearias confiam no BestBarbers.",
   alternates: {
     canonical: "/sistema-para-barbearia",
   },
@@ -24,7 +24,7 @@ export default function SistemaParaBarbearia() {
         <div className="container-custom">
           <nav aria-label="Breadcrumb" className="text-sm text-gray-400">
             <Link href="/" className="hover:text-[#ffaf02] transition-colors">
-              Inicio
+              Início
             </Link>
             <span className="mx-2">/</span>
             <span className="text-white">Sistema para Barbearia</span>
@@ -38,26 +38,26 @@ export default function SistemaParaBarbearia() {
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight max-w-5xl">
             Sistema para Barbearia{" "}
             <span className="text-[#ffaf02]">
-              — Tudo que Voce Precisa para Gerenciar e Crescer
+              — Tudo que Você Precisa para Gerenciar e Crescer
             </span>
           </h1>
           <p className="mt-6 text-lg md:text-xl text-gray-300 max-w-3xl leading-relaxed">
-            O BestBarbers e a plataforma completa para barbearias que querem sair
-            do improviso e crescer de verdade. App proprio na loja, clube de
-            assinaturas, agendamento 24h, nota fiscal automatica, controle
-            financeiro, comissoes, totem de autoatendimento e muito mais — tudo
-            em um unico sistema.
+            O BestBarbers é a plataforma completa para barbearias que querem sair
+            do improviso e crescer de verdade. App próprio na loja, clube de
+            assinaturas, agendamento 24h, nota fiscal automática, controle
+            financeiro, comissões, totem de autoatendimento e muito mais — tudo
+            em um único sistema.
           </p>
           <p className="mt-4 text-gray-400 text-base max-w-3xl">
-            Mais de 1.200 barbearias em todo o Brasil ja confiam no BestBarbers
-            para gerenciar suas operacoes e multiplicar seu faturamento.
+            Mais de 1.200 barbearias em todo o Brasil já confiam no BestBarbers
+            para gerenciar suas operações e multiplicar seu faturamento.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4">
             <FeatureCTA
               originDesc="[Site]BT-Sistema"
               className="inline-flex items-center justify-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
             >
-              QUERO UM APP PROPRIO PARA MINHA BARBEARIA
+              QUERO UM APP PRÓPRIO PARA MINHA BARBEARIA
             </FeatureCTA>
           </div>
         </div>
@@ -70,11 +70,11 @@ export default function SistemaParaBarbearia() {
             Por que 1.200+ Barbearias Escolheram o BestBarbers
           </h2>
           <p className="mt-6 text-gray-600 text-lg leading-relaxed max-w-3xl">
-            Barbearia nao e salao de beleza. Os sistemas genericos de agenda nao
-            entendem a dinamica de uma barbearia — o clube de assinaturas, a
-            comissao dividida, o agendamento por cadeira, o barbeiro que trabalha
+            Barbearia não é salão de beleza. Os sistemas genéricos de agenda não
+            entendem a dinâmica de uma barbearia — o clube de assinaturas, a
+            comissão dividida, o agendamento por cadeira, o barbeiro que trabalha
             em mais de uma unidade. O BestBarbers foi feito exclusivamente para
-            barbearias, por quem entende o negocio.
+            barbearias, por quem entende o negócio.
           </p>
           <div className="mt-10 grid md:grid-cols-3 gap-8">
             <div className="text-center">
@@ -82,7 +82,7 @@ export default function SistemaParaBarbearia() {
                 <span className="text-3xl">&#128241;</span>
               </div>
               <h3 className="text-xl font-bold text-[#121212] mb-2">
-                App Proprio na Loja
+                App Próprio na Loja
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
                 Seu app com a sua marca na App Store e Google Play. O cliente
@@ -97,7 +97,7 @@ export default function SistemaParaBarbearia() {
                 Clube de Assinaturas
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Receita recorrente previsivel. O cliente paga todo mes e voce
+                Receita recorrente previsível. O cliente paga todo mês e você
                 sabe exatamente quanto vai faturar.
               </p>
             </div>
@@ -125,33 +125,33 @@ export default function SistemaParaBarbearia() {
           </h2>
           <p className="text-gray-400 text-lg mb-12 max-w-3xl">
             Tudo que uma barbearia precisa para funcionar de forma profissional —
-            do agendamento a nota fiscal, da comissao ao totem de
+            do agendamento à nota fiscal, da comissão ao totem de
             autoatendimento.
           </p>
 
-          {/* App Proprio */}
+          {/* App Próprio */}
           <div className="mb-12 bg-white/5 rounded-2xl p-8 border border-white/10">
             <h3 className="text-xl font-bold text-white mb-3">
               <Link
                 href="/app-proprio-barbearia"
                 className="hover:text-[#ffaf02] transition-colors"
               >
-                App Proprio Personalizado
+                App Próprio Personalizado
               </Link>
             </h3>
             <p className="text-gray-300 leading-relaxed max-w-3xl">
               Seu app com a marca da sua barbearia, publicado na App Store e
-              Google Play. O cliente baixa, faz login, ve a agenda do barbeiro
-              preferido, agenda, paga e recebe notificacoes push. Nao e um link
-              generico — e um app de verdade, com o nome e a identidade visual da
-              sua barbearia. Seus clientes encontram voce direto na loja de apps
+              Google Play. O cliente baixa, faz login, vê a agenda do barbeiro
+              preferido, agenda, paga e recebe notificações push. Não é um link
+              genérico — é um app de verdade, com o nome e a identidade visual da
+              sua barbearia. Seus clientes encontram você direto na loja de apps
               do celular.
             </p>
             <Link
               href="/app-proprio-barbearia"
               className="inline-block mt-4 text-[#ffaf02] hover:underline text-sm font-semibold"
             >
-              Saiba mais sobre o App Proprio &#8594;
+              Saiba mais sobre o App Próprio &#8594;
             </Link>
           </div>
 
@@ -167,10 +167,10 @@ export default function SistemaParaBarbearia() {
             </h3>
             <p className="text-gray-300 leading-relaxed max-w-3xl">
               Crie planos mensais personalizados para seus clientes. O sistema
-              cobra automaticamente via cartao ou Pix, controla quem esta ativo,
-              quem esta inadimplente e quanto voce vai receber no proximo mes.
-              Barbearias com clube faturam em media 3x mais que barbearias so com
-              atendimento avulso. E o que diferencia barbearia profissional de
+              cobra automaticamente via cartão ou Pix, controla quem está ativo,
+              quem está inadimplente e quanto você vai receber no próximo mês.
+              Barbearias com clube faturam em média 3x mais que barbearias só com
+              atendimento avulso. É o que diferencia barbearia profissional de
               barbearia de bairro.
             </p>
             <Link
@@ -192,12 +192,12 @@ export default function SistemaParaBarbearia() {
               </Link>
             </h3>
             <p className="text-gray-300 leading-relaxed max-w-3xl">
-              O cliente abre o app, escolhe o barbeiro, o servico e o horario —
+              O cliente abre o app, escolhe o barbeiro, o serviço e o horário —
               tudo em menos de 30 segundos. Funciona 24 horas por dia, 7 dias
-              por semana. Sem WhatsApp, sem ligacao, sem &ldquo;tem horario pra
+              por semana. Sem WhatsApp, sem ligação, sem &ldquo;tem horário pra
               hoje?&rdquo;. A agenda do barbeiro se atualiza em tempo real e
-              notificacoes push lembram o cliente antes do horario. Resultado:
-              menos faltas, mais atendimentos, zero confusao de agenda.
+              notificações push lembram o cliente antes do horário. Resultado:
+              menos faltas, mais atendimentos, zero confusão de agenda.
             </p>
             <Link
               href="/agendamento-online"
@@ -214,13 +214,13 @@ export default function SistemaParaBarbearia() {
                 href="/nota-fiscal-barbearia"
                 className="hover:text-[#ffaf02] transition-colors"
               >
-                Nota Fiscal Automatica (NFS-e)
+                Nota Fiscal Automática (NFS-e)
               </Link>
             </h3>
             <p className="text-gray-300 leading-relaxed max-w-3xl">
-              A NFS-e e obrigatoria em 2026 para barbearias. Com o BestBarbers,
-              voce configura uma vez os dados fiscais e o sistema emite a nota
-              automaticamente apos cada atendimento. Exportacao em PDF e XML para
+              A NFS-e é obrigatória em 2026 para barbearias. Com o BestBarbers,
+              você configura uma vez os dados fiscais e o sistema emite a nota
+              automaticamente após cada atendimento. Exportação em PDF e XML para
               o contador. Sem trabalho manual, sem risco de multa, sem
               esquecimento.
             </p>
@@ -228,57 +228,57 @@ export default function SistemaParaBarbearia() {
               href="/nota-fiscal-barbearia"
               className="inline-block mt-4 text-[#ffaf02] hover:underline text-sm font-semibold"
             >
-              Saiba mais sobre Nota Fiscal Automatica &#8594;
+              Saiba mais sobre Nota Fiscal Automática &#8594;
             </Link>
           </div>
 
-          {/* Gestao Financeira */}
+          {/* Gestão Financeira */}
           <div className="mb-12 bg-white/5 rounded-2xl p-8 border border-white/10">
             <h3 className="text-xl font-bold text-white mb-3">
               <Link
                 href="/gestao-financeira-barbearia"
                 className="hover:text-[#ffaf02] transition-colors"
               >
-                Gestao Financeira
+                Gestão Financeira
               </Link>
             </h3>
             <p className="text-gray-300 leading-relaxed max-w-3xl">
-              Fluxo de caixa em tempo real, relatorios gerenciais automaticos
-              (diarios, semanais, mensais) e conciliacao de todos os meios de
-              pagamento — dinheiro, cartao, Pix e recorrente. Saiba exatamente
+              Fluxo de caixa em tempo real, relatórios gerenciais automáticos
+              (diários, semanais, mensais) e conciliação de todos os meios de
+              pagamento — dinheiro, cartão, Pix e recorrente. Saiba exatamente
               quanto sua barbearia ganha e gasta, sem planilha e sem surpresa no
-              final do mes.
+              final do mês.
             </p>
             <Link
               href="/gestao-financeira-barbearia"
               className="inline-block mt-4 text-[#ffaf02] hover:underline text-sm font-semibold"
             >
-              Saiba mais sobre Gestao Financeira &#8594;
+              Saiba mais sobre Gestão Financeira &#8594;
             </Link>
           </div>
 
-          {/* Gestao de Comissoes */}
+          {/* Gestão de Comissões */}
           <div className="mb-12 bg-white/5 rounded-2xl p-8 border border-white/10">
             <h3 className="text-xl font-bold text-white mb-3">
               <Link
                 href="/gestao-comissoes-barbeiro"
                 className="hover:text-[#ffaf02] transition-colors"
               >
-                Gestao de Comissoes
+                Gestão de Comissões
               </Link>
             </h3>
             <p className="text-gray-300 leading-relaxed max-w-3xl">
-              Configure percentual ou valor fixo por servico e por profissional.
-              O sistema calcula a comissao automaticamente — inclusive quando um
-              assinante corta com barbeiros diferentes no mesmo mes. Relatorios
-              detalhados por barbeiro eliminam conflitos e trazem transparencia
+              Configure percentual ou valor fixo por serviço e por profissional.
+              O sistema calcula a comissão automaticamente — inclusive quando um
+              assinante corta com barbeiros diferentes no mesmo mês. Relatórios
+              detalhados por barbeiro eliminam conflitos e trazem transparência
               para a equipe.
             </p>
             <Link
               href="/gestao-comissoes-barbeiro"
               className="inline-block mt-4 text-[#ffaf02] hover:underline text-sm font-semibold"
             >
-              Saiba mais sobre Gestao de Comissoes &#8594;
+              Saiba mais sobre Gestão de Comissões &#8594;
             </Link>
           </div>
 
@@ -293,9 +293,9 @@ export default function SistemaParaBarbearia() {
               </Link>
             </h3>
             <p className="text-gray-300 leading-relaxed max-w-3xl">
-              Equipamento fisico para check-in, comanda digital, pagamento e
+              Equipamento físico para check-in, comanda digital, pagamento e
               reagendamento. O cliente faz tudo sozinho — sem fila no caixa, sem
-              interromper o barbeiro. Aumenta o ticket medio com produtos na tela
+              interromper o barbeiro. Aumenta o ticket médio com produtos na tela
               e passa uma imagem profissional que diferencia sua barbearia de
               qualquer concorrente.
             </p>
@@ -307,16 +307,16 @@ export default function SistemaParaBarbearia() {
             </Link>
           </div>
 
-          {/* Notificacoes Push */}
+          {/* Notificações Push */}
           <div className="mb-12 bg-white/5 rounded-2xl p-8 border border-white/10">
             <h3 className="text-xl font-bold text-white mb-3">
-              Notificacoes Push
+              Notificações Push
             </h3>
             <p className="text-gray-300 leading-relaxed max-w-3xl">
-              Envie lembretes automaticos de agendamento, avisos de promocao,
-              mensagens de aniversario e alertas de vencimento de assinatura
-              direto no celular do cliente. Notificacoes push tem taxa de
-              abertura 5x maior que email e nao dependem de WhatsApp. Voce
+              Envie lembretes automáticos de agendamento, avisos de promoção,
+              mensagens de aniversário e alertas de vencimento de assinatura
+              direto no celular do cliente. Notificações push têm taxa de
+              abertura 5x maior que email e não dependem de WhatsApp. Você
               configura uma vez e o sistema dispara sozinho.
             </p>
           </div>
@@ -327,25 +327,25 @@ export default function SistemaParaBarbearia() {
               Multi-unidades
             </h3>
             <p className="text-gray-300 leading-relaxed max-w-3xl">
-              Gerencie 2, 5 ou 20 unidades a partir de um unico painel. Cada
-              unidade tem sua propria agenda, seus barbeiros e seus relatorios —
-              mas voce tem visao consolidada de tudo. Ideal para redes e
+              Gerencie 2, 5 ou 20 unidades a partir de um único painel. Cada
+              unidade tem sua própria agenda, seus barbeiros e seus relatórios —
+              mas você tem visão consolidada de tudo. Ideal para redes e
               franquias que precisam de controle centralizado sem perder a
               autonomia de cada loja.
             </p>
           </div>
 
-          {/* Relatorios Gerenciais */}
+          {/* Relatórios Gerenciais */}
           <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
             <h3 className="text-xl font-bold text-white mb-3">
-              Relatorios Gerenciais
+              Relatórios Gerenciais
             </h3>
             <p className="text-gray-300 leading-relaxed max-w-3xl">
-              Dashboards em tempo real com faturamento, ocupacao, ticket medio,
-              taxa de retorno, assinantes ativos e inadimplentes. Relatorios
-              automaticos diarios, semanais e mensais que voce recebe sem
-              precisar pedir. Dados que transformam decisoes de &ldquo;eu
-              acho&rdquo; em &ldquo;os numeros mostram&rdquo;.
+              Dashboards em tempo real com faturamento, ocupação, ticket médio,
+              taxa de retorno, assinantes ativos e inadimplentes. Relatórios
+              automáticos diários, semanais e mensais que você recebe sem
+              precisar pedir. Dados que transformam decisões de &ldquo;eu
+              acho&rdquo; em &ldquo;os números mostram&rdquo;.
             </p>
           </div>
         </div>
@@ -358,7 +358,7 @@ export default function SistemaParaBarbearia() {
             Resultados Reais de Quem Usa
           </h2>
           <p className="mt-6 text-gray-600 text-lg leading-relaxed max-w-3xl">
-            Nao sao numeros inventados. Sao resultados reais de barbearias que
+            Não são números inventados. São resultados reais de barbearias que
             usam o BestBarbers no dia a dia.
           </p>
           <div className="mt-10 grid md:grid-cols-3 gap-8">
@@ -382,8 +382,8 @@ export default function SistemaParaBarbearia() {
                   <p className="text-sm text-gray-600">faturamento mensal</p>
                 </div>
                 <p className="text-xs text-gray-400 pt-2 border-t border-gray-200">
-                  Barbearia de 4 cadeiras que saiu de R$15K/mes para mais de
-                  R$31K/mes com clube de assinaturas e app proprio.
+                  Barbearia de 4 cadeiras que saiu de R$15K/mês para mais de
+                  R$31K/mês com clube de assinaturas e app próprio.
                 </p>
               </div>
             </div>
@@ -406,8 +406,8 @@ export default function SistemaParaBarbearia() {
                   <p className="text-sm text-gray-600">faturamento mensal</p>
                 </div>
                 <p className="text-xs text-gray-400 pt-2 border-t border-gray-200">
-                  Rede que usa multi-unidades, clube de assinaturas e app proprio
-                  para gerenciar todas as lojas de um unico painel.
+                  Rede que usa multi-unidades, clube de assinaturas e app próprio
+                  para gerenciar todas as lojas de um único painel.
                 </p>
               </div>
             </div>
@@ -425,11 +425,11 @@ export default function SistemaParaBarbearia() {
                 </div>
                 <div>
                   <p className="text-3xl font-bold text-[#ffaf02]">1</p>
-                  <p className="text-sm text-gray-600">unica unidade</p>
+                  <p className="text-sm text-gray-600">única unidade</p>
                 </div>
                 <p className="text-xs text-gray-400 pt-2 border-t border-gray-200">
-                  Mais de 700 assinantes em uma unica barbearia. Prova de que
-                  clube funciona em qualquer tamanho de operacao.
+                  Mais de 700 assinantes em uma única barbearia. Prova de que
+                  clube funciona em qualquer tamanho de operação.
                 </p>
               </div>
             </div>
@@ -444,21 +444,21 @@ export default function SistemaParaBarbearia() {
             Planos BestBarbers
           </h2>
           <p className="mt-6 text-gray-300 text-lg leading-relaxed max-w-3xl">
-            Dois planos pensados para estagios diferentes do seu negocio. Comece
-            pelo basico e evolua quando estiver pronto.
+            Dois planos pensados para estágios diferentes do seu negócio. Comece
+            pelo básico e evolua quando estiver pronto.
           </p>
           <div className="mt-10 grid md:grid-cols-2 gap-8">
-            {/* Plano Basico */}
+            {/* Plano Básico */}
             <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
               <h3 className="text-xl font-bold text-white mb-2">
-                Plano Basico
+                Plano Básico
               </h3>
               <p className="text-[#ffaf02] font-bold text-lg mb-6">
-                Gratis para comecar
+                Grátis para começar
               </p>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Ideal para barbearias que estao comecando a se organizar. Inclui
-                gestao de agenda e controle financeiro basico.
+                Ideal para barbearias que estão começando a se organizar. Inclui
+                gestão de agenda e controle financeiro básico.
               </p>
               <ul className="space-y-3 text-gray-300">
                 <li className="flex items-start gap-3">
@@ -476,7 +476,7 @@ export default function SistemaParaBarbearia() {
                     href="/gestao-financeira-barbearia"
                     className="hover:text-[#ffaf02] transition-colors"
                   >
-                    Controle financeiro basico
+                    Controle financeiro básico
                   </Link>
                 </li>
                 <li className="flex items-start gap-3">
@@ -485,7 +485,7 @@ export default function SistemaParaBarbearia() {
                     href="/gestao-comissoes-barbeiro"
                     className="hover:text-[#ffaf02] transition-colors"
                   >
-                    Gestao de comissoes
+                    Gestão de comissões
                   </Link>
                 </li>
                 <li className="flex items-start gap-3">
@@ -504,17 +504,17 @@ export default function SistemaParaBarbearia() {
                 Plano App Exclusivo
               </h3>
               <p className="text-[#ffaf02] font-bold text-lg mb-6">
-                A partir de R$299/mes
+                A partir de R$299/mês
               </p>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Para barbearias que querem crescer de verdade. Tudo do basico
-                mais app proprio, clube de assinaturas e funcionalidades
-                avancadas.
+                Para barbearias que querem crescer de verdade. Tudo do básico
+                mais app próprio, clube de assinaturas e funcionalidades
+                avançadas.
               </p>
               <ul className="space-y-3 text-gray-300">
                 <li className="flex items-start gap-3">
                   <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                  Tudo do Plano Basico
+                  Tudo do Plano Básico
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-[#ffaf02] mt-1">&#10003;</span>
@@ -522,7 +522,7 @@ export default function SistemaParaBarbearia() {
                     href="/app-proprio-barbearia"
                     className="hover:text-[#ffaf02] transition-colors"
                   >
-                    App proprio na App Store e Google Play
+                    App próprio na App Store e Google Play
                   </Link>
                 </li>
                 <li className="flex items-start gap-3">
@@ -531,7 +531,7 @@ export default function SistemaParaBarbearia() {
                     href="/clube-de-assinaturas"
                     className="hover:text-[#ffaf02] transition-colors"
                   >
-                    Clube de assinaturas com cobranca automatica
+                    Clube de assinaturas com cobrança automática
                   </Link>
                 </li>
                 <li className="flex items-start gap-3">
@@ -540,12 +540,12 @@ export default function SistemaParaBarbearia() {
                     href="/nota-fiscal-barbearia"
                     className="hover:text-[#ffaf02] transition-colors"
                   >
-                    Nota fiscal automatica (NFS-e)
+                    Nota fiscal automática (NFS-e)
                   </Link>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                  Notificacoes push personalizadas
+                  Notificações push personalizadas
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-[#ffaf02] mt-1">&#10003;</span>
@@ -562,7 +562,7 @@ export default function SistemaParaBarbearia() {
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                  Relatorios gerenciais avancados
+                  Relatórios gerenciais avançados
                 </li>
               </ul>
             </div>
@@ -579,7 +579,7 @@ export default function SistemaParaBarbearia() {
           <div className="space-y-6 max-w-3xl">
             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
               <h3 className="text-lg font-bold text-[#121212]">
-                O BestBarbers funciona so para barbearia ou tambem para salao?
+                O BestBarbers funciona só para barbearia ou também para salão?
               </h3>
               <p className="mt-3 text-gray-600 leading-relaxed">
                 O BestBarbers foi criado exclusivamente para barbearias. Todas as
@@ -590,44 +590,44 @@ export default function SistemaParaBarbearia() {
                 >
                   clube de assinaturas
                 </Link>{" "}
-                a{" "}
+                à{" "}
                 <Link
                   href="/gestao-comissoes-barbeiro"
                   className="text-[#ffaf02] hover:underline"
                 >
-                  gestao de comissoes
+                  gestão de comissões
                 </Link>{" "}
-                — foram pensadas para a realidade de quem tem barbearia, nao salao
+                — foram pensadas para a realidade de quem tem barbearia, não salão
                 de beleza.
               </p>
             </div>
 
             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
               <h3 className="text-lg font-bold text-[#121212]">
-                Quanto tempo leva para comecar a usar?
+                Quanto tempo leva para começar a usar?
               </h3>
               <p className="mt-3 text-gray-600 leading-relaxed">
-                O plano basico voce comeca a usar no mesmo dia. O plano App
+                O plano básico você começa a usar no mesmo dia. O plano App
                 Exclusivo, com{" "}
                 <Link
                   href="/app-proprio-barbearia"
                   className="text-[#ffaf02] hover:underline"
                 >
-                  app proprio
+                  app próprio
                 </Link>{" "}
-                publicado nas lojas, leva em media 15 dias para ficar pronto. A
-                equipe de onboarding acompanha voce em cada etapa.
+                publicado nas lojas, leva em média 15 dias para ficar pronto. A
+                equipe de onboarding acompanha você em cada etapa.
               </p>
             </div>
 
             <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
               <h3 className="text-lg font-bold text-[#121212]">
-                Preciso trocar de maquininha de cartao?
+                Preciso trocar de maquininha de cartão?
               </h3>
               <p className="mt-3 text-gray-600 leading-relaxed">
-                Nao. O BestBarbers funciona com qualquer maquininha. O controle
+                Não. O BestBarbers funciona com qualquer maquininha. O controle
                 financeiro registra o pagamento independente da bandeira ou
-                operadora que voce usa.
+                operadora que você usa.
               </p>
             </div>
 
@@ -636,9 +636,9 @@ export default function SistemaParaBarbearia() {
                 E se eu tiver mais de uma unidade?
               </h3>
               <p className="mt-3 text-gray-600 leading-relaxed">
-                Perfeito. O BestBarbers suporta multi-unidades com visao
-                consolidada. Voce gerencia todas as barbearias de um unico
-                painel, com relatorios individuais e consolidados. Temos clientes
+                Perfeito. O BestBarbers suporta multi-unidades com visão
+                consolidada. Você gerencia todas as barbearias de um único
+                painel, com relatórios individuais e consolidados. Temos clientes
                 gerenciando 6 unidades assim.
               </p>
             </div>
@@ -648,13 +648,13 @@ export default function SistemaParaBarbearia() {
                 Quanto custa o sistema?
               </h3>
               <p className="mt-3 text-gray-600 leading-relaxed">
-                O plano basico e gratuito para comecar. O plano App Exclusivo,
+                O plano básico é gratuito para começar. O plano App Exclusivo,
                 com{" "}
                 <Link
                   href="/app-proprio-barbearia"
                   className="text-[#ffaf02] hover:underline"
                 >
-                  app proprio
+                  app próprio
                 </Link>
                 ,{" "}
                 <Link
@@ -670,8 +670,8 @@ export default function SistemaParaBarbearia() {
                 >
                   nota fiscal
                 </Link>{" "}
-                e todas as funcionalidades avancadas, comeca a partir de
-                R$299/mes. Fale com nossa equipe para um orcamento personalizado.
+                e todas as funcionalidades avançadas, começa a partir de
+                R$299/mês. Fale com nossa equipe para um orçamento personalizado.
               </p>
             </div>
           </div>
@@ -686,20 +686,20 @@ export default function SistemaParaBarbearia() {
             <span className="text-[#ffaf02]">Sistema de Verdade</span>
           </h2>
           <p className="mt-6 text-gray-400 text-lg max-w-2xl mx-auto">
-            Mais de 1.200 barbearias ja confiam no BestBarbers. Fale com nossa
-            equipe e descubra como o sistema pode transformar o seu negocio.
+            Mais de 1.200 barbearias já confiam no BestBarbers. Fale com nossa
+            equipe e descubra como o sistema pode transformar o seu negócio.
           </p>
           <div className="mt-10">
             <FeatureCTA
               originDesc="[Site]BT-Sistema"
               className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-10 py-5 rounded-full text-base font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
             >
-              QUERO UM APP PROPRIO PARA MINHA BARBEARIA
+              QUERO UM APP PRÓPRIO PARA MINHA BARBEARIA
             </FeatureCTA>
           </div>
           <p className="mt-4 text-gray-500 text-sm">
             Sem compromisso. Fale com um especialista e tire todas as suas
-            duvidas.
+            dúvidas.
           </p>
         </div>
       </section>
