@@ -45,6 +45,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
@@ -186,6 +187,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // antes de redirecionar (window.location.href cancela requests pendentes)
       await Promise.all([leadPixelPromise, regPixelPromise]);
 
+      // Marca como enviado com sucesso (mantém botão desabilitado durante redirect)
+      setSubmitted(true);
+
       // Chama callback de sucesso se fornecido
       onSuccess?.();
 
@@ -229,6 +233,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   return {
     formData,
     isSubmitting,
+    submitted,
     submitError,
     handleInputChange,
     handleSubmit,

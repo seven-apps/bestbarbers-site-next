@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next'
 import { cities } from '@/data/cities'
 import { articles } from '@/content/blog'
+import { videos } from '@/content/videos'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.bestbarbers.app'
@@ -40,6 +41,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(article.updatedAt),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
+    })),
+    {
+      url: `${baseUrl}/conteudo`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    ...videos.map((video) => ({
+      url: `${baseUrl}/conteudo/${video.slug}`,
+      lastModified: new Date(video.publishedAt),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
     })),
     ...cities.map((city) => ({
       url: `${baseUrl}/sistema-para-barbearia/${city.slug}`,
