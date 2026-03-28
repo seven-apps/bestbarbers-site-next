@@ -2,12 +2,21 @@
 
 import { useLeadForm } from "@/hooks/useLeadForm";
 import { usePhoneMask } from "@/hooks/usePhoneMask";
+import { useEffect } from "react";
 import Image from "next/image";
 
 export default function LeadMachineV7() {
   const { formData, isSubmitting, submitted, submitError, handleInputChange, handleSubmit } =
     useLeadForm({ redirectToWhatsApp: true });
   const { applyPhoneMask } = usePhoneMask();
+
+  // Preenche campos obrigatórios do hook com defaults (v7 só mostra WhatsApp)
+  useEffect(() => {
+    const fakeEvent = (name: string, value: string) =>
+      handleInputChange({ target: { name, value } } as React.ChangeEvent<HTMLInputElement>);
+    if (!formData.barbershopName) fakeEvent("barbershopName", "LP V7");
+    if (!formData.employeeCount) fakeEvent("employeeCount", "—");
+  }, []);
 
   if (submitted) {
     return (
@@ -39,10 +48,10 @@ export default function LeadMachineV7() {
         {/* Logo */}
         <div className="flex justify-center">
           <Image
-            src="/images/logo-white.svg"
+            src="/images/Logo-BestBarbers-branco_1.webp"
             alt="BestBarbers"
             width={180}
-            height={40}
+            height={48}
             priority
           />
         </div>
