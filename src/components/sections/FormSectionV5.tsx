@@ -28,8 +28,8 @@ export function FormSectionV5() {
       console.error("Erro ao enviar formulário:", error);
       alert("Erro ao enviar formulário. Tente novamente.");
     },
-    originId: 40210173,
-    originDesc: "LP V5 - Lead Machine",
+    // originId/originDesc now derived from UTM params by useLeadForm
+    // Previously hardcoded: originId: 40210173 — broke attribution for non-paid sources
   });
 
   return (
@@ -55,7 +55,7 @@ export function FormSectionV5() {
         <div className="flex justify-center mb-6 animate-fade-in-up">
           <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#ffaf02]/15 to-[#ffc233]/15 rounded-full text-[#ffaf02] text-sm font-bold border border-[#ffaf02]/30 animate-glow-pulse">
             <Sparkles className="w-4 h-4" />
-            1.200+ barbearias ja usam — vagas de onboarding limitadas
+            1.200+ barbearias ja usam · Diagnostico gratuito
           </span>
         </div>
 

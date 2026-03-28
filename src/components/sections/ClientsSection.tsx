@@ -40,7 +40,7 @@ export function ClientsSection({ }: ClientsSectionProps) {
         <div className="text-center mb-8 md:mb-12 animate-fade-in-up">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-normal text-neutral-black-text text-center">
             <span className="text-[#ffaf02] font-extrabold">
-              Mais de <CountUp end={1000} duration={2} suffix="+" />
+              Mais de <CountUp end={1200} duration={2} suffix="+" />
             </span>
             {" barbearias"}
             <br className="hidden md:block" />

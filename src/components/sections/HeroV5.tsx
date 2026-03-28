@@ -3,7 +3,7 @@
 import { CTAButton } from "@/components/ui/cta-button";
 import { Sparkles, BadgeCheck } from "lucide-react";
 import { useUtmParams } from "@/hooks";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 interface HeroV5Props {
   onCtaClick?: () => void;
@@ -41,25 +41,73 @@ function getHeroContent(utmContent: string | null) {
       sub: "Sua barbearia roda sem voce na cadeira?",
     };
   }
-  if (content.includes("roi") || content.includes("conta") || content.includes("a5")) {
+  if (content.includes("roi") || content.includes("conta") || content.includes("a5") || content.includes("3clientes")) {
     return {
       headline: "3 assinantes pagam o sistema.",
       highlight: "Os outros 350? Lucro.",
       sub: "Sem taxa de implantacao. Sem fidelidade. Caso real.",
     };
   }
+  if (content.includes("clube") || content.includes("assinatura") || content.includes("a6") || content.includes("receita")) {
+    return {
+      headline: "Clube de Assinaturas nao e desconto.",
+      highlight: "E 2.8x mais receita.",
+      sub: "Assinante paga R$128/mes. Avulso paga R$45. 353 assinantes = R$31.690/mes. Caso real.",
+    };
+  }
 
-  // Default — resultado-first, nao feature-first
+  // Wave 3 — Influencer-specific headlines (utm_content contains influencer name)
+  if (content.includes("mileno")) {
+    return {
+      headline: "De 1 para 3 unidades. R$101K por mes.",
+      highlight: "521 assinantes.",
+      sub: "Mileno Rocha escalou com BestBarbers. Veja se voce pode fazer o mesmo.",
+    };
+  }
+  if (content.includes("joao") || content.includes("seletto")) {
+    return {
+      headline: "R$1.222.716 faturados. 32 meses.",
+      highlight: "475 assinantes.",
+      sub: "Joao Seletto construiu receita previsivel com BestBarbers. Caso real.",
+    };
+  }
+  if (content.includes("kaique") || content.includes("bagulho")) {
+    return {
+      headline: "469 assinantes. Uma barbearia.",
+      highlight: "Top 5 da rede.",
+      sub: "57% do faturamento vem de assinaturas. Kaique provou o modelo.",
+    };
+  }
+  if (content.includes("thais")) {
+    return {
+      headline: "Uma cadeira. Sozinha. R$12K por mes.",
+      highlight: "Sem WhatsApp.",
+      sub: "Thais provou: tamanho nao importa. O que importa e gestao.",
+    };
+  }
+  if (content.includes("expansao")) {
+    return {
+      headline: "3 influenciadores. 3 expansoes.",
+      highlight: "R$2.8M faturados.",
+      sub: "Mileno, Joao e Kaique escalaram com BestBarbers. Sua vez.",
+    };
+  }
+
+  // Default — formula B-2 (unico criativo com vendas reais: 2 won, QS 23)
   return {
-    headline: "1.200 barbearias ja dobraram o faturamento.",
-    highlight: "A sua pode ser a proxima.",
-    sub: "Diagnostico gratuito. Descubra seu potencial de lucro.",
+    headline: "De R$15.892 para R$31.690.",
+    highlight: "Mesmas 4 cadeiras.",
+    sub: "353 assinantes pagando todo mes. Sem taxa. Resultado real com BestBarbers.",
   };
 }
 
 export function HeroV5({ onCtaClick }: HeroV5Props) {
   const { getUtmParams } = useUtmParams();
-  const utmContent = useMemo(() => getUtmParams().utm_content, [getUtmParams]);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  // Read UTM only after mount to avoid SSR/client mismatch (hydration error)
+  const utmContent = useMemo(() => mounted ? getUtmParams().utm_content : null, [mounted, getUtmParams]);
   const hero = useMemo(() => getHeroContent(utmContent), [utmContent]);
 
   return (

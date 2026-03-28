@@ -13,15 +13,15 @@ const painCards = [
   },
   {
     icon: DollarSign,
-    quote: '"Agenda lotada mas nunca sobra dinheiro."',
-    stat: "-R$1,95 por corte. R$58 perdidos. Por dia.",
+    quote: '"O movimento melhorava, mas nunca sobrava dinheiro. Estava pagando pra trabalhar."',
+    stat: "-R$1,95 por corte. R$1.755 por mes. Pagando pra trabalhar.",
     color: "text-red-400",
     bgColor: "bg-red-400/10",
     borderColor: "border-red-400/20",
   },
   {
     icon: Lock,
-    quote: '"Ultima vez que tirei ferias? Nao lembro."',
+    quote: '"Se eu me machucar, ficar doente ou tirar ferias, minha barbearia quebra."',
     stat: "Se voce parar, sua barbearia para?",
     color: "text-amber-400",
     bgColor: "bg-amber-400/10",
@@ -70,7 +70,7 @@ export function PainRecognition() {
           {/* Resolution */}
           <div className="text-center animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
             <p className="text-white font-bold text-base md:text-lg">
-              <span className="text-[#ffaf02]">1.200+ donos de barbearia</span> resolveram isso com BestBarbers.
+              <span className="text-[#ffaf02]">1.200+ donos de barbearia</span> pararam de pagar pra trabalhar. Com BestBarbers.
             </p>
           </div>
         </div>

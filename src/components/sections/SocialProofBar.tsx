@@ -12,7 +12,7 @@ export function SocialProofBar() {
           <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2">
             <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-[#ffaf02]" />
             <p className="text-[10px] sm:text-[11px] md:text-sm font-bold text-white whitespace-nowrap">
-              De R$15K para R$<CountUp end={31} duration={1.5} className="text-[#ffaf02]" />.690/mes
+              De R$15.892 para R$<CountUp end={31} duration={1.5} className="text-[#ffaf02]" />.690/mes
             </p>
           </div>
 

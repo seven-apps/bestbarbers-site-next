@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useCallback } from "react";
+import { Suspense, useEffect, useRef, useCallback, useState } from "react";
 import { Navbar } from "@/components/sections/Navbar";
 import { HeroV5 } from "@/components/sections/HeroV5";
 import { SocialProofBar } from "@/components/sections/SocialProofBar";
@@ -8,6 +8,7 @@ import { PainRecognition } from "@/components/sections/PainRecognition";
 import { BenefitsGrid } from "@/components/sections/BenefitsGrid";
 import { CaseStudy } from "@/components/sections/CaseStudy";
 import { ClientsSection } from "@/components/sections/ClientsSection";
+import { Testimonials } from "@/components/sections/Testimonials";
 import { FAQShortSection } from "@/components/sections/FAQShortSection";
 import { FormSectionV5 } from "@/components/sections/FormSectionV5";
 import { FooterSimple } from "@/components/sections/FooterSimple";
@@ -19,6 +20,7 @@ function LeadMachineContent() {
   const searchParams = useSearchParams();
   const { trackCustomEvent } = useMetaPixel();
   const trackedSections = useRef(new Set<string>());
+  const [showStickyCta, setShowStickyCta] = useState(false);
 
   const scrollToForm = () => {
     const formSection = document.getElementById("form-section");
@@ -26,6 +28,22 @@ function LeadMachineContent() {
       formSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
+
+  // Show sticky CTA after scrolling past hero, hide when form is visible
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleScroll = () => {
+      const heroHeight = document.querySelector("section")?.offsetHeight || 600;
+      const formEl = document.getElementById("form-section");
+      const formTop = formEl?.getBoundingClientRect().top || Infinity;
+      const isFormVisible = formTop < window.innerHeight;
+      setShowStickyCta(window.scrollY > heroHeight && !isFormVisible);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // ViewContent pixel event on page load
   useEffect(() => {
@@ -93,10 +111,15 @@ function LeadMachineContent() {
         <BenefitsGrid />
       </div>
 
-      {/* 7. Client Logos */}
+      {/* 7. Testimonials — Real names, real results, consolidated numbers */}
+      <div id="testimonials-section">
+        <Testimonials />
+      </div>
+
+      {/* 8. Client Logos */}
       <ClientsSection onCtaClick={scrollToForm} />
 
-      {/* 8. FAQ / Objection Handler — Real objections, BEFORE form */}
+      {/* 9. FAQ / Objection Handler — Real objections, BEFORE form */}
       <div id="faq-section">
         <FAQShortSection />
       </div>
@@ -106,6 +129,19 @@ function LeadMachineContent() {
 
       {/* 10. Footer */}
       <FooterSimple />
+
+      {/* Sticky CTA — mobile only, appears after hero, hides when form is visible */}
+      {showStickyCta && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-gradient-to-t from-[#121212] via-[#121212]/95 to-transparent pt-4 pb-4 px-4 animate-fade-in-up">
+          <button
+            onClick={scrollToForm}
+            className="w-full bg-gradient-to-r from-[#029912] to-[#02ab15] text-white font-extrabold text-[14px] px-6 py-4 rounded-full shadow-[0_8px_40px_rgba(2,171,21,0.5)] active:scale-[0.98] transition-transform flex items-center justify-center gap-2"
+          >
+            DESCOBRIR MEU POTENCIAL DE LUCRO
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          </button>
+        </div>
+      )}
     </>
   );
 }
