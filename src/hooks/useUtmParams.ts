@@ -60,6 +60,7 @@ export const useUtmParams = () => {
   // Mapeamento de descrições personalizadas
   const descMap = useMemo(
     () => ({
+      ads: "LP - Lead Machine",
       "matheus-contador": "LP - Matheus Contador",
       "isaac-arts": "LP - Isaac Arts",
       octos: "LP - Pedro Octos",
@@ -131,9 +132,18 @@ export const useUtmParams = () => {
         ? originMap[sourceKey as keyof typeof originMap] || null
         : null;
 
-      const originDesc = sourceKey
+      let originDesc = sourceKey
         ? descMap[sourceKey as keyof typeof descMap] || utm_desc
         : utm_desc;
+
+      // Detectar versão da LP pelo pathname e incluir na descrição
+      if (typeof window !== "undefined" && sourceKey === "ads" && originDesc) {
+        const path = window.location.pathname;
+        const lpMatch = path.match(/\/v(\d+)/);
+        if (lpMatch) {
+          originDesc = originDesc.replace("LP -", `LP V${lpMatch[1]} -`);
+        }
+      }
 
       return {
         originId,
