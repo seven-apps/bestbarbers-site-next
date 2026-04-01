@@ -53,6 +53,8 @@ export const useUtmParams = () => {
       "igor-bezerra": 120001060,
       "kaique-alves": 120001128,
       "thais-dantunes": 40215957,
+      "david-champs": 120001224,
+      gladstone: 120001225,
     }),
     []
   );
@@ -81,6 +83,8 @@ export const useUtmParams = () => {
       "igor-bezerra": "LP - Igor Bezerra - Programa de indicações",
       "kaique-alves": "LP - Kaique Alves - Programa de indicações",
       "thais-dantunes": "LP - Thais D'Antunes - Programa de indicações",
+      "david-champs": "LP - David Champs - Programa de parceria",
+      gladstone: "LP - Gladstone - Programa de indicações",
     }),
     []
   );
