@@ -43,7 +43,15 @@ export function Navbar({ onCtaClick, withoutCta = false }: NavbarProps) {
         </div>
 
         {/* Desktop CTA */}
-        {!withoutCta && <div className="hidden md:flex items-center">
+        {!withoutCta && <div className="hidden md:flex items-center gap-3">
+          <Link
+            href="https://adm.bestbarbers.app/login"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 border border-white/20 text-white/80 px-5 py-3 rounded-full text-xs font-semibold transition-all duration-300 hover:border-white/40 hover:text-white hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98]"
+          >
+            Já sou cliente
+          </Link>
           <button
             onClick={handleCtaClick}
             className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-6 py-3 rounded-full text-xs font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
@@ -54,7 +62,15 @@ export function Navbar({ onCtaClick, withoutCta = false }: NavbarProps) {
         </div>}
 
         {/* Mobile CTA */}
-        {!withoutCta && <div className="md:hidden">
+        {!withoutCta && <div className="md:hidden flex items-center gap-2">
+          <Link
+            href="https://adm.bestbarbers.app/login"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center border border-white/20 text-white/70 px-3 py-2.5 rounded-xl text-xs font-semibold hover:border-white/40 hover:text-white transition-all duration-200"
+          >
+            Já sou cliente
+          </Link>
           <button
             onClick={handleCtaClick}
             className="inline-flex items-center gap-1.5 bg-[#ffaf02] text-[#121212] px-4 py-2.5 rounded-xl text-xs font-bold shadow-[0_2px_8px_rgba(255,175,2,0.25)] hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200"
