@@ -42,10 +42,20 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     const originId = customOriginId ?? utmMapping.originId;
     const baseOriginDesc = customOriginDesc ?? utmMapping.originDesc;
 
-    // Anexa utm_content (grupo do anúncio) ao originDesc quando disponível
-    const originDesc = utmParams.utm_content && baseOriginDesc
-      ? `${baseOriginDesc} | ${utmParams.utm_content}`
-      : baseOriginDesc;
+    // Lê parâmetro 'campanha' do url_tags (adicionado automaticamente pelo Meta Ads)
+    const campanhaParam = typeof window !== 'undefined'
+      ? new URLSearchParams(window.location.search).get('campanha')
+      : null;
+
+    // Monta originDesc: "LP V8 - Lead Machine | consolidado-abr26 | du-01"
+    let originDesc = baseOriginDesc || '';
+    if (campanhaParam) {
+      originDesc += ` | ${campanhaParam}`;
+    }
+    if (utmParams.utm_content) {
+      originDesc += ` | ${utmParams.utm_content}`;
+    }
+    originDesc = originDesc || null;
 
     const ploomesData = {
       Name: data.barbershopName,
