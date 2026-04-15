@@ -5,7 +5,58 @@ import { useMetaPixel } from "@/hooks/useMetaPixel";
 import { usePhoneMask } from "@/hooks/usePhoneMask";
 import { useWhatsAppRedirect } from "@/hooks/useWhatsAppRedirect";
 import Image from "next/image";
-import { useEffect, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState, useCallback, useMemo } from "react";
+
+/**
+ * Hero dinâmico por utm_content (Wave 4 — match perfeito ad ↔ LP).
+ * Cada parceiro/criativo tem seu próprio título+subtítulo+stats com case real.
+ */
+const DYNAMIC_HEROS: Record<string, { title: string; subtitle: string; partnerNote?: string }> = {
+  "mil-353": {
+    title: "353 assinantes\nem 1 cadeira",
+    subtitle: "Como uma barbearia transformou faturamento em recorrência com o BestBarbers",
+    partnerNote: "4 cadeiras, R$15.892 → R$31.690/mês",
+  },
+  "mil-prej": {
+    title: "R$1,95 de prejuízo\npor cada corte",
+    subtitle: "A matemática que mostra quanto você perde sem sistema de gestão",
+  },
+  "kaiq-700": {
+    title: "700+ assinantes\nem uma única unidade",
+    subtitle: "Barbearia single-unit no Rio escalou com BestBarbers",
+  },
+  "js-40k": {
+    title: "40 mil agendamentos\ncom app próprio",
+    subtitle: "Barbearia em BH gerencia automaticamente com o BestBarbers",
+  },
+  "du-01": {
+    title: "Cobrança automática\ndivisor de águas",
+    subtitle: "De cobrar cliente na mão para assinatura automática via BestBarbers",
+  },
+  "dg-01": {
+    title: "Suporte que\nacompanha você",
+    subtitle: "Qualquer dúvida tem acompanhamento. Recomendado por donos de barbearia",
+  },
+  "ec-01": {
+    title: "Cliente paga\ndentro do app",
+    subtitle: "Pagamento, troca de cartão, tudo automatizado no BestBarbers",
+  },
+  "mk-01": {
+    title: "Aumentou faturamento,\nficou mais profissional",
+    subtitle: "Clube de assinaturas gerenciado pelo BestBarbers",
+  },
+  "sp-01": {
+    title: "Indicadores na mão\n+ app personalizado",
+    subtitle: "Dados e whitelabel exclusivo da sua marca com BestBarbers",
+  },
+};
+
+const DEFAULT_HERO = {
+  title: "Descubra o potencial\nda sua barbearia",
+  subtitle: "App próprio • Clube de Assinaturas • Gestão",
+  partnerNote: undefined as string | undefined,
+};
 
 /**
  * V8 — Mini Form (2-step capture)
@@ -40,6 +91,34 @@ export default function V8MiniFormPage() {
   const { trackLead, trackCompleteRegistration, trackCustomEvent } = useMetaPixel();
   const { applyPhoneMask } = usePhoneMask();
   const { redirectToWhatsApp } = useWhatsAppRedirect();
+  const router = useRouter();
+
+  // F4 — Hero dinâmico por utm_content
+  const hero = useMemo(() => {
+    if (typeof window === "undefined") return DEFAULT_HERO;
+    const utmContent = (new URLSearchParams(window.location.search).get("utm_content") || "").toLowerCase();
+    return DYNAMIC_HEROS[utmContent] || DEFAULT_HERO;
+  }, []);
+
+  // F6 — CAPI server-side (dual stack with Pixel)
+  const capiTrack = useCallback(async (
+    eventName: "Lead" | "CompleteRegistration" | "QualifiedLead",
+    eventId: string,
+    data: { phone?: string; email?: string; firstName?: string; lastName?: string }
+  ) => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_BBAI_API_URL || "https://ai.bestbarbers.app"}/api/meta-capi/track`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventName,
+          eventId,
+          userData: { ...data, country: "br" },
+          eventSourceUrl: typeof window !== "undefined" ? window.location.href : undefined,
+        }),
+      }).catch(() => {}); // Non-blocking — Pixel client-side é primário
+    } catch { /* swallow */ }
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -50,7 +129,7 @@ export default function V8MiniFormPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ─── Step 1: Salvar só o WhatsApp ──────────────────────
+  // ─── Step 1: Salvar só o WhatsApp + dedup check (F3) ───
   const handleStep1 = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     const phone = whatsapp.replace(/\D/g, "");
@@ -60,6 +139,17 @@ export default function V8MiniFormPage() {
     setError(null);
 
     try {
+      // F3 — Dedup: check Ploomes antes de criar (evita 11% lost por dup)
+      const exists = await ploomes.checkPhoneExists(phone);
+      if (exists) {
+        // Lead já está em contato — redirect cordial sem queimar SDR de novo
+        setError("Vimos que já estamos em contato com este WhatsApp! Em alguns minutos um dos nossos especialistas vai te chamar.");
+        setIsSubmitting(false);
+        // Track como QualifiedLead retorno (não Lead novo)
+        await trackCustomEvent("Contact", { content_name: "v8-dup-detected", content_category: "lead-recapture" });
+        return;
+      }
+
       const response = await ploomes.createContact({
         barbershopName: "—",
         ownerName: "—",
@@ -71,10 +161,13 @@ export default function V8MiniFormPage() {
       const createdId = response?.value?.[0]?.Id;
       if (createdId) setContactId(createdId);
 
+      const eventId = `v8-step1-${createdId || phone}-${Date.now()}`;
       await trackLead({
         content_name: "v8-mini-form-step1",
         content_category: "lead-capture",
       });
+      // F6 — CAPI server-side (dedup com pixel via eventId comum)
+      void capiTrack("Lead", eventId, { phone });
 
       setStep(2);
     } catch (err: unknown) {
@@ -87,13 +180,46 @@ export default function V8MiniFormPage() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [whatsapp, ploomes, trackLead]);
+  }, [whatsapp, ploomes, trackLead, trackCustomEvent, capiTrack]);
 
-  // ─── Step 2: Atualizar contato + deal, redirect WhatsApp ──
+  // ─── Step 2: Filtro ICP (F4) + Atualizar contato + deal, redirect WhatsApp ──
   const handleStep2 = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
+
+    // F4 — Gate ICP: faturamento < R$3K não vai para SDR (não tem orçamento para nosso plano R$299+)
+    // Em vez disso: redirect para LP nutrição com conteúdo educacional
+    if (monthlyRevenue === "ate-3k") {
+      // Tag o contato como nurture (não bloqueia SDR, mas avisa que veio do gate)
+      try {
+        if (contactId) {
+          await fetch(`${PLOOMES_BASE_URL}/Contacts(${contactId})`, {
+            method: "PATCH",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              "user-key": PLOOMES_API_KEY,
+            },
+            body: JSON.stringify({
+              OtherProperties: [
+                {
+                  FieldKey: "contact_0748BA26-23E6-41CA-8C7A-A3568B28AC75",
+                  StringValue: "ate-3k",
+                },
+              ],
+            }),
+          });
+        }
+      } catch { /* non-blocking */ }
+      // Track como evento separado para Meta entender que esse perfil não converte
+      await trackCustomEvent("ViewContent", {
+        content_name: "v8-icp-gate-nurture",
+        content_category: "lead-nurture",
+      });
+      router.push("/v8-nutricao");
+      return;
+    }
 
     try {
       if (contactId) {
@@ -162,11 +288,17 @@ export default function V8MiniFormPage() {
         }
       }
 
+      const eventId = `v8-step2-${contactId || Date.now()}`;
       await trackCompleteRegistration({
         content_name: "v8-mini-form-step2",
         content_category: "lead-capture",
         barbershop_name: barbershopName,
         employee_count: employeeCount,
+      });
+      // F6 — CAPI server-side QualifiedLead (passou no gate ICP)
+      void capiTrack("QualifiedLead", eventId, {
+        firstName: ownerName?.split(" ")[0],
+        lastName: ownerName?.split(" ").slice(1).join(" "),
       });
 
       // Redirect para WhatsApp após salvar
@@ -177,7 +309,7 @@ export default function V8MiniFormPage() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [contactId, ownerName, barbershopName, employeeCount, monthlyRevenue, trackCompleteRegistration, redirectToWhatsApp]);
+  }, [contactId, ownerName, barbershopName, employeeCount, monthlyRevenue, trackCompleteRegistration, trackCustomEvent, redirectToWhatsApp, router, capiTrack]);
 
   if (!mounted) return null;
 
@@ -199,12 +331,15 @@ export default function V8MiniFormPage() {
         {step === 1 && (
           <>
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-white mb-3 leading-tight">
-                Descubra o potencial<br />da sua barbearia
+              <h1 className="text-3xl font-bold text-white mb-3 leading-tight whitespace-pre-line">
+                {hero.title}
               </h1>
               <p className="text-[#FFAF02] font-semibold text-lg mb-2">
-                App próprio • Clube de Assinaturas • Gestão
+                {hero.subtitle}
               </p>
+              {hero.partnerNote && (
+                <p className="text-gray-300 text-sm italic mb-1">{hero.partnerNote}</p>
+              )}
               <p className="text-gray-400 text-sm">
                 1.200+ barbearias &bull; A partir de R$299/mês
               </p>
@@ -338,8 +473,9 @@ export default function V8MiniFormPage() {
                       transition-all duration-200"
                   >
                     <option value="">Selecione</option>
-                    <option value="ate-5k">Até R$5K</option>
-                    <option value="5k-15k">R$5K - R$15K</option>
+                    <option value="ate-3k">Até R$3K</option>
+                    <option value="3k-6k">R$3K - R$6K</option>
+                    <option value="6k-15k">R$6K - R$15K</option>
                     <option value="15k-30k">R$15K - R$30K</option>
                     <option value="30k+">R$30K+</option>
                   </select>

@@ -42,20 +42,44 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     const originId = customOriginId ?? utmMapping.originId;
     const baseOriginDesc = customOriginDesc ?? utmMapping.originDesc;
 
-    // Lê parâmetro 'campanha' do url_tags (adicionado automaticamente pelo Meta Ads)
-    const campanhaParam = typeof window !== 'undefined'
-      ? new URLSearchParams(window.location.search).get('campanha')
-      : null;
+    // Parâmetros do Meta url_tags (Wave 4 8-segments format).
+    // Detalhes do parser backend em src/dashboard/routes/lead-machine-crm.ts:66-157
+    // Formato: "V8 | W4 | <campanha> | <publico> | <ad_name> | <creative> | <angulo> | <audiencia>"
+    const search = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+    const param = (k: string) => search?.get(k)?.trim() || '';
 
-    // Monta originDesc: "LP V8 - Lead Machine | consolidado-abr26 | du-01"
-    let originDesc = baseOriginDesc || '';
-    if (campanhaParam) {
-      originDesc += ` | ${campanhaParam}`;
+    const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
+    const lpVersion = pathname.match(/\/(v\d+)/)?.[1]?.toUpperCase() || 'LP';
+
+    const fase = param('fase') || '';
+    const campanha = param('campanha') || '';
+    const publico = param('publico') || param('adset') || '';
+    const adName = param('ad') || param('ad_id') || param('adname') || '';
+    const creative = param('creative') || utmParams.utm_content || '';
+    const angulo = param('angulo') || '';
+    const audiencia = param('audiencia') || publico || '';
+
+    // Se temos sinal do Meta url_tags Wave 4+, usa formato 8-segments.
+    const has8Segs = fase || campanha || publico || adName || creative || angulo;
+    let originDesc: string | null;
+    if (has8Segs) {
+      originDesc = [
+        lpVersion,
+        fase || 'W?',
+        campanha || 'n/d',
+        publico || 'n/d',
+        adName || 'n/d',
+        creative || 'n/d',
+        angulo || 'n/d',
+        audiencia || 'n/d',
+      ].join(' | ');
+    } else {
+      // Fallback legacy: "LP V8 - Lead Machine | consolidado-abr26 | du-01"
+      let originDescBuilder = baseOriginDesc || '';
+      if (campanha) originDescBuilder += ` | ${campanha}`;
+      if (utmParams.utm_content) originDescBuilder += ` | ${utmParams.utm_content}`;
+      originDesc = originDescBuilder || null;
     }
-    if (utmParams.utm_content) {
-      originDesc += ` | ${utmParams.utm_content}`;
-    }
-    originDesc = originDesc || null;
 
     const ploomesData = {
       Name: data.barbershopName,
