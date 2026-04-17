@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
 };
 
 const stagger = {
@@ -171,7 +171,7 @@ export default function V10Page() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [whatsapp, ownerName, barbershopName, employeeCount, ploomes, trackLead, trackCompleteRegistration, redirectToWhatsApp, capiTrack]);
+  }, [whatsapp, ownerName, barbershopName, employeeCount, monthlyRevenue, ploomes, trackLead, trackCompleteRegistration, trackCustomEvent, redirectToWhatsApp, router, capiTrack]);
 
   if (!mounted) return null;
 
