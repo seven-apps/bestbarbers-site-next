@@ -595,27 +595,22 @@ export default function V10Page() {
             </p>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-sm">Taxa maquininha</span>
-                <span className="text-red-300 font-mono text-sm">R$1,95 × 30</span>
+                <span className="text-gray-400 text-sm">Clientes que não voltam (sem controle)</span>
+                <span className="text-red-400 font-bold">R$2.700/mês</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-sm">= por dia</span>
-                <span className="text-red-400 font-bold">R$58</span>
+                <span className="text-gray-400 text-sm">Horários vazios (agenda manual)</span>
+                <span className="text-red-400 font-bold">R$1.800/mês</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-sm">= por mês</span>
-                <span className="text-red-400 font-bold text-lg">R$1.740</span>
-              </div>
-              <div className="h-px bg-red-900/20" />
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-sm">Clientes perdidos (~3/dia)</span>
-                <span className="text-red-400 font-bold text-lg">R$2.700</span>
+                <span className="text-gray-400 text-sm">Erro de comissão (caderninho)</span>
+                <span className="text-red-400 font-bold">R$500/mês</span>
               </div>
               <div className="h-px bg-red-900/30" />
               <div className="flex justify-between items-center pt-2">
                 <span className="text-white font-bold text-base">TOTAL PERDIDO</span>
                 <div className="text-right">
-                  <span className="text-red-400 font-extrabold text-3xl sm:text-4xl">R$4.440</span>
+                  <span className="text-red-400 font-extrabold text-3xl sm:text-4xl">R$5.000</span>
                   <p className="text-red-400/60 text-xs">por mês ❌</p>
                 </div>
               </div>
@@ -731,7 +726,7 @@ export default function V10Page() {
                 <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" /></svg>
                 Sem compromisso · Conversa de 15 min pelo WhatsApp
               </p>
-              <p className="text-gray-600 text-xs">Cancele quando quiser. Sem multa.</p>
+              <p className="text-gray-600 text-xs">Resposta rápida. Sem enrolação.</p>
             </div>
           </form>
 
