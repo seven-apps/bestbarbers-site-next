@@ -81,6 +81,29 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       originDesc = originDescBuilder || null;
     }
 
+    // Campos estruturados bb_* (criados abr/2026 via scripts/ploomes-setup-fields.ts).
+    // Paralelos ao FieldKey contact_2D7EF0B1-... (legacy string "V8 | W4 | ..."), que é mantido por
+    // compatibilidade + fallback. Backend prioriza bb_campaign_id para matching; string só se faltar.
+    const BB_FIELDS = {
+      bb_campaign_id:    'contact_A48D77F6-CD14-4A9D-BB80-C46EDAD491E8',
+      bb_campaign_name:  'contact_F5A3EEB7-8A11-41A1-959B-1C20F0A822DF',
+      bb_adset_id:       'contact_29CF9F80-9777-476D-85F1-2030A09F5F26',
+      bb_ad_id:          'contact_D73D2261-53D5-4025-9DF1-9BC1A8331FD6',
+      bb_lp_version:     'contact_F1E05DF5-3638-44FA-9730-EF071A6F3B0F',
+      bb_wave:           'contact_DF967EC9-3A62-4CA6-B74D-7A5FF9E162D3',
+      bb_audience_type:  'contact_24A72DD1-E221-4E8B-9EA1-E355D67D5477',
+    } as const;
+
+    const bbProps: Array<{ FieldKey: string; StringValue: string }> = [];
+    const pushIf = (key: string, val: string) => { if (val) bbProps.push({ FieldKey: key, StringValue: val }); };
+    pushIf(BB_FIELDS.bb_campaign_id,    param('campaign_id') || param('campanha_id') || '');
+    pushIf(BB_FIELDS.bb_campaign_name,  campanha);
+    pushIf(BB_FIELDS.bb_adset_id,       param('adset_id') || publico);
+    pushIf(BB_FIELDS.bb_ad_id,          adName);
+    pushIf(BB_FIELDS.bb_lp_version,     lpVersion);
+    pushIf(BB_FIELDS.bb_wave,           fase);
+    pushIf(BB_FIELDS.bb_audience_type,  audiencia);
+
     const ploomesData = {
       Name: data.barbershopName,
       OriginId: originId,
@@ -107,7 +130,8 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
         ...(data.monthlyRevenue ? [{
           FieldKey: "contact_0748BA26-23E6-41CA-8C7A-A3568B28AC75",
           StringValue: data.monthlyRevenue
-        }] : [])
+        }] : []),
+        ...bbProps,
       ]
     };
 
