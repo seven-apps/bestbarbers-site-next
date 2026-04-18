@@ -130,7 +130,23 @@ export const useUtmParams = () => {
       const { utm_source, utm_desc } = utmParams;
 
       // utm_source=meta usa o mesmo originId de "ads" (40210173)
-      const sourceKey = utm_source === "meta" ? "ads" : utm_source;
+      let sourceKey: string | null = utm_source === "meta" ? "ads" : utm_source;
+
+      // Fallback: URLs Wave 4+ não usam utm_source mas sim params estruturados
+      // (fase=W4, campanha=, ad_id=, publico=). Se qualquer sinal Meta Ads presente,
+      // tratar como "ads" (originId 40210173 — Tráfego Pago).
+      if (!sourceKey && typeof window !== "undefined") {
+        const search = new URLSearchParams(window.location.search);
+        const hasMetaSignal =
+          search.has("ad_id") ||
+          search.has("fase") ||
+          search.has("campanha") ||
+          search.has("publico") ||
+          search.has("audiencia") ||
+          search.has("adset") ||
+          search.has("adname");
+        if (hasMetaSignal) sourceKey = "ads";
+      }
 
       const originId = sourceKey
         ? originMap[sourceKey as keyof typeof originMap] || null
