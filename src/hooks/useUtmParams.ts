@@ -55,6 +55,7 @@ export const useUtmParams = () => {
       "thais-dantunes": 40215957,
       "david-champs": 120001224,
       gladstone: 120001225,
+      youtube: 120001337,
     }),
     []
   );
