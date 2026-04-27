@@ -152,7 +152,7 @@ export default function V9QuizPage() {
   const [mounted, setMounted] = useState(false);
 
   const ploomes = usePloomesAPI();
-  const { trackLead, trackCustomEvent, trackCompleteRegistration } = useMetaPixel();
+  const { trackLead, trackCustomEvent } = useMetaPixel();
   const { applyPhoneMask } = usePhoneMask();
   const { redirectToWhatsApp } = useWhatsAppRedirect();
 
@@ -255,17 +255,16 @@ export default function V9QuizPage() {
           }
         }
 
+        // Único eventId compartilhado entre Pixel client e CAPI server (deduplicação Meta)
         const eventId = `v9-quiz-${createdId || phone}-${Date.now()}`;
+
+        // 1 evento "Lead" — Pixel + CAPI com MESMO eventId = Meta consolida em 1
         await trackLead({
           content_name: "v9-quiz-complete",
           content_category: "quiz-lp",
-        });
-        await trackCompleteRegistration({
-          content_name: "v9-quiz-qualified",
-          content_category: "quiz-lp",
-        });
+        }, eventId);
 
-        // CAPI server-side (dedup via eventId)
+        // CAPI server-side (dedup via eventId — eventName "Lead" igual ao Pixel)
         try {
           await fetch(
             `${process.env.NEXT_PUBLIC_BBAI_API_URL || "https://ai.bestbarbers.app"}/api/meta-capi/track`,
@@ -273,7 +272,7 @@ export default function V9QuizPage() {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                eventName: "QualifiedLead",
+                eventName: "Lead",
                 eventId,
                 userData: {
                   phone,
@@ -297,7 +296,7 @@ export default function V9QuizPage() {
         setIsSubmitting(false);
       }
     },
-    [whatsapp, ownerName, barbershopName, answers, ploomes, trackLead, trackCompleteRegistration, trackCustomEvent, redirectToWhatsApp],
+    [whatsapp, ownerName, barbershopName, answers, ploomes, trackLead, trackCustomEvent, redirectToWhatsApp],
   );
 
   if (!mounted) return null;

@@ -83,7 +83,7 @@ export default function V8MiniFormPage() {
   const [monthlyRevenue, setMonthlyRevenue] = useState("");
 
   const ploomes = usePloomesAPI();
-  const { trackLead, trackCompleteRegistration, trackCustomEvent } = useMetaPixel();
+  const { trackLead, trackCustomEvent } = useMetaPixel();
   const { applyPhoneMask } = usePhoneMask();
   const { redirectToWhatsApp } = useWhatsAppRedirect();
   const router = useRouter();
@@ -169,22 +169,17 @@ export default function V8MiniFormPage() {
 
       const createdId = response?.value?.[0]?.Id;
 
+      // Único eventId compartilhado entre Pixel client e CAPI server (deduplicação Meta)
       const eventId = `v8-submit-${createdId || phone}-${Date.now()}`;
 
-      // Pixel + CAPI eventos
+      // 1 evento "Lead" — Pixel + CAPI com MESMO eventId = Meta consolida em 1
       await trackLead({
         content_name: "v8-single-form",
         content_category: "lead-capture",
         barbershop_name: barbershopName,
         employee_count: employeeCount,
-      });
-      await trackCompleteRegistration({
-        content_name: "v8-single-form-complete",
-        content_category: "lead-capture",
-        barbershop_name: barbershopName,
-        employee_count: employeeCount,
-      });
-      void capiTrack("QualifiedLead", eventId, {
+      }, eventId);
+      void capiTrack("Lead", eventId, {
         phone,
         firstName: ownerName.split(" ")[0],
         lastName: ownerName.split(" ").slice(1).join(" "),
@@ -198,7 +193,7 @@ export default function V8MiniFormPage() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [whatsapp, ownerName, barbershopName, employeeCount, monthlyRevenue, ploomes, trackLead, trackCompleteRegistration, trackCustomEvent, redirectToWhatsApp, router, capiTrack]);
+  }, [whatsapp, ownerName, barbershopName, employeeCount, monthlyRevenue, ploomes, trackLead, trackCustomEvent, redirectToWhatsApp, router, capiTrack]);
 
   if (!mounted) return null;
 

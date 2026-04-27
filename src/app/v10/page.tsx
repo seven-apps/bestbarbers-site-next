@@ -35,7 +35,7 @@ export default function V10Page() {
   const formSectionRef = useRef<HTMLDivElement>(null);
 
   const ploomes = usePloomesAPI();
-  const { trackLead, trackCompleteRegistration, trackCustomEvent } = useMetaPixel();
+  const { trackLead, trackCustomEvent } = useMetaPixel();
   const { applyPhoneMask } = usePhoneMask();
   const { redirectToWhatsApp } = useWhatsAppRedirect();
   const router = useRouter();
@@ -159,11 +159,12 @@ export default function V10Page() {
       });
 
       const createdId = response?.value?.[0]?.Id;
+      // Único eventId compartilhado entre Pixel client e CAPI server (deduplicação Meta)
       const eventId = `v10-submit-${createdId || phone}-${Date.now()}`;
 
-      await trackLead({ content_name: "v10-static-lp", content_category: "lead-capture", barbershop_name: barbershopName, employee_count: employeeCount });
-      await trackCompleteRegistration({ content_name: "v10-complete", content_category: "lead-capture", barbershop_name: barbershopName, employee_count: employeeCount });
-      void capiTrack("QualifiedLead", eventId, { phone, firstName: ownerName.split(" ")[0], lastName: ownerName.split(" ").slice(1).join(" ") });
+      // 1 evento "Lead" — Pixel + CAPI com MESMO eventId = Meta consolida em 1
+      await trackLead({ content_name: "v10-static-lp", content_category: "lead-capture", barbershop_name: barbershopName, employee_count: employeeCount }, eventId);
+      void capiTrack("Lead", eventId, { phone, firstName: ownerName.split(" ")[0], lastName: ownerName.split(" ").slice(1).join(" ") });
 
       redirectToWhatsApp();
     } catch (err: unknown) {
@@ -171,7 +172,7 @@ export default function V10Page() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [whatsapp, ownerName, barbershopName, employeeCount, monthlyRevenue, ploomes, trackLead, trackCompleteRegistration, trackCustomEvent, redirectToWhatsApp, router, capiTrack]);
+  }, [whatsapp, ownerName, barbershopName, employeeCount, monthlyRevenue, ploomes, trackLead, trackCustomEvent, redirectToWhatsApp, router, capiTrack]);
 
   if (!mounted) return null;
 

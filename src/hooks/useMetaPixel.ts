@@ -26,8 +26,8 @@ declare global {
   }
 }
 
-/** Gera ID único para deduplicação de eventos */
-const generateEventId = (): string =>
+/** Gera ID único para deduplicação de eventos. Use o MESMO eventId em Pixel + CAPI. */
+export const generateEventId = (): string =>
   `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 
 /**
@@ -90,9 +90,10 @@ export const useMetaPixel = () => {
   /**
    * Dispara evento de Lead (formulário preenchido)
    * Retorna Promise que resolve quando o image pixel confirma recebimento.
+   * Aceita `eventId` externo para deduplicação Pixel↔CAPI server-side.
    */
-  const trackLead = useCallback((data?: MetaPixelEventData): Promise<void> => {
-    const eventId = generateEventId();
+  const trackLead = useCallback((data?: MetaPixelEventData, externalEventId?: string): Promise<void> => {
+    const eventId = externalEventId || generateEventId();
     const mergedData: MetaPixelEventData = {
       content_name: 'BestBarbers Lead Form',
       content_category: 'lead_generation',
@@ -119,8 +120,8 @@ export const useMetaPixel = () => {
    * Dispara evento de CompleteRegistration (cadastro completo)
    * Retorna Promise que resolve quando o image pixel confirma recebimento.
    */
-  const trackCompleteRegistration = useCallback((data?: MetaPixelEventData): Promise<void> => {
-    const eventId = generateEventId();
+  const trackCompleteRegistration = useCallback((data?: MetaPixelEventData, externalEventId?: string): Promise<void> => {
+    const eventId = externalEventId || generateEventId();
     const mergedData: MetaPixelEventData = {
       content_name: 'BestBarbers Registration',
       content_category: 'lead_generation',
@@ -144,8 +145,8 @@ export const useMetaPixel = () => {
   /**
    * Dispara evento customizado
    */
-  const trackCustomEvent = useCallback((eventName: string, data?: MetaPixelEventData): Promise<void> => {
-    const eventId = generateEventId();
+  const trackCustomEvent = useCallback((eventName: string, data?: MetaPixelEventData, externalEventId?: string): Promise<void> => {
+    const eventId = externalEventId || generateEventId();
 
     if (typeof window !== 'undefined' && window.fbq) {
       try {
