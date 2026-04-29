@@ -69,7 +69,7 @@ export function OfferComparisonV11({ onCtaClick }: OfferComparisonProps) {
                 <p className="text-[10px] md:text-xs font-extrabold text-emerald-400 uppercase tracking-wider">BestBarbers <br className="md:hidden" />(o melhor)</p>
               </div>
               <div className="text-center">
-                <p className="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-wider">Outros<br className="md:hidden" /> sistemas</p>
+                <p className="text-[10px] md:text-xs font-bold text-white uppercase tracking-wider">Outros<br className="md:hidden" /> sistemas</p>
               </div>
             </div>
 
@@ -77,9 +77,8 @@ export function OfferComparisonV11({ onCtaClick }: OfferComparisonProps) {
             {rows.map((row, idx) => (
               <div
                 key={row.label}
-                className={`grid grid-cols-[0.9fr_1.2fr_1fr] md:grid-cols-[1.3fr_1.3fr_1fr] gap-3 md:gap-4 px-3 md:px-8 py-4 md:py-5 ${
-                  idx !== rows.length - 1 ? "border-b border-white/5" : ""
-                } animate-fade-in`}
+                className={`grid grid-cols-[0.9fr_1.2fr_1fr] md:grid-cols-[1.3fr_1.3fr_1fr] gap-3 md:gap-4 px-3 md:px-8 py-4 md:py-5 ${idx !== rows.length - 1 ? "border-b border-white/5" : ""
+                  } animate-fade-in`}
                 style={{ animationDelay: `${0.1 + idx * 0.05}s` }}
               >
                 <div className="flex items-center">
@@ -94,7 +93,11 @@ export function OfferComparisonV11({ onCtaClick }: OfferComparisonProps) {
                   </div>
                 </div>
                 <div className="flex items-start gap-1 md:gap-2 text-gray-500 min-w-0">
-                  <X className="w-3.5 h-3.5 md:w-4 md:h-4 text-red-400 flex-shrink-0 mt-0.5" />
+
+                  <span className="flex-shrink-0 w-5 h-5 md:w-6 md:h-6 rounded-full bg-red-400 flex items-center justify-center mt-0.5">
+                    <X className="w-3.5 h-3.5 md:w-4 md:h-4 text-white flex-shrink-0" />
+                  </span>
+
                   <p className="text-[11px] md:text-sm leading-snug break-words min-w-0">{row.others}</p>
                 </div>
               </div>

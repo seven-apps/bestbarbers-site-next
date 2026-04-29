@@ -3,18 +3,12 @@
 import Image from "next/image";
 import { CTAButton } from "@/components/ui/cta-button";
 import { Sparkles, Star } from "lucide-react";
-import { useUtmParams } from "@/hooks";
-import { useMemo, useState, useEffect } from "react";
 
 interface HeroV5Props {
   onCtaClick?: () => void;
 }
 
 export function HeroV11({ onCtaClick }: HeroV5Props) {
-  const { getUtmParams } = useUtmParams();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
   return (
     <section
       className="relative pt-20 md:pt-24 lg:pt-28 pb-10 md:pb-14 lg:pb-20 flex justify-center items-center overflow-hidden"
@@ -46,10 +40,7 @@ export function HeroV11({ onCtaClick }: HeroV5Props) {
               <div className="inline-flex flex-col items-center gap-0.5 px-5 py-2 bg-black/90 rounded-2xl text-white shadow-lg backdrop-blur-sm">
                 <span className="inline-flex items-center gap-1.5 text-[#ffaf02] font-extrabold text-[12px] md:text-[14px] uppercase tracking-[0.15em]">
                   <Sparkles className="w-3.5 h-3.5" />
-                  Super Oferta
-                </span>
-                <span className="text-[12px] md:text-[14px] font-bold text-white/95">
-                  Taxa zero para desenvolver o seu app
+                  SUPER OFERTA IMPERDÍVEL
                 </span>
               </div>
             </div>
@@ -73,7 +64,7 @@ export function HeroV11({ onCtaClick }: HeroV5Props) {
 
             {/* Sub — clareza */}
             <p
-              className="text-[15px] md:text-[17px] lg:text-[18px] font-semibold leading-relaxed text-[#0a0a0a]/85 max-w-xl mb-5 md:mb-6 animate-fade-in-up"
+              className="text-[15px] md:text-[17px] lg:text-[18px] font-semibold leading-relaxed text-[#0a0a0a]/85 max-w-xl mb-4 animate-fade-in-up"
               style={{ animationDelay: "0.22s" }}
             >
               Você só paga a mensalidade — a partir de R$299/mês
@@ -81,18 +72,20 @@ export function HeroV11({ onCtaClick }: HeroV5Props) {
 
             {/* MOBILE — Mockup compacto integrado com floating cards */}
             <div className="lg:hidden w-full mb-5 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
-              <div className="relative max-w-[420px] sm:max-w-[480px] mx-auto">
+              <div className="relative max-w-[420px] sm:max-w-[480px] mx-auto -mt-10">
                 <Image
                   src="/images/lp-v5-app-dashboard-mockup.png"
                   alt="App próprio + dashboard BestBarbers"
-                  width={420}
-                  height={340}
+                  width={480}
+                  height={388}
+                  sizes="(max-width: 640px) 420px, 480px"
                   className="w-full h-auto drop-shadow-[0_18px_40px_rgba(0,0,0,0.25)]"
                   priority
+                  fetchPriority="high"
                 />
 
                 {/* Floating proof — 5★ (canto superior direito, sobre o topo do macbook) */}
-                <div className="absolute top-2 right-2 bg-white rounded-xl shadow-2xl px-2.5 py-1.5 flex items-center gap-1.5 hero-float-a z-20">
+                <div className="absolute top-10 right-2 bg-white rounded-xl shadow-2xl px-2.5 py-1.5 flex items-center gap-1.5 hero-float-a z-20">
                   <div className="flex">
                     {[0, 1, 2, 3, 4].map((i) => (
                       <Star key={i} className="w-3 h-3 fill-[#ffaf02] text-[#ffaf02]" />
@@ -102,7 +95,7 @@ export function HeroV11({ onCtaClick }: HeroV5Props) {
                 </div>
 
                 {/* Floating proof — ECONOMIA (parte inferior do iPhone, mais pra baixo) */}
-                <div className="absolute bottom-[5%] left-2 bg-[#ffaf02] rounded-xl shadow-2xl px-3 py-2 flex items-center gap-2 hero-float-b ring-2 ring-black/90 z-20">
+                <div className="absolute bottom-[1%] left-2 bg-[#ffaf02] rounded-xl shadow-2xl px-3 py-2 flex items-center gap-2 hero-float-b ring-2 ring-black/90 z-20">
                   <span className="text-[#0a0a0a] font-extrabold text-base">−</span>
                   <div className="leading-tight">
                     <p className="text-[9px] text-[#0a0a0a]/80 font-extrabold uppercase tracking-wide">Você economiza</p>
@@ -137,8 +130,10 @@ export function HeroV11({ onCtaClick }: HeroV5Props) {
                 alt="App próprio + dashboard financeiro BestBarbers"
                 width={560}
                 height={460}
+                sizes="(max-width: 1024px) 0px, 520px"
                 className="w-full h-auto drop-shadow-[0_25px_60px_rgba(0,0,0,0.3)]"
                 priority
+                fetchPriority="high"
               />
 
               {/* Floating: 5 estrelas */}

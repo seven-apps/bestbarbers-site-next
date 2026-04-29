@@ -30,7 +30,6 @@ const allLogos = [
   "/images/Gabriel.webp",
   "/images/Irmandade.webp",
   "/images/JR.webp",
-  "/images/Kadosh.webp",
 ];
 
 export function TrustHeroV11() {
@@ -54,8 +53,9 @@ export function TrustHeroV11() {
               alt="Mileno Rocha, João Seletto, Kaique Bagulho, Thaís D'Antunes e Rapha — barbeiros parceiros BestBarbers"
               width={600}
               height={244}
+              sizes="(max-width: 768px) 100vw, 600px"
               className="w-full h-auto object-contain"
-              priority
+              loading="lazy"
             />
           </div>
 
@@ -90,7 +90,7 @@ export function TrustHeroV11() {
               className="animate-marquee-left gpu-accelerated"
               style={{ "--marquee-duration": "25s" } as React.CSSProperties}
             >
-              {[0, 1, 2].map((setIndex) => (
+              {[0, 1].map((setIndex) => (
                 <div key={setIndex} className="inline-flex gap-3 md:gap-5 items-center pr-3 md:pr-5">
                   {allLogos.slice(0, 10).map((logo, index) => (
                     <div
@@ -99,9 +99,10 @@ export function TrustHeroV11() {
                     >
                       <Image
                         src={logo}
-                        alt={`Cliente BestBarbers ${index + 1}`}
+                        alt=""
                         width={128}
                         height={128}
+                        sizes="(max-width: 768px) 80px, 128px"
                         className="w-full h-full object-contain"
                         loading="lazy"
                       />
@@ -121,7 +122,7 @@ export function TrustHeroV11() {
               className="animate-marquee-right gpu-accelerated"
               style={{ "--marquee-duration": "30s" } as React.CSSProperties}
             >
-              {[0, 1, 2].map((setIndex) => (
+              {[0, 1].map((setIndex) => (
                 <div key={setIndex} className="inline-flex gap-3 md:gap-5 items-center pr-3 md:pr-5">
                   {allLogos.slice(10).map((logo, index) => (
                     <div
@@ -130,9 +131,10 @@ export function TrustHeroV11() {
                     >
                       <Image
                         src={logo}
-                        alt={`Cliente BestBarbers ${index + 11}`}
+                        alt=""
                         width={128}
                         height={128}
+                        sizes="(max-width: 768px) 80px, 128px"
                         className="w-full h-full object-contain"
                         loading="lazy"
                       />

@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import { Navbar } from "@/components/sections/Navbar";
 import { HeroV11 } from "@/components/sections/HeroV11";
 import { TrustHeroV11 } from "@/components/sections/TrustHeroV11";
@@ -10,12 +10,9 @@ import { TestimonialsV11 } from "@/components/sections/TestimonialsV11";
 import { FAQShortV11 } from "@/components/sections/FAQShortV11";
 import { FormSectionV11 } from "@/components/sections/FormSectionV11";
 import { FooterSimple } from "@/components/sections/FooterSimple";
-import { useSearchParams } from "next/navigation";
 import { useMetaPixel } from "@/hooks";
 
 function LeadMachineContent() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const searchParams = useSearchParams();
   const { trackCustomEvent } = useMetaPixel();
   const trackedSections = useRef(new Set<string>());
   const [showStickyCta, setShowStickyCta] = useState(false);
@@ -31,12 +28,21 @@ function LeadMachineContent() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    // Cache DOM refs once (avoids querySelector on every scroll)
+    const heroEl = document.querySelector("section") as HTMLElement | null;
+    const formEl = document.getElementById("form-section");
+    const heroHeight = heroEl?.offsetHeight || 600;
+
+    let ticking = false;
     const handleScroll = () => {
-      const heroHeight = document.querySelector("section")?.offsetHeight || 600;
-      const formEl = document.getElementById("form-section");
-      const formTop = formEl?.getBoundingClientRect().top || Infinity;
-      const isFormVisible = formTop < window.innerHeight;
-      setShowStickyCta(window.scrollY > heroHeight && !isFormVisible);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const formTop = formEl?.getBoundingClientRect().top ?? Infinity;
+        const isFormVisible = formTop < window.innerHeight;
+        setShowStickyCta(window.scrollY > heroHeight && !isFormVisible);
+        ticking = false;
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -135,16 +141,7 @@ function LeadMachineContent() {
 export default function LeadMachine() {
   return (
     <main className="min-h-screen overflow-x-hidden max-w-[100vw] w-full">
-      <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-[#121212]">
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-12 h-12 border-4 border-[#ffaf02] border-t-transparent rounded-full animate-spin" />
-            <p className="text-white/60 text-sm font-medium">Carregando...</p>
-          </div>
-        </div>
-      }>
-        <LeadMachineContent />
-      </Suspense>
+      <LeadMachineContent />
     </main>
   );
 }
