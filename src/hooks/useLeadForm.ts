@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { usePhoneMask } from './usePhoneMask';
 import { usePloomesAPI, type PloomesContactData } from './usePloomesAPI';
 import { useWhatsAppRedirect } from './useWhatsAppRedirect';
@@ -47,6 +47,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isDedupChecking, setIsDedupChecking] = useState(false);
+  // Cache do resultado do dedup pra evitar duplo round-trip no submit
+  const dedupCacheRef = useRef<{ phone: string; exists: boolean } | null>(null);
 
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
   const { submitLead, checkPhoneExists } = usePloomesAPI({ originId, originDesc });
@@ -54,15 +57,47 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const { trackLead, trackCompleteRegistration } = useMetaPixel();
   const { getUtmParams } = useUtmParams();
 
+  // Dedup non-blocking — roda quando whatsapp atinge 11+ digitos
+  const runBackgroundDedup = useCallback(async (rawPhone: string) => {
+    const phoneDigits = rawPhone.replace(/\D/g, '');
+    if (phoneDigits.length < 11) return;
+    if (dedupCacheRef.current?.phone === phoneDigits) return;
+
+    setIsDedupChecking(true);
+    try {
+      const aiApiUrl = process.env.NEXT_PUBLIC_BBAI_API_URL;
+      if (aiApiUrl) {
+        try {
+          const res = await fetch(`${aiApiUrl}/api/leads/check?phone=${phoneDigits}`);
+          const data = await res.json();
+          if (data?.data?.exists) {
+            dedupCacheRef.current = { phone: phoneDigits, exists: true };
+            return;
+          }
+        } catch { /* fallback Ploomes */ }
+      }
+      try {
+        const exists = await checkPhoneExists(rawPhone);
+        dedupCacheRef.current = { phone: phoneDigits, exists };
+      } catch {
+        dedupCacheRef.current = { phone: phoneDigits, exists: false };
+      }
+    } finally {
+      setIsDedupChecking(false);
+    }
+  }, [checkPhoneExists]);
+
   const handleInputChange = useCallback((
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    
+
     // Aplica máscara apenas no campo whatsapp
     if (name === 'whatsapp') {
       const maskedValue = applyPhoneMask(value);
       setFormData(prev => ({ ...prev, [name]: maskedValue }));
+      // Dispara dedup em background quando o telefone fica completo
+      void runBackgroundDedup(maskedValue);
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
@@ -71,7 +106,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     if (submitError) {
       setSubmitError(null);
     }
-  }, [applyPhoneMask, submitError]);
+  }, [applyPhoneMask, submitError, runBackgroundDedup]);
 
   const validateForm = useCallback((): string | null => {
     if (!formData.barbershopName.trim()) {
@@ -91,42 +126,61 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const validationError = validateForm();
     if (validationError) {
       setSubmitError(validationError);
       return;
     }
 
+    // Bloqueia submit duplo enquanto dedup background ainda nao terminou
+    if (isDedupChecking) {
+      setSubmitError('Validando seus dados, aguarde um instante...');
+      return;
+    }
+
     setIsSubmitting(true);
     setSubmitError(null);
-    
+
     try {
-      // Dedup check: verifica se lead já existe antes de enviar
       const aiApiUrl = process.env.NEXT_PUBLIC_BBAI_API_URL;
-      if (aiApiUrl) {
+      const phoneDigitsCurrent = formData.whatsapp.replace(/\D/g, '');
+
+      // Reusa cache do dedup background; se nao bate, faz check sincrono
+      const cached = dedupCacheRef.current;
+      const cacheValid = cached && cached.phone === phoneDigitsCurrent;
+
+      if (cacheValid && cached.exists) {
+        setSubmitError('Você já tem um diagnóstico agendado! Entraremos em contato em breve.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (!cacheValid) {
+        // Dedup check sincrono — sem cache valido (telefone editado tarde)
+        if (aiApiUrl) {
+          try {
+            const checkRes = await fetch(`${aiApiUrl}/api/leads/check?phone=${phoneDigitsCurrent}`);
+            const checkData = await checkRes.json();
+            if (checkData?.data?.exists) {
+              setSubmitError('Você já tem um diagnóstico agendado! Entraremos em contato em breve.');
+              setIsSubmitting(false);
+              return;
+            }
+          } catch {
+            // Non-blocking: se dedup falhar, segue com submit normal
+          }
+        }
         try {
-          const phoneDigits = formData.whatsapp.replace(/\D/g, '');
-          const checkRes = await fetch(`${aiApiUrl}/api/leads/check?phone=${phoneDigits}`);
-          const checkData = await checkRes.json();
-          if (checkData?.data?.exists) {
+          const existsInPloomes = await checkPhoneExists(formData.whatsapp);
+          if (existsInPloomes) {
             setSubmitError('Você já tem um diagnóstico agendado! Entraremos em contato em breve.');
+            setIsSubmitting(false);
             return;
           }
         } catch {
-          // Non-blocking: se dedup falhar, segue com submit normal
+          // Non-blocking: se Ploomes check falhar, segue com submit normal
         }
-      }
-
-      // Dedup check 2: verifica direto no Ploomes (fallback se BBAI API falhou + cobre leads de outras fontes)
-      try {
-        const existsInPloomes = await checkPhoneExists(formData.whatsapp);
-        if (existsInPloomes) {
-          setSubmitError('Você já tem um diagnóstico agendado! Entraremos em contato em breve.');
-          return;
-        }
-      } catch {
-        // Non-blocking: se Ploomes check falhar, segue com submit normal
       }
 
       // Converte FormData para PloomesContactData
@@ -208,6 +262,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   }, [
     formData,
     validateForm,
+    isDedupChecking,
     checkPhoneExists,
     submitLead,
     onSuccess,
@@ -235,6 +290,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     isSubmitting,
     submitted,
     submitError,
+    isDedupChecking,
     handleInputChange,
     handleSubmit,
     resetForm,
