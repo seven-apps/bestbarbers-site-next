@@ -67,7 +67,7 @@ export function HeroV11({ onCtaClick }: HeroV5Props) {
               className="text-[15px] md:text-[17px] lg:text-[18px] font-semibold leading-relaxed text-[#0a0a0a]/85 max-w-xl mb-4 animate-fade-in-up"
               style={{ animationDelay: "0.22s" }}
             >
-              Você só paga a mensalidade — a partir de R$299/mês
+              Você só paga a mensalidade do sistema — a partir de R$299/mês
             </p>
 
             {/* MOBILE — Mockup compacto integrado com floating cards */}
