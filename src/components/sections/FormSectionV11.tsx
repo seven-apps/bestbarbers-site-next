@@ -1,7 +1,7 @@
 "use client";
 
 import { useLeadForm, useUtmParams } from "@/hooks";
-import { ArrowRight, Sparkles, Shield, Clock, Users } from "lucide-react";
+import { ArrowRight, Sparkles, Shield, Users } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 const formFields = [
@@ -11,11 +11,11 @@ const formFields = [
   { name: "employeeCount", label: "Quantas cadeiras?", placeholder: "Ex: 4", type: "number" },
   { name: "monthlyRevenue", label: "Faturamento mensal", placeholder: "Selecione", type: "select", options: [
     { value: "", label: "Selecione" },
-    { value: "ate_5k", label: "Até R$ 5 mil" },
-    { value: "5_10k", label: "R$ 5 mil a R$ 10 mil" },
-    { value: "10_20k", label: "R$ 10 mil a R$ 20 mil" },
-    { value: "20_50k", label: "R$ 20 mil a R$ 50 mil" },
-    { value: "50k_mais", label: "Acima de R$ 50 mil" },
+    { value: "Até R$ 5 mil", label: "Até R$ 5 mil" },
+    { value: "R$ 5 mil a R$ 10 mil", label: "R$ 5 mil a R$ 10 mil" },
+    { value: "R$ 10 mil a R$ 20 mil", label: "R$ 10 mil a R$ 20 mil" },
+    { value: "R$ 20 mil a R$ 50 mil", label: "R$ 20 mil a R$ 50 mil" },
+    { value: "Acima de R$ 50 mil", label: "Acima de R$ 50 mil" },
   ] },
 ];
 
@@ -59,6 +59,7 @@ export function FormSectionV11() {
     handleInputChange,
     handleSubmit,
   } = useLeadForm({
+    source: 'lp_v11',
     onError: (error) => {
       console.error("Erro ao enviar formulário:", error);
       alert("Erro ao enviar formulário. Tente novamente.");

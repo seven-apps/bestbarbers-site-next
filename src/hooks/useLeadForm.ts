@@ -21,6 +21,8 @@ export interface UseLeadFormOptions {
   originId?: number;
   /** Descrição de origem customizada para o Ploomes - sobrescreve o mapeamento de UTM */
   originDesc?: string;
+  /** Source identifier para BBAI API (atribuição em relatórios). Default: 'lp_v5' (retrocompat). */
+  source?: string;
 }
 
 /**
@@ -28,12 +30,13 @@ export interface UseLeadFormOptions {
  * Combina máscara de telefone, envio para Ploomes e redirecionamento WhatsApp
  */
 export const useLeadForm = (options: UseLeadFormOptions = {}) => {
-  const { 
-    onSuccess, 
-    onError, 
+  const {
+    onSuccess,
+    onError,
     redirectToWhatsApp = true,
     originId,
-    originDesc
+    originDesc,
+    source = 'lp_v5',
   } = options;
 
   const [formData, setFormData] = useState<FormData>({
@@ -54,7 +57,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
   const { submitLead, checkPhoneExists } = usePloomesAPI({ originId, originDesc });
   const { redirectToWhatsApp: redirect } = useWhatsAppRedirect();
-  const { trackLead, trackCompleteRegistration } = useMetaPixel();
+  // Apenas trackLead — trackCompleteRegistration foi removido em 910a080 (gerava
+  // duplicação Meta vs Ploomes 50% inflado). Meta otimiza por "Lead" sozinho.
+  const { trackLead } = useMetaPixel();
   const { getUtmParams } = useUtmParams();
 
   // Dedup non-blocking — roda quando whatsapp atinge 11+ digitos
@@ -120,6 +125,11 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     }
     if (!formData.employeeCount.trim()) {
       return 'Número de cadeiras é obrigatório';
+    }
+    // Validações best-effort para LPs com campos extras (V11 e futuras).
+    // Não bloqueiam V5 quando os campos vêm vazios — só dispara se preenchido parcialmente.
+    if (formData.ownerName && !formData.ownerName.trim()) {
+      return 'Seu nome é obrigatório';
     }
     return null;
   }, [formData, isValidPhone]);
@@ -198,18 +208,27 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // Envia dados para o Ploomes CRM PRIMEIRO — só dispara pixel se o contato for criado
       await submitLead(ploomesData);
 
+      // EventId ÚNICO compartilhado entre Pixel client + CAPI server-side
+      // Padrão alinhado com V8/V9/V10 (commit 910a080) — Meta consolida em 1 evento via dedup.
+      // Em Abr/26 essa duplicação inflou Meta-reported leads em ~50% (533 vs 267 Ploomes).
+      const phoneDigits = formData.whatsapp.replace(/\D/g, '');
+      const leadEventId = `${source}-submit-${phoneDigits}-${Date.now()}`;
+
       // Envia lead para BestBarbers AI (CAPI + SDR priority + revenue attribution)
+      // BBAI API DEVE usar `leadEventId` ao disparar CAPI "Lead" — sem isso a dedup falha.
       // Non-blocking: não trava o fluxo se falhar
       if (aiApiUrl) {
-        const phoneDigits = formData.whatsapp.replace(/\D/g, '');
         fetch(`${aiApiUrl}/api/leads/simple`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name: formData.barbershopName,
+            ownerName: formData.ownerName || undefined,
             phone: phoneDigits,
             chairs: formData.employeeCount,
-            source: 'lp_v5',
+            monthlyRevenue: formData.monthlyRevenue || undefined,
+            source,
+            leadEventId,
             utm_source: utmParams.utm_source || undefined,
             utm_medium: utmParams.utm_medium || undefined,
             utm_campaign: utmParams.utm_campaign || undefined,
@@ -219,8 +238,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         }).catch(() => { /* non-blocking */ });
       }
 
-      // Dispara eventos de Lead + CompleteRegistration no Meta Pixel APÓS sucesso do Ploomes
-      // Isso garante que Meta e Ploomes fiquem sincronizados (sem leads fantasma)
+      // 1 evento "Lead" — Pixel client com MESMO eventId que CAPI server-side
+      // CompleteRegistration foi REMOVIDO em 910a080 — era redundante e inflava Meta 50%
       const pixelData = {
         content_name: 'BestBarbers Lead Form Submission',
         content_category: 'lead_generation',
@@ -229,17 +248,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
       };
 
-      const leadPixelPromise = trackLead(pixelData);
-      const regPixelPromise = trackCompleteRegistration({
-        content_name: 'BestBarbers Registration Complete',
-        content_category: 'lead_generation',
-        barbershop_name: formData.barbershopName,
-        ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
-      });
-
-      // Aguarda confirmação de que AMBOS os pixel events foram enviados ao Facebook
-      // antes de redirecionar (window.location.href cancela requests pendentes)
-      await Promise.all([leadPixelPromise, regPixelPromise]);
+      // Aguarda confirmação do image pixel antes de redirecionar
+      // (window.location.href cancela requests pendentes)
+      await trackLead(pixelData, leadEventId);
 
       // Marca como enviado com sucesso (mantém botão desabilitado durante redirect)
       setSubmitted(true);
@@ -270,8 +281,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     redirectToWhatsApp,
     redirect,
     trackLead,
-    trackCompleteRegistration,
-    getUtmParams
+    getUtmParams,
+    source,
   ]);
 
   const resetForm = useCallback(() => {
@@ -295,6 +306,6 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     handleSubmit,
     resetForm,
     validateForm,
-    isValidPhone: () => isValidPhone(formData.whatsapp)
+    isValidPhone: () => isValidPhone(formData.whatsapp),
   };
 };

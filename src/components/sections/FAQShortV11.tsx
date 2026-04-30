@@ -32,7 +32,7 @@ const faqCritical: FAQItem[] = [
   },
   {
     question: "Já tentei outro sistema e não funcionou.",
-    answer: <><H>82 barbearias</H> que migraram pra BestBarbers relataram a mesma coisa: suporte fraco e implementação abandonada lá fora. Aqui você tem <W>gerente dedicado via WhatsApp</W> do dia 1, migração completa dos seus dados e acompanhamento dos primeiros resultados. Não é chatbot — é uma pessoa real.</>,
+    answer: <><H>82 barbearias</H> que migraram pra BestBarbers relataram a mesma coisa: suporte fraco e implementação abandonada lá fora. Aqui você tem <W>gerente de contas dedicado</W> do dia 1, migração completa dos seus dados e acompanhamento dos primeiros resultados. Não é chatbot — é uma pessoa real.</>,
   },
   {
     question: "Funciona pra barbearia pequena?",
@@ -48,11 +48,11 @@ const faqExtra: FAQItem[] = [
   },
   {
     question: "O que está incluso nos R$299/mês?",
-    answer: <>Tudo: <W>app exclusivo</W> com a sua marca nas lojas, <W>clube de assinaturas</W> com cobrança automática, <W>agenda online</W>, <W>dashboard financeiro</W>, controle de comissões, <W>NFS-e integrada</W> e <W>gerente dedicado</W> via WhatsApp. Sem taxa de implantação, sem fidelidade.</>,
+    answer: <>Tudo: <W>app próprio</W> com a sua marca na App Store + Play, <W>clube de assinaturas</W> com cobrança automática, <W>agenda online</W>, <W>dashboard financeiro</W>, controle de comissões, <W>NFS-e integrada</W> e <W>gerente de contas dedicado</W>. Sem taxa de implantação, sem fidelidade.</>,
   },
   {
-    question: "O que é o diagnóstico gratuito?",
-    answer: <>Um especialista analisa a sua barbearia e entrega via WhatsApp: quanto você pode faturar com clube de assinaturas, como organizar a agenda sem WhatsApp e um plano de implementação. <H>Sem compromisso — 100% gratuito.</H></>,
+    question: "O que está incluso na oferta de implantação gratuita?",
+    answer: <>Desenvolvimento do <W>app próprio</W> com a sua marca, publicação na <W>App Store + Play Store</W>, configuração completa do clube de assinaturas, importação dos seus clientes e onboarding com <W>gerente de contas dedicado</W>. Tudo isso em até <H>30 dias</H> e <H>100% gratuito</H> — outros sistemas cobram R$ 3.000 a R$ 5.000 só pra começar.</>,
   },
   {
     question: "Já uso outro sistema. Por que trocar?",
