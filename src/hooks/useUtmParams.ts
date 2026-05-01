@@ -56,6 +56,7 @@ export const useUtmParams = () => {
       "david-champs": 120001224,
       gladstone: 120001225,
       youtube: 120001337,
+      billy: 120001376,
     }),
     []
   );
@@ -86,6 +87,7 @@ export const useUtmParams = () => {
       "thais-dantunes": "LP - Thais D'Antunes - Programa de indicações",
       "david-champs": "LP - David Champs - Programa de parceria",
       gladstone: "LP - Gladstone - Programa de indicações",
+      billy: "LP - Billy Tribos - Programa de parcerias",
     }),
     []
   );

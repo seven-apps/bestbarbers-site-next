@@ -24,6 +24,7 @@ import kaiqueAlvesImg from "@/app/parceiros/assets/kaique-alves.png";
 import thaisDantunesImg from "@/app/parceiros/assets/thais-dantunes.png";
 import davidChampsImg from "@/app/parceiros/assets/david-champs.png";
 import gladstoneImg from "@/app/parceiros/assets/gladstone.png";
+import billyImg from "@/app/parceiros/assets/billy.png";
 
 
 interface HeroPartnerSectionProps {
@@ -55,6 +56,7 @@ export function HeroPartnerSection({
     "thais-dantunes": thaisDantunesImg,
     "david-champs": davidChampsImg,
     gladstone: gladstoneImg,
+    billy: billyImg,
   }), []);
 
   const isPartnerImage = !!(source && imageMap[source]);
