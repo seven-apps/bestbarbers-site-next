@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useUtmParams } from './useUtmParams';
+import { PLOOMES_CONTACT_FIELDS, PLOOMES_LEGACY_FIELDS } from '@/lib/ploomes-fields';
 
 export interface PloomesContactData {
   barbershopName: string;
@@ -7,6 +8,8 @@ export interface PloomesContactData {
   whatsapp: string;
   monthlyRevenue?: string;
   employeeCount: string;
+  /** Meta CAPI / Pixel event ID compartilhado entre browser e server (deduplicação) */
+  leadEventId?: string;
 }
 
 export interface PloomesAPIResponse {
@@ -81,28 +84,33 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       originDesc = originDescBuilder || null;
     }
 
-    // Campos estruturados bb_* (criados abr/2026 via scripts/ploomes-setup-fields.ts).
-    // Paralelos ao FieldKey contact_2D7EF0B1-... (legacy string "V8 | W4 | ..."), que é mantido por
-    // compatibilidade + fallback. Backend prioriza bb_campaign_id para matching; string só se faltar.
-    const BB_FIELDS = {
-      bb_campaign_id:    'contact_A48D77F6-CD14-4A9D-BB80-C46EDAD491E8',
-      bb_campaign_name:  'contact_F5A3EEB7-8A11-41A1-959B-1C20F0A822DF',
-      bb_adset_id:       'contact_29CF9F80-9777-476D-85F1-2030A09F5F26',
-      bb_ad_id:          'contact_D73D2261-53D5-4025-9DF1-9BC1A8331FD6',
-      bb_lp_version:     'contact_F1E05DF5-3638-44FA-9730-EF071A6F3B0F',
-      bb_wave:           'contact_DF967EC9-3A62-4CA6-B74D-7A5FF9E162D3',
-      bb_audience_type:  'contact_24A72DD1-E221-4E8B-9EA1-E355D67D5477',
-    } as const;
-
+    // Campos estruturados bb_* (criados abr/2026 + mai/2026 via scripts/ploomes-setup-fields.ts).
+    // FieldKeys ficam em src/lib/ploomes-fields.ts (single source). A automação Ploomes
+    // espelha esses campos para o Deal correspondente.
+    // O FieldKey legacy contact_2D7EF0B1... é mantido como resumo legível para SDR.
     const bbProps: Array<{ FieldKey: string; StringValue: string }> = [];
-    const pushIf = (key: string, val: string) => { if (val) bbProps.push({ FieldKey: key, StringValue: val }); };
-    pushIf(BB_FIELDS.bb_campaign_id,    param('campaign_id') || param('campanha_id') || '');
-    pushIf(BB_FIELDS.bb_campaign_name,  campanha);
-    pushIf(BB_FIELDS.bb_adset_id,       param('adset_id') || publico);
-    pushIf(BB_FIELDS.bb_ad_id,          adName);
-    pushIf(BB_FIELDS.bb_lp_version,     lpVersion);
-    pushIf(BB_FIELDS.bb_wave,           fase);
-    pushIf(BB_FIELDS.bb_audience_type,  audiencia);
+    const pushIf = (key: string, val: string | null | undefined) => {
+      if (val) bbProps.push({ FieldKey: key, StringValue: val });
+    };
+
+    // Wave 1 — Meta ad params (url_tags Wave 4)
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_campaign_id,    param('campaign_id') || param('campanha_id'));
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_campaign_name,  campanha);
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_adset_id,       param('adset_id') || publico);
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_ad_id,          adName);
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_lp_version,     lpVersion);
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_wave,           fase);
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_audience_type,  audiencia);
+
+    // Wave 2 — UTMs clássicos + click IDs
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_utm_source,     utmParams.utm_source);
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_utm_medium,     utmParams.utm_medium);
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_utm_campaign,   utmParams.utm_campaign);
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_utm_content,    utmParams.utm_content);
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_utm_term,       utmParams.utm_term);
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_fbclid,         utmParams.fbclid);
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_gclid,          utmParams.gclid);
+    pushIf(PLOOMES_CONTACT_FIELDS.bb_lead_event_id,  data.leadEventId);
 
     const ploomesData = {
       Name: data.barbershopName,
@@ -116,19 +124,19 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       ],
       OtherProperties: [
         {
-          FieldKey: "contact_DA6F2406-FE50-4EFC-BBB5-A3463435B427",
+          FieldKey: PLOOMES_LEGACY_FIELDS.ownerName,
           StringValue: data.ownerName || data.barbershopName
         },
         {
-          FieldKey: "contact_2D7EF0B1-E99E-414A-A7DA-4106F05DD4BB",
+          FieldKey: PLOOMES_LEGACY_FIELDS.campaignDescStr,
           StringValue: originDesc || ''
         },
         {
-          FieldKey: "contact_51143832-6126-4F8F-9453-D6EEFFE2A352",
+          FieldKey: PLOOMES_LEGACY_FIELDS.employeeCount,
           StringValue: data.employeeCount
         },
         ...(data.monthlyRevenue ? [{
-          FieldKey: "contact_0748BA26-23E6-41CA-8C7A-A3568B28AC75",
+          FieldKey: PLOOMES_LEGACY_FIELDS.monthlyRevenue,
           StringValue: data.monthlyRevenue
         }] : []),
         ...bbProps,

@@ -8,7 +8,33 @@ export interface UtmParams {
   utm_campaign: string | null;
   utm_content: string | null;
   utm_term: string | null;
+  fbclid: string | null;
+  gclid: string | null;
 }
+
+const SS_KEY = 'bb_utm_snapshot';
+
+const readCookie = (name: string): string | null => {
+  if (typeof document === 'undefined') return null;
+  const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)'));
+  return m ? decodeURIComponent(m[1]) : null;
+};
+
+// _fbc cookie format: "fb.1.<timestamp>.<fbclid>"
+const fbclidFromCookie = (): string | null => {
+  const fbc = readCookie('_fbc');
+  if (!fbc) return null;
+  const parts = fbc.split('.');
+  return parts.length >= 4 ? parts.slice(3).join('.') : null;
+};
+
+// _gcl_aw cookie format: "GCL.<timestamp>.<gclid>"
+const gclidFromCookie = (): string | null => {
+  const gcl = readCookie('_gcl_aw');
+  if (!gcl) return null;
+  const parts = gcl.split('.');
+  return parts.length >= 3 ? parts.slice(2).join('.') : null;
+};
 
 export interface OriginMapping {
   originId: number | null;
@@ -102,6 +128,8 @@ export const useUtmParams = () => {
         utm_campaign: null,
         utm_content: null,
         utm_term: null,
+        fbclid: null,
+        gclid: null,
       };
     }
 
@@ -114,10 +142,15 @@ export const useUtmParams = () => {
     const utmContent = urlParams.get("utm_content");
     const utmTerm = urlParams.get("utm_term");
 
+    // Click IDs — Meta adiciona fbclid em todo click de ad; Google Ads adiciona gclid.
+    // Cookies são fallback caso o usuário navegue para /v11 sem os params na URL.
+    const fbclid = urlParams.get("fbclid") || fbclidFromCookie();
+    const gclid = urlParams.get("gclid") || gclidFromCookie();
+
     // Param legado de parceiros (?source=mileno) — compatibilidade mantida
     const legacySource = urlParams.get("source");
 
-    return {
+    const params: UtmParams = {
       utm_source: utmSource || legacySource,
       utm_desc: urlParams.get("desc"),
       utm_inf: urlParams.get("inf"),
@@ -125,7 +158,37 @@ export const useUtmParams = () => {
       utm_campaign: utmCampaign,
       utm_content: utmContent,
       utm_term: utmTerm,
+      fbclid,
+      gclid,
     };
+
+    // Persistir snapshot na primeira visita com sinais de ad — preserva params
+    // através de navegação interna (LP V11 → outra rota → volta).
+    try {
+      const hasSignal = !!(utmSource || legacySource || fbclid || gclid || utmCampaign);
+      const stored = sessionStorage.getItem(SS_KEY);
+      if (hasSignal && !stored) {
+        sessionStorage.setItem(SS_KEY, JSON.stringify(params));
+      } else if (!hasSignal && stored) {
+        // URL "limpa" + snapshot existente → restaurar
+        const restored = JSON.parse(stored) as Partial<UtmParams>;
+        return {
+          utm_source: params.utm_source ?? restored.utm_source ?? null,
+          utm_desc: params.utm_desc ?? restored.utm_desc ?? null,
+          utm_inf: params.utm_inf ?? restored.utm_inf ?? null,
+          utm_medium: params.utm_medium ?? restored.utm_medium ?? null,
+          utm_campaign: params.utm_campaign ?? restored.utm_campaign ?? null,
+          utm_content: params.utm_content ?? restored.utm_content ?? null,
+          utm_term: params.utm_term ?? restored.utm_term ?? null,
+          fbclid: params.fbclid ?? restored.fbclid ?? null,
+          gclid: params.gclid ?? restored.gclid ?? null,
+        };
+      }
+    } catch {
+      // sessionStorage indisponível (privacy mode etc) — segue sem persistir
+    }
+
+    return params;
   }, []);
 
   const getOriginMapping = useCallback(
@@ -138,6 +201,7 @@ export const useUtmParams = () => {
       // Fallback: URLs Wave 4+ não usam utm_source mas sim params estruturados
       // (fase=W4, campanha=, ad_id=, publico=). Se qualquer sinal Meta Ads presente,
       // tratar como "ads" (originId 40210173 — Tráfego Pago).
+      // fbclid é incluído pois Meta sempre adiciona em clicks de ad — sinal definitivo.
       if (!sourceKey && typeof window !== "undefined") {
         const search = new URLSearchParams(window.location.search);
         const hasMetaSignal =
@@ -147,7 +211,8 @@ export const useUtmParams = () => {
           search.has("publico") ||
           search.has("audiencia") ||
           search.has("adset") ||
-          search.has("adname");
+          search.has("adname") ||
+          search.has("fbclid");
         if (hasMetaSignal) sourceKey = "ads";
       }
 

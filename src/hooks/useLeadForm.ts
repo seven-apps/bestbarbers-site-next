@@ -193,26 +193,28 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         }
       }
 
+      // Lê UTM params para incluir grupo do anúncio nos eventos
+      const utmParams = getUtmParams();
+
+      // EventId ÚNICO compartilhado entre Pixel client + CAPI server-side + Ploomes contact.
+      // Padrão alinhado com V8/V9/V10 (commit 910a080) — Meta consolida em 1 evento via dedup.
+      // Em Abr/26 essa duplicação inflou Meta-reported leads em ~50% (533 vs 267 Ploomes).
+      // Gerado ANTES de submitLead para ser persistido no campo bb_lead_event_id do Contact.
+      const phoneDigits = formData.whatsapp.replace(/\D/g, '');
+      const leadEventId = `${source}-submit-${phoneDigits}-${Date.now()}`;
+
       // Converte FormData para PloomesContactData
       const ploomesData: PloomesContactData = {
         barbershopName: formData.barbershopName,
         ownerName: formData.ownerName || undefined,
         whatsapp: formData.whatsapp,
         monthlyRevenue: formData.monthlyRevenue || undefined,
-        employeeCount: formData.employeeCount
+        employeeCount: formData.employeeCount,
+        leadEventId,
       };
-
-      // Lê UTM params para incluir grupo do anúncio nos eventos
-      const utmParams = getUtmParams();
 
       // Envia dados para o Ploomes CRM PRIMEIRO — só dispara pixel se o contato for criado
       await submitLead(ploomesData);
-
-      // EventId ÚNICO compartilhado entre Pixel client + CAPI server-side
-      // Padrão alinhado com V8/V9/V10 (commit 910a080) — Meta consolida em 1 evento via dedup.
-      // Em Abr/26 essa duplicação inflou Meta-reported leads em ~50% (533 vs 267 Ploomes).
-      const phoneDigits = formData.whatsapp.replace(/\D/g, '');
-      const leadEventId = `${source}-submit-${phoneDigits}-${Date.now()}`;
 
       // Envia lead para BestBarbers AI (CAPI + SDR priority + revenue attribution)
       // BBAI API DEVE usar `leadEventId` ao disparar CAPI "Lead" — sem isso a dedup falha.
