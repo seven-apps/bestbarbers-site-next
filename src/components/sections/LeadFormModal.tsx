@@ -2,6 +2,7 @@
 
 import { useEffect, useCallback } from "react";
 import { useLeadForm } from "@/hooks";
+import { useUtmParams } from "@/hooks/useUtmParams";
 import { X, ArrowRight, Shield } from "lucide-react";
 
 interface LeadFormModalProps {
@@ -22,6 +23,13 @@ const formFields = [
 const SITE_ORIGIN_ID = 40210426;
 
 export function LeadFormModal({ isOpen, onClose, originDesc }: LeadFormModalProps) {
+  // Prioriza UTM (ex: lead vindo do Meta com fbclid → "ads"/Tráfego Pago).
+  // Fallback SITE_ORIGIN_ID só quando navegação é orgânica/direta (sem signal de ad).
+  // Antes era hardcoded SITE_ORIGIN_ID — causava leads do Meta entrarem como "site"
+  // no Ploomes e gerarem discrepância vs contagem do Meta Ads Manager.
+  const { getUtmParams, getOriginMapping } = useUtmParams();
+  const utmMapping = getOriginMapping(getUtmParams());
+
   const {
     formData,
     isSubmitting,
@@ -34,8 +42,8 @@ export function LeadFormModal({ isOpen, onClose, originDesc }: LeadFormModalProp
     onError: (error) => {
       console.error("Erro ao enviar formulário:", error);
     },
-    originId: SITE_ORIGIN_ID,
-    originDesc: originDesc || "[Site]Modal",
+    originId: utmMapping.originId ?? SITE_ORIGIN_ID,
+    originDesc: originDesc || utmMapping.originDesc || "[Site]Modal",
   });
 
   // Fecha modal com ESC
