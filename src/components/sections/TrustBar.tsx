@@ -13,7 +13,7 @@ export function TrustBar() {
         <div className="flex flex-wrap items-center justify-center gap-6 md:gap-16 lg:gap-24 opacity-80 animate-fade-in">
           {/* 1000+ barbearias */}
           <div className="flex items-center gap-3">
-            <Users className="w-4 h-4 text-[#ebad04]" />
+            <Users className="w-4 h-4 text-[#ebad04]" fill="currentColor" />
             <p className="text-[11px] md:text-xs font-bold uppercase tracking-[0.15em] text-white/70">
               <CountUp end={1000} duration={2} suffix="+" className="text-[#ebad04]" /> BARBEARIAS ATIVAS
             </p>
@@ -21,13 +21,13 @@ export function TrustBar() {
 
           {/* 100% Seguro */}
           <div className="flex items-center gap-3">
-            <Shield className="w-4 h-4 text-[#ebad04]" />
+            <Shield className="w-4 h-4 text-[#ebad04]" fill="currentColor" />
             <span className="text-[11px] md:text-xs font-bold uppercase tracking-[0.15em] text-white/70">100% SEGURO & PRIVADO</span>
           </div>
 
           {/* Melhor sistema */}
           <div className="flex items-center gap-3">
-            <Trophy className="w-4 h-4 text-[#ebad04]" />
+            <Trophy className="w-4 h-4 text-[#ebad04]" fill="currentColor" />
             <span className="text-[11px] md:text-xs font-bold uppercase tracking-[0.15em] text-white/70">LÍDER NACIONAL EM GESTÃO</span>
           </div>
         </div>

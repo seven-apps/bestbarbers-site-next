@@ -88,10 +88,10 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
         <div className="animate-pulse-glow">
           <CTAButton
             onClick={onCtaClick}
-            variant="outline"
+            variant="secondary"
             size="lg"
             icon={true}
-            className="!border-white/20 !text-white hover:!bg-white/5 !px-12"
+            className="w-full sm:w-auto !text-[15px] !py-5 !px-10"
           >
             QUERO UM APP PRÓPRIO
           </CTAButton>

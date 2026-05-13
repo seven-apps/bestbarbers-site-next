@@ -1,5 +1,7 @@
 "use client";
 
+import { AlertTriangle, Banknote, TrendingDown } from "lucide-react";
+
 export function BarbershopPainSection() {
   const pain = {
     title: "Trabalhando muito e lucrando pouco?",
@@ -66,9 +68,9 @@ export function BarbershopPainSection() {
                   className="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-[#ebad04]/20 group-hover:border-[#ebad04]/50 transition-colors duration-500"
                   style={{ background: "rgba(235,173,4,0.1)" }}
                 >
-                  <span className="text-2xl" role="img" aria-label="icon">
-                    {index === 0 ? "⚠️" : index === 1 ? "💸" : "📉"}
-                  </span>
+                  {index === 0 ? <AlertTriangle className="w-6 h-6 text-[#ebad04]" fill="currentColor" /> : 
+                   index === 1 ? <Banknote className="w-6 h-6 text-[#ebad04]" fill="currentColor" /> : 
+                   <TrendingDown className="w-6 h-6 text-[#ebad04]" />}
                 </div>
                 
                 <h3 

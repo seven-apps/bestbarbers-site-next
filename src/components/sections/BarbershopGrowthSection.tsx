@@ -124,7 +124,7 @@ export function BarbershopGrowthSection() {
                 }`}
               style={{ fontFamily: "var(--font-montserrat)", textTransform: "uppercase", letterSpacing: "0.1em" }}
             >
-              <benefit.icon className={`w-4 h-4 flex-shrink-0 ${activeTab === index ? "text-[#0a0a0a]" : "text-[#ebad04]"}`} />
+              <benefit.icon className={`w-4 h-4 flex-shrink-0 ${activeTab === index ? "text-[#0a0a0a]" : "text-[#ebad04]"}`} fill="currentColor" />
               <span className="text-[11px] md:text-xs">{benefit.title}</span>
             </button>
           ))}
@@ -157,7 +157,7 @@ export function BarbershopGrowthSection() {
                     style={{ background: "rgba(235,173,4,0.1)" }}
                   >
                     <activeBenefit.icon
-                      className="w-6 h-6 text-[#ebad04]"
+                      className="w-6 h-6 text-[#ebad04]" fill="currentColor"
                     />
                   </div>
                   <h3 

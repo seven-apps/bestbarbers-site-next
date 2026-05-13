@@ -49,7 +49,7 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
                   borderColor: "rgba(235,173,4,0.35)",
                 }}
               >
-                <Sparkles className="w-3.5 h-3.5 text-[#ebad04]" />
+                <Sparkles className="w-3.5 h-3.5 text-[#ebad04]" fill="currentColor" />
                 <span
                   className="text-[11px] md:text-[13px] font-bold uppercase tracking-[0.18em]"
                   style={{ color: "#ebad04", fontFamily: "var(--font-montserrat)" }}

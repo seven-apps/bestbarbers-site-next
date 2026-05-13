@@ -102,7 +102,7 @@ export function FormSection({
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[#ebad04] text-xs font-bold border border-[#ebad04]/30 uppercase tracking-widest"
             style={{ background: "rgba(235,173,4,0.1)", fontFamily: "var(--font-montserrat)" }}
           >
-            <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-4 h-4" fill="currentColor" />
             Oferta por tempo limitado
           </span>
         </div>
@@ -145,7 +145,7 @@ export function FormSection({
               className="flex items-center gap-2 text-white/40 animate-fade-in"
               style={{ animationDelay: `${0.3 + index * 0.1}s` }}
             >
-              <badge.icon className="w-4 h-4 text-[#ebad04]" />
+              <badge.icon className="w-4 h-4 text-[#ebad04]" fill="currentColor" />
               <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest" style={{ fontFamily: "var(--font-montserrat)" }}>{badge.text}</span>
             </div>
           ))}
@@ -212,7 +212,7 @@ export function FormSection({
 
             {/* Submit Button */}
             <div className="pt-6 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
-              <div className={`rounded-full ${!isSubmitting && !submitted ? 'animate-pulse-glow-gold' : ''}`}>
+              <div className={`rounded-full ${!isSubmitting && !submitted ? 'animate-pulse-glow-green' : ''}`}>
                 <button
                   type="button"
                   onClick={handleSubmit}
@@ -262,7 +262,7 @@ export function FormSection({
               className="text-center text-white/30 text-[10px] uppercase tracking-widest mt-4 flex items-center justify-center gap-2 animate-fade-in" 
               style={{ animationDelay: '0.8s', fontFamily: "var(--font-montserrat)" }}
             >
-              <Shield className="w-3 h-3" />
+              <Shield className="w-3 h-3" fill="currentColor" />
               Dados 100% Protegidos
             </p>
           </form>
@@ -270,12 +270,12 @@ export function FormSection({
       </div>
 
       <style jsx>{`
-        @keyframes pulse-glow-gold {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(235,173,4,0); }
-          50% { box-shadow: 0 0 0 12px rgba(235,175,2,0.1); }
+        @keyframes pulse-glow-green {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(2,171,21,0); }
+          50% { box-shadow: 0 0 0 12px rgba(2,171,21,0.2); }
         }
-        .animate-pulse-glow-gold {
-          animation: pulse-glow-gold 2s ease-in-out infinite;
+        .animate-pulse-glow-green {
+          animation: pulse-glow-green 2s ease-in-out infinite;
         }
       `}</style>
     </section>
