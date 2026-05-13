@@ -9,8 +9,6 @@ interface HeroAdsSectionProps {
 }
 
 export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
-  const { hero } = homeContent;
-
   return (
     <section
       className="relative pt-32 pb-16 md:py-40 flex justify-center items-center overflow-hidden"

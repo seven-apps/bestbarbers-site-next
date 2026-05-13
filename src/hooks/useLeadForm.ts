@@ -295,6 +295,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     redirect,
     trackLead,
     getUtmParams,
+    submitLead,
     source,
   ]);
 
