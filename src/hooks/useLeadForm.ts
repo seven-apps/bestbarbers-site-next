@@ -8,9 +8,11 @@ import { useUtmParams } from './useUtmParams';
 export interface FormData {
   barbershopName: string;
   ownerName: string;
+  email: string;
   whatsapp: string;
   monthlyRevenue: string;
   employeeCount: string;
+  interestedTool: string;
 }
 
 export interface UseLeadFormOptions {
@@ -42,9 +44,11 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const [formData, setFormData] = useState<FormData>({
     barbershopName: '',
     ownerName: '',
+    email: '',
     whatsapp: '',
     monthlyRevenue: '',
-    employeeCount: ''
+    employeeCount: '',
+    interestedTool: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -117,19 +121,27 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     if (!formData.barbershopName.trim()) {
       return 'Nome da barbearia é obrigatório';
     }
+    if (!formData.ownerName.trim()) {
+      return 'Nome do dono é obrigatório';
+    }
+    if (!formData.email.trim()) {
+      return 'E-mail é obrigatório';
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      return 'E-mail deve ser válido';
+    }
     if (!formData.whatsapp.trim()) {
       return 'WhatsApp é obrigatório';
     }
     if (!isValidPhone(formData.whatsapp)) {
       return 'WhatsApp deve ter formato válido';
     }
-    if (!formData.employeeCount.trim()) {
-      return 'Número de cadeiras é obrigatório';
+    if (!formData.employeeCount?.trim()) {
+      return 'Número de colaboradores é obrigatório';
     }
-    // Validações best-effort para LPs com campos extras (V11 e futuras).
-    // Não bloqueiam V5 quando os campos vêm vazios — só dispara se preenchido parcialmente.
-    if (formData.ownerName && !formData.ownerName.trim()) {
-      return 'Seu nome é obrigatório';
+    if (!formData.interestedTool?.trim()) {
+      return 'Interesse é obrigatório';
     }
     return null;
   }, [formData, isValidPhone]);
@@ -197,19 +209,49 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       const utmParams = getUtmParams();
 
       // EventId ÚNICO compartilhado entre Pixel client + CAPI server-side + Ploomes contact.
-      // Padrão alinhado com V8/V9/V10 (commit 910a080) — Meta consolida em 1 evento via dedup.
-      // Em Abr/26 essa duplicação inflou Meta-reported leads em ~50% (533 vs 267 Ploomes).
-      // Gerado ANTES de submitLead para ser persistido no campo bb_lead_event_id do Contact.
+      // Padrão alinhado com V8/V9/V10 — Meta consolida em 1 evento via dedup.
       const phoneDigits = formData.whatsapp.replace(/\D/g, '');
       const leadEventId = `${source}-submit-${phoneDigits}-${Date.now()}`;
 
-      // Converte FormData para PloomesContactData
+      // Cálculo de Lead Scoring (0-100+)
+      let leadScore = 0;
+      
+      // Faturamento (Até -100 ou +40)
+      if (formData.monthlyRevenue === 'Até R$ 2.000') {
+        leadScore -= 100; // Desqualificado
+      } else if (formData.monthlyRevenue === 'R$ 2.000 a R$ 10.000') {
+        leadScore += 20;
+      } else if (formData.monthlyRevenue === 'De R$ 10.000 a R$ 30.000') {
+        leadScore += 40;
+      } else if (formData.monthlyRevenue === 'Acima de R$ 30.000') {
+        leadScore += 40;
+      }
+
+      // Interesse (10 ou 40)
+      if (formData.interestedTool === 'Agenda e Controle Financeiro') {
+        leadScore += 10;
+      } else if (formData.interestedTool === 'Meu Próprio App + Clube de Assinaturas e emissão de NFs') {
+        leadScore += 40;
+      }
+
+      // Colaboradores (0, 10 ou 20)
+      if (formData.employeeCount === 'Sou apenas eu') {
+        leadScore += 0;
+      } else if (formData.employeeCount === '2 a 4 colaboradores') {
+        leadScore += 10;
+      } else if (formData.employeeCount === '5 ou mais colaboradores') {
+        leadScore += 20;
+      }
+
+      // 4. Integrações Externas (CRM e APIs)
       const ploomesData: PloomesContactData = {
         barbershopName: formData.barbershopName,
         ownerName: formData.ownerName || undefined,
         whatsapp: formData.whatsapp,
         monthlyRevenue: formData.monthlyRevenue || undefined,
         employeeCount: formData.employeeCount,
+        interestedTool: formData.interestedTool,
+        leadScore,
         leadEventId,
       };
 
@@ -217,8 +259,6 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       await submitLead(ploomesData);
 
       // Envia lead para BestBarbers AI (CAPI + SDR priority + revenue attribution)
-      // BBAI API DEVE usar `leadEventId` ao disparar CAPI "Lead" — sem isso a dedup falha.
-      // Non-blocking: não trava o fluxo se falhar
       if (aiApiUrl) {
         fetch(`${aiApiUrl}/api/leads/simple`, {
           method: 'POST',
@@ -226,9 +266,12 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
           body: JSON.stringify({
             name: formData.barbershopName,
             ownerName: formData.ownerName || undefined,
+            email: formData.email.toLowerCase().trim(),
             phone: phoneDigits,
             chairs: formData.employeeCount,
             monthlyRevenue: formData.monthlyRevenue || undefined,
+            interestedTool: formData.interestedTool,
+            leadScore,
             source,
             leadEventId,
             utm_source: utmParams.utm_source || undefined,
@@ -241,17 +284,16 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       }
 
       // 1 evento "Lead" — Pixel client com MESMO eventId que CAPI server-side
-      // CompleteRegistration foi REMOVIDO em 910a080 — era redundante e inflava Meta 50%
       const pixelData = {
         content_name: 'BestBarbers Lead Form Submission',
         content_category: 'lead_generation',
         barbershop_name: formData.barbershopName,
         employee_count: formData.employeeCount,
+        lead_score: leadScore,
         ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
       };
 
       // Aguarda confirmação do image pixel antes de redirecionar
-      // (window.location.href cancela requests pendentes)
       await trackLead(pixelData, leadEventId);
 
       // Marca como enviado com sucesso (mantém botão desabilitado durante redirect)
@@ -291,9 +333,11 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     setFormData({
       barbershopName: '',
       ownerName: '',
+      email: '',
       whatsapp: '',
       monthlyRevenue: '',
-      employeeCount: ''
+      employeeCount: '',
+      interestedTool: ''
     });
     setSubmitError(null);
   }, []);
