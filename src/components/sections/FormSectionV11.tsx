@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 
 const formFields = [
   { name: "ownerName", label: "Seu nome", placeholder: "Ex: João Silva", type: "text" },
+  { name: "email", label: "Seu melhor e-mail", placeholder: "Ex: joao@email.com", type: "email" },
   { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
   { name: "whatsapp", label: "WhatsApp", placeholder: "(11) 99999-9999", type: "tel" },
   { name: "employeeCount", label: "Quantas cadeiras?", placeholder: "Ex: 4", type: "number" },

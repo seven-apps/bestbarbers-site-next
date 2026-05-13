@@ -15,8 +15,9 @@ interface FormSectionProps {
 
 const formFields = [
   { name: "barbershopName", label: "Nome da Barbearia", placeholder: "Digite o nome da sua barbearia", type: "text" },
-  { name: "ownerName", label: "Nome do Dono da barbearia", placeholder: "Digite o nome do dono da barbearia", type: "text" },
-  { name: "whatsapp", label: "WhatsApp do Dono da barbearia", placeholder: "Celular - whatsapp do dono da barbearia", type: "tel" },
+  { name: "ownerName", label: "Nome do Dono", placeholder: "Digite o nome do dono da barbearia", type: "text" },
+  { name: "email", label: "E-mail do Dono", placeholder: "Digite seu melhor e-mail", type: "email" },
+  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "Celular - whatsapp do dono da barbearia", type: "tel" },
   { name: "monthlyRevenue", label: "Faturamento médio mensal (R$)", placeholder: "Quanto sua barbearia fatura por mês", type: "text" },
   { name: "employeeCount", label: "Número de colaboradores", placeholder: "Quantos colaboradores tem na barbearia", type: "number" },
 ];
