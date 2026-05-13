@@ -8,6 +8,10 @@ export interface PloomesContactData {
   whatsapp: string;
   monthlyRevenue?: string;
   employeeCount: string;
+  /** Ferramenta de interesse (V11+) */
+  interestedTool?: string;
+  /** Score calculado do lead (0-100) */
+  leadScore?: number;
   /** Meta CAPI / Pixel event ID compartilhado entre browser e server (deduplicação) */
   leadEventId?: string;
 }
