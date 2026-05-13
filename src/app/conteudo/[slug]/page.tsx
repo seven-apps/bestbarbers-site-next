@@ -14,12 +14,13 @@ export function generateStaticParams() {
 }
 
 /* ─── Dynamic metadata ─── */
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
-}): Metadata {
-  const video = videos.find((v) => v.slug === params.slug);
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const video = videos.find((v) => v.slug === resolvedParams.slug);
   if (!video) return {};
 
   return {
@@ -52,12 +53,13 @@ function splitTranscript(text: string): string[] {
 }
 
 /* ─── Page component ─── */
-export default function VideoPage({
+export default async function VideoPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const video = videos.find((v) => v.slug === params.slug);
+  const resolvedParams = await params;
+  const video = videos.find((v) => v.slug === resolvedParams.slug);
   if (!video) notFound();
 
   const relatedVideos = videos.filter((v) =>

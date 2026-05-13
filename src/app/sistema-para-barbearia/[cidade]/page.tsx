@@ -12,12 +12,13 @@ export function generateStaticParams() {
 }
 
 /* ─── Dynamic metadata ─── */
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { cidade: string };
-}): Metadata {
-  const city = cities.find((c) => c.slug === params.cidade);
+  params: Promise<{ cidade: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const city = cities.find((c) => c.slug === resolvedParams.cidade);
   if (!city) return {};
 
   return {
@@ -78,12 +79,13 @@ const features = [
 ];
 
 /* ─── Page component ─── */
-export default function CityPage({
+export default async function CityPage({
   params,
 }: {
-  params: { cidade: string };
+  params: Promise<{ cidade: string }>;
 }) {
-  const city = cities.find((c) => c.slug === params.cidade);
+  const resolvedParams = await params;
+  const city = cities.find((c) => c.slug === resolvedParams.cidade);
   if (!city) notFound();
 
   return (

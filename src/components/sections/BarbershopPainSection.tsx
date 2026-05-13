@@ -1,9 +1,24 @@
 "use client";
 
-import { homeContent } from "@/content/home";
-
 export function BarbershopPainSection() {
-  const { pain } = homeContent;
+  const pain = {
+    title: "Trabalhando muito e lucrando pouco?",
+    subtitle: "A maioria dos donos de barbearia ficam presos no operacional e não conseguem ver a cor do dinheiro.",
+    items: [
+      {
+        title: "Agenda Desorganizada",
+        description: "Clientes faltando sem avisar e horários ociosos que custam caro para o seu negócio."
+      },
+      {
+        title: "Controle Financeiro Manual",
+        description: "Anotações em papel ou planilhas complexas que não mostram seu lucro real no fim do mês."
+      },
+      {
+        title: "Problemas com Comissões",
+        description: "Dores de cabeça constantes e horas perdidas calculando o repasse dos barbeiros."
+      }
+    ]
+  };
 
   return (
     <section
@@ -18,11 +33,11 @@ export function BarbershopPainSection() {
             className="leading-[1.1] tracking-tight text-white mb-6"
             style={{ fontFamily: "var(--font-vollkorn)", fontSize: "clamp(32px, 6vw, 52px)", fontWeight: 800 }}
           >
-            {pain.title.split("mais tempo atendendo").map((part, i) => 
+            {pain.title.split("lucrando pouco").map((part, i) => 
               i === 0 ? (
                 <span key={i}>
                   {part}
-                  <span className="text-[#ebad04]">mais tempo atendendo</span>
+                  <span className="text-[#ebad04]">lucrando pouco?</span>
                 </span>
               ) : part
             )}

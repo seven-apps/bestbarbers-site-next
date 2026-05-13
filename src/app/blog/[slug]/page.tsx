@@ -13,12 +13,13 @@ export function generateStaticParams() {
 }
 
 /* ─── Dynamic metadata ─── */
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
-}): Metadata {
-  const article = articles.find((a) => a.slug === params.slug);
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const article = articles.find((a) => a.slug === resolvedParams.slug);
   if (!article) return {};
 
   return {
@@ -121,12 +122,13 @@ function RenderSection({ section, index }: { section: BlogSection; index: number
 }
 
 /* ─── Page component ─── */
-export default function BlogArticlePage({
+export default async function BlogArticlePage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const article = articles.find((a) => a.slug === params.slug);
+  const resolvedParams = await params;
+  const article = articles.find((a) => a.slug === resolvedParams.slug);
   if (!article) notFound();
 
   const relatedArticles = articles.filter((a) =>
