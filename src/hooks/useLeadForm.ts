@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { usePhoneMask } from './usePhoneMask';
-import { usePloomesAPI } from './usePloomesAPI';
+import { usePloomesAPI, type PloomesContactData } from './usePloomesAPI';
 import { useWhatsAppRedirect } from './useWhatsAppRedirect';
 import { useMetaPixel } from './useMetaPixel';
 import { useUtmParams } from './useUtmParams';
@@ -66,7 +66,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const dedupCacheRef = useRef<{ phone: string; exists: boolean } | null>(null);
 
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
-  const { submitLead: _submitLead, checkPhoneExists } = usePloomesAPI({ originId, originDesc });
+  const { submitLead, checkPhoneExists } = usePloomesAPI({ originId, originDesc });
   const { redirectToWhatsApp: redirect } = useWhatsAppRedirect();
   // Apenas trackLead — trackCompleteRegistration foi removido em 910a080 (gerava
   // duplicação Meta vs Ploomes 50% inflado). Meta otimiza por "Lead" sozinho.

@@ -30,7 +30,7 @@ function ParceirosContent() {
       <Navbar withoutCta />
       <HeroAdsSection onCtaClick={scrollToForm} />
       <TrustBar />
-      <BarbershopPainSection onCtaClick={scrollToForm} />
+      <BarbershopPainSection />
       <BarbershopGrowthSection />
       <FeaturesSection onCtaClick={scrollToForm} />
       <ClientsSection onCtaClick={scrollToForm} />

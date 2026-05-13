@@ -36,7 +36,7 @@ function ParceirosContent() {
       <ClientsSection onCtaClick={scrollToForm} />
       <NotificationsSection onCtaClick={scrollToForm} />
       <FormSection />
-      <BasicPlanSection onCtaClick={scrollToForm} />
+      <BasicPlanSection />
       <Footer />
     </>
   );
