@@ -27,7 +27,7 @@ export function Navbar({ onCtaClick, withoutCta = false }: NavbarProps) {
   return (
     <>
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#121212]/95 backdrop-blur-md border-b border-white/5 animate-fade-in-up">
-      <div className="container-custom flex justify-between items-center min-h-[70px] md:h-[80px] py-3 md:py-4">
+      <div className={`container-custom flex ${withoutCta ? 'justify-center' : 'justify-between'} items-center min-h-[70px] md:h-[80px] py-3 md:py-4`}>
         {/* Logo */}
         <div className="hover:scale-[1.02] transition-transform duration-200">
           <Link href="/">

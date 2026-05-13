@@ -4,11 +4,7 @@ import Image from "next/image";
 import { CTAButton } from "@/components/ui/cta-button";
 import { homeContent } from "@/content/home";
 
-interface BarbershopPainSectionProps {
-  onCtaClick?: () => void;
-}
-
-export function BarbershopPainSection({ onCtaClick }: BarbershopPainSectionProps) {
+export function BarbershopPainSection() {
   const { subscriptions } = homeContent;
 
   const scrollToNextSection = () => {

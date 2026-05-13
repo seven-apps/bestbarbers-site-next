@@ -35,8 +35,8 @@ function ParceirosContent() {
       <FeaturesSection onCtaClick={scrollToForm} />
       <ClientsSection onCtaClick={scrollToForm} />
       <FormSection
-        originId={120000957}
-        originDesc="LP V4 - Tráfego Pago"
+        originDesc="LP V4"
+        source="lp_v4"
       />
       <PlanComparisonSection />
       <FAQSection />

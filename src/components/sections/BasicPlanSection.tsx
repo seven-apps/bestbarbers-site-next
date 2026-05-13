@@ -3,11 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 
-interface BasicPlanSectionProps {
-  onCtaClick?: () => void;
-}
-
-export function BasicPlanSection({ onCtaClick }: BasicPlanSectionProps) {
+export function BasicPlanSection() {
   const { basicPlan } = homeContent;
 
   return (

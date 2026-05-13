@@ -11,6 +11,8 @@ interface FormSectionProps {
   originId?: number;
   /** Descrição de origem customizada para o Ploomes - sobrescreve o mapeamento de UTM */
   originDesc?: string;
+  /** Source identifier para tracking (ex: lp_v4) */
+  source?: string;
 }
 
 const formFields = [
@@ -18,8 +20,24 @@ const formFields = [
   { name: "ownerName", label: "Nome do Dono", placeholder: "Digite o nome do dono da barbearia", type: "text" },
   { name: "email", label: "E-mail do Dono", placeholder: "Digite seu melhor e-mail", type: "email" },
   { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "Celular - whatsapp do dono da barbearia", type: "tel" },
-  { name: "monthlyRevenue", label: "Faturamento médio mensal (R$)", placeholder: "Quanto sua barbearia fatura por mês", type: "text" },
-  { name: "employeeCount", label: "Número de colaboradores", placeholder: "Quantos colaboradores tem na barbearia", type: "number" },
+  { name: "monthlyRevenue", label: "Qual o faturamento médio da sua barbearia?", placeholder: "Selecione", type: "select", options: [
+    { value: "", label: "Selecione" },
+    { value: "Até R$ 2.000", label: "Até R$ 2.000" },
+    { value: "R$ 2.000 a R$ 10.000", label: "R$ 2.000 a R$ 10.000" },
+    { value: "De R$ 10.000 a R$ 30.000", label: "De R$ 10.000 a R$ 30.000" },
+    { value: "Acima de R$ 30.000", label: "Acima de R$ 30.000" },
+  ] },
+  { name: "interestedTool", label: "Qual ferramenta mais te interessa hoje?", placeholder: "Selecione", type: "select", options: [
+    { value: "", label: "Selecione" },
+    { value: "Agenda e Controle Financeiro", label: "Agenda e Controle Financeiro" },
+    { value: "Meu Próprio App + Clube de Assinaturas e emissão de NFs", label: "Meu Próprio App + Clube de Assinaturas e emissão de NFs" },
+  ] },
+  { name: "employeeCount", label: "Quantos profissionais trabalham na sua barbearia?", placeholder: "Selecione", type: "select", options: [
+    { value: "", label: "Selecione" },
+    { value: "Sou apenas eu", label: "Sou apenas eu" },
+    { value: "2 a 4 colaboradores", label: "2 a 4 colaboradores" },
+    { value: "5 ou mais colaboradores", label: "5 ou mais colaboradores" },
+  ] },
 ];
 
 const trustBadges = [
@@ -31,9 +49,10 @@ const trustBadges = [
 export function FormSection({
   title = "Garanta já sua oferta exclusiva para ter o app da sua barbearia",
   description = "Você pode continuar no improviso, ou pode dar o próximo passo e ter seu app, sua marca e sua receita recorrente.\n\nO BestBarbers faz isso rápido, simples e sem custo absurdo.",
-  ctaText = "GARANTIR MINHA OFERTA",
+  ctaText = "GARANTIR MEU DIAGNÓSTICO DE GESTÃO",
   originId,
   originDesc,
+  source,
 }: FormSectionProps) {
   const {
     formData,
@@ -49,6 +68,7 @@ export function FormSection({
     },
     originId,
     originDesc,
+    source,
   });
 
   return (
@@ -132,15 +152,31 @@ export function FormSection({
                 <label className="block font-semibold text-[13px] md:text-[14px] leading-[20px] text-white/90">
                   {field.label}
                 </label>
-                <input
-                  type={field.type}
-                  name={field.name}
-                  value={formData[field.name as keyof typeof formData]}
-                  onChange={handleInputChange}
-                  placeholder={field.placeholder}
-                  required
-                  className="w-full bg-[#0f1015] border-2 border-[#2a2d35] rounded-xl px-5 py-4 text-white placeholder-gray-500 font-medium text-[15px] leading-[20px] focus:outline-none focus:border-[#ffaf02] focus:bg-[#12141a] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] focus:scale-[1.01] transition-all duration-300 hover:border-[#3a3d45]"
-                />
+                {field.type === "select" ? (
+                  <select
+                    name={field.name}
+                    value={formData[field.name as keyof typeof formData]}
+                    onChange={handleInputChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}
+                    required
+                    className="w-full bg-[#0f1015] border-2 border-[#2a2d35] rounded-xl px-5 py-4 text-white font-medium text-[15px] leading-[20px] focus:outline-none focus:border-[#ffaf02] focus:bg-[#12141a] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45] appearance-none cursor-pointer"
+                  >
+                    {field.options?.map((opt) => (
+                      <option key={opt.value} value={opt.value} disabled={opt.value === ""}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    value={formData[field.name as keyof typeof formData]}
+                    onChange={handleInputChange}
+                    placeholder={field.placeholder}
+                    required
+                    className="w-full bg-[#0f1015] border-2 border-[#2a2d35] rounded-xl px-5 py-4 text-white placeholder-gray-500 font-medium text-[15px] leading-[20px] focus:outline-none focus:border-[#ffaf02] focus:bg-[#12141a] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] focus:scale-[1.01] transition-all duration-300 hover:border-[#3a3d45]"
+                  />
+                )}
               </div>
             ))}
 
@@ -149,7 +185,8 @@ export function FormSection({
               {/* Pulse wrapper with CSS animation */}
               <div className={`rounded-full ${!isSubmitting && !submitted ? 'animate-pulse-glow-gold' : ''}`}>
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleSubmit}
                   disabled={isSubmitting || submitted}
                   className="w-full bg-gradient-to-r from-[#029912] to-[#02ab15] text-white font-extrabold text-[15px]  md:text-[16px] leading-[24px] px-6 py-5 rounded-full hover:from-[#029912] hover:to-[#02ab15] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-[0_8px_40px_rgba(2,171,21,0.5)] hover:shadow-[0_12px_50px_rgba(2,171,21,0.5)] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98]"
                 >

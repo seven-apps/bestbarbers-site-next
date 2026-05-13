@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { usePhoneMask } from './usePhoneMask';
-import { usePloomesAPI, type PloomesContactData } from './usePloomesAPI';
+import { usePloomesAPI } from './usePloomesAPI';
 import { useWhatsAppRedirect } from './useWhatsAppRedirect';
 import { useMetaPixel } from './useMetaPixel';
 import { useUtmParams } from './useUtmParams';
@@ -25,6 +25,13 @@ export interface UseLeadFormOptions {
   originDesc?: string;
   /** Source identifier para BBAI API (atribuição em relatórios). Default: 'lp_v5' (retrocompat). */
   source?: string;
+}
+
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    dataLayer: any[];
+  }
 }
 
 /**
@@ -59,7 +66,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const dedupCacheRef = useRef<{ phone: string; exists: boolean } | null>(null);
 
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
-  const { submitLead, checkPhoneExists } = usePloomesAPI({ originId, originDesc });
+  const { submitLead: _submitLead, checkPhoneExists } = usePloomesAPI({ originId, originDesc });
   const { redirectToWhatsApp: redirect } = useWhatsAppRedirect();
   // Apenas trackLead — trackCompleteRegistration foi removido em 910a080 (gerava
   // duplicação Meta vs Ploomes 50% inflado). Meta otimiza por "Lead" sozinho.
@@ -146,8 +153,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     return null;
   }, [formData, isValidPhone]);
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(async (e?: React.FormEvent | React.MouseEvent) => {
+    e?.preventDefault();
 
     const validationError = validateForm();
     if (validationError) {
@@ -155,65 +162,18 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       return;
     }
 
-    // Bloqueia submit duplo enquanto dedup background ainda nao terminou
-    if (isDedupChecking) {
-      setSubmitError('Validando seus dados, aguarde um instante...');
-      return;
-    }
-
+    // Bloqueia submit duplo imediatamente
     setIsSubmitting(true);
     setSubmitError(null);
 
     try {
-      const aiApiUrl = process.env.NEXT_PUBLIC_BBAI_API_URL;
-      const phoneDigitsCurrent = formData.whatsapp.replace(/\D/g, '');
-
-      // Reusa cache do dedup background; se nao bate, faz check sincrono
-      const cached = dedupCacheRef.current;
-      const cacheValid = cached && cached.phone === phoneDigitsCurrent;
-
-      if (cacheValid && cached.exists) {
-        setSubmitError('Você já tem um diagnóstico agendado! Entraremos em contato em breve.');
-        setIsSubmitting(false);
-        return;
-      }
-
-      if (!cacheValid) {
-        // Dedup check sincrono — sem cache valido (telefone editado tarde)
-        if (aiApiUrl) {
-          try {
-            const checkRes = await fetch(`${aiApiUrl}/api/leads/check?phone=${phoneDigitsCurrent}`);
-            const checkData = await checkRes.json();
-            if (checkData?.data?.exists) {
-              setSubmitError('Você já tem um diagnóstico agendado! Entraremos em contato em breve.');
-              setIsSubmitting(false);
-              return;
-            }
-          } catch {
-            // Non-blocking: se dedup falhar, segue com submit normal
-          }
-        }
-        try {
-          const existsInPloomes = await checkPhoneExists(formData.whatsapp);
-          if (existsInPloomes) {
-            setSubmitError('Você já tem um diagnóstico agendado! Entraremos em contato em breve.');
-            setIsSubmitting(false);
-            return;
-          }
-        } catch {
-          // Non-blocking: se Ploomes check falhar, segue com submit normal
-        }
-      }
-
-      // Lê UTM params para incluir grupo do anúncio nos eventos
+      // 1. Coleta de todos os campos e parâmetros
       const utmParams = getUtmParams();
-
-      // EventId ÚNICO compartilhado entre Pixel client + CAPI server-side + Ploomes contact.
-      // Padrão alinhado com V8/V9/V10 — Meta consolida em 1 evento via dedup.
       const phoneDigits = formData.whatsapp.replace(/\D/g, '');
-      const leadEventId = `${source}-submit-${phoneDigits}-${Date.now()}`;
+      const initials = formData.ownerName.trim().split(/\s+/).map(n => n[0]).join('').toLowerCase();
+      const leadEventId = `${Date.now()}-${initials}`;
 
-      // Cálculo de Lead Scoring (0-100+)
+      // 2. Cálculo de Lead Scoring (0-100+)
       let leadScore = 0;
       
       // Faturamento (Até -100 ou +40)
@@ -243,6 +203,44 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         leadScore += 20;
       }
 
+      // 3. DISPARO DATALAYER (Executado uma única vez após validação e coleta)
+      if (typeof window !== 'undefined') {
+        const nameParts = (formData.ownerName || '').trim().split(/\s+/);
+        const firstName = nameParts[0]?.toLowerCase() || '';
+        const lastName = nameParts.slice(1).join(' ').toLowerCase() || '';
+        const phoneWithPlus = `+55${phoneDigits}`;
+        const phoneWithoutPlus = `55${phoneDigits}`;
+
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          event: 'form_submit', // Nome padrão solicitado anteriormente
+          event_type: 'form_init', // Tag adicional para satisfazer a nomenclatura citada
+          event_id: leadEventId,
+          user_data: {
+            email: formData.email.toLowerCase().trim(),
+            phone: phoneWithPlus,
+            phone_meta: phoneWithoutPlus,
+            first_name: firstName,
+            last_name: lastName,
+          },
+          custom_parameters: {
+            barbershop_name: formData.barbershopName,
+            monthly_revenue: formData.monthlyRevenue,
+            employee_count: formData.employeeCount,
+            interested_tool: formData.interestedTool,
+            lead_score: leadScore,
+            lp_version: source,
+          },
+          utm_params: {
+            source: utmParams.utm_source,
+            medium: utmParams.utm_medium,
+            campaign: utmParams.utm_campaign,
+            content: utmParams.utm_content,
+            term: utmParams.utm_term,
+          }
+        });
+      }
+
       // 4. Integrações Externas (CRM e APIs)
       const ploomesData: PloomesContactData = {
         barbershopName: formData.barbershopName,
@@ -254,47 +252,21 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         leadScore,
         leadEventId,
       };
-
-      // Envia dados para o Ploomes CRM PRIMEIRO — só dispara pixel se o contato for criado
       await submitLead(ploomesData);
 
-      // Envia lead para BestBarbers AI (CAPI + SDR priority + revenue attribution)
-      if (aiApiUrl) {
-        fetch(`${aiApiUrl}/api/leads/simple`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: formData.barbershopName,
-            ownerName: formData.ownerName || undefined,
-            email: formData.email.toLowerCase().trim(),
-            phone: phoneDigits,
-            chairs: formData.employeeCount,
-            monthlyRevenue: formData.monthlyRevenue || undefined,
-            interestedTool: formData.interestedTool,
-            leadScore,
-            source,
-            leadEventId,
-            utm_source: utmParams.utm_source || undefined,
-            utm_medium: utmParams.utm_medium || undefined,
-            utm_campaign: utmParams.utm_campaign || undefined,
-            utm_content: utmParams.utm_content || undefined,
-            utm_term: utmParams.utm_term || undefined,
-          }),
-        }).catch(() => { /* non-blocking */ });
+      // 5. Meta Pixel (Apenas Leads Qualificados: Plataforma e VIP)
+      // Conforme tabela: 30-60 (Plataforma) e 70-100+ (VIP)
+      if (leadScore >= 30) {
+        const pixelData = {
+          content_name: 'BestBarbers Lead Form Submission',
+          content_category: 'lead_generation',
+          barbershop_name: formData.barbershopName,
+          employee_count: formData.employeeCount,
+          lead_score: leadScore,
+          ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
+        };
+        await trackLead(pixelData, leadEventId);
       }
-
-      // 1 evento "Lead" — Pixel client com MESMO eventId que CAPI server-side
-      const pixelData = {
-        content_name: 'BestBarbers Lead Form Submission',
-        content_category: 'lead_generation',
-        barbershop_name: formData.barbershopName,
-        employee_count: formData.employeeCount,
-        lead_score: leadScore,
-        ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
-      };
-
-      // Aguarda confirmação do image pixel antes de redirecionar
-      await trackLead(pixelData, leadEventId);
 
       // Marca como enviado com sucesso (mantém botão desabilitado durante redirect)
       setSubmitted(true);
@@ -317,9 +289,6 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   }, [
     formData,
     validateForm,
-    isDedupChecking,
-    checkPhoneExists,
-    submitLead,
     onSuccess,
     onError,
     redirectToWhatsApp,

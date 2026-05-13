@@ -5,18 +5,27 @@ import { ArrowRight, Sparkles, Shield, Users } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 const formFields = [
-  { name: "ownerName", label: "Seu nome", placeholder: "Ex: João Silva", type: "text" },
-  { name: "email", label: "Seu melhor e-mail", placeholder: "Ex: joao@email.com", type: "email" },
+  { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
+  { name: "email", label: "E-mail do Dono", placeholder: "Ex: joao@email.com", type: "email" },
   { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
-  { name: "whatsapp", label: "WhatsApp", placeholder: "(11) 99999-9999", type: "tel" },
-  { name: "employeeCount", label: "Quantas cadeiras?", placeholder: "Ex: 4", type: "number" },
-  { name: "monthlyRevenue", label: "Faturamento mensal", placeholder: "Selecione", type: "select", options: [
+  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "(11) 99999-9999", type: "tel" },
+  { name: "monthlyRevenue", label: "Qual o faturamento médio da sua barbearia?", placeholder: "Selecione", type: "select", options: [
     { value: "", label: "Selecione" },
-    { value: "Até R$ 5 mil", label: "Até R$ 5 mil" },
-    { value: "R$ 5 mil a R$ 10 mil", label: "R$ 5 mil a R$ 10 mil" },
-    { value: "R$ 10 mil a R$ 20 mil", label: "R$ 10 mil a R$ 20 mil" },
-    { value: "R$ 20 mil a R$ 50 mil", label: "R$ 20 mil a R$ 50 mil" },
-    { value: "Acima de R$ 50 mil", label: "Acima de R$ 50 mil" },
+    { value: "Até R$ 2.000", label: "Até R$ 2.000" },
+    { value: "R$ 2.000 a R$ 10.000", label: "R$ 2.000 a R$ 10.000" },
+    { value: "De R$ 10.000 a R$ 30.000", label: "De R$ 10.000 a R$ 30.000" },
+    { value: "Acima de R$ 30.000", label: "Acima de R$ 30.000" },
+  ] },
+  { name: "interestedTool", label: "Qual ferramenta mais te interessa hoje?", placeholder: "Selecione", type: "select", options: [
+    { value: "", label: "Selecione" },
+    { value: "Agenda e Controle Financeiro", label: "Agenda e Controle Financeiro" },
+    { value: "Meu Próprio App + Clube de Assinaturas e emissão de NFs", label: "Meu Próprio App + Clube de Assinaturas e emissão de NFs" },
+  ] },
+  { name: "employeeCount", label: "Quantos profissionais trabalham na sua barbearia?", placeholder: "Selecione", type: "select", options: [
+    { value: "", label: "Selecione" },
+    { value: "Sou apenas eu", label: "Sou apenas eu" },
+    { value: "2 a 4 colaboradores", label: "2 a 4 colaboradores" },
+    { value: "5 ou mais colaboradores", label: "5 ou mais colaboradores" },
   ] },
 ];
 
@@ -194,7 +203,8 @@ Mensalidades a partir de R$299/mês
             <div className="pt-4 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
               <div className={`rounded-full ${!isSubmitting && !submitted ? 'animate-pulse-glow-gold' : ''}`}>
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleSubmit}
                   disabled={isSubmitting || submitted || isDedupChecking}
                   className="w-full bg-gradient-to-r from-[#029912] to-[#02ab15] text-white font-extrabold text-[14px] md:text-[16px] leading-[24px] px-6 py-5 rounded-full hover:from-[#029912] hover:to-[#02ab15] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-[0_8px_40px_rgba(2,171,21,0.5)] hover:shadow-[0_12px_50px_rgba(2,171,21,0.5)] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98]"
                 >
@@ -215,7 +225,7 @@ Mensalidades a partir de R$299/mês
                     </>
                   ) : (
                     <>
-                      QUERO MEU APP PRÓPRIO
+                      GARANTIR MEU DIAGNÓSTICO DE GESTÃO
                       <span className="animate-bounce-x">
                         <ArrowRight className="w-5 h-5" />
                       </span>

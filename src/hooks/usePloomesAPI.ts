@@ -8,9 +8,7 @@ export interface PloomesContactData {
   whatsapp: string;
   monthlyRevenue?: string;
   employeeCount: string;
-  /** Ferramenta de interesse (V11+) */
   interestedTool?: string;
-  /** Score calculado do lead (0-100) */
   leadScore?: number;
   /** Meta CAPI / Pixel event ID compartilhado entre browser e server (deduplicação) */
   leadEventId?: string;
@@ -69,6 +67,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     // Se temos sinal do Meta url_tags Wave 4+, usa formato 8-segments.
     const has8Segs = fase || campanha || publico || adName || creative || angulo;
     let originDesc: string | null;
+    
     if (has8Segs) {
       originDesc = [
         lpVersion,
@@ -86,6 +85,16 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       if (campanha) originDescBuilder += ` | ${campanha}`;
       if (utmParams.utm_content) originDescBuilder += ` | ${utmParams.utm_content}`;
       originDesc = originDescBuilder || null;
+    }
+
+    // Adiciona Score e Interesse ao início da descrição para visibilidade do SDR
+    if (originDesc) {
+      if (data.interestedTool) {
+        originDesc = `[Interesse: ${data.interestedTool}] ${originDesc}`;
+      }
+      if (data.leadScore !== undefined) {
+        originDesc = `[SCORE: ${data.leadScore}] ${originDesc}`;
+      }
     }
 
     // Campos estruturados bb_* (criados abr/2026 + mai/2026 via scripts/ploomes-setup-fields.ts).

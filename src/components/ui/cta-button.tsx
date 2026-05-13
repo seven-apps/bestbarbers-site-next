@@ -33,10 +33,10 @@ export function CTAButton({
 }: CTAButtonProps) {
   // Variant styles
   const variantStyles = {
-    primary: "bg-[#121212] text-[#ffaf02] hover:bg-[#2a2a2a] shadow-[0_4px_20px_rgba(0,0,0,0.3)]",
-    secondary: "bg-[#02ab15] text-white hover:bg-[#029912] shadow-[0_4px_20px_rgba(2,171,21,0.4)]",
+    primary: "bg-[#121212] text-[#ffaf02] hover:bg-[#222222] shadow-[0_4px_12px_rgba(0,0,0,0.15)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.25)]",
+    secondary: "bg-[#02ab15] text-white hover:bg-[#029912] shadow-[0_4px_14px_0_rgba(2,171,21,0.3)] hover:shadow-[0_6px_20px_rgba(2,171,21,0.4)]",
     outline: "bg-transparent border-2 border-[#121212] text-[#121212] hover:bg-[#121212] hover:text-[#ffaf02]",
-    dark: "bg-[#ffaf02] text-[#121212] hover:bg-[#e69f00] shadow-[0_4px_20px_rgba(255,175,2,0.4)]",
+    dark: "bg-[#ffaf02] text-[#121212] hover:bg-[#e69f00] shadow-[0_4px_14px_0_rgba(235,173,4,0.3)] hover:shadow-[0_6px_20px_rgba(235,173,4,0.4)]",
   };
 
   // Size styles - mobile-first responsive
