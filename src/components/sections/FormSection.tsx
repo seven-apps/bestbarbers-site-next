@@ -74,38 +74,54 @@ export function FormSection({
   return (
     <section
       id="form-section"
-      className="relative bg-[#121212] px-6 py-14 md:px-12 md:py-20 lg:px-24 lg:py-28 overflow-hidden"
+      className="relative px-6 py-16 md:px-12 md:py-24 lg:px-24 lg:py-32 overflow-hidden"
+      style={{ background: "#0a0a0a" }}
     >
-      {/* Background decorations */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#ffaf02]/8 rounded-full blur-[100px]" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#ffaf02]/8 rounded-full blur-[100px]" />
-        {/* Subtle grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.02]"
+      {/* Background decorations estilo V12 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-[0.05]"
           style={{
-            backgroundImage: `linear-gradient(rgba(255,175,2,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,175,2,0.1) 1px, transparent 1px)`,
-            backgroundSize: "50px 50px"
+            background: "radial-gradient(circle, #ebad04 0%, transparent 70%)",
+            filter: "blur(120px)",
+          }}
+        />
+        {/* Grain texture overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.02] mix-blend-mode-overlay"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
           }}
         />
       </div>
 
       <div className="max-w-3xl mx-auto relative z-10">
-        {/* Badge */}
-        <div className="flex justify-center mb-6 animate-fade-in-up">
-          <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#ffaf02]/15 to-[#ffc233]/15 rounded-full text-[#ffaf02] text-sm font-bold border border-[#ffaf02]/30 animate-glow-pulse">
+        {/* Badge estilo V12 */}
+        <div className="flex justify-center mb-8 animate-fade-in-up">
+          <span 
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[#ebad04] text-xs font-bold border border-[#ebad04]/30 uppercase tracking-widest"
+            style={{ background: "rgba(235,173,4,0.1)", fontFamily: "var(--font-montserrat)" }}
+          >
             <Sparkles className="w-4 h-4" />
             Oferta por tempo limitado
           </span>
         </div>
 
-        {/* Title */}
-        <h2 className="font-extrabold text-[28px] leading-[36px] md:text-[36px] md:leading-[44px] lg:text-[44px] lg:leading-[52px] tracking-tight text-white mb-6 text-center animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+        {/* Title estilo V12 */}
+        <h2 
+          className="tracking-tight text-white mb-8 text-center animate-fade-in-up"
+          style={{ 
+            fontFamily: "var(--font-vollkorn)", 
+            fontSize: "clamp(28px, 6vw, 44px)", 
+            fontWeight: 800,
+            lineHeight: 1.1
+          }}
+        >
           {title.split("oferta exclusiva").map((part, i) =>
             i === 0 ? (
               <span key={i}>
                 {part}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffaf02] to-[#ffc233]">oferta exclusiva</span>
+                <span style={{ color: "#ebad04" }}>oferta exclusiva</span>
               </span>
             ) : (
               part
@@ -113,21 +129,24 @@ export function FormSection({
           )}
         </h2>
 
-        {/* Description */}
-        <p className="font-medium text-[15px] leading-[24px] md:text-[17px] md:leading-[28px] text-gray-300 mb-8 text-center whitespace-pre-line max-w-xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        {/* Description estilo V12 */}
+        <p 
+          className="font-medium text-[15px] leading-[24px] md:text-[17px] md:leading-[28px] text-white/60 mb-10 text-center whitespace-pre-line max-w-xl mx-auto animate-fade-in-up" 
+          style={{ animationDelay: '0.2s', fontFamily: "var(--font-montserrat)" }}
+        >
           {description}
         </p>
 
         {/* Trust Badges */}
-        <div className="flex justify-center gap-4 md:gap-8 mb-8 animate-fade-in-up" style={{ animationDelay: '0.25s' }}>
+        <div className="flex justify-center gap-6 md:gap-10 mb-10 animate-fade-in-up" style={{ animationDelay: '0.25s' }}>
           {trustBadges.map((badge, index) => (
             <div
               key={index}
-              className="flex items-center gap-1.5 text-gray-400 animate-fade-in"
+              className="flex items-center gap-2 text-white/40 animate-fade-in"
               style={{ animationDelay: `${0.3 + index * 0.1}s` }}
             >
-              <badge.icon className="w-4 h-4 text-[#ffaf02]" />
-              <span className="text-xs font-medium">{badge.text}</span>
+              <badge.icon className="w-4 h-4 text-[#ebad04]" />
+              <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest" style={{ fontFamily: "var(--font-montserrat)" }}>{badge.text}</span>
             </div>
           ))}
         </div>
@@ -135,21 +154,30 @@ export function FormSection({
 
         {/* Error display */}
         {submitError && (
-          <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-6 backdrop-blur-sm animate-scale-in">
+          <div 
+            className="rounded-xl p-4 mb-8 animate-scale-in border"
+            style={{ background: "rgba(239,68,68,0.1)", borderColor: "rgba(239,68,68,0.3)" }}
+          >
             <p className="text-red-400 text-sm font-medium text-center">{submitError}</p>
           </div>
         )}
 
-        {/* Form Card */}
-        <div className="bg-gradient-to-br from-[#1a1a1a]/80 to-[#1e1e1e]/80 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-gray-800/50 p-6 md:p-8 shadow-2xl animate-fade-in-up" style={{ animationDelay: '0.35s' }}>
-          <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Form Card estilo V12 Bento-ish */}
+        <div 
+          className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-8 md:p-12 shadow-2xl animate-fade-in-up" 
+          style={{ animationDelay: '0.35s', backdropFilter: "blur(20px)" }}
+        >
+          <form onSubmit={handleSubmit} className="space-y-6">
             {formFields.map((field, index) => (
               <div
                 key={field.name}
                 className="space-y-2 animate-fade-in-up"
                 style={{ animationDelay: `${0.4 + index * 0.05}s` }}
               >
-                <label className="block font-semibold text-[13px] md:text-[14px] leading-[20px] text-white/90">
+                <label 
+                  className="block font-bold text-[11px] md:text-xs uppercase tracking-widest text-white/50"
+                  style={{ fontFamily: "var(--font-montserrat)" }}
+                >
                   {field.label}
                 </label>
                 {field.type === "select" ? (
@@ -158,7 +186,8 @@ export function FormSection({
                     value={formData[field.name as keyof typeof formData]}
                     onChange={handleInputChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}
                     required
-                    className="w-full bg-[#0f1015] border-2 border-[#2a2d35] rounded-xl px-5 py-4 text-white font-medium text-[15px] leading-[20px] focus:outline-none focus:border-[#ffaf02] focus:bg-[#12141a] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45] appearance-none cursor-pointer"
+                    className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-white font-medium text-[15px] transition-all duration-300 outline-none appearance-none cursor-pointer hover:border-white/20 focus:border-[#ebad04]/50 focus:bg-white/[0.05]"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
                   >
                     {field.options?.map((opt) => (
                       <option key={opt.value} value={opt.value} disabled={opt.value === ""}>
@@ -174,25 +203,30 @@ export function FormSection({
                     onChange={handleInputChange}
                     placeholder={field.placeholder}
                     required
-                    className="w-full bg-[#0f1015] border-2 border-[#2a2d35] rounded-xl px-5 py-4 text-white placeholder-gray-500 font-medium text-[15px] leading-[20px] focus:outline-none focus:border-[#ffaf02] focus:bg-[#12141a] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] focus:scale-[1.01] transition-all duration-300 hover:border-[#3a3d45]"
+                    className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/20 font-medium text-[15px] transition-all duration-300 outline-none hover:border-white/20 focus:border-[#ebad04]/50 focus:bg-white/[0.05]"
+                    style={{ fontFamily: "var(--font-montserrat)" }}
                   />
                 )}
               </div>
             ))}
 
             {/* Submit Button */}
-            <div className="pt-4 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
-              {/* Pulse wrapper with CSS animation */}
+            <div className="pt-6 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
               <div className={`rounded-full ${!isSubmitting && !submitted ? 'animate-pulse-glow-gold' : ''}`}>
                 <button
                   type="button"
                   onClick={handleSubmit}
                   disabled={isSubmitting || submitted}
-                  className="w-full bg-gradient-to-r from-[#029912] to-[#02ab15] text-white font-extrabold text-[15px]  md:text-[16px] leading-[24px] px-6 py-5 rounded-full hover:from-[#029912] hover:to-[#02ab15] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-[0_8px_40px_rgba(2,171,21,0.5)] hover:shadow-[0_12px_50px_rgba(2,171,21,0.5)] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98]"
+                  className="w-full text-white font-extrabold text-[15px] md:text-[16px] px-6 py-5 rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-xl hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98]"
+                  style={{ 
+                    background: "linear-gradient(135deg, #029912, #02ab15)",
+                    boxShadow: "0 8px 30px rgba(2,171,21,0.4)",
+                    fontFamily: "var(--font-montserrat)"
+                  }}
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="w-5 h-5 border-2 border-[#121212] border-t-transparent rounded-full animate-spin" />
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       ENVIANDO...
                     </>
                   ) : submitted ? (
@@ -203,46 +237,45 @@ export function FormSection({
                   ) : (
                     <>
                       {ctaText}
-                      <span className="animate-bounce-x">
-                        <ArrowRight className="w-5 h-5" />
-                      </span>
+                      <ArrowRight className="w-5 h-5" />
                     </>
                   )}
                 </button>
               </div>
             </div>
 
-            {/* Trust text */}
-            <p className="text-center text-gray-500 text-xs mt-4 flex items-center justify-center gap-1.5 animate-fade-in" style={{ animationDelay: '0.8s' }}>
-              <Shield className="w-3.5 h-3.5" />
-              Seus dados estão seguros e não serão compartilhados
+            {/* Brand Signature estilo V12 */}
+            <div className="text-center mt-8">
+               <span 
+                 className="text-xl md:text-2xl font-bold tracking-tighter"
+                 style={{ 
+                   color: "#ebad04", 
+                   fontFamily: "var(--font-vollkorn)",
+                   textShadow: "0 2px 10px rgba(235,173,4,0.1)"
+                 }}
+               >
+                 BestBarbers
+               </span>
+            </div>
+
+            <p 
+              className="text-center text-white/30 text-[10px] uppercase tracking-widest mt-4 flex items-center justify-center gap-2 animate-fade-in" 
+              style={{ animationDelay: '0.8s', fontFamily: "var(--font-montserrat)" }}
+            >
+              <Shield className="w-3 h-3" />
+              Dados 100% Protegidos
             </p>
           </form>
         </div>
       </div>
 
-      {/* CSS animations for form-specific effects */}
       <style jsx>{`
-        @keyframes glow-pulse {
-          0%, 100% { box-shadow: 0 0 20px rgba(255,175,2,0.2); }
-          50% { box-shadow: 0 0 40px rgba(255,175,2,0.3); }
-        }
-        .animate-glow-pulse {
-          animation: glow-pulse 3s ease-in-out infinite;
-        }
         @keyframes pulse-glow-gold {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(255,175,2,0); }
-          50% { box-shadow: 0 0 0 12px rgba(255,175,2,0.15); }
+          0%, 100% { box-shadow: 0 0 0 0 rgba(235,173,4,0); }
+          50% { box-shadow: 0 0 0 12px rgba(235,175,2,0.1); }
         }
         .animate-pulse-glow-gold {
           animation: pulse-glow-gold 2s ease-in-out infinite;
-        }
-        @keyframes bounce-x {
-          0%, 100% { transform: translateX(0); }
-          50% { transform: translateX(4px); }
-        }
-        .animate-bounce-x {
-          animation: bounce-x 1.5s ease-in-out infinite;
         }
       `}</style>
     </section>

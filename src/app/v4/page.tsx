@@ -15,7 +15,6 @@ import { FooterSimple } from "@/components/sections/FooterSimple";
 import { useSearchParams } from "next/navigation";
 
 function ParceirosContent() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const searchParams = useSearchParams();
 
   const scrollToForm = () => {
@@ -26,7 +25,18 @@ function ParceirosContent() {
   };
 
   return (
-    <>
+    <main 
+      className="min-h-screen relative overflow-x-hidden"
+      style={{ background: "#0a0a0a" }}
+    >
+      {/* Grain Texture Global Overlay */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-[9999] opacity-[0.03] mix-blend-overlay"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+        }}
+      />
+
       <Navbar withoutCta />
       <HeroAdsSection onCtaClick={scrollToForm} />
       <TrustBar />
@@ -41,24 +51,18 @@ function ParceirosContent() {
       <PlanComparisonSection />
       <FAQSection />
       <FooterSimple />
-    </>
-  );
-}
-
-export default function Parceiros() {
-  return (
-    <main className="min-h-screen overflow-x-hidden max-w-[100vw] w-full">
-      <Suspense fallback={
-        <div className="min-h-screen flex items-center justify-center bg-[#121212]">
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-12 h-12 border-4 border-[#ffaf02] border-t-transparent rounded-full animate-spin" />
-            <p className="text-white/60 text-sm font-medium">Carregando...</p>
-          </div>
-        </div>
-      }>
-        <ParceirosContent />
-      </Suspense>
     </main>
   );
 }
 
+export default function V4Page() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <div className="w-10 h-10 border-2 border-[#ebad04] border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <ParceirosContent />
+    </Suspense>
+  );
+}

@@ -13,48 +13,77 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
 
   return (
     <section
-      className="relative pt-24 md:pt-28 lg:pt-32 pb-10 md:pb-14 lg:pb-16 flex justify-center items-center overflow-hidden"
-      style={{
-        background: "linear-gradient(135deg, #ffaf02 0%, #ffbe33 50%, #ffaf02 100%)"
-      }}
+      className="relative pt-32 pb-16 md:py-40 flex justify-center items-center overflow-hidden"
+      style={{ background: "#0a0a0a" }}
     >
-      {/* Static background pattern - no animation needed */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full opacity-[0.03]"
+      {/* Grain texture overlay — assinatura visual V12 */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`,
+          opacity: 0.02,
+          mixBlendMode: "overlay",
+        }}
+      />
+
+      {/* Bokeh / Glow Effects — Estilo V12 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div
+          className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[120%] md:w-[100%] max-w-[800px] h-[400px] rounded-full opacity-[0.08] animate-pulse"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+            background: "radial-gradient(ellipse, #ebad04 0%, transparent 70%)",
+            filter: "blur(100px)",
+            animationDuration: "12s",
           }}
         />
       </div>
 
-      {/* Gradient overlays for depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/10 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none" />
-
       <div className="container-custom relative z-10">
         {/* Row 1: Headlines + Video */}
-        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-12 w-full">
-          {/* Headlines - CSS animations for initial load */}
-          <div className="w-full lg:w-[42%] flex flex-col items-center lg:items-start text-center lg:text-left animate-fade-in-up">
+        <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 lg:gap-14 w-full max-w-6xl mx-auto">
+          {/* Headlines */}
+          <div className="w-full lg:w-[48%] flex flex-col items-center lg:items-start text-center lg:text-left">
             {/* Badge */}
-            <div className="mb-4 animate-scale-in" style={{ animationDelay: '0.1s' }}>
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-black/90 rounded-full text-white text-xs md:text-sm font-bold shadow-lg">
-                <Sparkles className="w-3.5 h-3.5 text-[#ffaf02]" />
-                Sistema #1 para Barbearias
-              </span>
+            <div className="mb-6 animate-scale-in">
+              <div
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border"
+                style={{
+                  background: "rgba(235,173,4,0.12)",
+                  borderColor: "rgba(235,173,4,0.35)",
+                }}
+              >
+                <Sparkles className="w-3.5 h-3.5 text-[#ebad04]" />
+                <span
+                  className="text-[11px] md:text-[13px] font-bold uppercase tracking-[0.18em]"
+                  style={{ color: "#ebad04", fontFamily: "var(--font-montserrat)" }}
+                >
+                  Sistema #1 para Barbearias
+                </span>
+              </div>
             </div>
 
             <h1 
-              className="text-[22px] md:text-[28px] lg:text-[32px] font-extrabold leading-[1.2] text-neutral-bg2 mb-4 animate-fade-in-up"
-              style={{ animationDelay: '0.15s' }}
+              className="leading-[1.1] tracking-tight text-white mb-6 animate-fade-in-up"
+              style={{ fontFamily: "var(--font-vollkorn)" }}
             >
-              SUA BARBEARIA ESTÁ CRESCENDO, <span className="text-white text-2xl lg:text-[32px] drop-shadow-md">O DINHEIRO ENTRANDO...</span>
+              <span 
+                className="block mb-2"
+                style={{ fontSize: "clamp(24px, 5vw, 36px)", fontWeight: 800 }}
+              >
+                SUA BARBEARIA ESTÁ CRESCENDO,
+              </span>
+              <span 
+                className="block"
+                style={{ fontSize: "clamp(32px, 8vw, 56px)", fontWeight: 800, color: "#ebad04" }}
+              >
+                O DINHEIRO ENTRANDO...
+              </span>
             </h1>
 
-            <div className="flex flex-col gap-2">
+            <div className="mb-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <span 
-                className="inline-block text-white bg-black px-5 py-2.5 rounded-xl font-extrabold text-[32px] md:text-[40px] lg:text-[48px] leading-[1.1] shadow-[0_8px_30px_rgba(0,0,0,0.35)] animate-fade-in-up"
-                style={{ animationDelay: '0.25s' }}
+                className="inline-block text-white border-l-4 border-[#ebad04] pl-4 md:pl-6 py-2 font-extrabold text-[28px] md:text-[36px] lg:text-[44px] leading-[1.1]"
+                style={{ fontFamily: "var(--font-vollkorn)" }}
               >
                 Mas seu lucro
                 <br />
@@ -63,18 +92,20 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
             </div>
           </div>
 
-          {/* Video - CSS floating animation (GPU accelerated) */}
+          {/* Video */}
           <div 
-            className="w-full lg:w-[58%] flex justify-center lg:justify-end animate-fade-in-up"
-            style={{ animationDelay: '0.2s' }}
+            className="w-full lg:w-[52%] flex justify-center lg:justify-end animate-fade-in-up"
+            style={{ animationDelay: '0.3s' }}
           >
-            {/* Floating container using CSS animation */}
-            <div className="relative w-full max-w-md lg:max-w-none animate-float gpu-accelerated">
+            <div className="relative w-full max-w-lg">
               {/* Glow effect behind video */}
-              <div className="absolute -inset-3 bg-black/20 rounded-2xl lg:rounded-3xl blur-2xl" />
+              <div className="absolute -inset-4 bg-[#ebad04]/10 rounded-2xl blur-3xl" />
 
-              {/* Video container */}
-              <div className="relative aspect-video rounded-xl lg:rounded-2xl overflow-hidden shadow-[0_25px_80px_-15px_rgba(0,0,0,0.5)] border-4 border-white/20">
+              {/* Video container estilo V12 */}
+              <div 
+                className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+                style={{ background: "#000" }}
+              >
                 <iframe
                   src="https://www.youtube.com/embed/ZnicnaPdui0?autoplay=1&mute=1&loop=1&playlist=ZnicnaPdui0&rel=0"
                   title="Best Barbers"
@@ -90,47 +121,40 @@ export function HeroAdsSection({ onCtaClick }: HeroAdsSectionProps) {
 
         {/* Row 2: Description + CTA */}
         <div 
-          className="w-full flex flex-col lg:flex-row items-center justify-between gap-6  animate-fade-in-up"
+          className="w-full mt-12 md:mt-16 flex flex-col lg:flex-row items-center justify-between gap-8 animate-fade-in-up max-w-6xl mx-auto"
           style={{ animationDelay: '0.4s' }}
         >
           {/* Textos */}
-          <div className="w-full lg:w-[40%] flex flex-col items-center lg:items-start text-center lg:text-left lg:max-w-xl mt-6 lg:mt-0">
-            <p className="text-[15px] md:text-base lg:text-[18px] font-extrabold leading-relaxed text-neutral-bg2">
+          <div className="w-full lg:w-[55%] flex flex-col items-center lg:items-start text-center lg:text-left">
+            <p 
+              className="text-[17px] md:text-[19px] leading-relaxed mb-4 text-white font-medium"
+              style={{ fontFamily: "var(--font-montserrat)" }}
+            >
               Não é sobre atender mais clientes. É sobre{" "}
-              <span className="text-white bg-black px-2 py-1 rounded-md">ganhar mais dinheiro e lucrar mais</span>,
+              <span className="text-[#ebad04] font-bold">ganhar mais dinheiro e lucrar mais</span>,
               com a barbearia que você já tem.
             </p>
 
-            <p className="text-[13px] md:text-sm lg:text-[15px] font-medium leading-relaxed text-neutral-bg2/80">
+            <p 
+              className="text-[14px] md:text-[15px] leading-relaxed text-white/60 font-medium"
+              style={{ fontFamily: "var(--font-montserrat)" }}
+            >
               O BestBarbers ajuda barbearias a organizarem a gestão, criarem novas fontes de receita e transformarem faturamento em lucro real.
             </p>
           </div>
 
-          {/* CTA com destaque máximo - CSS pulse animation */}
+          {/* CTA estilo V12 */}
           <div className="flex-shrink-0 w-full sm:w-auto">
-            {/* Pulse animation wrapper using CSS (GPU accelerated) */}
-            <div className="rounded-full animate-pulse-glow">
-              {onCtaClick ? (
-                <CTAButton
-                  onClick={onCtaClick}
-                  variant="secondary"
-                  size="lg"
-                  icon={true}
-                  className="w-full sm:w-auto !shadow-[0_8px_40px_rgba(2,171,21,0.5)] hover:!shadow-[0_12px_50px_rgba(2,171,21,0.6)]"
-                >
-                  QUERO LUCRAR MAIS COM A MINHA BARBEARIA
-                </CTAButton>
-              ) : (
-                <CTAButton
-                  href={hero.cta.href}
-                  variant="primary"
-                  size="lg"
-                  icon={true}
-                  className="w-full sm:w-auto"
-                >
-                  {hero.cta.text}
-                </CTAButton>
-              )}
+            <div className="animate-pulse-glow">
+              <CTAButton
+                onClick={onCtaClick}
+                variant="secondary"
+                size="lg"
+                icon={true}
+                className="w-full sm:w-auto !text-[15px] !py-5 !px-10"
+              >
+                QUERO LUCRAR MAIS AGORA
+              </CTAButton>
             </div>
           </div>
         </div>
