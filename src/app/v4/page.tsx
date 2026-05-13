@@ -12,11 +12,8 @@ import { FormSection } from "@/components/sections/FormSection";
 import { PlanComparisonSection } from "@/components/sections/PlanComparisonSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { FooterSimple } from "@/components/sections/FooterSimple";
-import { useSearchParams } from "next/navigation";
 
 function ParceirosContent() {
-  const searchParams = useSearchParams();
-
   const scrollToForm = () => {
     const formSection = document.getElementById("form-section");
     if (formSection) {

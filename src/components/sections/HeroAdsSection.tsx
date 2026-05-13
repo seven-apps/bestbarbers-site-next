@@ -1,7 +1,6 @@
 "use client";
 
 import { CTAButton } from "@/components/ui/cta-button";
-import { homeContent } from "@/content/home";
 import { Sparkles } from "lucide-react";
 
 interface HeroAdsSectionProps {
