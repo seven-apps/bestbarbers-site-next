@@ -19,23 +19,30 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
       <div className="px-4 md:container-custom">
         {/* Título estilo V12 */}
         <div className="text-center mb-12 md:mb-16 animate-fade-in-up">
-          <span 
+          <span
             className="inline-block px-4 py-1.5 bg-[#ebad04]/10 rounded-full text-[#ebad04] text-[11px] md:text-xs font-bold mb-4 border border-[#ebad04]/20 uppercase tracking-widest"
             style={{ fontFamily: "var(--font-montserrat)" }}
           >
             Funcionalidades
           </span>
-          <h2 
+
+          <h2
             className="leading-[1.1] tracking-tight text-white mb-4"
-            style={{ fontFamily: "var(--font-vollkorn)", fontSize: "clamp(28px, 5vw, 42px)", fontWeight: 800 }}
+            style={{
+              fontFamily: "var(--font-vollkorn)",
+              fontSize: "clamp(28px, 5vw, 42px)",
+              fontWeight: 800,
+            }}
           >
             Funcionalidades do Sistema para Barbearia
           </h2>
-          <p 
+
+          <p
             className="text-sm md:text-base text-white/50 mt-2 max-w-md mx-auto"
             style={{ fontFamily: "var(--font-montserrat)" }}
           >
-            Tudo que sua barbearia precisa em um só lugar, com design premium e alta performance.
+            Tudo que sua barbearia precisa em um só lugar, com design premium e
+            alta performance.
           </p>
         </div>
       </div>
@@ -50,10 +57,15 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
           {/* Marquee Track */}
           <div
             className="py-4 items-center animate-marquee-left gpu-accelerated flex whitespace-nowrap"
-            style={{ '--marquee-duration': '40s' } as React.CSSProperties}
+            style={
+              { "--marquee-duration": "40s" } as React.CSSProperties
+            }
           >
             {[0, 1, 2].map((setIndex) => (
-              <div key={setIndex} className="inline-flex gap-4 md:gap-6 items-center pr-4 md:pr-6">
+              <div
+                key={setIndex}
+                className="inline-flex gap-4 md:gap-6 items-center pr-4 md:pr-6"
+              >
                 {features.items.map((item, index) => (
                   <div
                     key={`${setIndex}-${index}`}
@@ -65,20 +77,13 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
                         alt={`Ícone ${item.title}`}
                         width={64}
                         height={64}
-<<<<<<< HEAD
-                        className="w-full h-full object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110"
-=======
                         className="w-full h-full object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110"
->>>>>>> a82d386 (feat: atualizações da lp v4)
                         loading="lazy"
                       />
                     </div>
-                    <p 
-<<<<<<< HEAD
-                      className="text-[10px] md:text-xs font-bold text-white/50 uppercase tracking-widest px-1 group-hover:text-[#ebad04] transition-colors"
-=======
+
+                    <p
                       className="text-[10px] md:text-xs font-bold text-white/50 uppercase tracking-widest px-1 whitespace-normal break-words leading-tight text-center group-hover:text-[#ebad04] transition-colors"
->>>>>>> a82d386 (feat: atualizações da lp v4)
                       style={{ fontFamily: "var(--font-montserrat)" }}
                     >
                       {item.title}
@@ -92,7 +97,10 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
       </div>
 
       {/* CTA Button estilo V12 */}
-      <div className="flex justify-center mt-12 md:mt-20 px-4 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+      <div
+        className="flex justify-center mt-12 md:mt-20 px-4 animate-fade-in-up"
+        style={{ animationDelay: "0.2s" }}
+      >
         <div className="animate-pulse-glow">
           <CTAButton
             onClick={onCtaClick}
