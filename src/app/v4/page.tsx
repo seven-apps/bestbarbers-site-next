@@ -9,7 +9,6 @@ import { BarbershopGrowthSection } from "@/components/sections/BarbershopGrowthS
 import { FeaturesSection } from "@/components/sections/FeaturesSection";
 import { ClientsSection } from "@/components/sections/ClientsSection";
 import { FormSection } from "@/components/sections/FormSection";
-import { PlanComparisonSection } from "@/components/sections/PlanComparisonSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { FooterSimple } from "@/components/sections/FooterSimple";
 
@@ -45,7 +44,6 @@ function ParceirosContent() {
         originDesc="LP V4"
         source="lp_v4"
       />
-      <PlanComparisonSection />
       <FAQSection />
       <FooterSimple />
     </main>

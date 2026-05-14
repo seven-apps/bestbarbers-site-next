@@ -65,12 +65,20 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
                         alt={`Ícone ${item.title}`}
                         width={64}
                         height={64}
+<<<<<<< HEAD
                         className="w-full h-full object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110"
+=======
+                        className="w-full h-full object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-110"
+>>>>>>> a82d386 (feat: atualizações da lp v4)
                         loading="lazy"
                       />
                     </div>
                     <p 
+<<<<<<< HEAD
                       className="text-[10px] md:text-xs font-bold text-white/50 uppercase tracking-widest px-1 group-hover:text-[#ebad04] transition-colors"
+=======
+                      className="text-[10px] md:text-xs font-bold text-white/50 uppercase tracking-widest px-1 whitespace-normal break-words leading-tight text-center group-hover:text-[#ebad04] transition-colors"
+>>>>>>> a82d386 (feat: atualizações da lp v4)
                       style={{ fontFamily: "var(--font-montserrat)" }}
                     >
                       {item.title}

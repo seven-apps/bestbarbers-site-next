@@ -201,11 +201,13 @@ html {
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
   will-change: box-shadow;
+  border-radius: 9999px;
 }
 
 .animate-pulse-glow-subtle {
   animation: pulse-glow-subtle 2.5s ease-in-out infinite;
   will-change: box-shadow;
+  border-radius: 9999px;
 }
 
 /* Marquee animations - para carrosséis infinitos (triplicados para seamless loop) */

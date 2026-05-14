@@ -1,25 +1,29 @@
 "use client";
 
-import { AlertTriangle, Banknote, TrendingDown } from "lucide-react";
+import { Calendar, Wallet, Calculator } from "lucide-react";
 
 export function BarbershopPainSection() {
   const pain = {
     title: "Trabalhando muito e lucrando pouco?",
-    subtitle: "A maioria dos donos de barbearia ficam presos no operacional e não conseguem ver a cor do dinheiro.",
+    subtitle:
+      "A maioria dos donos de barbearia ficam presos no operacional e não conseguem ver a cor do dinheiro.",
     items: [
       {
         title: "Agenda Desorganizada",
-        description: "Clientes faltando sem avisar e horários ociosos que custam caro para o seu negócio."
+        description:
+          "Clientes faltando sem avisar e horários ociosos que custam caro para o seu negócio.",
       },
       {
         title: "Controle Financeiro Manual",
-        description: "Anotações em papel ou planilhas complexas que não mostram seu lucro real no fim do mês."
+        description:
+          "Anotações em papel ou planilhas complexas que não mostram seu lucro real no fim do mês.",
       },
       {
         title: "Problemas com Comissões",
-        description: "Dores de cabeça constantes e horas perdidas calculando o repasse dos barbeiros."
-      }
-    ]
+        description:
+          "Dores de cabeça constantes e horas perdidas calculando o repasse dos barbeiros.",
+      },
+    ],
   };
 
   return (
@@ -31,20 +35,29 @@ export function BarbershopPainSection() {
       <div className="container-custom">
         {/* Section Title estilo V12 */}
         <div className="text-center mb-16 md:mb-24 animate-fade-in-up">
-          <h2 
+          <h2
             className="leading-[1.1] tracking-tight text-white mb-6"
-            style={{ fontFamily: "var(--font-vollkorn)", fontSize: "clamp(32px, 6vw, 52px)", fontWeight: 800 }}
+            style={{
+              fontFamily: "var(--font-vollkorn)",
+              fontSize: "clamp(32px, 6vw, 52px)",
+              fontWeight: 800,
+            }}
           >
-            {pain.title.split("lucrando pouco").map((part, i) => 
+            {pain.title.split("lucrando pouco").map((part, i) =>
               i === 0 ? (
                 <span key={i}>
                   {part}
-                  <span className="text-[#ebad04]">lucrando pouco?</span>
+                  <span className="text-[#ebad04]">
+                    lucrando pouco?
+                  </span>
                 </span>
-              ) : part
+              ) : (
+                part
+              )
             )}
           </h2>
-          <p 
+
+          <p
             className="text-base md:text-lg text-white/60 font-medium max-w-2xl mx-auto"
             style={{ fontFamily: "var(--font-montserrat)" }}
           >
@@ -58,29 +71,36 @@ export function BarbershopPainSection() {
             <div
               key={index}
               className="group relative p-8 md:p-10 bg-white/[0.02] border border-white/10 rounded-[2.5rem] transition-all duration-500 hover:bg-white/[0.05] hover:border-[#ebad04]/30 hover:scale-[1.02] animate-fade-in-up"
-              style={{ animationDelay: `${0.1 + index * 0.1}s`, backdropFilter: "blur(10px)" }}
+              style={{
+                animationDelay: `${0.1 + index * 0.1}s`,
+                backdropFilter: "blur(10px)",
+              }}
             >
               {/* Glow effect on hover */}
               <div className="absolute -inset-1 bg-[#ebad04]/10 rounded-[2.5rem] blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
+
               <div className="relative z-10 h-full flex flex-col">
-                <div 
+                <div
                   className="w-14 h-14 rounded-2xl flex items-center justify-center mb-8 border border-[#ebad04]/20 group-hover:border-[#ebad04]/50 transition-colors duration-500"
                   style={{ background: "rgba(235,173,4,0.1)" }}
                 >
-                  {index === 0 ? <AlertTriangle className="w-6 h-6 text-[#ebad04]" fill="currentColor" /> : 
-                   index === 1 ? <Banknote className="w-6 h-6 text-[#ebad04]" fill="currentColor" /> : 
-                   <TrendingDown className="w-6 h-6 text-[#ebad04]" />}
+                  {index === 0 ? (
+                    <Calendar className="w-6 h-6 text-[#ebad04]" />
+                  ) : index === 1 ? (
+                    <Wallet className="w-6 h-6 text-[#ebad04]" />
+                  ) : (
+                    <Calculator className="w-6 h-6 text-[#ebad04]" />
+                  )}
                 </div>
-                
-                <h3 
+
+                <h3
                   className="text-xl md:text-2xl font-bold text-white mb-4 leading-tight group-hover:text-[#ebad04] transition-colors duration-500"
                   style={{ fontFamily: "var(--font-vollkorn)" }}
                 >
                   {item.title}
                 </h3>
-                
-                <p 
+
+                <p
                   className="text-white/50 text-sm md:text-base leading-relaxed"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                 >
