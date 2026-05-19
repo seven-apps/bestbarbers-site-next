@@ -83,6 +83,8 @@ export const useUtmParams = () => {
       gladstone: 120001225,
       youtube: 120001337,
       billy: 120001376,
+      gilberto: 120001428,
+      "gilberto-barber-pro": 120001429,
     }),
     []
   );
@@ -114,6 +116,8 @@ export const useUtmParams = () => {
       "david-champs": "LP - David Champs - Programa de parceria",
       gladstone: "LP - Gladstone - Programa de indicações",
       billy: "LP - Billy Tribos - Programa de parcerias",
+      gilberto: "LP - Gilberto - Programa de parcerias",
+      "gilberto-barber-pro": "LP - Gilberto - Evento Barber PRO",
     }),
     []
   );
