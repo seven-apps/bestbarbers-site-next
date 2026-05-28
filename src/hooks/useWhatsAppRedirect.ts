@@ -74,6 +74,8 @@ export const useWhatsAppRedirect = () => {
           baseLink + "%0AConheci%20através%20do%20Evento%20Barber%20PRO%20do%20Gilberto",
         jorgin:
           baseLink + "%0AConheci%20através%20do%20Jorgin",
+        "joao-seletto":
+          baseLink + "%0AConheci%20através%20do%20João%20Seletto",
       };
 
       // Verifica UTM inf primeiro (tem prioridade)
@@ -158,6 +160,8 @@ export const useWhatsAppRedirect = () => {
           baseLink + "%0AConheci%20através%20do%20Evento%20Barber%20PRO%20do%20Gilberto",
         jorgin:
           baseLink + "%0AConheci%20através%20do%20Jorgin",
+        "joao-seletto":
+          baseLink + "%0AConheci%20através%20do%20João%20Seletto",
       };
 
       // Verifica UTM inf primeiro

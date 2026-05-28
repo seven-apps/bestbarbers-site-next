@@ -120,6 +120,7 @@ export const useUtmParams = () => {
       gilberto: "LP - Gilberto - Programa de parcerias",
       "gilberto-barber-pro": "LP - Gilberto - Evento Barber PRO",
       jorgin: "LP - Jorgin - Programa de parcerias",
+      "joao-seletto": "LP - João Seletto - Programa de parcerias",
     }),
     []
   );
