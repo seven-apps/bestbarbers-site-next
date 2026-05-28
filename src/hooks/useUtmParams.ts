@@ -85,6 +85,7 @@ export const useUtmParams = () => {
       billy: 120001376,
       gilberto: 120001428,
       "gilberto-barber-pro": 120001429,
+      jorgin: 120001454,
     }),
     []
   );
@@ -118,6 +119,7 @@ export const useUtmParams = () => {
       billy: "LP - Billy Tribos - Programa de parcerias",
       gilberto: "LP - Gilberto - Programa de parcerias",
       "gilberto-barber-pro": "LP - Gilberto - Evento Barber PRO",
+      jorgin: "LP - Jorgin - Programa de parcerias",
     }),
     []
   );
