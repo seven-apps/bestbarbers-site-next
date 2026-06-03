@@ -13,11 +13,46 @@ interface LeadFormModalProps {
 }
 
 const formFields = [
-  { name: "barbershopName", label: "Nome da Barbearia", placeholder: "Nome da Barbearia", type: "text" },
-  { name: "ownerName", label: "Nome do Dono da barbearia", placeholder: "Nome do Dono da barbearia", type: "text" },
-  { name: "whatsapp", label: "WhatsApp do Dono da barbearia", placeholder: "Celular (WhatsApp) do Dono da barbearia", type: "tel" },
-  { name: "monthlyRevenue", label: "Faturamento médio mensal (R$)", placeholder: "Quanto sua barbearia vende em média por mês", type: "text" },
-  { name: "employeeCount", label: "Número de colaboradores", placeholder: "Quantos colaboradores tem na sua barbearia", type: "number" },
+  { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
+  { name: "email", label: "E-mail do Dono", placeholder: "Ex: joao@email.com", type: "email" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
+  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "(11) 99999-9999", type: "tel" },
+  {
+    name: "monthlyRevenue",
+    label: "Qual o faturamento médio da sua barbearia?",
+    placeholder: "Selecione",
+    type: "select",
+    options: [
+      { value: "", label: "Selecione" },
+      { value: "Até R$ 2.000", label: "Até R$ 2.000" },
+      { value: "R$ 2.000 a R$ 10.000", label: "R$ 2.000 a R$ 10.000" },
+      { value: "De R$ 10.000 a R$ 30.000", label: "De R$ 10.000 a R$ 30.000" },
+      { value: "Acima de R$ 30.000", label: "Acima de R$ 30.000" },
+    ],
+  },
+  {
+    name: "interestedTool",
+    label: "Qual ferramenta mais te interessa hoje?",
+    placeholder: "Selecione",
+    type: "select",
+    options: [
+      { value: "", label: "Selecione" },
+      { value: "Agenda e Controle Financeiro", label: "Agenda e Controle Financeiro" },
+      { value: "Meu Próprio App + Clube de Assinaturas e emissão de NFs", label: "Meu Próprio App + Clube de Assinaturas e emissão de NFs" },
+    ],
+  },
+  {
+    name: "employeeCount",
+    label: "Quantos profissionais trabalham na sua barbearia?",
+    placeholder: "Selecione",
+    type: "select",
+    options: [
+      { value: "", label: "Selecione" },
+      { value: "Sou apenas eu", label: "Sou apenas eu" },
+      { value: "2 a 4 colaboradores", label: "2 a 4 colaboradores" },
+      { value: "5 ou mais colaboradores", label: "5 ou mais colaboradores" },
+    ],
+  },
 ];
 
 const SITE_ORIGIN_ID = 40210426;
@@ -125,15 +160,31 @@ export function LeadFormModal({ isOpen, onClose, originDesc }: LeadFormModalProp
                 <label className="block font-semibold text-[13px] md:text-[14px] text-white/90">
                   {field.label}
                 </label>
-                <input
-                  type={field.type}
-                  name={field.name}
-                  value={formData[field.name as keyof typeof formData]}
-                  onChange={handleInputChange}
-                  placeholder={field.placeholder}
-                  required
-                  className="w-full bg-[#1a1d25] border-2 border-[#2a2d35] rounded-xl px-4 py-3.5 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45]"
-                />
+                {field.type === "select" ? (
+                  <select
+                    name={field.name}
+                    value={formData[field.name as keyof typeof formData]}
+                    onChange={handleInputChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}
+                    required
+                    className="w-full bg-[#1a1d25] border-2 border-[#2a2d35] rounded-xl px-4 py-3.5 text-white font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45] appearance-none cursor-pointer"
+                  >
+                    {field.options?.map((opt) => (
+                      <option key={opt.value} value={opt.value} disabled={opt.value === ""} className="bg-[#1a1d25]">
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    value={formData[field.name as keyof typeof formData]}
+                    onChange={handleInputChange}
+                    placeholder={field.placeholder}
+                    required
+                    className="w-full bg-[#1a1d25] border-2 border-[#2a2d35] rounded-xl px-4 py-3.5 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45]"
+                  />
+                )}
               </div>
             ))}
 
