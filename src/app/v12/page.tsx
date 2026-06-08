@@ -51,7 +51,7 @@ function LeadMachineContent() {
   // ViewContent pixel event on page load
   useEffect(() => {
     trackCustomEvent("ViewContent", {
-      content_name: "LP V11 - Lead Machine Oferta",
+      content_name: "LP V12 - Lead Machine Oferta",
       content_category: "landing_page",
     });
   }, [trackCustomEvent]);

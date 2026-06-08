@@ -65,7 +65,9 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     const audiencia = param('audiencia') || publico || '';
 
     // Se temos sinal do Meta url_tags Wave 4+, usa formato 8-segments.
-    const has8Segs = fase || campanha || publico || adName || creative || angulo;
+    // Usa param('creative') diretamente (não o fallback utm_content) para não
+    // acionar 8-segs em LPs legacy que só têm utm_content com ID de criativo.
+    const has8Segs = fase || campanha || publico || adName || param('creative') || angulo;
     let originDesc: string | null;
     
     if (has8Segs) {

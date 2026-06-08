@@ -254,8 +254,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       };
       await submitLead(ploomesData);
 
-      // 5. Meta Pixel (Apenas Leads Qualificados: Plataforma e VIP)
-      // Conforme tabela: 30-60 (Plataforma) e 70-100+ (VIP)
+      // 5. Meta Pixel + CAPI direta (Leads Qualificados: score ≥ 30)
+      // CAPI direta → bbai.bestbarbers.app (bestbarbers-ai dashboard). Fire-and-forget.
+      // Meta deduplica via event_id → Pixel + Stape + CAPI direta = 1 evento contado.
       if (leadScore >= 30) {
         const pixelData = {
           content_name: 'BestBarbers Lead Form Submission',
@@ -266,6 +267,27 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
           ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
         };
         await trackLead(pixelData, leadEventId);
+
+        const capiUrl = process.env.NEXT_PUBLIC_BBAI_DASHBOARD_URL;
+        if (capiUrl) {
+          const nameParts = formData.ownerName.trim().split(/\s+/);
+          fetch(`${capiUrl}/api/meta-capi/track`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              eventName: 'Lead',
+              eventId: leadEventId,
+              userData: {
+                phone: phoneDigits,
+                email: formData.email.toLowerCase().trim(),
+                firstName: nameParts[0]?.toLowerCase() || undefined,
+                lastName: nameParts.slice(1).join(' ').toLowerCase() || undefined,
+                country: 'br',
+              },
+              eventSourceUrl: typeof window !== 'undefined' ? window.location.href : undefined,
+            }),
+          }).catch(() => {});
+        }
       }
 
       // Marca como enviado com sucesso (mantém botão desabilitado durante redirect)

@@ -76,7 +76,7 @@ export function FormSectionV12() {
     handleInputChange,
     handleSubmit,
   } = useLeadForm({
-    source: "lp_v11",
+    source: "lp_v12",
     onError: (error) => {
       console.error("Erro ao enviar formulário:", error);
       alert("Erro ao enviar formulário. Tente novamente.");
