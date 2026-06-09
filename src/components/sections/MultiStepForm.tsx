@@ -27,7 +27,7 @@ export function MultiStepForm({
     submitError,
     handleInputChange,
     handleSubmit,
-  } = useLeadForm({ redirectToWhatsApp: true });
+  } = useLeadForm();
 
   // Sync chairs to formData when moving to step 2
   const goToStep2 = useCallback(() => {

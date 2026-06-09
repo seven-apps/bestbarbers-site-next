@@ -13,7 +13,6 @@
 import { usePloomesAPI } from "@/hooks/usePloomesAPI";
 import { useMetaPixel } from "@/hooks/useMetaPixel";
 import { usePhoneMask } from "@/hooks/usePhoneMask";
-import { useWhatsAppRedirect } from "@/hooks/useWhatsAppRedirect";
 import Image from "next/image";
 import { useEffect, useState, useCallback, useMemo } from "react";
 
@@ -154,8 +153,6 @@ export default function V9QuizPage() {
   const ploomes = usePloomesAPI();
   const { trackLead, trackCustomEvent } = useMetaPixel();
   const { applyPhoneMask } = usePhoneMask();
-  const { redirectToWhatsApp } = useWhatsAppRedirect();
-
   useEffect(() => {
     setMounted(true);
     trackCustomEvent("ViewContent", {
@@ -288,7 +285,6 @@ export default function V9QuizPage() {
           /* swallow */
         }
 
-        redirectToWhatsApp();
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : "Erro ao salvar.";
         setError(msg);
@@ -296,7 +292,7 @@ export default function V9QuizPage() {
         setIsSubmitting(false);
       }
     },
-    [whatsapp, ownerName, barbershopName, answers, ploomes, trackLead, trackCustomEvent, redirectToWhatsApp],
+    [whatsapp, ownerName, barbershopName, answers, ploomes, trackLead, trackCustomEvent],
   );
 
   if (!mounted) return null;

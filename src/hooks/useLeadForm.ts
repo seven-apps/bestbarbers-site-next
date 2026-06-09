@@ -42,7 +42,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const {
     onSuccess,
     onError,
-    redirectToWhatsApp = true,
+    redirectToWhatsApp = false,
     originId,
     originDesc,
     source = 'lp_v5',

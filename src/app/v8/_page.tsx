@@ -3,7 +3,6 @@
 import { usePloomesAPI } from "@/hooks/usePloomesAPI";
 import { useMetaPixel } from "@/hooks/useMetaPixel";
 import { usePhoneMask } from "@/hooks/usePhoneMask";
-import { useWhatsAppRedirect } from "@/hooks/useWhatsAppRedirect";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback, useMemo } from "react";
@@ -85,7 +84,6 @@ export default function V8MiniFormPage() {
   const ploomes = usePloomesAPI();
   const { trackLead, trackCustomEvent } = useMetaPixel();
   const { applyPhoneMask } = usePhoneMask();
-  const { redirectToWhatsApp } = useWhatsAppRedirect();
   const router = useRouter();
 
   // Hero dinâmico por utm_content
@@ -185,15 +183,13 @@ export default function V8MiniFormPage() {
         lastName: ownerName.split(" ").slice(1).join(" "),
       });
 
-      // Redirect WhatsApp
-      redirectToWhatsApp();
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Erro ao salvar.";
       setError(msg);
     } finally {
       setIsSubmitting(false);
     }
-  }, [whatsapp, ownerName, barbershopName, employeeCount, monthlyRevenue, ploomes, trackLead, trackCustomEvent, redirectToWhatsApp, router, capiTrack]);
+  }, [whatsapp, ownerName, barbershopName, employeeCount, monthlyRevenue, ploomes, trackLead, trackCustomEvent, router, capiTrack]);
 
   if (!mounted) return null;
 

@@ -3,7 +3,6 @@
 import { usePloomesAPI } from "@/hooks/usePloomesAPI";
 import { useMetaPixel } from "@/hooks/useMetaPixel";
 import { usePhoneMask } from "@/hooks/usePhoneMask";
-import { useWhatsAppRedirect } from "@/hooks/useWhatsAppRedirect";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback, useRef } from "react";
@@ -37,7 +36,6 @@ export default function V10Page() {
   const ploomes = usePloomesAPI();
   const { trackLead, trackCustomEvent } = useMetaPixel();
   const { applyPhoneMask } = usePhoneMask();
-  const { redirectToWhatsApp } = useWhatsAppRedirect();
   const router = useRouter();
 
   useEffect(() => {
@@ -166,13 +164,12 @@ export default function V10Page() {
       await trackLead({ content_name: "v10-static-lp", content_category: "lead-capture", barbershop_name: barbershopName, employee_count: employeeCount }, eventId);
       void capiTrack("Lead", eventId, { phone, firstName: ownerName.split(" ")[0], lastName: ownerName.split(" ").slice(1).join(" ") });
 
-      redirectToWhatsApp();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Erro ao salvar.");
     } finally {
       setIsSubmitting(false);
     }
-  }, [whatsapp, ownerName, barbershopName, employeeCount, monthlyRevenue, ploomes, trackLead, trackCustomEvent, redirectToWhatsApp, router, capiTrack]);
+  }, [whatsapp, ownerName, barbershopName, employeeCount, monthlyRevenue, ploomes, trackLead, trackCustomEvent, router, capiTrack]);
 
   if (!mounted) return null;
 

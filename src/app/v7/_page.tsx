@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export default function LeadMachineV7() {
   const { formData, isSubmitting, submitted, submitError, handleInputChange, handleSubmit } =
-    useLeadForm({ redirectToWhatsApp: true });
+    useLeadForm();
   const { applyPhoneMask } = usePhoneMask();
 
   // Preenche campos obrigatórios do hook com defaults (v7 só mostra WhatsApp)
