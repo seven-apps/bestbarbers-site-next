@@ -19,6 +19,7 @@ const stagger = {
 
 export default function V10Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   const [showStickyCta, setShowStickyCta] = useState(false);
@@ -164,6 +165,7 @@ export default function V10Page() {
       await trackLead({ content_name: "v10-static-lp", content_category: "lead-capture", barbershop_name: barbershopName, employee_count: employeeCount }, eventId);
       void capiTrack("Lead", eventId, { phone, firstName: ownerName.split(" ")[0], lastName: ownerName.split(" ").slice(1).join(" ") });
 
+      setSubmitted(true);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Erro ao salvar.");
     } finally {
@@ -715,8 +717,8 @@ export default function V10Page() {
 
             {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
-            <button type="submit" disabled={isSubmitting} className={`${ctaClass} disabled:opacity-50 disabled:cursor-not-allowed`}>
-              {isSubmitting ? "Enviando..." : "Quero ver minha proposta →"}
+            <button type="submit" disabled={isSubmitting || submitted} className={`${ctaClass} disabled:opacity-50 disabled:cursor-not-allowed`}>
+              {isSubmitting ? "Enviando..." : submitted ? "✓ RECEBEMOS SEU CONTATO!" : "Quero ver minha proposta →"}
             </button>
 
             <div className="text-center space-y-1 pt-1">

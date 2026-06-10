@@ -268,7 +268,7 @@ export default function LandingPageAnuncio() {
               disabled={isSubmitting || submitted}
               className="w-full bg-[#ebad04] text-[#181b20] font-extrabold text-[16px] leading-[24px] tracking-[-0.48px] px-2 py-4 rounded-[54px] hover:bg-[#ebad04] transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-6"
             >
-              {isSubmitting ? 'ENVIANDO...' : submitted ? 'REDIRECIONANDO...' : 'GARANTIR MINHA OFERTA'}
+              {isSubmitting ? 'ENVIANDO...' : submitted ? '✓ RECEBEMOS SEU CONTATO!' : 'GARANTIR MINHA OFERTA'}
             </button>
           </form>
         </div>

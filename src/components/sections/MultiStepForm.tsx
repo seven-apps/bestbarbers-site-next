@@ -180,8 +180,7 @@ export function MultiStepForm({
               </>
             ) : submitted ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                REDIRECIONANDO...
+                ✓ RECEBEMOS SEU CONTATO!
               </>
             ) : (
               <>

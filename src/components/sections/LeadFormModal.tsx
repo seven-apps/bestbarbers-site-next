@@ -202,8 +202,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc }: LeadFormModalProp
                   </>
                 ) : submitted ? (
                   <>
-                    REDIRECIONANDO...
-                    <div className="w-5 h-5 border-2 border-[#121212] border-t-transparent rounded-full animate-spin" />
+                    ✓ RECEBEMOS SEU CONTATO!
                   </>
                 ) : (
                   <>

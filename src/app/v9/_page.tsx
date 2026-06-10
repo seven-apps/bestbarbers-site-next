@@ -146,6 +146,7 @@ export default function V9QuizPage() {
   const [ownerName, setOwnerName] = useState("");
   const [barbershopName, setBarbershopName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [, setContactId] = useState<number | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -285,6 +286,7 @@ export default function V9QuizPage() {
           /* swallow */
         }
 
+        setSubmitted(true);
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : "Erro ao salvar.";
         setError(msg);
@@ -454,7 +456,7 @@ export default function V9QuizPage() {
 
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || submitted}
                 className="w-full py-4 bg-gradient-to-r from-[#029912] to-[#02ab15]
                   text-white font-bold text-lg rounded-xl
                   shadow-[0_8px_40px_rgba(2,171,21,0.4)]
@@ -462,7 +464,7 @@ export default function V9QuizPage() {
                   disabled:opacity-50 disabled:cursor-not-allowed
                   transition-all duration-200"
               >
-                {isSubmitting ? "Salvando..." : "Quero ver a proposta →"}
+                {isSubmitting ? "Salvando..." : submitted ? "✓ RECEBEMOS SEU CONTATO!" : "Quero ver a proposta →"}
               </button>
 
               <p className="text-gray-600 text-xs text-center">
