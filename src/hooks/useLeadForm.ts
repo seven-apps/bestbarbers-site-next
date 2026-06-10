@@ -245,6 +245,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       const ploomesData: PloomesContactData = {
         barbershopName: formData.barbershopName,
         ownerName: formData.ownerName || undefined,
+        email: formData.email.toLowerCase().trim() || undefined,
         whatsapp: formData.whatsapp,
         monthlyRevenue: formData.monthlyRevenue || undefined,
         employeeCount: formData.employeeCount,

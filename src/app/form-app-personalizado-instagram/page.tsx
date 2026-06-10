@@ -11,6 +11,7 @@ const ORIGIN_ID = 40210374; // Instagram - Orgânico
 interface FormData {
   barbershopName: string;
   ownerName: string;
+  email: string;
   whatsapp: string;
   originLead: string;
 }
@@ -21,6 +22,7 @@ export default function FormAppPersonalizadoInstagram() {
   const [formData, setFormData] = useState<FormData>({
     barbershopName: "",
     ownerName: "",
+    email: "",
     whatsapp: "",
     originLead: "",
   });
@@ -60,6 +62,9 @@ export default function FormAppPersonalizadoInstagram() {
       try {
         const body = {
           Name: formData.barbershopName,
+          ...(formData.email.trim()
+            ? { Email: formData.email.toLowerCase().trim() }
+            : {}),
           OriginId: ORIGIN_ID,
           Phones: [{ PhoneNumber: formData.whatsapp, TypeId: 2, CountryId: 0 }],
           OtherProperties: [
@@ -90,7 +95,7 @@ export default function FormAppPersonalizadoInstagram() {
         }
 
         setSubmitted(true);
-        setFormData({ barbershopName: "", ownerName: "", whatsapp: "", originLead: "" });
+        setFormData({ barbershopName: "", ownerName: "", email: "", whatsapp: "", originLead: "" });
       } catch (err) {
         setError(err instanceof Error ? err.message : "Erro ao cadastrar lead");
       } finally {
@@ -130,6 +135,7 @@ export default function FormAppPersonalizadoInstagram() {
             {[
               { name: "barbershopName", label: "Nome da Barbearia", placeholder: "Nome da Barbearia", type: "text" },
               { name: "ownerName", label: "Nome do Dono da barbearia", placeholder: "Nome do Dono da barbearia", type: "text" },
+              { name: "email", label: "E-mail do Dono da barbearia (opcional)", placeholder: "E-mail do Dono da barbearia", type: "email" },
               { name: "whatsapp", label: "WhatsApp do Dono da barbearia", placeholder: "Celular (WhatsApp) do Dono da barbearia", type: "tel" },
               { name: "originLead", label: "Origem do lead", placeholder: "Exemplo: Stories caixinha Andre assinatura", type: "text" },
             ].map((field) => (
@@ -143,7 +149,7 @@ export default function FormAppPersonalizadoInstagram() {
                   value={formData[field.name as keyof FormData]}
                   onChange={handleChange}
                   placeholder={field.placeholder}
-                  required={field.name !== "originLead" && field.name !== "ownerName"}
+                  required={field.name !== "originLead" && field.name !== "ownerName" && field.name !== "email"}
                   className="w-full bg-[#121212] border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 text-sm focus:outline-none focus:border-[#ffaf02] transition-colors"
                 />
               </div>

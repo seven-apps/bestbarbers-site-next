@@ -5,6 +5,7 @@ import { PLOOMES_CONTACT_FIELDS, PLOOMES_LEGACY_FIELDS } from '@/lib/ploomes-fie
 export interface PloomesContactData {
   barbershopName: string;
   ownerName?: string;
+  email?: string;
   whatsapp: string;
   monthlyRevenue?: string;
   employeeCount: string;
@@ -129,6 +130,8 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
 
     const ploomesData = {
       Name: data.barbershopName,
+      // Campo nativo Email do Contact no Ploomes (mesmo nível de Name)
+      ...(data.email ? { Email: data.email } : {}),
       OriginId: originId,
       Phones: [
         {
