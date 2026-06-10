@@ -46,7 +46,20 @@ export function SubscriptionsSection({ onCtaClick }: SubscriptionsSectionProps) 
                 </div>
               ))}
             </div>
-            
+
+            <div className="flex items-center gap-3 pt-2">
+              <span className="text-sm text-neutral-dark-grey font-normal">
+                Pagamentos integrados com
+              </span>
+              <Image
+                src="/images/logo-asaas.png"
+                alt="Asaas"
+                width={404}
+                height={207}
+                className="h-14 w-auto"
+              />
+            </div>
+
             {onCtaClick ? (
               <Button
                 onClick={onCtaClick}
