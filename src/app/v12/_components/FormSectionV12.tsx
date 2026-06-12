@@ -77,11 +77,15 @@ export function FormSectionV12() {
     handleSubmit,
   } = useLeadForm({
     source: "lp_v12",
+    requireMonthlyRevenue: true,
     onError: (error) => {
       console.error("Erro ao enviar formulário:", error);
       alert("Erro ao enviar formulário. Tente novamente.");
     },
   });
+
+  // Estado de erro do campo de faturamento (validação no submit handler)
+  const monthlyRevenueError = !!submitError && submitError.includes("Faturamento");
 
   return (
     <section
@@ -232,27 +236,42 @@ export function FormSectionV12() {
                   {field.label}
                 </label>
                 {field.type === "select" ? (
-                  <select
-                    name={field.name}
-                    value={formData[field.name as keyof typeof formData]}
-                    onChange={handleInputChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}
-                    required
-                    className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 appearance-none cursor-pointer outline-none"
-                    style={{
-                      background: "#f5f5f5",
-                      border: "1.5px solid #e0e0e0",
-                      color: "#1e1e1e",
-                      fontFamily: "var(--font-montserrat)",
-                    }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
-                  >
-                    {field.options?.map((opt) => (
-                      <option key={opt.value} value={opt.value} disabled={opt.value === ""}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
+                  (() => {
+                    const fieldHasError = field.name === "monthlyRevenue" && monthlyRevenueError;
+                    return (
+                      <>
+                        <select
+                          name={field.name}
+                          value={formData[field.name as keyof typeof formData]}
+                          onChange={handleInputChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}
+                          required
+                          className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 appearance-none cursor-pointer outline-none"
+                          style={{
+                            background: "#f5f5f5",
+                            border: `1.5px solid ${fieldHasError ? "#dc2626" : "#e0e0e0"}`,
+                            color: "#1e1e1e",
+                            fontFamily: "var(--font-montserrat)",
+                          }}
+                          onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
+                          onBlur={(e) => { e.currentTarget.style.borderColor = fieldHasError ? "#dc2626" : "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
+                        >
+                          {field.options?.map((opt) => (
+                            <option key={opt.value} value={opt.value} disabled={opt.value === ""}>
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
+                        {fieldHasError && (
+                          <p
+                            className="text-xs font-medium"
+                            style={{ color: "#dc2626", fontFamily: "var(--font-montserrat)" }}
+                          >
+                            Selecione o faturamento médio para continuar
+                          </p>
+                        )}
+                      </>
+                    );
+                  })()
                 ) : (
                   <input
                     type={field.type}
@@ -321,7 +340,7 @@ export function FormSectionV12() {
                   </>
                 ) : (
                   <>
-                    GARANTIR MINHA VAGA AGORA
+                    QUERO VER QUANTO POSSO FATURAR
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}

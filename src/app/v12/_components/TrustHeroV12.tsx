@@ -115,7 +115,7 @@ export function TrustHeroV12({ onCtaClick }: TrustHeroV12Props) {
               size="lg"
               icon={true}
             >
-              QUERO MEU APP PRÓPRIO TAMBÉM
+              QUERO VER QUANTO POSSO FATURAR
             </CTAButton>
           </div>
         </div>

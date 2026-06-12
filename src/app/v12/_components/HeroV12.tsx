@@ -222,7 +222,7 @@ export function HeroV12({ onCtaClick }: HeroV12Props) {
                 icon={true}
                 className="w-full sm:w-auto !text-[15px] !py-5 !px-10"
               >
-                QUERO MEU APP AGORA
+                QUERO VER QUANTO POSSO FATURAR
               </CTAButton>
               <p
                 className="mt-3 text-[12px] text-center lg:text-left"

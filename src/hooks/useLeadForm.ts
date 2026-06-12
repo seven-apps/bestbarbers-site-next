@@ -25,6 +25,11 @@ export interface UseLeadFormOptions {
   originDesc?: string;
   /** Source identifier para BBAI API (atribuição em relatórios). Default: 'lp_v5' (retrocompat). */
   source?: string;
+  /**
+   * Exige seleção de faturamento médio no submit. Opt-in porque nem todo form
+   * tem o campo monthlyRevenue (MultiStepForm, V5, V7). V12 passa true.
+   */
+  requireMonthlyRevenue?: boolean;
 }
 
 declare global {
@@ -46,6 +51,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     originId,
     originDesc,
     source = 'lp_v5',
+    requireMonthlyRevenue = false,
   } = options;
 
   const [formData, setFormData] = useState<FormData>({
@@ -68,9 +74,10 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
   const { submitLead, checkPhoneExists } = usePloomesAPI({ originId, originDesc });
   const { redirectToWhatsApp: redirect } = useWhatsAppRedirect();
-  // Apenas trackLead — trackCompleteRegistration foi removido em 910a080 (gerava
-  // duplicação Meta vs Ploomes 50% inflado). Meta otimiza por "Lead" sozinho.
-  const { trackLead } = useMetaPixel();
+  // trackLead em todo submit válido (gate aberto — Operação 400) + trackQualifiedLead
+  // adicional quando score >= 30 (preserva leitura de CPQL). trackCompleteRegistration
+  // foi removido em 910a080 (gerava duplicação Meta vs Ploomes 50% inflado).
+  const { trackLead, trackQualifiedLead } = useMetaPixel();
   const { getUtmParams } = useUtmParams();
 
   // Dedup non-blocking — roda quando whatsapp atinge 11+ digitos
@@ -144,6 +151,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     if (!isValidPhone(formData.whatsapp)) {
       return 'WhatsApp deve ter formato válido';
     }
+    if (requireMonthlyRevenue && !formData.monthlyRevenue?.trim()) {
+      return 'Faturamento médio é obrigatório';
+    }
     if (!formData.employeeCount?.trim()) {
       return 'Número de colaboradores é obrigatório';
     }
@@ -151,7 +161,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       return 'Interesse é obrigatório';
     }
     return null;
-  }, [formData, isValidPhone]);
+  }, [formData, isValidPhone, requireMonthlyRevenue]);
 
   const handleSubmit = useCallback(async (e?: React.FormEvent | React.MouseEvent) => {
     e?.preventDefault();
@@ -255,41 +265,53 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       };
       await submitLead(ploomesData);
 
-      // 5. Meta Pixel + CAPI direta (Leads Qualificados: score ≥ 30)
+      // 5. Meta Pixel + CAPI direta — GATE ABERTO (Operação 400, 11/Jun/26):
+      // 'Lead' dispara em TODO submit válido, independente do score (volume > qualidade,
+      // CPL alvo R$30). 'QualifiedLead' (trackCustom) dispara ADICIONALMENTE quando
+      // score >= 30 — preserva a leitura de CPQL e o caminho de volta ao CPQ pós-30/Jun.
       // CAPI direta → bbai.bestbarbers.app (bestbarbers-ai dashboard). Fire-and-forget.
       // Meta deduplica via event_id → Pixel + Stape + CAPI direta = 1 evento contado.
-      if (leadScore >= 30) {
-        const pixelData = {
-          content_name: 'BestBarbers Lead Form Submission',
-          content_category: 'lead_generation',
-          barbershop_name: formData.barbershopName,
-          employee_count: formData.employeeCount,
-          lead_score: leadScore,
-          ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
-        };
-        await trackLead(pixelData, leadEventId);
+      const capiUrl = process.env.NEXT_PUBLIC_BBAI_DASHBOARD_URL;
+      const sendCapiEvent = (eventName: 'Lead' | 'QualifiedLead', eventId: string): void => {
+        if (!capiUrl) return;
+        const nameParts = formData.ownerName.trim().split(/\s+/);
+        fetch(`${capiUrl}/api/meta-capi/track`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            eventName,
+            eventId,
+            userData: {
+              phone: phoneDigits,
+              email: formData.email.toLowerCase().trim(),
+              firstName: nameParts[0]?.toLowerCase() || undefined,
+              lastName: nameParts.slice(1).join(' ').toLowerCase() || undefined,
+              country: 'br',
+            },
+            eventSourceUrl: typeof window !== 'undefined' ? window.location.href : undefined,
+          }),
+        }).catch(() => {});
+      };
 
-        const capiUrl = process.env.NEXT_PUBLIC_BBAI_DASHBOARD_URL;
-        if (capiUrl) {
-          const nameParts = formData.ownerName.trim().split(/\s+/);
-          fetch(`${capiUrl}/api/meta-capi/track`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              eventName: 'Lead',
-              eventId: leadEventId,
-              userData: {
-                phone: phoneDigits,
-                email: formData.email.toLowerCase().trim(),
-                firstName: nameParts[0]?.toLowerCase() || undefined,
-                lastName: nameParts.slice(1).join(' ').toLowerCase() || undefined,
-                country: 'br',
-              },
-              eventSourceUrl: typeof window !== 'undefined' ? window.location.href : undefined,
-            }),
-          }).catch(() => {});
-        }
+      const pixelData = {
+        content_name: 'BestBarbers Lead Form Submission',
+        content_category: 'lead_generation',
+        barbershop_name: formData.barbershopName,
+        employee_count: formData.employeeCount,
+        lead_score: leadScore,
+        ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
+      };
+
+      const pixelPromises: Promise<void>[] = [trackLead(pixelData, leadEventId)];
+      sendCapiEvent('Lead', leadEventId);
+
+      if (leadScore >= 30) {
+        // Mesmo eventId com sufixo '-q' → dedup independente do Lead (Pixel + CAPI)
+        pixelPromises.push(trackQualifiedLead(pixelData, `${leadEventId}-q`));
+        sendCapiEvent('QualifiedLead', `${leadEventId}-q`);
       }
+
+      await Promise.all(pixelPromises);
 
       // Marca como enviado com sucesso (mantém botão desabilitado durante redirect)
       setSubmitted(true);
@@ -317,6 +339,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     redirectToWhatsApp,
     redirect,
     trackLead,
+    trackQualifiedLead,
     getUtmParams,
     submitLead,
     source,

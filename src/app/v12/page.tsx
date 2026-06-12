@@ -132,7 +132,7 @@ function LeadMachineContent() {
               boxShadow: "0 10px 30px rgba(2,171,21,0.35)"
             }}
           >
-            QUERO MEU APP PRÓPRIO
+            QUERO VER QUANTO POSSO FATURAR
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
           </button>
         </div>

@@ -143,6 +143,35 @@ export const useMetaPixel = () => {
   }, []);
 
   /**
+   * Dispara evento customizado QualifiedLead (lead com score >= 30).
+   * Usa fbq('trackCustom') — exigido pelo Meta para eventos fora do catálogo padrão.
+   * Com o gate do Lead aberto (todo submit dispara Lead), este evento preserva
+   * a leitura de CPQL no Ads Manager e o caminho de volta ao CPQ depois de 30/Jun.
+   */
+  const trackQualifiedLead = useCallback((data?: MetaPixelEventData, externalEventId?: string): Promise<void> => {
+    const eventId = externalEventId || generateEventId();
+    const mergedData: MetaPixelEventData = {
+      content_name: 'BestBarbers Qualified Lead',
+      content_category: 'lead_generation',
+      ...data,
+    };
+
+    if (typeof window !== 'undefined' && window.fbq) {
+      try {
+        window.fbq('trackCustom', 'QualifiedLead', mergedData, { eventID: eventId });
+        console.log('Meta Pixel: QualifiedLead event tracked via fbq', mergedData);
+      } catch (error) {
+        console.error('Erro ao rastrear evento QualifiedLead do Meta Pixel:', error);
+      }
+    } else {
+      console.warn('Meta Pixel: fbq indisponível, usando apenas image pixel');
+    }
+
+    // Disparo via image pixel (fallback confiável, mesmo eventID para dedup)
+    return sendImagePixel('QualifiedLead', eventId, mergedData);
+  }, []);
+
+  /**
    * Dispara evento customizado
    */
   const trackCustomEvent = useCallback((eventName: string, data?: MetaPixelEventData, externalEventId?: string): Promise<void> => {
@@ -170,6 +199,7 @@ export const useMetaPixel = () => {
   return {
     trackLead,
     trackCompleteRegistration,
+    trackQualifiedLead,
     trackCustomEvent,
     isPixelAvailable
   };

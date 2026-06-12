@@ -149,7 +149,7 @@ export function OfferComparisonV12({ onCtaClick }: OfferComparisonV12Props) {
             icon={true}
             className="mt-2"
           >
-            QUERO APROVEITAR A OFERTA
+            QUERO VER QUANTO POSSO FATURAR
           </CTAButton>
           <p
             className="text-xs md:text-sm mt-4 font-medium"
