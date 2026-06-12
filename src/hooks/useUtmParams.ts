@@ -200,26 +200,38 @@ export const useUtmParams = () => {
 
   const getOriginMapping = useCallback(
     (utmParams: UtmParams): OriginMapping => {
-      const { utm_source, utm_desc } = utmParams;
+      const { utm_source, utm_desc, utm_medium, fbclid } = utmParams;
 
-      // utm_source=meta usa o mesmo originId de "ads" (40210173)
-      let sourceKey: string | null = utm_source === "meta" ? "ads" : utm_source;
+      // utm_source=meta usa o mesmo originId de "ads" (40210173).
+      // Campanhas com url_tags utm_source={{site_source_name}} (LP V12+) emitem
+      // "fb", "ig", "msg" ou "an" — todos são tráfego pago Meta.
+      const META_SOURCE_ALIASES = ["meta", "fb", "ig", "msg", "an", "facebook", "instagram"];
+      let sourceKey: string | null =
+        utm_source && META_SOURCE_ALIASES.includes(utm_source.toLowerCase())
+          ? "ads"
+          : utm_source;
 
       // Fallback: URLs Wave 4+ não usam utm_source mas sim params estruturados
       // (fase=W4, campanha=, ad_id=, publico=). Se qualquer sinal Meta Ads presente,
       // tratar como "ads" (originId 40210173 — Tráfego Pago).
+      // Roda também quando utm_source existe mas não está no originMap — um source
+      // desconhecido não pode bloquear a atribuição de tráfego pago.
       // fbclid é incluído pois Meta sempre adiciona em clicks de ad — sinal definitivo.
-      if (!sourceKey && typeof window !== "undefined") {
+      if ((!sourceKey || !(sourceKey in originMap)) && typeof window !== "undefined") {
         const search = new URLSearchParams(window.location.search);
         const hasMetaSignal =
           search.has("ad_id") ||
+          search.has("ad") ||
           search.has("fase") ||
           search.has("campanha") ||
           search.has("publico") ||
           search.has("audiencia") ||
           search.has("adset") ||
           search.has("adname") ||
-          search.has("fbclid");
+          search.has("creative") ||
+          search.has("angulo") ||
+          !!fbclid ||
+          utm_medium === "paid";
         if (hasMetaSignal) sourceKey = "ads";
       }
 
