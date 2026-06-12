@@ -12,7 +12,7 @@ export interface UtmParams {
   gclid: string | null;
 }
 
-const SS_KEY = 'bb_utm_snapshot';
+export const SS_KEY = 'bb_utm_snapshot';
 
 const readCookie = (name: string): string | null => {
   if (typeof document === 'undefined') return null;
@@ -86,6 +86,9 @@ export const useUtmParams = () => {
       gilberto: 120001428,
       "gilberto-barber-pro": 120001429,
       jorgin: 120001454,
+      // Spotify → /podcast?desc=<temporada>.<episodio>. SEM entrada no descMap:
+      // a descrição (temporada + episódio) vem dinâmica via utm_desc (PodcastAttribution).
+      podcast: 120001484,
     }),
     []
   );

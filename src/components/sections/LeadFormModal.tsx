@@ -63,7 +63,16 @@ export function LeadFormModal({ isOpen, onClose, originDesc }: LeadFormModalProp
   // Antes era hardcoded SITE_ORIGIN_ID — causava leads do Meta entrarem como "site"
   // no Ploomes e gerarem discrepância vs contagem do Meta Ads Manager.
   const { getUtmParams, getOriginMapping } = useUtmParams();
-  const utmMapping = getOriginMapping(getUtmParams());
+  const utmParams = getUtmParams();
+  const utmMapping = getOriginMapping(utmParams);
+
+  // Podcast (Spotify → /podcast?desc=1.3): a descrição dinâmica do snapshot
+  // ("Assinatura do Zero - EP03 - ...") tem prioridade sobre o rótulo do botão,
+  // senão o episódio se perderia em "[Site]BT-*". O rótulo entra como sufixo.
+  const podcastDesc =
+    utmParams.utm_source === "podcast" && utmMapping.originDesc
+      ? [utmMapping.originDesc, originDesc].filter(Boolean).join(" | ")
+      : null;
 
   const {
     formData,
@@ -78,7 +87,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc }: LeadFormModalProp
       console.error("Erro ao enviar formulário:", error);
     },
     originId: utmMapping.originId ?? SITE_ORIGIN_ID,
-    originDesc: originDesc || utmMapping.originDesc || "[Site]Modal",
+    originDesc: podcastDesc || originDesc || utmMapping.originDesc || "[Site]Modal",
   });
 
   // Fecha modal com ESC
