@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { usePhoneMask } from "@/hooks/usePhoneMask";
+import { usePloomesAPI } from "@/hooks/usePloomesAPI";
 
 const PLOOMES_API_KEY =
   "B59785E2FC60B0D69BFE51222FE4516699B00F0F97420BBA48E25F648510FB55245A64F7CDB0C89E438AC6C0C56D973F73F99DB7FEF93422E040A2B8816B323B";
@@ -18,6 +19,7 @@ interface FormData {
 
 export default function FormAppPersonalizadoInstagram() {
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
+  const { checkPhoneExists } = usePloomesAPI({ originId: ORIGIN_ID });
 
   const [formData, setFormData] = useState<FormData>({
     barbershopName: "",
@@ -60,6 +62,15 @@ export default function FormAppPersonalizadoInstagram() {
       setError(null);
 
       try {
+        // Bloqueio anti-duplicata: não cria contato se o telefone já existe no
+        // Ploomes. checkPhoneExists falha aberto (false) em erro/timeout.
+        const phoneAlreadyExists = await checkPhoneExists(formData.whatsapp);
+        if (phoneAlreadyExists) {
+          setError("Este WhatsApp já está cadastrado no Ploomes.");
+          setIsSubmitting(false);
+          return;
+        }
+
         const body = {
           Name: formData.barbershopName,
           ...(formData.email.trim()
@@ -102,7 +113,7 @@ export default function FormAppPersonalizadoInstagram() {
         setIsSubmitting(false);
       }
     },
-    [formData, isValidPhone]
+    [formData, isValidPhone, checkPhoneExists]
   );
 
   return (

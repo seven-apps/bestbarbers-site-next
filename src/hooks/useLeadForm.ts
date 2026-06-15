@@ -183,6 +183,20 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       const initials = formData.ownerName.trim().split(/\s+/).map(n => n[0]).join('').toLowerCase();
       const leadEventId = `${Date.now()}-${initials}`;
 
+      // 1.1. BLOQUEIO ANTI-DUPLICATA — usa o resultado do background dedup se já
+      // checou este telefone; senão consulta na hora (cobre quem cola o número e
+      // clica antes do background check terminar). checkPhoneExists falha aberto
+      // (retorna false) em erro/timeout, então nunca trava um lead legítimo.
+      const cachedDedup = dedupCacheRef.current;
+      const phoneAlreadyExists = cachedDedup?.phone === phoneDigits
+        ? cachedDedup.exists
+        : await checkPhoneExists(formData.whatsapp);
+      if (phoneAlreadyExists) {
+        setSubmitError('Já estamos em contato com este WhatsApp! Em breve um especialista te chama.');
+        setIsSubmitting(false);
+        return;
+      }
+
       // 2. Cálculo de Lead Scoring (0-100+)
       let leadScore = 0;
       
@@ -342,6 +356,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     trackQualifiedLead,
     getUtmParams,
     submitLead,
+    checkPhoneExists,
     source,
   ]);
 
