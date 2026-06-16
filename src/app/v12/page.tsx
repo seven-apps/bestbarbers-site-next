@@ -96,7 +96,11 @@ function LeadMachineContent() {
       {/* 2. Hero — OFERTA: app próprio sem taxa */}
       <HeroV12 onCtaClick={scrollToForm} />
 
-      {/* 3. OfferComparison — vantagem competitiva imediata após Hero */}
+      {/* 3. Form — logo após o Hero (OP400 CRO): captura quem já chegou
+           convencido pelo anúncio, antes de exigir scroll. Multi-step reduz fricção. */}
+      <FormSectionV12 />
+
+      {/* 4. OfferComparison — vantagem competitiva para quem precisa de mais convencimento */}
       <OfferComparisonV12 onCtaClick={scrollToForm} />
 
       {/* 4. BigNumbers — autoridade reforça a oferta */}
@@ -110,10 +114,7 @@ function LeadMachineContent() {
         <TestimonialsV12 />
       </div>
 
-      {/* 7. Form — pivot oferta */}
-      <FormSectionV12 />
-
-      {/* 8. FAQ slim (5 críticas + ver mais) */}
+      {/* FAQ slim (5 críticas + ver mais) */}
       <div id="faq-section">
         <FAQShortV12 />
       </div>

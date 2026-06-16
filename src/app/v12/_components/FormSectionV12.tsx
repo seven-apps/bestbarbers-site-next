@@ -101,6 +101,15 @@ export function FormSectionV12() {
   // Estado de erro do campo de faturamento (validação no submit handler)
   const monthlyRevenueError = !!submitError && submitError.includes("Faturamento");
 
+  // Multi-step (OP400 16/Jun): passo 1 = contato (baixa fricção → micro-commitment),
+  // passo 2 = qualificação (faturamento/colaboradores alimentam o lead_score).
+  // Reduz a fricção percebida (2 campos, não 6) sem perder a qualificação.
+  const [step, setStep] = useState(1);
+  const STEP1_FIELDS = ["ownerName", "whatsapp"];
+  const visibleFields = formFields.filter((f) => STEP1_FIELDS.includes(f.name) === (step === 1));
+  const canAdvanceToStep2 = formData.ownerName.trim() !== "" && formData.whatsapp.trim() !== "";
+  const goToStep2 = () => { if (canAdvanceToStep2) setStep(2); };
+
   return (
     <section
       id="form-section"
@@ -235,9 +244,18 @@ export function FormSectionV12() {
             </div>
           )}
 
+          {/* Indicador de progresso multi-step */}
+          <div className="flex items-center justify-center gap-2 mb-5 w-full">
+            <span className="h-1.5 rounded-full transition-all duration-300" style={{ width: 28, background: "#ebad04" }} />
+            <span className="h-1.5 rounded-full transition-all duration-300" style={{ width: 28, background: step === 2 ? "#ebad04" : "#e0e0e0" }} />
+            <span className="text-xs font-semibold ml-1" style={{ color: "#1e1e1e", opacity: 0.55, fontFamily: "var(--font-montserrat)" }}>
+              Passo {step} de 2
+            </span>
+          </div>
+
           {/* Form fields */}
           <form onSubmit={handleSubmit} className="space-y-4 w-full">
-            {formFields.map((field, index) => (
+            {visibleFields.map((field, index) => (
               <div
                 key={field.name}
                 className="space-y-1.5 animate-fade-in-up"
@@ -327,8 +345,8 @@ export function FormSectionV12() {
             <div className="pt-3 animate-fade-in-up" style={{ animationDelay: "0.7s" }}>
               <button
                 type="button"
-                onClick={handleSubmit}
-                disabled={isSubmitting || submitted || isDedupChecking}
+                onClick={step === 1 ? goToStep2 : handleSubmit}
+                disabled={step === 1 ? !canAdvanceToStep2 : (isSubmitting || submitted || isDedupChecking)}
                 className="w-full text-white font-extrabold text-[15px] md:text-[16px] px-6 py-5 rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 active:scale-[0.98]"
                 style={{
                   background: "linear-gradient(135deg, #029912, #02ab15)",
@@ -338,7 +356,12 @@ export function FormSectionV12() {
                 onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 6px 20px rgba(2,171,21,0.23)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 14px 0 rgba(2,171,21,0.39)"; e.currentTarget.style.transform = "translateY(0)"; }}
               >
-                {isSubmitting ? (
+                {step === 1 ? (
+                  <>
+                    CONTINUAR
+                    <ArrowRight className="w-5 h-5" />
+                  </>
+                ) : isSubmitting ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     ENVIANDO...
@@ -359,6 +382,16 @@ export function FormSectionV12() {
                   </>
                 )}
               </button>
+              {step === 2 && (
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="w-full mt-3 text-center text-[13px] font-medium underline"
+                  style={{ color: "#1e1e1e", opacity: 0.5, fontFamily: "var(--font-montserrat)" }}
+                >
+                  ← Voltar
+                </button>
+              )}
             </div>
 
             {/* Brand Signature */}
