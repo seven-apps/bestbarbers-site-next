@@ -2,6 +2,8 @@
 
 import { useState, type ReactNode } from "react";
 import { ChevronDownCircle } from "lucide-react";
+import { REAIS, CASE, MERCADO } from "./benchmarks";
+import { brl } from "./calc";
 
 interface FAQItem {
   question: string;
@@ -17,10 +19,10 @@ const faqItems: FAQItem[] = [
     question: "Esse cálculo é o dado real da minha barbearia?",
     answer: (
       <>
-        Não — é uma <H>projeção transparente</H>. Ela usa os números que você informou nos
-        sliders e premissas de <H>cases reais da BestBarbers</H> (ticket médio de R$128/mês por
-        assinante). Não temos acesso à sua base; ajuste os controles para refletir o seu cenário e
-        veja como o resultado muda.
+        Não — é uma <H>projeção transparente</H>. Ela combina os números que você informou nos
+        sliders com um <H>dado real</H> da base BestBarbers: o ticket médio de assinante de{" "}
+        <H>{brl(REAIS.ticketAssinatura)}/mês</H> (R$128,14, jun/2026). Não temos acesso à sua base;
+        ajuste os controles para refletir o seu cenário e veja como o resultado muda.
       </>
     ),
   },
@@ -28,10 +30,11 @@ const faqItems: FAQItem[] = [
     question: "De onde vem o ticket de R$128/mês por assinante?",
     answer: (
       <>
-        É a <H>estimativa baseada em cases reais</H> da BestBarbers, considerando a média de{" "}
-        <H>51 mil assinantes ativos</H> distribuídos em <H>1.200 barbearias</H> na plataforma. O
-        assinante visita em média <H>2,1 vezes por mês</H> — ou seja, ele não vem todo dia, mas paga
-        todo mês. É isso que gera previsibilidade.
+        É um <H>dado real</H> da base BestBarbers, verificado em jun/2026: R$128,14 de ticket médio
+        mensal por assinante. Hoje são <H>{REAIS.assinantesAtivos.toLocaleString("pt-BR")} assinantes
+        ativos</H> em <H>{REAIS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias</H> ({REAIS.percentualComClube}%
+        já com clube). As barbearias com clube têm em média <H>~{REAIS.assinantesMediaPorClube} assinantes
+        ativos</H> — já são mais de <H>{brl(REAIS.movimentadoClube)}</H> movimentados em assinaturas na plataforma.
       </>
     ),
   },
@@ -39,10 +42,10 @@ const faqItems: FAQItem[] = [
     question: "Faturamento dobrar é real ou promessa de marketing?",
     answer: (
       <>
-        É um <H>case real anonimizado</H>: uma barbearia de 4 cadeiras saiu de{" "}
-        <H>R$15.892/mês para R$31.690/mês</H> (cerca de 2x) ao estruturar o clube de assinaturas.
-        É um exemplo validado, não uma garantia — o seu resultado depende do seu cenário, por isso a
-        calculadora deixa tudo ajustável.
+        É um <H>case real anonimizado</H> (Pirajussara): uma barbearia de 4 cadeiras saiu de{" "}
+        <H>{brl(CASE.antes)}/mês para {brl(CASE.depois)}/mês</H> (cerca de 2x) ao estruturar o clube
+        de assinaturas. É um exemplo validado, não uma garantia — o seu resultado depende do seu
+        cenário, por isso a calculadora deixa tudo ajustável.
       </>
     ),
   },
@@ -52,7 +55,17 @@ const faqItems: FAQItem[] = [
       <>
         É um <H>custo de oportunidade</H>: o cliente que corta e some não volta de forma previsível,
         então a receita recorrente que ele geraria como assinante simplesmente não existe. Não some
-        do caixa — mas nunca entra. Quanto menor a sua recorrência, maior esse valor que fica na mesa.
+        do caixa — mas nunca entra. Como afirmação de mercado, estima-se que cada corte sem recorrência
+        deixa cerca de{" "}
+        <H>
+          {MERCADO.prejuizoPorCorte.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+            minimumFractionDigits: 2,
+          })}{" "}
+          na mesa
+        </H>
+        . Quanto menor a sua recorrência, maior esse valor acumulado.
       </>
     ),
   },
@@ -60,9 +73,10 @@ const faqItems: FAQItem[] = [
     question: "O assinante não vai vir todo dia e dar prejuízo?",
     answer: (
       <>
-        Essa é a objeção nº1 — e os cases mostram o contrário. A média real é de{" "}
-        <H>2,1 visitas por mês</H> por assinante. Ele paga <H>R$128/mês</H> e vem 2 vezes. Comparado
-        ao cliente avulso, vale bem mais, com a vantagem da previsibilidade.
+        Essa é a objeção nº1 — e os números reais mostram o contrário. Na base BestBarbers, o
+        assinante permanece em média <H>~{REAIS.retencaoMeses} meses</H> pagando{" "}
+        <H>{brl(REAIS.ticketAssinatura)}/mês</H>. O valor do clube não está em ele vir mais — está na
+        previsibilidade: você sabe quanto entra antes de abrir a porta.
       </>
     ),
   },

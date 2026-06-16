@@ -3,6 +3,7 @@
 import { useLeadForm, useUtmParams } from "@/hooks";
 import { ArrowRight, ShieldCheck, Users2, TrendingUp } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { REAIS } from "./benchmarks";
 
 const formFields = [
   { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
@@ -181,7 +182,7 @@ export function FormSectionCalc() {
             <div className="flex items-center gap-1.5">
               <Users2 className="w-4 h-4" style={{ color: "#ebad04" }} fill="currentColor" />
               <span className="text-xs font-medium" style={{ color: "#1e1e1e", opacity: 0.7, fontFamily: "var(--font-montserrat)" }}>
-                1.200+ barbearias
+                {REAIS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias
               </span>
             </div>
           </div>

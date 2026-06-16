@@ -1,25 +1,29 @@
 /**
  * Calculadora de Prejuízo — motor de cálculo
  *
- * REGRA DE VERACIDADE (projeto): todos os números de base são CASES/ESTIMATIVAS
- * validadas da BestBarbers, NÃO dados ao vivo da base do usuário. As premissas
+ * REGRA DE VERACIDADE (projeto): os números de prova social vêm de benchmarks.ts
+ * — DADOS REAIS da base de produção BestBarbers (jun/2026), o case Pirajussara
+ * (case real) e afirmações de mercado, cada um com sua rotulagem. As PREMISSAS
  * abaixo são exibidas na UI e (as principais) ajustáveis por slider. O resultado
  * é uma PROJEÇÃO transparente, nunca uma afirmação sobre a operação real do lead.
  */
 
-// ── Constantes de prova social (cases reais BestBarbers — rotular sempre) ──
+import { REAIS, CASE } from "./benchmarks";
+
+/**
+ * Prova social usada nos cálculos/UI. Espelha benchmarks.ts (dados reais +
+ * case) para manter o motor de cálculo desacoplado da fonte.
+ */
 export const PROVA = {
-  /** Assinantes ativos somados na base BestBarbers (case agregado). */
-  assinantesAtivos: 51000,
-  /** Barbearias usando a plataforma (case agregado). */
-  barbearias: 1200,
-  /** Ticket médio mensal de um assinante de clube (case validado). */
-  ticketAssinante: 128,
-  /** Visitas médias/mês de um assinante (case validado — desmonta o medo de "vir todo dia"). */
-  visitasAssinanteMes: 2.1,
-  /** Case de 4 cadeiras: faturamento antes → depois do clube (≈2x). */
-  caseAntes: 15892,
-  caseDepois: 31690,
+  /** Assinantes ativos na base BestBarbers (REAL — jun/2026). */
+  assinantesAtivos: REAIS.assinantesAtivos,
+  /** Barbearias ativas na plataforma (REAL — jun/2026). */
+  barbearias: REAIS.barbeariasAtivas,
+  /** Ticket médio mensal do assinante (REAL — R$128,14). Base da projeção. */
+  ticketAssinante: REAIS.ticketAssinatura,
+  /** Case Pirajussara (4 cadeiras): faturamento antes → depois (≈2x). */
+  caseAntes: CASE.antes,
+  caseDepois: CASE.depois,
 } as const;
 
 // ── Premissas DEFAULT da projeção (ajustáveis pelo usuário) ──

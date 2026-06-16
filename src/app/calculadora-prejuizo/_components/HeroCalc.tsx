@@ -3,6 +3,7 @@
 import { CTAButton } from "@/components/ui/cta-button";
 import { Calculator, TrendingDown } from "lucide-react";
 import { PROVA } from "./calc";
+import { REAIS } from "./benchmarks";
 
 interface HeroCalcProps {
   onCtaClick?: () => void;
@@ -101,8 +102,8 @@ export function HeroCalc({ onCtaClick }: HeroCalcProps) {
             }}
           >
             <TrendingDown className="w-4 h-4" style={{ color: "#ebad04" }} />
-            Projeção baseada em cases reais — {PROVA.assinantesAtivos.toLocaleString("pt-BR")} assinantes
-            em {PROVA.barbearias.toLocaleString("pt-BR")} barbearias
+            Dados reais da base BestBarbers — {PROVA.assinantesAtivos.toLocaleString("pt-BR")} assinantes
+            ativos em {PROVA.barbearias.toLocaleString("pt-BR")} barbearias ({REAIS.percentualComClube}% já com clube)
           </p>
 
           {/* CTA — desce até a calculadora */}
