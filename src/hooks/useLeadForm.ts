@@ -138,12 +138,13 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     if (!formData.ownerName.trim()) {
       return 'Nome do dono é obrigatório';
     }
-    if (!formData.email.trim()) {
-      return 'E-mail é obrigatório';
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email.trim())) {
-      return 'E-mail deve ser válido';
+    // E-mail tornou-se opcional (OP400 15/Jun): se preenchido, valida o formato;
+    // se vazio, segue (canal de contato é o WhatsApp). Reduz fricção visita→lead.
+    if (formData.email.trim()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email.trim())) {
+        return 'E-mail deve ser válido';
+      }
     }
     if (!formData.whatsapp.trim()) {
       return 'WhatsApp é obrigatório';
