@@ -6,7 +6,8 @@ import { useEffect, useMemo, useState } from "react";
 
 const formFields = [
   { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
-  { name: "email", label: "E-mail do Dono", placeholder: "Ex: joao@email.com", type: "email" },
+  // E-mail removido (OP400 15/Jun): fricção pura — o canal de contato é o WhatsApp e
+  // o regex obrigatório bloqueava lead por erro de digitação. Ataca o leak visita→lead.
   { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
   { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "(11) 99999-9999", type: "tel" },
   {
@@ -49,14 +50,27 @@ const formFields = [
 
 function getFormHeading(utmContent: string | null) {
   const content = utmContent?.toLowerCase() || "";
+  // Message-match OP400 (15/Jun): utm_content = ad.name dos criativos atuais.
+  // Espelha o ângulo do anúncio na headline do form (continuidade criativo→LP).
+  // Recorrência / Netflix / lift de assinatura
+  if (content.includes("recorrencia") || content.includes("netflix") || content.includes("58k") || content.includes("40k") || content.includes("2mi") || content.includes("1mi"))
+    return { lead: "Quero faturamento recorrente", highlight: "todo mês no automático" };
+  // ROI / "o clube se paga"
+  if (content.includes("roi") || content.includes("vs-"))
+    return { lead: "Quero que o clube", highlight: "se pague sozinho" };
+  // Case concreto (depoimento / número real)
+  if (content.includes("case") || content.includes("depo") || content.includes("353") || content.includes("david") || content.includes("spazio") || content.includes("elchef"))
+    return { lead: "Quero o resultado", highlight: "que essas barbearias tiveram" };
+  // NFS-e / fiscal
+  if (content.includes("nfse") || content.includes("nfs") || content.includes("fiscal"))
+    return { lead: "Quero app, clube e NFS-e", highlight: "num lugar só" };
+  // Legados (mantidos por compatibilidade)
   if (content.includes("kaiq") || content.includes("bairro") || content.includes("maior") || content.includes("growth"))
     return { lead: "Quero o app que vai me transformar", highlight: "na maior do meu bairro" };
-  if (content.includes("math") || content.includes("r34k") || content.includes("ops") || content.includes("dinheiro") || content.includes("receber"))
+  if (content.includes("math") || content.includes("r34k") || content.includes("dinheiro") || content.includes("receber"))
     return { lead: "Quero faturar todo mês", highlight: "no automático" };
-  if (content.includes("gestao") || content.includes("sistema") || content.includes("quesist") || content.includes("operacao"))
+  if (content.includes("gestao") || content.includes("sistema") || content.includes("operacao"))
     return { lead: "Quero meu app + dashboard", highlight: "num lugar só" };
-  if (content.includes("ferias") || content.includes("prisao"))
-    return { lead: "Quero minha barbearia rodando", highlight: "sem mim" };
   return { lead: "Quero meu app próprio", highlight: "com a minha marca" };
 }
 
