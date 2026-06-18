@@ -280,10 +280,10 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       };
       await submitLead(ploomesData);
 
-      // 5. Meta Pixel + CAPI direta — GATE ABERTO (Operação 400, 11/Jun/26):
-      // 'Lead' dispara em TODO submit válido, independente do score (volume > qualidade,
-      // CPL alvo R$30). 'QualifiedLead' (trackCustom) dispara ADICIONALMENTE quando
-      // score >= 30 — preserva a leitura de CPQL e o caminho de volta ao CPQ pós-30/Jun.
+      // 5. Meta Pixel + CAPI direta — GATE POR CAMPANHA (Operação 400, rev. 16/Jun/26):
+      // ESCALA (OP400-ESCALA-*) otimiza por 'Lead' qualidade → só dispara score >= 30.
+      // Demais campanhas/LPs (VALIDACAO, orgânico) → 'Lead' cru em todo submit.
+      // 'QualifiedLead' (trackCustom) dispara sempre que score >= 30 (leitura de CPQL).
       // CAPI direta → bbai.bestbarbers.app (bestbarbers-ai dashboard). Fire-and-forget.
       // Meta deduplica via event_id → Pixel + Stape + CAPI direta = 1 evento contado.
       const capiUrl = process.env.NEXT_PUBLIC_BBAI_DASHBOARD_URL;
@@ -317,10 +317,21 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
       };
 
-      const pixelPromises: Promise<void>[] = [trackLead(pixelData, leadEventId)];
-      sendCapiEvent('Lead', leadEventId);
+      // Nas campanhas de ESCALA da Operação 400, a Meta passou a otimizar pelo evento
+      // padrão 'Lead' (melhor modelado que custom conversion). Para não treinar o
+      // algoritmo com volume não-qualificado, o 'Lead' dessas campanhas só dispara
+      // quando score >= 30. Nas demais campanhas/LPs (VALIDACAO, orgânico, etc.) o
+      // 'Lead' segue disparando em TODO submit (Lead cru) — preserva a semântica delas.
+      const isEscalaQualidade = /OP400-ESCALA/i.test(utmParams.utm_campaign || '');
+      const leadQualifica = leadScore >= 30;
 
-      if (leadScore >= 30) {
+      const pixelPromises: Promise<void>[] = [];
+      if (!isEscalaQualidade || leadQualifica) {
+        pixelPromises.push(trackLead(pixelData, leadEventId));
+        sendCapiEvent('Lead', leadEventId);
+      }
+
+      if (leadQualifica) {
         // Mesmo eventId com sufixo '-q' → dedup independente do Lead (Pixel + CAPI)
         pixelPromises.push(trackQualifiedLead(pixelData, `${leadEventId}-q`));
         sendCapiEvent('QualifiedLead', `${leadEventId}-q`);
