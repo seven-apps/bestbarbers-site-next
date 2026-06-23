@@ -4,7 +4,7 @@ export const comoCalcularComissao: BlogArticle = {
   slug: "como-calcular-comissao-barbeiro",
   title: "Como Calcular Comissão de Barbeiro: Guia Completo com Exemplos",
   description:
-    "Aprenda a calcular comissão de barbeiro corretamente: modelos fixo, percentual e misto, exemplos práticos com valores reais e como automatizar o cálculo para evitar erros e conflitos.",
+    "Como calcular comissão de barbeiro: modelos fixo, percentual e misto com exemplos reais. Fórmulas práticas e como automatizar para evitar conflitos.",
   keywords: [
     "comissão barbeiro",
     "como calcular comissão barbeiro",
@@ -15,7 +15,7 @@ export const comoCalcularComissao: BlogArticle = {
     "quanto pagar barbeiro",
   ],
   publishedAt: "2026-03-26",
-  updatedAt: "2026-03-26",
+  updatedAt: "2026-06-23",
   readingTime: 10,
   category: "Gestão Financeira",
   tags: ["comissão", "financeiro", "gestão", "barbeiros", "equipe"],
@@ -313,7 +313,7 @@ export const comoCalcularComissao: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "1.200+",
+          value: "1.297+",
           label: "Barbearias calculam comissões automaticamente na plataforma BestBarbers",
         },
         {
@@ -323,6 +323,13 @@ export const comoCalcularComissao: BlogArticle = {
         {
           type: "paragraph",
           text: "Para barbearias com clube de assinaturas, a automação é praticamente obrigatória. O cálculo de comissão sobre atendimentos de assinantes, com rateio proporcional do valor do plano, descontos por inadimplência e diferentes regras por profissional, é simplesmente inviável de fazer manualmente sem erros frequentes.",
+        },
+        {
+          type: "link-box",
+          title: "Calculadora: quanto o cálculo manual de comissões está custando para você?",
+          href: "/calculadora-prejuizo",
+          description:
+            "Descubra em 30 segundos o custo real de não automatizar — erros, conflitos com a equipe e tempo perdido somados.",
         },
       ],
     },

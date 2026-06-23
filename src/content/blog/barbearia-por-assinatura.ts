@@ -4,7 +4,7 @@ export const barbeariaPorAssinatura: BlogArticle = {
   slug: "barbearia-por-assinatura",
   title: "Barbearia por Assinatura: O Guia Definitivo para Receita Recorrente",
   description:
-    "Aprenda a implementar um clube de assinaturas na sua barbearia. Cases reais, estratégias de precificação, scripts de venda e o impacto financeiro da receita recorrente no seu faturamento.",
+    "Como montar um clube de assinaturas na sua barbearia: cases reais, precificação e o impacto financeiro da receita recorrente no faturamento.",
   keywords: [
     "barbearia por assinatura",
     "clube de assinatura barbearia",
@@ -16,7 +16,7 @@ export const barbeariaPorAssinatura: BlogArticle = {
     "sistema barbearia assinatura",
   ],
   publishedAt: "2026-03-25T10:00:00Z",
-  updatedAt: "2026-03-25T10:00:00Z",
+  updatedAt: "2026-06-23T10:00:00-03:00",
   readingTime: 12,
   category: "Modelo de Negócio",
   tags: [
@@ -44,11 +44,11 @@ export const barbeariaPorAssinatura: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "Os dados confirmam essa tendência. Na base de mais de 1.200 barbearias que utilizam o BestBarbers, o número de assinantes ativos ultrapassou 51 mil, movimentando mais de 6 milhões de agendamentos. Esses números mostram que o modelo deixou de ser uma experiência pontual e se tornou uma estratégia consolidada de crescimento para barbearias de todos os portes — desde o barbeiro solo até redes com dezenas de unidades.",
+          text: "Os dados confirmam essa tendência. Na base de mais de 1.297 barbearias que utilizam o BestBarbers, o número de assinantes ativos superou 47 mil, movimentando mais de 6 milhões de agendamentos. Esses números mostram que o modelo deixou de ser uma experiência pontual e se tornou uma estratégia consolidada de crescimento para barbearias de todos os portes — desde o barbeiro solo até redes com dezenas de unidades.",
         },
         {
           type: "highlight",
-          value: "51.000+",
+          value: "47.793+",
           label: "assinantes ativos na base BestBarbers",
         },
         {
@@ -96,6 +96,13 @@ export const barbeariaPorAssinatura: BlogArticle = {
         {
           type: "paragraph",
           text: "Outro fator crucial é o LTV (Lifetime Value). A lógica é simples: o assinante que criou uma rotina mensal tem muito mais chances de permanecer fiel à barbearia do que o cliente avulso, que pode trocar a qualquer momento sem nenhum custo de mudança.",
+        },
+        {
+          type: "link-box",
+          title: "Calculadora: qual seria a sua receita recorrente?",
+          href: "/calculadora-prejuizo",
+          description:
+            "Simule em 30 segundos quanto a sua barbearia poderia gerar com um clube de assinaturas ativo. Resultado personalizado com base no seu perfil.",
         },
       ],
     },
@@ -162,24 +169,24 @@ export const barbeariaPorAssinatura: BlogArticle = {
         },
         {
           type: "subheading",
-          text: "Case 1: Barbearia com 4 cadeiras em São Paulo",
+          text: "Case 1: Barbearia com 3 cadeiras em Araxá/MG",
         },
         {
           type: "paragraph",
-          text: "Essa barbearia operava com faturamento mensal médio de R$15.000, dependendo quase inteiramente de clientes avulsos. A agenda tinha buracos constantes durante a semana e o dono não conseguia contratar um quinto barbeiro porque não tinha certeza de que o faturamento seria suficiente para bancar o salário. O cenário mudou quando implementaram o clube de assinaturas.",
+          text: "Essa barbearia de interior operava quase que exclusivamente com clientes avulsos. A receita recorrente do clube, quando chegou, era de R$9.249 por mês — boa, mas longe do potencial. O dono identificou que a equipe não estava abordando ativamente os avulsos na cadeira e que os planos não eram divulgados nas redes. Com ajustes simples na venda ativa e na comunicação, o clube começou a crescer de forma consistente.",
         },
         {
           type: "highlight",
-          value: "De R$15K para R$31.690/mês",
-          label: "barbearia com 4 cadeiras e 353 assinantes",
+          value: "3× de crescimento",
+          label: "receita do clube de R$9.249 para R$27.586 em 18 meses — barbearia de 3 cadeiras em Araxá/MG",
         },
         {
           type: "paragraph",
-          text: "Em 8 meses, a barbearia alcançou 353 assinantes ativos. O faturamento saltou de R$15.000 para R$31.690 por mês — mais que o dobro. Mas o impacto foi além do financeiro: a agenda passou a ter previsibilidade, os barbeiros tiveram horários mais distribuídos (sem picos e vales extremos) e o dono finalmente contratou o quinto profissional.",
+          text: "Em 18 meses, a base de assinantes chegou a 290 — e a receita recorrente do clube triplicou, saltando de R$9.249 para R$27.586 mensais. O impacto vai além do financeiro: a agenda passou a ter um núcleo previsível de atendimentos fixos, os barbeiros tiveram horários mais distribuídos e o dono conseguiu planejar contratação e folgas com antecedência.",
         },
         {
           type: "paragraph",
-          text: "Um efeito observado é que assinantes, por já terem o corte 'pago', tendem a consumir mais serviços adicionais durante as visitas — barba, sobrancelha, pigmentação e produtos. Esse efeito de upsell contribui significativamente para o aumento do faturamento.",
+          text: "Um efeito observado é que assinantes, por já terem o corte 'pago', tendem a consumir mais serviços adicionais durante as visitas — barba, sobrancelha, pigmentação e produtos. Esse efeito de upsell contribui significativamente para o ticket médio por visita.",
         },
         {
           type: "subheading",
@@ -191,8 +198,8 @@ export const barbeariaPorAssinatura: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "1.000 assinantes, R$440K/mês",
-          label: "rede com 6 unidades usando clube de assinaturas",
+          value: "1.000 assinantes · R$440K/mês",
+          label: "rede com 6 unidades usando clube de assinaturas centralizado",
         },
         {
           type: "paragraph",
@@ -204,7 +211,7 @@ export const barbeariaPorAssinatura: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "1.200+",
+          value: "1.297+",
           label: "barbearias usando o sistema BestBarbers",
         },
       ],
@@ -270,7 +277,7 @@ export const barbeariaPorAssinatura: BlogArticle = {
       blocks: [
         {
           type: "paragraph",
-          text: "Implementar um clube de assinaturas não é difícil, mas existem armadilhas que podem comprometer o resultado. Esses erros são baseados em padrões observados nas mais de 1.200 barbearias que usam o BestBarbers — ou seja, não são suposições teóricas, são problemas reais que acontecem repetidamente.",
+          text: "Implementar um clube de assinaturas não é difícil, mas existem armadilhas que podem comprometer o resultado. Esses erros são baseados em padrões observados nas mais de 1.297 barbearias que usam o BestBarbers — ou seja, não são suposições teóricas, são problemas reais que acontecem repetidamente.",
         },
         {
           type: "subheading",

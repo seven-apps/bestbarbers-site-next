@@ -4,7 +4,7 @@ export const comoReduzirFaltas: BlogArticle = {
   slug: "como-reduzir-faltas-barbearia",
   title: "Como Reduzir Faltas na Barbearia: 8 Estratégias Comprovadas",
   description:
-    "Faltas custam até R$3.000/mês para barbearias. Descubra 8 estratégias comprovadas com dados de 6 milhões de agendamentos para reduzir no-shows e aumentar o faturamento.",
+    "Faltas custam até R$6.600/mês na sua barbearia. 8 estratégias para reduzir no-shows com automação, pré-pagamento e clube de assinaturas.",
   keywords: [
     "como reduzir faltas barbearia",
     "no-show barbearia",
@@ -14,7 +14,7 @@ export const comoReduzirFaltas: BlogArticle = {
     "taxa de comparecimento barbearia",
   ],
   publishedAt: "2026-03-26",
-  updatedAt: "2026-03-26",
+  updatedAt: "2026-06-23",
   readingTime: 9,
   category: "Gestão",
   tags: ["gestão", "agendamento", "no-show", "faturamento", "produtividade"],
@@ -61,7 +61,14 @@ export const comoReduzirFaltas: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "A boa notícia é que esse problema tem solução. Barbearias que implementam as estratégias certas conseguem reduzir a taxa de no-show para menos de 5%. Neste artigo, vamos apresentar 8 estratégias comprovadas, todas baseadas em dados reais de mais de 1.200 barbearias ativas na plataforma BestBarbers.",
+          text: "A boa notícia é que esse problema tem solução. Barbearias que implementam as estratégias certas conseguem reduzir a taxa de no-show para menos de 5%. Neste artigo, vamos apresentar 8 estratégias comprovadas, todas baseadas em dados reais de mais de 1.297 barbearias ativas na plataforma BestBarbers.",
+        },
+        {
+          type: "link-box",
+          title: "Calculadora: quanto sua barbearia perde com faltas?",
+          href: "/calculadora-prejuizo",
+          description:
+            "Descubra em 30 segundos o custo real das faltas na sua operação. Resultado personalizado com base no seu perfil de barbearia.",
         },
       ],
     },
@@ -131,14 +138,14 @@ export const comoReduzirFaltas: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "Na plataforma BestBarbers, mais de 51.000 assinantes ativos comprovam que o modelo funciona. Assinantes criam rotina — mesmo dia, mesmo horário, mesmo barbeiro — e essa previsibilidade beneficia tanto o cliente quanto a operação. O clube de assinaturas é poderoso não apenas para receita recorrente, mas para a saúde operacional da barbearia.",
+          text: "Na plataforma BestBarbers, mais de 47.793 assinantes ativos comprovam que o modelo funciona. Assinantes criam rotina — mesmo dia, mesmo horário, mesmo barbeiro — e essa previsibilidade beneficia tanto o cliente quanto a operação. O clube de assinaturas é poderoso não apenas para receita recorrente, mas para a saúde operacional da barbearia.",
         },
         {
           type: "link-box",
           title: "Clube de Assinaturas para Barbearias",
           href: "/clube-de-assinaturas",
           description:
-            "51.000+ assinantes ativos na plataforma. Cobrança automática, controle de inadimplência e relatórios de retenção.",
+            "47.793 assinantes ativos na plataforma. Cobrança automática, controle de inadimplência e relatórios de retenção.",
         },
         {
           type: "paragraph",
