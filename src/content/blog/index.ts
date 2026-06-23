@@ -11,6 +11,7 @@ import { onboardingAssinante } from "./onboarding-assinante-clube-barbearia";
 import { gestaoFinanceira } from "./gestao-financeira-barbearia";
 import { inadimplenciaBarbearia } from "./inadimplencia-barbearia-como-cobrar";
 import { case290Assinantes } from "./case-barbearia-290-assinantes-clube";
+import { comissaoBarbeiroQuantoPagar } from "./quanto-pagar-comissao-barbeiro";
 
 export const articles: BlogArticle[] = [
   nfse2026,
@@ -25,6 +26,7 @@ export const articles: BlogArticle[] = [
   gestaoFinanceira,
   inadimplenciaBarbearia,
   case290Assinantes,
+  comissaoBarbeiroQuantoPagar,
 ];
 
 export type { BlogArticle } from "./types";
