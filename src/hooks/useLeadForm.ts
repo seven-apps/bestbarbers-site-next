@@ -68,17 +68,38 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isDedupChecking, setIsDedupChecking] = useState(false);
-  // Cache do resultado do dedup pra evitar duplo round-trip no submit
-  const dedupCacheRef = useRef<{ phone: string; exists: boolean } | null>(null);
+  // Cache do resultado do dedup pra evitar duplo round-trip no submit.
+  // canReregister=true → lead reaquecido (perdido na Qualificação) → recadastra como novo.
+  const dedupCacheRef = useRef<{ phone: string; exists: boolean; canReregister: boolean } | null>(null);
 
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
-  const { submitLead, checkPhoneExists } = usePloomesAPI({ originId, originDesc });
+  const { submitLead, checkPhoneStatus } = usePloomesAPI({ originId, originDesc });
   const { redirectToWhatsApp: redirect } = useWhatsAppRedirect();
   // trackLead em todo submit válido (gate aberto — Operação 400) + trackQualifiedLead
   // adicional quando score >= 30 (preserva leitura de CPQL). trackCompleteRegistration
   // foi removido em 910a080 (gerava duplicação Meta vs Ploomes 50% inflado).
   const { trackLead, trackQualifiedLead } = useMetaPixel();
   const { getUtmParams } = useUtmParams();
+
+  // Resolve dedup + reativação. O Ploomes é a AUTORIDADE: decide se o telefone é
+  // duplicata ativa (bloqueia) ou lead reaquecido — perdido na Qualificação e sem
+  // ciclo aberto → recadastra como novo lead. Só se o Ploomes não conhece o telefone
+  // é que a API do produto (BBAI) entra como rede extra (pega quem já é base).
+  const resolveDedup = useCallback(async (rawPhone: string): Promise<{ exists: boolean; canReregister: boolean }> => {
+    const status = await checkPhoneStatus(rawPhone);
+    if (status.canReregister) return { exists: true, canReregister: true };
+    if (status.exists) return { exists: true, canReregister: false };
+
+    const aiApiUrl = process.env.NEXT_PUBLIC_BBAI_API_URL;
+    if (aiApiUrl) {
+      try {
+        const res = await fetch(`${aiApiUrl}/api/leads/check?phone=${rawPhone.replace(/\D/g, '')}`);
+        const data = await res.json();
+        if (data?.data?.exists) return { exists: true, canReregister: false };
+      } catch { /* ignora — segue como não encontrado */ }
+    }
+    return { exists: false, canReregister: false };
+  }, [checkPhoneStatus]);
 
   // Dedup non-blocking — roda quando whatsapp atinge 11+ digitos
   const runBackgroundDedup = useCallback(async (rawPhone: string) => {
@@ -88,27 +109,14 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
 
     setIsDedupChecking(true);
     try {
-      const aiApiUrl = process.env.NEXT_PUBLIC_BBAI_API_URL;
-      if (aiApiUrl) {
-        try {
-          const res = await fetch(`${aiApiUrl}/api/leads/check?phone=${phoneDigits}`);
-          const data = await res.json();
-          if (data?.data?.exists) {
-            dedupCacheRef.current = { phone: phoneDigits, exists: true };
-            return;
-          }
-        } catch { /* fallback Ploomes */ }
-      }
-      try {
-        const exists = await checkPhoneExists(rawPhone);
-        dedupCacheRef.current = { phone: phoneDigits, exists };
-      } catch {
-        dedupCacheRef.current = { phone: phoneDigits, exists: false };
-      }
+      const result = await resolveDedup(rawPhone);
+      dedupCacheRef.current = { phone: phoneDigits, ...result };
+    } catch {
+      dedupCacheRef.current = { phone: phoneDigits, exists: false, canReregister: false };
     } finally {
       setIsDedupChecking(false);
     }
-  }, [checkPhoneExists]);
+  }, [resolveDedup]);
 
   const handleInputChange = useCallback((
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -184,15 +192,16 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       const initials = formData.ownerName.trim().split(/\s+/).map(n => n[0]).join('').toLowerCase();
       const leadEventId = `${Date.now()}-${initials}`;
 
-      // 1.1. BLOQUEIO ANTI-DUPLICATA — usa o resultado do background dedup se já
-      // checou este telefone; senão consulta na hora (cobre quem cola o número e
-      // clica antes do background check terminar). checkPhoneExists falha aberto
-      // (retorna false) em erro/timeout, então nunca trava um lead legítimo.
+      // 1.1. BLOQUEIO ANTI-DUPLICATA (com exceção de reativação) — usa o resultado do
+      // background dedup se já checou este telefone; senão consulta na hora (cobre quem
+      // cola o número e clica antes do background terminar). Falha aberto (exists=false)
+      // em erro/timeout, então nunca trava um lead legítimo. Bloqueia só se já existe E
+      // NÃO é um lead reaquecido — perdido na Qualificação volta a entrar como novo lead.
       const cachedDedup = dedupCacheRef.current;
-      const phoneAlreadyExists = cachedDedup?.phone === phoneDigits
-        ? cachedDedup.exists
-        : await checkPhoneExists(formData.whatsapp);
-      if (phoneAlreadyExists) {
+      const dedup = cachedDedup?.phone === phoneDigits
+        ? cachedDedup
+        : await resolveDedup(formData.whatsapp);
+      if (dedup.exists && !dedup.canReregister) {
         setSubmitError('Já estamos em contato com este WhatsApp! Em breve um especialista te chama.');
         setIsSubmitting(false);
         return;
@@ -368,7 +377,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     trackQualifiedLead,
     getUtmParams,
     submitLead,
-    checkPhoneExists,
+    resolveDedup,
     source,
   ]);
 

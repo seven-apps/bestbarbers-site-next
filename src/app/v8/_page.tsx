@@ -64,7 +64,7 @@ const DEFAULT_HERO = {
  * Aumenta commitment → reduz volume mas eleva qualidade (alinhado a SDR único).
  *
  * Mantém:
- *   - F3 Dedup Ploomes (checkPhoneExists)
+ *   - F3 Dedup Ploomes (checkPhoneStatus — reativa lead perdido na Qualificação)
  *   - F4 Gate ICP (ate-3k → /v8-nutricao, sem virar lead)
  *   - F6 CAPI dual stack (Pixel + server-side)
  *   - Hero dinâmico por utm_content
@@ -138,9 +138,10 @@ export default function V8MiniFormPage() {
     setError(null);
 
     try {
-      // F3 — Dedup Ploomes
-      const exists = await ploomes.checkPhoneExists(phone);
-      if (exists) {
+      // F3 — Dedup Ploomes (com exceção de reativação): bloqueia duplicata ativa,
+      // libera lead perdido na Qualificação que esfriou (canReregister) → novo lead.
+      const { exists, canReregister } = await ploomes.checkPhoneStatus(phone);
+      if (exists && !canReregister) {
         setError("Vimos que já estamos em contato com este WhatsApp! Em alguns minutos um dos nossos especialistas vai te chamar.");
         setIsSubmitting(false);
         await trackCustomEvent("Contact", { content_name: "v8-dup-detected", content_category: "lead-recapture" });

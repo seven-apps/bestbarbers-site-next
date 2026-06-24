@@ -205,9 +205,10 @@ export default function V9QuizPage() {
       setError(null);
 
       try {
-        // F3 dedup check
-        const exists = await ploomes.checkPhoneExists(phone);
-        if (exists) {
+        // F3 dedup check (com exceção de reativação): bloqueia duplicata ativa, mas
+        // libera lead perdido na Qualificação que esfriou (canReregister) → novo lead.
+        const { exists, canReregister } = await ploomes.checkPhoneStatus(phone);
+        if (exists && !canReregister) {
           setError("Já estamos em contato com esse WhatsApp. Em breve um especialista te chamará.");
           setIsSubmitting(false);
           await trackCustomEvent("Contact", {

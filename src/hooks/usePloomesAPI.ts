@@ -29,6 +29,39 @@ export interface UsePloomesAPIOptions {
   originDesc?: string;
 }
 
+/** Resultado do dedup com decisão de reativação (lead reaquecido). */
+export interface PloomesPhoneStatus {
+  /** Já existe contato com este telefone no Ploomes. */
+  exists: boolean;
+  /**
+   * Pode recadastrar como NOVO lead mesmo já existindo: o contato foi dado como
+   * PERDIDO no pipe de Qualificação e NÃO tem nenhum ciclo aberto lá — ou seja,
+   * esfriou e voltou por uma campanha (reaquecimento). Ver checkPhoneStatus.
+   */
+  canReregister: boolean;
+}
+
+/** Pipe "APP - Qualificação" no Ploomes (won = reunião). É o único pipe consultado
+ *  para decidir reativação: perdido aqui = lead que esfriou e pode voltar. */
+const QUALIFICACAO_PIPELINE_ID = 40043772;
+/** Deal.StatusId no Ploomes (confirmado via API): 1 = aberto, 2 = ganho, 3 = perdido. */
+const DEAL_STATUS = { OPEN: 1, WON: 2, LOST: 3 } as const;
+
+/**
+ * Monta o predicado OData para casar um telefone no Ploomes apesar da formatação
+ * (ex: "(31) 97226-8877"). contains() faz match literal, então "972268877" NÃO
+ * acha por causa do traço. Solução: 2 chunks sempre contíguos em qualquer formato —
+ * últimos 4 dígitos (após o traço) + 5 dígitos anteriores (antes do traço, celular BR).
+ */
+function buildPhonePredicate(phone: string): string {
+  const digits = phone.replace(/\D/g, '');
+  const last4 = digits.slice(-4);
+  const firstChunk = digits.slice(-9, -4);
+  return firstChunk.length >= 4
+    ? `contains(p/PhoneNumber, '${last4}') and contains(p/PhoneNumber, '${firstChunk}')`
+    : `contains(p/PhoneNumber, '${last4}')`;
+}
+
 /**
  * Hook para integração com a API do Ploomes CRM
  * @param options - Opções para customizar o originId e originDesc
@@ -226,20 +259,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
 
   const checkPhoneExists = useCallback(async (phone: string): Promise<boolean> => {
     try {
-      const digits = phone.replace(/\D/g, '');
-      // Telefones no Ploomes têm formatação (ex: "(31) 97226-8877").
-      // contains() faz match literal, então "972268877" NÃO encontra por causa do traço.
-      // Solução: buscar por 2 chunks que são sempre contíguos em qualquer formato:
-      //   - últimos 4 dígitos (sempre após o traço)
-      //   - 5 dígitos anteriores (sempre antes do traço, para celular BR)
-      const last4 = digits.slice(-4);
-      const firstChunk = digits.slice(-9, -4);
-
-      const filter = encodeURIComponent(
-        firstChunk.length >= 4
-          ? `Phones/any(p: contains(p/PhoneNumber, '${last4}') and contains(p/PhoneNumber, '${firstChunk}'))`
-          : `Phones/any(p: contains(p/PhoneNumber, '${last4}'))`
-      );
+      const filter = encodeURIComponent(`Phones/any(p: ${buildPhonePredicate(phone)})`);
       const url = `${PLOOMES_BASE_URL}/Contacts?$filter=${filter}&$top=1&$select=Id,Name`;
 
       const controller = new AbortController();
@@ -263,6 +283,62 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     }
   }, []);
 
+  /**
+   * Dedup com decisão de reativação. Além de saber se o telefone existe, decide se
+   * o lead pode ser recadastrado como NOVO porque esfriou: perdido (StatusId=3) no
+   * pipe de Qualificação e SEM nenhum ciclo aberto (StatusId=1) lá — assim não
+   * duplicamos um lead que o SDR ainda está tocando. Considera deals de TODOS os
+   * contatos com aquele telefone (cobre duplicatas de reativações anteriores: o deal
+   * recém-criado fica aberto e volta a bloquear até esfriar de novo).
+   *
+   * Faz 2 chamadas em paralelo: Contacts (autoridade de `exists`) + Deals da
+   * Qualificação por telefone (autoridade de `canReregister`). Falha aberto: mantém
+   * só o que foi confirmado; se nada confirmou, `exists=false` (nunca trava lead novo).
+   */
+  const checkPhoneStatus = useCallback(async (phone: string): Promise<PloomesPhoneStatus> => {
+    const pred = buildPhonePredicate(phone);
+    const contactsUrl = `${PLOOMES_BASE_URL}/Contacts?$filter=${encodeURIComponent(`Phones/any(p: ${pred})`)}&$top=1&$select=Id`;
+    const dealsUrl = `${PLOOMES_BASE_URL}/Deals?$filter=${encodeURIComponent(`Contact/Phones/any(p: ${pred}) and PipelineId eq ${QUALIFICACAO_PIPELINE_ID}`)}&$top=50&$select=StatusId`;
+
+    let exists = false;
+    let canReregister = false;
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3500);
+    const headers = { Accept: 'application/json', 'user-key': PLOOMES_API_KEY };
+
+    try {
+      const [contactsRes, dealsRes] = await Promise.allSettled([
+        fetch(contactsUrl, { headers, signal: controller.signal }),
+        fetch(dealsUrl, { headers, signal: controller.signal }),
+      ]);
+
+      if (contactsRes.status === 'fulfilled' && contactsRes.value.ok) {
+        try {
+          const data = await contactsRes.value.json();
+          exists = (data.value?.length || 0) > 0;
+        } catch { /* ignora parse */ }
+      }
+
+      if (dealsRes.status === 'fulfilled' && dealsRes.value.ok) {
+        try {
+          const data = await dealsRes.value.json();
+          const deals: Array<{ StatusId: number }> = data.value || [];
+          if (deals.length > 0) exists = true; // deal implica contato existente
+          const hasOpen = deals.some((d) => d.StatusId === DEAL_STATUS.OPEN);
+          const hasLost = deals.some((d) => d.StatusId === DEAL_STATUS.LOST);
+          canReregister = !hasOpen && hasLost;
+        } catch { /* ignora parse */ }
+      }
+    } catch {
+      /* falha aberto */
+    } finally {
+      clearTimeout(timeout);
+    }
+
+    return { exists, canReregister };
+  }, []);
+
   const submitLead = useCallback(async (data: PloomesContactData): Promise<void> => {
     try {
       // Cria o contato no Ploomes
@@ -283,6 +359,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     createContact,
     createDeal,
     checkPhoneExists,
+    checkPhoneStatus,
     submitLead
   };
 };

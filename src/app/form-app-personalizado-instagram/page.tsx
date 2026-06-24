@@ -19,7 +19,7 @@ interface FormData {
 
 export default function FormAppPersonalizadoInstagram() {
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
-  const { checkPhoneExists } = usePloomesAPI({ originId: ORIGIN_ID });
+  const { checkPhoneStatus } = usePloomesAPI({ originId: ORIGIN_ID });
 
   const [formData, setFormData] = useState<FormData>({
     barbershopName: "",
@@ -62,10 +62,11 @@ export default function FormAppPersonalizadoInstagram() {
       setError(null);
 
       try {
-        // Bloqueio anti-duplicata: não cria contato se o telefone já existe no
-        // Ploomes. checkPhoneExists falha aberto (false) em erro/timeout.
-        const phoneAlreadyExists = await checkPhoneExists(formData.whatsapp);
-        if (phoneAlreadyExists) {
+        // Bloqueio anti-duplicata com exceção de reativação: não cria contato se o
+        // telefone já existe no Ploomes, EXCETO se o lead foi perdido na Qualificação
+        // e esfriou (canReregister) — aí recadastra como novo lead. Falha aberto.
+        const { exists, canReregister } = await checkPhoneStatus(formData.whatsapp);
+        if (exists && !canReregister) {
           setError("Este WhatsApp já está cadastrado no Ploomes.");
           setIsSubmitting(false);
           return;
@@ -113,7 +114,7 @@ export default function FormAppPersonalizadoInstagram() {
         setIsSubmitting(false);
       }
     },
-    [formData, isValidPhone, checkPhoneExists]
+    [formData, isValidPhone, checkPhoneStatus]
   );
 
   return (

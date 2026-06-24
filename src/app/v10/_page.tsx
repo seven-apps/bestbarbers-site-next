@@ -136,8 +136,10 @@ export default function V10Page() {
     setError(null);
 
     try {
-      const exists = await ploomes.checkPhoneExists(phone);
-      if (exists) {
+      // Dedup com exceção de reativação: bloqueia duplicata ativa, libera lead
+      // perdido na Qualificação que esfriou (canReregister) → recadastra como novo.
+      const { exists, canReregister } = await ploomes.checkPhoneStatus(phone);
+      if (exists && !canReregister) {
         setError("Já estamos em contato com este WhatsApp! Em breve um especialista te chama.");
         setIsSubmitting(false);
         return;
