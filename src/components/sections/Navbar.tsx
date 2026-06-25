@@ -62,21 +62,21 @@ export function Navbar({ onCtaClick, withoutCta = false }: NavbarProps) {
         </div>}
 
         {/* Mobile CTA */}
-        {!withoutCta && <div className="md:hidden flex items-center gap-2">
+        {!withoutCta && <div className="md:hidden flex items-center gap-1.5 ml-3">
           <Link
             href="https://adm.bestbarbers.app/login"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center border border-white/20 text-white/70 px-3 py-2.5 rounded-xl text-xs font-semibold hover:border-white/40 hover:text-white transition-all duration-200"
+            className="inline-flex items-center whitespace-nowrap border border-white/20 text-white/70 px-3 py-2 rounded-full text-[11px] font-semibold leading-none hover:border-white/40 hover:text-white transition-all duration-200"
           >
             Já sou cliente
           </Link>
           <button
             onClick={handleCtaClick}
-            className="inline-flex items-center gap-1.5 bg-[#ffaf02] text-[#121212] px-4 py-2.5 rounded-xl text-xs font-bold shadow-[0_2px_8px_rgba(255,175,2,0.25)] hover:scale-[1.02] active:scale-[0.98] transition-transform duration-200"
+            className="inline-flex items-center gap-1 whitespace-nowrap bg-[#ffaf02] text-[#121212] px-3.5 py-2 rounded-full text-[11px] font-bold leading-none shadow-[0_2px_8px_rgba(255,175,2,0.25)] active:scale-[0.98] transition-transform duration-200"
           >
-            {navbar.buttons.primary.text}
-            <ArrowRight className="w-3.5 h-3.5" />
+            App próprio
+            <ArrowRight className="w-3.5 h-3.5 shrink-0" />
           </button>
         </div>}
       </div>
