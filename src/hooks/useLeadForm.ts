@@ -296,6 +296,14 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // CAPI direta → bbai.bestbarbers.app (bestbarbers-ai dashboard). Fire-and-forget.
       // Meta deduplica via event_id → Pixel + Stape + CAPI direta = 1 evento contado.
       const capiUrl = process.env.NEXT_PUBLIC_BBAI_DASHBOARD_URL;
+      // _fbp/_fbc são os cookies que a Meta usa para parear o evento do navegador com
+      // o do servidor (CAPI). Sem eles a dedup depende só do event_id e pode contar 2×.
+      const readCk = (n: string): string | undefined =>
+        typeof document !== 'undefined'
+          ? document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)'))?.[1]
+          : undefined;
+      const fbp = readCk('_fbp');
+      const fbc = readCk('_fbc');
       const sendCapiEvent = (eventName: 'Lead' | 'QualifiedLead', eventId: string): void => {
         if (!capiUrl) return;
         const nameParts = formData.ownerName.trim().split(/\s+/);
@@ -311,6 +319,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
               firstName: nameParts[0]?.toLowerCase() || undefined,
               lastName: nameParts.slice(1).join(' ').toLowerCase() || undefined,
               country: 'br',
+              fbp,
+              fbc,
             },
             eventSourceUrl: typeof window !== 'undefined' ? window.location.href : undefined,
           }),

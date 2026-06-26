@@ -29,6 +29,7 @@ export function PodcastAttribution() {
         utm_content: null,
         utm_term: null,
         fbclid: null,
+        fbclidFresh: null,
         gclid: null,
       };
       sessionStorage.setItem(SS_KEY, JSON.stringify(snapshot));

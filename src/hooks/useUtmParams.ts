@@ -9,6 +9,11 @@ export interface UtmParams {
   utm_content: string | null;
   utm_term: string | null;
   fbclid: string | null;
+  // fbclid de tracking (URL || cookie _fbc) — usar para Pixel/CAPI (match/dedup).
+  fbclidFresh: string | null;
+  // fbclid SÓ da visita/sessão atual (URL ou snapshot fresco) — usar para ATRIBUIÇÃO
+  // de origem. NUNCA do cookie _fbc persistido (que dura ~90d e marcaria visitas
+  // diretas/orgânicas de quem clicou num ad um dia como "tráfego pago").
   gclid: string | null;
 }
 
@@ -139,6 +144,7 @@ export const useUtmParams = () => {
         utm_content: null,
         utm_term: null,
         fbclid: null,
+        fbclidFresh: null,
         gclid: null,
       };
     }
@@ -153,9 +159,13 @@ export const useUtmParams = () => {
     const utmTerm = urlParams.get("utm_term");
 
     // Click IDs — Meta adiciona fbclid em todo click de ad; Google Ads adiciona gclid.
-    // Cookies são fallback caso o usuário navegue para /v11 sem os params na URL.
-    const fbclid = urlParams.get("fbclid") || fbclidFromCookie();
-    const gclid = urlParams.get("gclid") || gclidFromCookie();
+    // FRESH = só da URL desta visita (clicou no ad AGORA). Cookies (_fbc/_gcl_aw) são
+    // fallback APENAS para tracking (Pixel/CAPI), NUNCA para atribuição de origem —
+    // o _fbc persiste ~90d e contaminaria visitas diretas como "tráfego pago".
+    const fbclidUrl = urlParams.get("fbclid");
+    const gclidUrl = urlParams.get("gclid");
+    const fbclid = fbclidUrl || fbclidFromCookie();
+    const gclid = gclidUrl || gclidFromCookie();
 
     // Param legado de parceiros (?source=mileno) — compatibilidade mantida
     const legacySource = urlParams.get("source");
@@ -169,13 +179,16 @@ export const useUtmParams = () => {
       utm_content: utmContent,
       utm_term: utmTerm,
       fbclid,
+      fbclidFresh: fbclidUrl,
       gclid,
     };
 
     // Persistir snapshot na primeira visita com sinais de ad — preserva params
     // através de navegação interna (LP V11 → outra rota → volta).
+    // hasSignal usa os click IDs FRESCOS (URL), não os de cookie — senão o snapshot
+    // nasceria contaminado por _fbc/_gcl_aw de visitas antigas.
     try {
-      const hasSignal = !!(utmSource || legacySource || fbclid || gclid || utmCampaign);
+      const hasSignal = !!(utmSource || legacySource || fbclidUrl || gclidUrl || utmCampaign);
       const stored = sessionStorage.getItem(SS_KEY);
       if (hasSignal && !stored) {
         sessionStorage.setItem(SS_KEY, JSON.stringify(params));
@@ -191,6 +204,7 @@ export const useUtmParams = () => {
           utm_content: params.utm_content ?? restored.utm_content ?? null,
           utm_term: params.utm_term ?? restored.utm_term ?? null,
           fbclid: params.fbclid ?? restored.fbclid ?? null,
+          fbclidFresh: params.fbclidFresh ?? restored.fbclidFresh ?? null,
           gclid: params.gclid ?? restored.gclid ?? null,
         };
       }
@@ -203,7 +217,7 @@ export const useUtmParams = () => {
 
   const getOriginMapping = useCallback(
     (utmParams: UtmParams): OriginMapping => {
-      const { utm_source, utm_desc, utm_medium, fbclid } = utmParams;
+      const { utm_source, utm_desc, utm_medium, fbclidFresh } = utmParams;
 
       // utm_source=meta usa o mesmo originId de "ads" (40210173).
       // Campanhas com url_tags utm_source={{site_source_name}} (LP V12+) emitem
@@ -219,7 +233,9 @@ export const useUtmParams = () => {
       // tratar como "ads" (originId 40210173 — Tráfego Pago).
       // Roda também quando utm_source existe mas não está no originMap — um source
       // desconhecido não pode bloquear a atribuição de tráfego pago.
-      // fbclid é incluído pois Meta sempre adiciona em clicks de ad — sinal definitivo.
+      // fbclidFresh (URL/sessão atual) é incluído pois Meta adiciona em clicks de ad.
+      // ATENÇÃO: usar fbclidFresh, NUNCA o fbclid de cookie — o _fbc persiste ~90d e
+      // marcaria visitas diretas/orgânicas como tráfego pago (contaminava a origem).
       if ((!sourceKey || !(sourceKey in originMap)) && typeof window !== "undefined") {
         const search = new URLSearchParams(window.location.search);
         const hasMetaSignal =
@@ -233,7 +249,7 @@ export const useUtmParams = () => {
           search.has("adname") ||
           search.has("creative") ||
           search.has("angulo") ||
-          !!fbclid ||
+          !!fbclidFresh ||
           utm_medium === "paid";
         if (hasMetaSignal) sourceKey = "ads";
       }
