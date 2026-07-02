@@ -237,6 +237,21 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         leadScore += 20;
       }
 
+      // Gate por campanha (usado no pixel/CAPI abaixo E exposto ao dataLayer):
+      // ESCALA (OP400-ESCALA-*) otimiza por 'Lead' qualidade → só dispara score >= 30.
+      const isEscalaQualidade = /OP400-ESCALA/i.test(utmParams.utm_campaign || '');
+      const leadQualifica = leadScore >= 30;
+      const metaLeadFired = !isEscalaQualidade || leadQualifica;
+
+      // _fbp/_fbc são os cookies que a Meta usa para parear o evento do navegador com
+      // o do servidor (CAPI/Stape). Sem eles a dedup depende só do event_id e pode contar 2×.
+      const readCk = (n: string): string | undefined =>
+        typeof document !== 'undefined'
+          ? document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)'))?.[1]
+          : undefined;
+      const fbp = readCk('_fbp');
+      const fbc = readCk('_fbc');
+
       // 3. DISPARO DATALAYER (Executado uma única vez após validação e coleta)
       if (typeof window !== 'undefined') {
         const nameParts = (formData.ownerName || '').trim().split(/\s+/);
@@ -250,12 +265,18 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
           event: 'form_submit', // Nome padrão solicitado anteriormente
           event_type: 'form_init', // Tag adicional para satisfazer a nomenclatura citada
           event_id: leadEventId,
+          // Se o container server (Stape/GTM) re-emitir 'Lead' a partir deste push, ele
+          // DEVE respeitar meta_lead_fired (false = Lead suprimido pelo gate ESCALA; re-emitir
+          // criaria Lead sem par de dedup e furaria o gate) e usar fbp/fbc para o pareamento.
+          meta_lead_fired: metaLeadFired,
           user_data: {
             email: formData.email.toLowerCase().trim(),
             phone: phoneWithPlus,
             phone_meta: phoneWithoutPlus,
             first_name: firstName,
             last_name: lastName,
+            fbp,
+            fbc,
           },
           custom_parameters: {
             barbershop_name: formData.barbershopName,
@@ -296,14 +317,6 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // CAPI direta → bbai.bestbarbers.app (bestbarbers-ai dashboard). Fire-and-forget.
       // Meta deduplica via event_id → Pixel + Stape + CAPI direta = 1 evento contado.
       const capiUrl = process.env.NEXT_PUBLIC_BBAI_DASHBOARD_URL;
-      // _fbp/_fbc são os cookies que a Meta usa para parear o evento do navegador com
-      // o do servidor (CAPI). Sem eles a dedup depende só do event_id e pode contar 2×.
-      const readCk = (n: string): string | undefined =>
-        typeof document !== 'undefined'
-          ? document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)'))?.[1]
-          : undefined;
-      const fbp = readCk('_fbp');
-      const fbc = readCk('_fbc');
       const sendCapiEvent = (eventName: 'Lead' | 'QualifiedLead', eventId: string): void => {
         if (!capiUrl) return;
         const nameParts = formData.ownerName.trim().split(/\s+/);
@@ -341,11 +354,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // algoritmo com volume não-qualificado, o 'Lead' dessas campanhas só dispara
       // quando score >= 30. Nas demais campanhas/LPs (VALIDACAO, orgânico, etc.) o
       // 'Lead' segue disparando em TODO submit (Lead cru) — preserva a semântica delas.
-      const isEscalaQualidade = /OP400-ESCALA/i.test(utmParams.utm_campaign || '');
-      const leadQualifica = leadScore >= 30;
-
+      // (isEscalaQualidade/leadQualifica/metaLeadFired computados antes do dataLayer.)
       const pixelPromises: Promise<void>[] = [];
-      if (!isEscalaQualidade || leadQualifica) {
+      if (metaLeadFired) {
         pixelPromises.push(trackLead(pixelData, leadEventId));
         sendCapiEvent('Lead', leadEventId);
       }
