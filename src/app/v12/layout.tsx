@@ -1,4 +1,3 @@
-import Script from "next/script";
 import { Vollkorn, Montserrat } from "next/font/google";
 
 const vollkorn = Vollkorn({
@@ -22,27 +21,13 @@ export default function V12Layout({
 }) {
   return (
     <>
-      {/* Google Tag Manager - LP V12 */}
-      <Script id="gtm-v12" strategy="afterInteractive">
-        {`
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-WWR94GLQ');
-        `}
-      </Script>
-
-      {/* Google Tag Manager (noscript) - LP V12 */}
-      <noscript>
-        <iframe
-          src="https://www.googletagmanager.com/ns.html?id=GTM-WWR94GLQ"
-          height="0"
-          width="0"
-          style={{ display: "none", visibility: "hidden" }}
-        />
-      </noscript>
-
+      {/* GTM-WWR94GLQ REMOVIDO (02/Jul/2026): o container disparava uma 2ª tag Meta
+          Pixel 'Lead' (pixel 1100195158903491) no trigger form_submit com eventId
+          próprio (nunca casa com o leadEventId do código) → TODO submit da /v12
+          contava 2 leads na Meta e dobrava o CPL-real de todos os anúncios.
+          O container também carregava GA4 G-EPNE6CJL7C + conversão Google Ads
+          (herança de agência; sem campanha Google ativa conhecida). O tracking
+          oficial da LP segue no código (useLeadForm/useMetaPixel) + GTM global. */}
       <div className={`${vollkorn.variable} ${montserrat.variable}`}>
         {children}
       </div>

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Vollkorn, Montserrat } from "next/font/google";
 
 const vollkorn = Vollkorn({
@@ -42,27 +41,10 @@ export default function CalculadoraPrejuizoLayout({
 }) {
   return (
     <>
-      {/* Google Tag Manager - Calculadora de Prejuízo */}
-      <Script id="gtm-calc-prejuizo" strategy="afterInteractive">
-        {`
-          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-          })(window,document,'script','dataLayer','GTM-WWR94GLQ');
-        `}
-      </Script>
-
-      {/* Google Tag Manager (noscript) - Calculadora de Prejuízo */}
-      <noscript>
-        <iframe
-          src="https://www.googletagmanager.com/ns.html?id=GTM-WWR94GLQ"
-          height="0"
-          width="0"
-          style={{ display: "none", visibility: "hidden" }}
-        />
-      </noscript>
-
+      {/* GTM-WWR94GLQ REMOVIDO (02/Jul/2026): mesma limpeza da /v12 — o container
+          disparava uma 2ª tag Meta Pixel 'Lead' no form_submit com eventId próprio
+          (dobrava a contagem de leads dos anúncios). Tracking oficial segue no
+          código (useLeadForm/useMetaPixel) + GTM global. */}
       <div className={`${vollkorn.variable} ${montserrat.variable}`}>
         {children}
       </div>
