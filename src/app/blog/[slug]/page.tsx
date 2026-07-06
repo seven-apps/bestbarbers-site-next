@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { FeatureCTA } from "@/components/FeatureCTA";
+import { CopyableBlock } from "@/components/CopyableBlock";
 import { articles } from "@/content/blog";
 import type { ContentBlock, BlogSection } from "@/content/blog/types";
 
@@ -96,6 +97,8 @@ function RenderBlock({ block }: { block: ContentBlock }) {
           <p className="text-sm text-gray-600 mt-1">{block.description}</p>
         </Link>
       );
+    case "copyable":
+      return <CopyableBlock label={block.label} text={block.text} />;
   }
 }
 

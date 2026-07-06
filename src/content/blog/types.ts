@@ -25,4 +25,6 @@ export type ContentBlock =
   | { type: "list"; ordered?: boolean; items: string[] }
   | { type: "highlight"; value: string; label: string }
   | { type: "callout"; text: string }
-  | { type: "link-box"; title: string; href: string; description: string };
+  | { type: "link-box"; title: string; href: string; description: string }
+  // Template pronto-pra-copiar (mensagem/script). Renderiza caixa com botão "Copiar".
+  | { type: "copyable"; label: string; text: string };

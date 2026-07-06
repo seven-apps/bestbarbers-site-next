@@ -12,8 +12,14 @@ import { gestaoFinanceira } from "./gestao-financeira-barbearia";
 import { inadimplenciaBarbearia } from "./inadimplencia-barbearia-como-cobrar";
 import { case290Assinantes } from "./case-barbearia-290-assinantes-clube";
 import { comissaoBarbeiroQuantoPagar } from "./quanto-pagar-comissao-barbeiro";
+import { recuperarClienteSumido } from "./recuperar-cliente-sumido-barbearia";
+import { programaIndicacao } from "./programa-indicacao-barbearia";
+import { aumentarTicketMedio } from "./aumentar-ticket-medio-barbearia";
 
 export const articles: BlogArticle[] = [
+  recuperarClienteSumido,
+  programaIndicacao,
+  aumentarTicketMedio,
   nfse2026,
   melhorSistema2026,
   barbeariaPorAssinatura,
