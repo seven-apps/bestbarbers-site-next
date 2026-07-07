@@ -5,7 +5,7 @@ export const case290Assinantes: BlogArticle = {
   title:
     "Como uma Barbearia de 3 Cadeiras Chegou a 290 Assinantes (e R$27,6 mil/mês de Clube)",
   description:
-    "Case clube assinatura barbearia: como 3 cadeiras em Araxá/MG saíram de R$9.249 para R$27.586/mês de clube com 290 assinantes em 18 meses.",
+    "Case clube assinatura barbearia: como 3 cadeiras em Araxá/MG saíram de R$9.249 para R$27,6 mil/mês de clube com 290 assinantes — e seguiram crescendo: R$30,4 mil/mês e uma 4ª cadeira em 2026.",
   keywords: [
     "case clube assinatura barbearia",
     "case barbearia assinatura",
@@ -17,7 +17,7 @@ export const case290Assinantes: BlogArticle = {
     "como escalar assinaturas barbearia",
   ],
   publishedAt: "2026-06-23T10:00:00-03:00",
-  updatedAt: "2026-06-23T10:00:00-03:00",
+  updatedAt: "2026-07-07T16:00:00-03:00",
   readingTime: 11,
   category: "Cases",
   tags: [
@@ -208,6 +208,15 @@ export const case290Assinantes: BlogArticle = {
           type: "highlight",
           value: "R$27.586/mês",
           label: "receita recorrente do clube (de R$9.249 para R$27.586 — cerca de 3× em 18 meses)",
+        },
+        {
+          type: "paragraph",
+          text: "Atualização de julho/2026: os números foram re-auditados na base e a história continuou andando. A operação chegou a R$30.447 por mês de receita recorrente de clube — cerca de 3,3× o ponto de partida — com 277 assinantes ativos (o pico registrado foi de 290). E o crescimento cobrou espaço físico: a barbearia que começou essa jornada com 3 cadeiras hoje opera com 4. Nenhum número deste artigo foi inflado; o que era retrato de 18 meses virou trajetória de 20.",
+        },
+        {
+          type: "highlight",
+          value: "R$30.447/mês",
+          label: "receita recorrente re-auditada em julho/2026 — 3,3× o ponto de partida, agora com 4 cadeiras",
         },
         {
           type: "paragraph",
