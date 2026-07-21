@@ -47,6 +47,15 @@ const formFields = [
   },
 ];
 
+// Origem dedicada da LP no Ploomes: "Site - Tabela de Precificação de Clubes"
+// (Id 120003643, criada em 21/Jul/2026). Prioriza o canal do UTM (youtube/ads/
+// parceiro) quando presente — mesma lição do LeadFormModal: sobrescrever o canal
+// com a origem da página fazia lead de Meta entrar como "site" e descasava do
+// Ads Manager. A LP fica 100% mensurável mesmo assim: source
+// (tabela_precificacao_clube) + utm_campaign gravam em todo lead.
+const TABELA_ORIGIN_ID = 120003643;
+const TABELA_ORIGIN_DESC = "LP - Tabela de Precificação de Clubes";
+
 function getFormHeading(utmContent: string | null) {
   const content = utmContent?.toLowerCase() || "";
   // Message-match com o ângulo de origem (vídeo/anúncio → tabela → form).
@@ -62,7 +71,7 @@ function getFormHeading(utmContent: string | null) {
 }
 
 export function FormSectionTabela() {
-  const { getUtmParams } = useUtmParams();
+  const { getUtmParams, getOriginMapping } = useUtmParams();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const utmContent = useMemo(
@@ -70,6 +79,13 @@ export function FormSectionTabela() {
     [mounted, getUtmParams]
   );
   const heading = useMemo(() => getFormHeading(utmContent), [utmContent]);
+
+  // Canal do UTM vence; origem da LP é o fallback orgânico/direto (guard de
+  // hidratação: só resolve pós-mount, como o utmContent acima).
+  const utmMapping = useMemo(
+    () => (mounted ? getOriginMapping(getUtmParams()) : { originId: null, originDesc: null }),
+    [mounted, getOriginMapping, getUtmParams]
+  );
 
   const {
     formData,
@@ -81,6 +97,8 @@ export function FormSectionTabela() {
     handleSubmit,
   } = useLeadForm({
     source: "tabela_precificacao_clube",
+    originId: utmMapping.originId ?? TABELA_ORIGIN_ID,
+    originDesc: utmMapping.originDesc || TABELA_ORIGIN_DESC,
     requireMonthlyRevenue: true,
     onError: (error) => {
       console.error("Erro ao enviar formulário:", error);
