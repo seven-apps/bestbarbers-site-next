@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { usePhoneMask } from "@/hooks/usePhoneMask";
 import { usePloomesAPI } from "@/hooks/usePloomesAPI";
+import { sendReregisterNote } from "@/lib/reregister";
 
 const PLOOMES_API_KEY =
   "B59785E2FC60B0D69BFE51222FE4516699B00F0F97420BBA48E25F648510FB55245A64F7CDB0C89E438AC6C0C56D973F73F99DB7FEF93422E040A2B8816B323B";
@@ -66,7 +67,10 @@ export default function FormInstagramProspeccaoAtiva() {
         // telefone já existe no Ploomes, EXCETO se o lead foi perdido na Qualificação
         // e esfriou (canReregister) — aí recadastra como novo lead. Falha aberto.
         const { exists, canReregister } = await checkPhoneStatus(formData.whatsapp);
+        const reregisterOrigem = formData.originLead || "Instagram - Prospecção Ativa";
         if (exists && !canReregister) {
+          // Lead com card ATIVO reapareceu na prospecção — registra no card (F&F).
+          sendReregisterNote({ phone: formData.whatsapp, mode: "active", origemDesc: reregisterOrigem });
           setError("Esse telefone já existe no Ploomes (cliente ou lead ativo) — não cadastrar de novo.");
           setIsSubmitting(false);
           return;
@@ -104,6 +108,11 @@ export default function FormInstagramProspeccaoAtiva() {
         if (!res.ok) {
           const text = await res.text();
           throw new Error(`Erro ${res.status}: ${text}`);
+        }
+
+        // Reativação: lead estava perdido e voltou — anota o histórico no card novo (F&F).
+        if (canReregister) {
+          sendReregisterNote({ phone: formData.whatsapp, mode: "reactivation", origemDesc: reregisterOrigem });
         }
 
         setSubmitted(true);

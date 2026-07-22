@@ -4,6 +4,7 @@ import { usePloomesAPI, type PloomesContactData } from './usePloomesAPI';
 import { useWhatsAppRedirect } from './useWhatsAppRedirect';
 import { useMetaPixel } from './useMetaPixel';
 import { useUtmParams } from './useUtmParams';
+import { sendReregisterNote } from '@/lib/reregister';
 
 export interface FormData {
   barbershopName: string;
@@ -79,7 +80,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   // adicional quando score >= 30 (preserva leitura de CPQL). trackCompleteRegistration
   // foi removido em 910a080 (gerava duplicação Meta vs Ploomes 50% inflado).
   const { trackLead, trackQualifiedLead } = useMetaPixel();
-  const { getUtmParams } = useUtmParams();
+  const { getUtmParams, getOriginMapping } = useUtmParams();
 
   // Resolve dedup + reativação. O Ploomes é a AUTORIDADE: decide se o telefone é
   // duplicata ativa (bloqueia) ou lead reaquecido — perdido na Qualificação e sem
@@ -201,7 +202,21 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       const dedup = cachedDedup?.phone === phoneDigits
         ? cachedDedup
         : await resolveDedup(formData.whatsapp);
+
+      // Origem legível p/ a anotação de recadastro (mesma resolução do createContact).
+      const reregisterOrigem = originDesc ?? getOriginMapping(utmParams).originDesc ?? undefined;
+
       if (dedup.exists && !dedup.canReregister) {
+        // Lead com card ATIVO se cadastrou de novo — hoje só bloqueávamos. Registra a
+        // re-demonstração de interesse no card (temperatura pro SDR). Fire-and-forget:
+        // não altera a UX, o lead segue vendo a mensagem de "já estamos em contato".
+        sendReregisterNote({
+          phone: formData.whatsapp,
+          mode: 'active',
+          origemDesc: reregisterOrigem,
+          interesse: formData.interestedTool || undefined,
+          faturamento: formData.monthlyRevenue || undefined,
+        });
         setSubmitError('Já estamos em contato com este WhatsApp! Em breve um especialista te chama.');
         setIsSubmitting(false);
         return;
@@ -310,6 +325,20 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       };
       await submitLead(ploomesData);
 
+      // Reativação: lead estava PERDIDO e voltou por esta campanha (recadastrado como
+      // novo lead acima). A automação do Ploomes vai criar o card novo em segundos — o
+      // backend faz poll e anota nele o histórico ("estava perdido, voltou"). F&F.
+      if (dedup.canReregister) {
+        sendReregisterNote({
+          phone: formData.whatsapp,
+          mode: 'reactivation',
+          origemDesc: reregisterOrigem,
+          interesse: formData.interestedTool || undefined,
+          faturamento: formData.monthlyRevenue || undefined,
+          score: leadScore,
+        });
+      }
+
       // 5. Meta Pixel + CAPI direta — GATE POR CAMPANHA (Operação 400, rev. 16/Jun/26):
       // ESCALA (OP400-ESCALA-*) otimiza por 'Lead' qualidade → só dispara score >= 30.
       // Demais campanhas/LPs (VALIDACAO, orgânico) → 'Lead' cru em todo submit.
@@ -397,6 +426,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     trackLead,
     trackQualifiedLead,
     getUtmParams,
+    getOriginMapping,
+    originDesc,
     submitLead,
     resolveDedup,
     source,
