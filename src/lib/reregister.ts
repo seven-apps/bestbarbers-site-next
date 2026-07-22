@@ -49,7 +49,7 @@ export function sendReregisterNote(input: ReregisterNoteInput): void {
     const base =
       process.env.NEXT_PUBLIC_BBAI_DASHBOARD_URL ||
       process.env.NEXT_PUBLIC_BBAI_API_URL ||
-      "https://ai.bestbarbers.app";
+      "https://bbai.bestbarbers.app";
 
     const form =
       input.form ||
