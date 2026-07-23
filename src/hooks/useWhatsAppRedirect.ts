@@ -80,6 +80,9 @@ export const useWhatsAppRedirect = () => {
           baseLink + "%0AConheci%20através%20do%20Ottoni",
         "rafael-guapo":
           baseLink + "%0AConheci%20através%20do%20Rafael%20Guapo",
+        "mauro-elegance":
+          baseLink +
+          "%0AConheci%20através%20do%20Mauro%20da%20Elegance%20Barbearia",
       };
 
       // Verifica UTM inf primeiro (tem prioridade)
@@ -170,6 +173,9 @@ export const useWhatsAppRedirect = () => {
           baseLink + "%0AConheci%20através%20do%20Ottoni",
         "rafael-guapo":
           baseLink + "%0AConheci%20através%20do%20Rafael%20Guapo",
+        "mauro-elegance":
+          baseLink +
+          "%0AConheci%20através%20do%20Mauro%20da%20Elegance%20Barbearia",
       };
 
       // Verifica UTM inf primeiro
