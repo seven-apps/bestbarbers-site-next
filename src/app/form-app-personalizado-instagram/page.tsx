@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { usePhoneMask } from "@/hooks/usePhoneMask";
 import { usePloomesAPI } from "@/hooks/usePloomesAPI";
-import { sendReregisterNote } from "@/lib/reregister";
+import { criarCardRecadastro } from "@/lib/recadastro";
 
 const PLOOMES_API_KEY =
   "B59785E2FC60B0D69BFE51222FE4516699B00F0F97420BBA48E25F648510FB55245A64F7CDB0C89E438AC6C0C56D973F73F99DB7FEF93422E040A2B8816B323B";
@@ -20,7 +20,7 @@ interface FormData {
 
 export default function FormAppPersonalizadoInstagram() {
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
-  const { checkPhoneStatus } = usePloomesAPI({ originId: ORIGIN_ID });
+  const { checkPhoneExists } = usePloomesAPI({ originId: ORIGIN_ID });
 
   const [formData, setFormData] = useState<FormData>({
     barbershopName: "",
@@ -63,15 +63,24 @@ export default function FormAppPersonalizadoInstagram() {
       setError(null);
 
       try {
-        // Bloqueio anti-duplicata com exceção de reativação: não cria contato se o
-        // telefone já existe no Ploomes, EXCETO se o lead foi perdido na Qualificação
-        // e esfriou (canReregister) — aí recadastra como novo lead. Falha aberto.
-        const { exists, canReregister } = await checkPhoneStatus(formData.whatsapp);
-        const reregisterOrigem = formData.originLead || "Instagram - Orgânico";
-        if (exists && !canReregister) {
-          // Lead com card ATIVO reapareceu neste form — registra no card (F&F).
-          sendReregisterNote({ phone: formData.whatsapp, mode: "active", origemDesc: reregisterOrigem });
-          setError("Este WhatsApp já está cadastrado no Ploomes.");
+        // Telefone já no Ploomes não barra mais (23/Jul/26): cria um card NOVO na
+        // Qualificação para o contato existente, replicando o SDR do card anterior.
+        // O card nasce marcado (bb_lead_tipo=recadastro) e o SDR faz a gestão lá.
+        const origemDesc = formData.originLead || "Instagram - Orgânico";
+        const jaExiste = await checkPhoneExists(formData.whatsapp);
+        if (jaExiste) {
+          const recadastro = await criarCardRecadastro({
+            phone: formData.whatsapp,
+            barbershopName: formData.barbershopName,
+            atribuicao: { originId: ORIGIN_ID, originDesc: origemDesc, fields: {} },
+          });
+          if (!recadastro.ok) {
+            setError("Telefone já cadastrado e o card novo não pôde ser criado agora. Tentar de novo em instantes.");
+            setIsSubmitting(false);
+            return;
+          }
+          setSubmitted(true);
+          setFormData({ barbershopName: "", ownerName: "", email: "", whatsapp: "", originLead: "" });
           setIsSubmitting(false);
           return;
         }
@@ -90,7 +99,7 @@ export default function FormAppPersonalizadoInstagram() {
             },
             {
               FieldKey: "contact_2D7EF0B1-E99E-414A-A7DA-4106F05DD4BB",
-              StringValue: formData.originLead || "Instagram - Orgânico",
+              StringValue: origemDesc,
             },
           ],
         };
@@ -110,11 +119,6 @@ export default function FormAppPersonalizadoInstagram() {
           throw new Error(`Erro ${res.status}: ${text}`);
         }
 
-        // Reativação: lead estava perdido e voltou — anota o histórico no card novo (F&F).
-        if (canReregister) {
-          sendReregisterNote({ phone: formData.whatsapp, mode: "reactivation", origemDesc: reregisterOrigem });
-        }
-
         setSubmitted(true);
         setFormData({ barbershopName: "", ownerName: "", email: "", whatsapp: "", originLead: "" });
       } catch (err) {
@@ -123,7 +127,7 @@ export default function FormAppPersonalizadoInstagram() {
         setIsSubmitting(false);
       }
     },
-    [formData, isValidPhone, checkPhoneStatus]
+    [formData, isValidPhone, checkPhoneExists]
   );
 
   return (

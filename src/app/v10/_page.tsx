@@ -1,6 +1,7 @@
 "use client";
 
 import { usePloomesAPI } from "@/hooks/usePloomesAPI";
+import { criarCardRecadastro } from "@/lib/recadastro";
 import { useMetaPixel } from "@/hooks/useMetaPixel";
 import { usePhoneMask } from "@/hooks/usePhoneMask";
 import Image from "next/image";
@@ -136,14 +137,9 @@ export default function V10Page() {
     setError(null);
 
     try {
-      // Dedup com exceção de reativação: bloqueia duplicata ativa, libera lead
-      // perdido na Qualificação que esfriou (canReregister) → recadastra como novo.
-      const { exists, canReregister } = await ploomes.checkPhoneStatus(phone);
-      if (exists && !canReregister) {
-        setError("Já estamos em contato com este WhatsApp! Em breve um especialista te chama.");
-        setIsSubmitting(false);
-        return;
-      }
+      // Dedup: telefone conhecido não barra mais (23/Jul/26) — vira card de recadastro
+      // na Qualificação (abaixo, depois do gate ICP), com o SDR anterior replicado.
+      const jaExiste = await ploomes.checkPhoneExists(phone);
 
       if (monthlyRevenue === "ate-3k") {
         await trackCustomEvent("ViewContent", { content_name: "v10-icp-gate-nurture", content_category: "lead-nurture" });
@@ -151,15 +147,32 @@ export default function V10Page() {
         return;
       }
 
-      const response = await ploomes.createContact({
+      const dados = {
         barbershopName: barbershopName.trim(),
         ownerName: ownerName.trim(),
         whatsapp: phone,
         employeeCount,
         monthlyRevenue,
-      });
+      };
 
-      const createdId = response?.value?.[0]?.Id;
+      let createdId: number | undefined;
+      if (jaExiste) {
+        const recadastro = await criarCardRecadastro({
+          phone,
+          barbershopName: dados.barbershopName,
+          atribuicao: ploomes.buildAttribution(dados),
+          faturamento: monthlyRevenue,
+          colaboradores: employeeCount,
+        });
+        if (!recadastro.ok) {
+          setError("Já estamos em contato com este WhatsApp! Em breve um especialista te chama.");
+          setIsSubmitting(false);
+          return;
+        }
+      } else {
+        const response = await ploomes.createContact(dados);
+        createdId = response?.value?.[0]?.Id;
+      }
       // Único eventId compartilhado entre Pixel client e CAPI server (deduplicação Meta)
       const eventId = `v10-submit-${createdId || phone}-${Date.now()}`;
 

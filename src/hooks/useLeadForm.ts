@@ -4,7 +4,7 @@ import { usePloomesAPI, type PloomesContactData } from './usePloomesAPI';
 import { useWhatsAppRedirect } from './useWhatsAppRedirect';
 import { useMetaPixel } from './useMetaPixel';
 import { useUtmParams } from './useUtmParams';
-import { sendReregisterNote } from '@/lib/reregister';
+import { criarCardRecadastro } from '@/lib/recadastro';
 
 export interface FormData {
   barbershopName: string;
@@ -69,38 +69,28 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [isDedupChecking, setIsDedupChecking] = useState(false);
-  // Cache do resultado do dedup pra evitar duplo round-trip no submit.
-  // canReregister=true → lead reaquecido (perdido na Qualificação) → recadastra como novo.
-  const dedupCacheRef = useRef<{ phone: string; exists: boolean; canReregister: boolean } | null>(null);
+  // Cache do dedup pra evitar duplo round-trip no submit. `exists` não bloqueia mais
+  // nada: decide entre criar contato novo (fluxo padrão) e criar card de recadastro.
+  const dedupCacheRef = useRef<{ phone: string; exists: boolean } | null>(null);
 
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
-  const { submitLead, checkPhoneStatus } = usePloomesAPI({ originId, originDesc });
+  const { submitLead, checkPhoneExists, buildAttribution } = usePloomesAPI({ originId, originDesc });
   const { redirectToWhatsApp: redirect } = useWhatsAppRedirect();
   // trackLead em todo submit válido (gate aberto — Operação 400) + trackQualifiedLead
   // adicional quando score >= 30 (preserva leitura de CPQL). trackCompleteRegistration
   // foi removido em 910a080 (gerava duplicação Meta vs Ploomes 50% inflado).
   const { trackLead, trackQualifiedLead } = useMetaPixel();
-  const { getUtmParams, getOriginMapping } = useUtmParams();
+  const { getUtmParams } = useUtmParams();
 
-  // Resolve dedup + reativação. O Ploomes é a AUTORIDADE: decide se o telefone é
-  // duplicata ativa (bloqueia) ou lead reaquecido — perdido na Qualificação e sem
-  // ciclo aberto → recadastra como novo lead. Só se o Ploomes não conhece o telefone
-  // é que a API do produto (BBAI) entra como rede extra (pega quem já é base).
-  const resolveDedup = useCallback(async (rawPhone: string): Promise<{ exists: boolean; canReregister: boolean }> => {
-    const status = await checkPhoneStatus(rawPhone);
-    if (status.canReregister) return { exists: true, canReregister: true };
-    if (status.exists) return { exists: true, canReregister: false };
-
-    const aiApiUrl = process.env.NEXT_PUBLIC_BBAI_API_URL;
-    if (aiApiUrl) {
-      try {
-        const res = await fetch(`${aiApiUrl}/api/leads/check?phone=${rawPhone.replace(/\D/g, '')}`);
-        const data = await res.json();
-        if (data?.data?.exists) return { exists: true, canReregister: false };
-      } catch { /* ignora — segue como não encontrado */ }
-    }
-    return { exists: false, canReregister: false };
-  }, [checkPhoneStatus]);
+  // O Ploomes é a AUTORIDADE do "esse telefone já existe?". Desde 23/Jul/26 a resposta
+  // não BARRA mais ninguém: telefone conhecido → card novo no contato existente
+  // (recadastro), telefone novo → contato novo (fluxo padrão). A checagem na base do
+  // produto (BBAI /api/leads/check) saiu junto: ela só existia para bloquear, e a
+  // regra agora é "não existe no Ploomes → cria contato" (André, 23/Jul).
+  // Falha aberto: erro/timeout vira exists=false e o lead entra pelo fluxo padrão.
+  const resolveDedup = useCallback(async (rawPhone: string): Promise<{ exists: boolean }> => {
+    return { exists: await checkPhoneExists(rawPhone) };
+  }, [checkPhoneExists]);
 
   // Dedup non-blocking — roda quando whatsapp atinge 11+ digitos
   const runBackgroundDedup = useCallback(async (rawPhone: string) => {
@@ -113,7 +103,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       const result = await resolveDedup(rawPhone);
       dedupCacheRef.current = { phone: phoneDigits, ...result };
     } catch {
-      dedupCacheRef.current = { phone: phoneDigits, exists: false, canReregister: false };
+      dedupCacheRef.current = { phone: phoneDigits, exists: false };
     } finally {
       setIsDedupChecking(false);
     }
@@ -193,34 +183,14 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       const initials = formData.ownerName.trim().split(/\s+/).map(n => n[0]).join('').toLowerCase();
       const leadEventId = `${Date.now()}-${initials}`;
 
-      // 1.1. BLOQUEIO ANTI-DUPLICATA (com exceção de reativação) — usa o resultado do
-      // background dedup se já checou este telefone; senão consulta na hora (cobre quem
-      // cola o número e clica antes do background terminar). Falha aberto (exists=false)
-      // em erro/timeout, então nunca trava um lead legítimo. Bloqueia só se já existe E
-      // NÃO é um lead reaquecido — perdido na Qualificação volta a entrar como novo lead.
+      // 1.1. DEDUP — usa o resultado do background dedup se já checou este telefone;
+      // senão consulta na hora (cobre quem cola o número e clica antes de terminar).
+      // Não bloqueia mais: define QUAL caminho o cadastro segue no passo 4.
+      // Falha aberto (exists=false) em erro/timeout → nunca trava um lead legítimo.
       const cachedDedup = dedupCacheRef.current;
       const dedup = cachedDedup?.phone === phoneDigits
         ? cachedDedup
         : await resolveDedup(formData.whatsapp);
-
-      // Origem legível p/ a anotação de recadastro (mesma resolução do createContact).
-      const reregisterOrigem = originDesc ?? getOriginMapping(utmParams).originDesc ?? undefined;
-
-      if (dedup.exists && !dedup.canReregister) {
-        // Lead com card ATIVO se cadastrou de novo — hoje só bloqueávamos. Registra a
-        // re-demonstração de interesse no card (temperatura pro SDR). Fire-and-forget:
-        // não altera a UX, o lead segue vendo a mensagem de "já estamos em contato".
-        sendReregisterNote({
-          phone: formData.whatsapp,
-          mode: 'active',
-          origemDesc: reregisterOrigem,
-          interesse: formData.interestedTool || undefined,
-          faturamento: formData.monthlyRevenue || undefined,
-        });
-        setSubmitError('Já estamos em contato com este WhatsApp! Em breve um especialista te chama.');
-        setIsSubmitting(false);
-        return;
-      }
 
       // 2. Cálculo de Lead Scoring (0-100+)
       let leadScore = 0;
@@ -323,23 +293,36 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         leadScore,
         leadEventId,
       };
-      await submitLead(ploomesData);
-
-      // Reativação: lead estava PERDIDO e voltou por esta campanha (recadastrado como
-      // novo lead acima). A automação do Ploomes vai criar o card novo em segundos — o
-      // backend faz poll e anota nele o histórico ("estava perdido, voltou"). F&F.
-      if (dedup.canReregister) {
-        sendReregisterNote({
+      if (dedup.exists) {
+        // RECADASTRO (23/Jul/26): telefone já existe no Ploomes → em vez de barrar,
+        // cria um card novo na Qualificação para o contato existente, com as mesmas
+        // informações do fluxo padrão e o SDR do card anterior replicado. Marcado com
+        // bb_lead_tipo=recadastro para não inflar a métrica de lead.
+        const recadastro = await criarCardRecadastro({
           phone: formData.whatsapp,
-          mode: 'reactivation',
-          origemDesc: reregisterOrigem,
-          interesse: formData.interestedTool || undefined,
+          barbershopName: formData.barbershopName,
+          atribuicao: buildAttribution(ploomesData),
           faturamento: formData.monthlyRevenue || undefined,
-          score: leadScore,
+          colaboradores: formData.employeeCount || undefined,
         });
+
+        if (!recadastro.ok) {
+          // Backend fora/timeout: volta ao comportamento anterior à feature — o lead vê
+          // a mensagem de sempre e nada é gravado pela metade. Nunca finge sucesso.
+          setSubmitError('Já estamos em contato com este WhatsApp! Em breve um especialista te chama.');
+          setIsSubmitting(false);
+          return;
+        }
+      } else {
+        await submitLead(ploomesData);
       }
 
-      // 5. Meta Pixel + CAPI direta — GATE POR CAMPANHA (Operação 400, rev. 16/Jun/26):
+      // 5. Meta Pixel + CAPI direta — dispara TAMBÉM no recadastro (André, 23/Jul/26):
+      // o mesmo dono se cadastrando por outro conjunto/público é sinal legítimo de
+      // perfil para o learning da campanha. Consequência assumida: a série de
+      // pixel-lead sobe a partir de 23/Jul (antes o duplicado era barrado ANTES do
+      // pixel) — o Ploomes separa via bb_lead_tipo, o pixel não separa.
+      // GATE POR CAMPANHA (Operação 400, rev. 16/Jun/26):
       // ESCALA (OP400-ESCALA-*) otimiza por 'Lead' qualidade → só dispara score >= 30.
       // Demais campanhas/LPs (VALIDACAO, orgânico) → 'Lead' cru em todo submit.
       // 'QualifiedLead' (trackCustom) dispara sempre que score >= 30 (leitura de CPQL).
@@ -426,9 +409,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     trackLead,
     trackQualifiedLead,
     getUtmParams,
-    getOriginMapping,
-    originDesc,
     submitLead,
+    buildAttribution,
     resolveDedup,
     source,
   ]);

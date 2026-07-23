@@ -1,6 +1,7 @@
 "use client";
 
 import { usePloomesAPI } from "@/hooks/usePloomesAPI";
+import { criarCardRecadastro } from "@/lib/recadastro";
 import { useMetaPixel } from "@/hooks/useMetaPixel";
 import { usePhoneMask } from "@/hooks/usePhoneMask";
 import Image from "next/image";
@@ -138,15 +139,9 @@ export default function V8MiniFormPage() {
     setError(null);
 
     try {
-      // F3 — Dedup Ploomes (com exceção de reativação): bloqueia duplicata ativa,
-      // libera lead perdido na Qualificação que esfriou (canReregister) → novo lead.
-      const { exists, canReregister } = await ploomes.checkPhoneStatus(phone);
-      if (exists && !canReregister) {
-        setError("Vimos que já estamos em contato com este WhatsApp! Em alguns minutos um dos nossos especialistas vai te chamar.");
-        setIsSubmitting(false);
-        await trackCustomEvent("Contact", { content_name: "v8-dup-detected", content_category: "lead-recapture" });
-        return;
-      }
+      // F3 — Dedup Ploomes: telefone conhecido não barra mais (23/Jul/26), vira card
+      // de recadastro na Qualificação (mais abaixo, depois do gate ICP).
+      const jaExiste = await ploomes.checkPhoneExists(phone);
 
       // F4 — Gate ICP duro: faturamento <R$3K vai pra nutrição (não vira lead)
       if (monthlyRevenue === "ate-3k") {
@@ -158,16 +153,36 @@ export default function V8MiniFormPage() {
         return;
       }
 
-      // Lead qualificado (passou no gate ICP) — cria com TODOS os dados de uma vez
-      const response = await ploomes.createContact({
+      // Lead qualificado (passou no gate ICP). Telefone novo → contato novo (a automação
+      // do Ploomes cria o card). Telefone já conhecido → card de recadastro no contato
+      // existente, com o SDR do card anterior replicado.
+      const dados = {
         barbershopName: barbershopName.trim(),
         ownerName: ownerName.trim(),
         whatsapp: phone,
         employeeCount,
         monthlyRevenue,
-      });
+      };
 
-      const createdId = response?.value?.[0]?.Id;
+      let createdId: number | undefined;
+      if (jaExiste) {
+        const recadastro = await criarCardRecadastro({
+          phone,
+          barbershopName: dados.barbershopName,
+          atribuicao: ploomes.buildAttribution(dados),
+          faturamento: monthlyRevenue,
+          colaboradores: employeeCount,
+        });
+        if (!recadastro.ok) {
+          setError("Vimos que já estamos em contato com este WhatsApp! Em alguns minutos um dos nossos especialistas vai te chamar.");
+          setIsSubmitting(false);
+          await trackCustomEvent("Contact", { content_name: "v8-dup-detected", content_category: "lead-recapture" });
+          return;
+        }
+      } else {
+        const response = await ploomes.createContact(dados);
+        createdId = response?.value?.[0]?.Id;
+      }
 
       // Único eventId compartilhado entre Pixel client e CAPI server (deduplicação Meta)
       const eventId = `v8-submit-${createdId || phone}-${Date.now()}`;

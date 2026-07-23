@@ -11,6 +11,7 @@
  */
 
 import { usePloomesAPI } from "@/hooks/usePloomesAPI";
+import { criarCardRecadastro } from "@/lib/recadastro";
 import { useMetaPixel } from "@/hooks/useMetaPixel";
 import { usePhoneMask } from "@/hooks/usePhoneMask";
 import Image from "next/image";
@@ -205,29 +206,41 @@ export default function V9QuizPage() {
       setError(null);
 
       try {
-        // F3 dedup check (com exceção de reativação): bloqueia duplicata ativa, mas
-        // libera lead perdido na Qualificação que esfriou (canReregister) → novo lead.
-        const { exists, canReregister } = await ploomes.checkPhoneStatus(phone);
-        if (exists && !canReregister) {
-          setError("Já estamos em contato com esse WhatsApp. Em breve um especialista te chamará.");
-          setIsSubmitting(false);
-          await trackCustomEvent("Contact", {
-            content_name: "v9-dup-detected",
-            content_category: "lead-recapture",
-          });
-          return;
-        }
+        // F3 dedup: telefone conhecido não barra mais (23/Jul/26). Telefone novo →
+        // contato novo (a automação do Ploomes cria o card); telefone já cadastrado →
+        // card de recadastro no contato existente, com o SDR anterior replicado.
+        const jaExiste = await ploomes.checkPhoneExists(phone);
 
-        // Cria contato com nome da barbearia real + dados do quiz
-        const response = await ploomes.createContact({
+        const dados = {
           barbershopName: barbershopName.trim(),
           ownerName,
           whatsapp: phone,
           employeeCount: answers.chairs || "—",
           monthlyRevenue: answers.revenue || "",
-        });
+        };
 
-        const createdId = response?.value?.[0]?.Id;
+        let createdId: number | undefined;
+        if (jaExiste) {
+          const recadastro = await criarCardRecadastro({
+            phone,
+            barbershopName: dados.barbershopName,
+            atribuicao: ploomes.buildAttribution(dados),
+            faturamento: dados.monthlyRevenue || undefined,
+            colaboradores: dados.employeeCount,
+          });
+          if (!recadastro.ok) {
+            setError("Já estamos em contato com esse WhatsApp. Em breve um especialista te chamará.");
+            setIsSubmitting(false);
+            await trackCustomEvent("Contact", {
+              content_name: "v9-dup-detected",
+              content_category: "lead-recapture",
+            });
+            return;
+          }
+        } else {
+          const response = await ploomes.createContact(dados);
+          createdId = response?.value?.[0]?.Id;
+        }
         if (createdId) setContactId(createdId);
 
         // PATCH com tag dor do quiz
