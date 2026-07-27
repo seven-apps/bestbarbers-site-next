@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useLeadForm } from "@/hooks";
+import { useEffect, useMemo, useState } from "react";
+import { useLeadForm, useUtmParams } from "@/hooks";
 import { ArrowRight, ShieldCheck, Users2, Gift } from "lucide-react";
 
 // ORIGEM DEDICADA DO COORTE (ver needsHumanReview) ----------------------------------
@@ -86,6 +87,20 @@ const formFields = [
 export function GuiaForm() {
   const router = useRouter();
 
+  // Atribuição de PARCEIRO/CANAL: quando o guia é distribuído por um influenciador
+  // (ex: /cadeira-cheia?source=mauro-elegance) o UTM VENCE — o lead nasce creditado
+  // ao parceiro (originId/desc do originMap em useUtmParams). A origem dedicada do
+  // guia (CADEIRA_CHEIA_*) fica como fallback orgânico/direto. Mesmo padrão da
+  // tabela-precificacao-clube (FormSectionTabela.tsx). Guard de hidratação: só
+  // resolve pós-mount, senão o SSR descasa a origem.
+  const { getUtmParams, getOriginMapping } = useUtmParams();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const utmMapping = useMemo(
+    () => (mounted ? getOriginMapping(getUtmParams()) : { originId: null, originDesc: null }),
+    [mounted, getOriginMapping, getUtmParams]
+  );
+
   const {
     formData,
     isSubmitting,
@@ -96,8 +111,8 @@ export function GuiaForm() {
     handleSubmit,
   } = useLeadForm({
     source: "lp_guia_reativacao",
-    originId: CADEIRA_CHEIA_ORIGIN_ID,
-    originDesc: CADEIRA_CHEIA_ORIGIN_DESC,
+    originId: utmMapping.originId ?? CADEIRA_CHEIA_ORIGIN_ID,
+    originDesc: utmMapping.originDesc || CADEIRA_CHEIA_ORIGIN_DESC,
     // Igual ao V12: exige faturamento no submit. Sem isso, quem pula o campo pontuaria
     // 0 na faixa de faturamento (silencioso) em vez de ficar de fora do padrão por opção
     // — quebraria a comparabilidade do lead_score entre esta LP e as demais.

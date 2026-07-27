@@ -62,7 +62,15 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   const param = (k: string) => search?.get(k)?.trim() || "";
 
   const pathname = typeof window !== "undefined" ? window.location.pathname : "";
-  const lpVersion = pathname.match(/\/(v\d+)/)?.[1]?.toUpperCase() || "LP";
+  // bb_lp_version = DE QUAL PÁGINA o lead veio (grava no Ploomes).
+  // - LPs de ads /vNN → "V12"/"V8" (uppercase): retrocompat + os leitores de tráfego
+  //   parseiam o 1º segmento do originDesc (bestbarbers-ai/scripts/trafego-pago/*).
+  // - Demais rotas → o próprio slug da página: "cadeira-cheia", "tabela-precificacao-clube",
+  //   "parceiros" (o que o André pediu — saber a isca/LP de origem, não o genérico "LP").
+  // - Raiz do site → "home".
+  // Antes: tudo que não fosse /vNN caía em "LP" e o Ploomes não distinguia as iscas.
+  const seg = pathname.replace(/^\/+|\/+$/g, "");
+  const lpVersion = seg.match(/^v\d+/i)?.[0]?.toUpperCase() || seg.split("/")[0] || "home";
 
   const fase = param("fase");
   const campanha = param("campanha");
