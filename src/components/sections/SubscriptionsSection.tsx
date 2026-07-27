@@ -21,8 +21,8 @@ export function SubscriptionsSection({ onCtaClick }: SubscriptionsSectionProps) 
               alt={subscriptions.image.alt}
               width={subscriptions.image.width}
               height={subscriptions.image.height}
-              className="w-full h-auto max-w-[80%]"
-              sizes="(max-width: 2000px) 80vw, 80vw"
+              className="w-full h-auto"
+              sizes="(max-width: 2000px) 100vw, 100vw"
             />
           </div>
 

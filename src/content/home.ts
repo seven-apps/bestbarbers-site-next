@@ -73,10 +73,10 @@ export const homeContent = {
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Assinatura",
     },
     image: {
-      src: "/images/gerenciamento-de-assinaturas_1.webp",
+      src: "/images/gerenciamento-de-assinaturas.png",
       alt: "Clube de assinaturas para barbearia — Gestão automática BestBarbers",
-      width: 800,
-      height: 600,
+      width: 1500,
+      height: 1200,
     },
   },
 
@@ -193,7 +193,7 @@ export const homeContent = {
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Totem",
     },
     image: {
-      src: "/images/Totem-Rapha_1.webp",
+      src: "/images/Totem_Seletto.png",
       alt: "Totem de autoatendimento para barbearia — check-in e pagamento automático",
       width: 1457,
       height: 600,
@@ -300,7 +300,7 @@ export const homeContent = {
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Passos",
     },
     image: {
-      src: "/images/Passo-a-passo-mockup-hoonigans_1.webp",
+      src: "/images/Passo-a-passo-mockup-seletto.png",
       alt: "Como ter um app próprio para sua barbearia — passo a passo BestBarbers",
       width: 587,
       height: 800,
