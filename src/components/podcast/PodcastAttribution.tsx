@@ -28,6 +28,8 @@ export function PodcastAttribution() {
         utm_campaign: null,
         utm_content: null,
         utm_term: null,
+        origin: null,
+        odesc: null,
         fbclid: null,
         fbclidFresh: null,
         gclid: null,

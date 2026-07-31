@@ -8,6 +8,13 @@ export interface UtmParams {
   utm_campaign: string | null;
   utm_content: string | null;
   utm_term: string | null;
+  // Atribuição EXPLÍCITA por originId do Ploomes na própria URL (?origin=120003825).
+  // Emitida pelo gerador de links do dashboard (OS), que lê as origens do Ploomes AO VIVO
+  // — então origem nova no CRM já atribui sem depender de uma entrada no originMap abaixo
+  // (+ deploy). `origin` = o número da origem; `odesc` = nome legível p/ a Descrição da
+  // Campanha (opcional). Ganha do originMap e do fallback Meta. Ver getOriginMapping.
+  origin: string | null;
+  odesc: string | null;
   fbclid: string | null;
   // fbclid de tracking (URL || cookie _fbc) — usar para Pixel/CAPI (match/dedup).
   fbclidFresh: string | null;
@@ -153,6 +160,8 @@ export const useUtmParams = () => {
         utm_campaign: null,
         utm_content: null,
         utm_term: null,
+        origin: null,
+        odesc: null,
         fbclid: null,
         fbclidFresh: null,
         gclid: null,
@@ -180,6 +189,11 @@ export const useUtmParams = () => {
     // Param legado de parceiros (?source=mileno) — compatibilidade mantida
     const legacySource = urlParams.get("source");
 
+    // Atribuição explícita por originId na URL (?origin=120003825&odesc=...) — gerada pelo
+    // dashboard lendo o Ploomes ao vivo. `origin` dispensa o originMap para a origem casar.
+    const originParam = urlParams.get("origin");
+    const odescParam = urlParams.get("odesc");
+
     const params: UtmParams = {
       utm_source: utmSource || legacySource,
       utm_desc: urlParams.get("desc"),
@@ -188,6 +202,8 @@ export const useUtmParams = () => {
       utm_campaign: utmCampaign,
       utm_content: utmContent,
       utm_term: utmTerm,
+      origin: originParam,
+      odesc: odescParam,
       fbclid,
       fbclidFresh: fbclidUrl,
       gclid,
@@ -198,7 +214,7 @@ export const useUtmParams = () => {
     // hasSignal usa os click IDs FRESCOS (URL), não os de cookie — senão o snapshot
     // nasceria contaminado por _fbc/_gcl_aw de visitas antigas.
     try {
-      const hasSignal = !!(utmSource || legacySource || fbclidUrl || gclidUrl || utmCampaign);
+      const hasSignal = !!(utmSource || legacySource || originParam || fbclidUrl || gclidUrl || utmCampaign);
       const stored = sessionStorage.getItem(SS_KEY);
       if (hasSignal && !stored) {
         sessionStorage.setItem(SS_KEY, JSON.stringify(params));
@@ -213,6 +229,8 @@ export const useUtmParams = () => {
           utm_campaign: params.utm_campaign ?? restored.utm_campaign ?? null,
           utm_content: params.utm_content ?? restored.utm_content ?? null,
           utm_term: params.utm_term ?? restored.utm_term ?? null,
+          origin: params.origin ?? restored.origin ?? null,
+          odesc: params.odesc ?? restored.odesc ?? null,
           fbclid: params.fbclid ?? restored.fbclid ?? null,
           fbclidFresh: params.fbclidFresh ?? restored.fbclidFresh ?? null,
           gclid: params.gclid ?? restored.gclid ?? null,
@@ -227,7 +245,23 @@ export const useUtmParams = () => {
 
   const getOriginMapping = useCallback(
     (utmParams: UtmParams): OriginMapping => {
-      const { utm_source, utm_desc, utm_medium, fbclidFresh } = utmParams;
+      const { utm_source, utm_desc, utm_medium, fbclidFresh, origin, odesc } = utmParams;
+
+      // PRIORIDADE MÁXIMA: originId explícito na URL (?origin=120003825). O gerador de
+      // links do dashboard (OS) lê as origens do Ploomes AO VIVO e cola o número no link,
+      // então uma origem NOVA no CRM já atribui sem depender do originMap abaixo + deploy.
+      // Ganha do originMap E do fallback Meta: o link carrega a intenção explícita de
+      // creditar aquela origem. Só aceita dígitos (defesa contra ?origin= lixo/injeção).
+      // Descrição: odesc (nome legível vindo do link) > descMap do source > utm_desc.
+      if (origin && /^\d+$/.test(origin)) {
+        const descFromMap = utm_source
+          ? descMap[utm_source as keyof typeof descMap]
+          : undefined;
+        return {
+          originId: Number(origin),
+          originDesc: odesc || descFromMap || utm_desc || null,
+        };
+      }
 
       // utm_source=meta usa o mesmo originId de "ads" (40210173).
       // Campanhas com url_tags utm_source={{site_source_name}} (LP V12+) emitem
