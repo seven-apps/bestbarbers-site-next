@@ -11,6 +11,8 @@ import {
   Crown,
   UserPlus,
   MapPin,
+  SlidersHorizontal,
+  BarChart3,
   Clock,
   MessageSquare,
   ArrowRight,
@@ -79,14 +81,24 @@ const faqItems = [
       "Sim. O agente é integrado nativamente à agenda do sistema BestBarbers. Ele consulta em tempo real os horários realmente disponíveis, marca, remarca e cancela — e se o cliente já tiver um horário agendado, ele avisa. Você não corre risco de horário marcado em cima do outro.",
   },
   {
-    question: "O agente fecha a assinatura do meu clube pelo WhatsApp?",
+    question: "O agente reconhece meus assinantes e usa os benefícios do plano?",
     answer:
-      "O foco do agente é o agendamento. Sobre o clube, ele explica como funciona quando o cliente pergunta e direciona o cliente para assinar pelo app da sua barbearia — a contratação em si é feita no app, não pela conversa.",
+      "Sim. Se o cliente tem um plano de assinatura ativo, o agente reconhece, valida se o serviço solicitado está incluso no plano e faz o agendamento usando o benefício. Já a parte comercial — preços, planos e promoções — segue com a sua equipe: o agente não negocia nem vende assinatura pela conversa.",
   },
   {
     question: "Preciso contratar uma recepcionista só para o WhatsApp?",
     answer:
       "Não. O objetivo do agente é justamente eliminar essa necessidade. Ele funciona como um atendente virtual completo rodando 24 horas por dia, 7 dias por semana — cadastrando clientes, agendando e tirando dúvidas — enquanto a sua equipe foca em cortar cabelo.",
+  },
+  {
+    question: "Dá para ajustar o jeito que o agente fala?",
+    answer:
+      "Sim. Você personaliza a personalidade, o tom e o estilo das respostas do agente — ele atende com a cara da sua barbearia, não como um robô genérico. Também dá para ativar ou desativar o agente quando quiser.",
+  },
+  {
+    question: "Preciso de um número de WhatsApp separado para o agente?",
+    answer:
+      "Recomendamos usar um número dedicado só para o atendimento do agente. Isso reduz o risco de desconexão e evita conflito com o WhatsApp que a sua equipe já usa no dia a dia.",
   },
   {
     question: "O agente de IA já está disponível? Como eu ativo na minha conta?",
@@ -207,22 +219,11 @@ function WhatsAppChat() {
           {/* IA */}
           <div className="flex justify-end">
             <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-[#005c4b] px-3 py-2 text-white">
-              Perfeito! ✅ Marquei <strong>15h30 com o João</strong> pra amanhã
-              (01/08) — corte + barba.
+              Fechado! ✅ Vi aqui que o seu plano já cobre corte + barba —
+              agendei <strong>15h30 com o João</strong> amanhã (01/08), sem custo
+              extra 💈
               <span className="mt-1 flex items-center justify-end gap-1 text-[10px] text-white/60">
                 23:47
-                <CheckCircle2 className="h-3 w-3 text-[#53bdeb]" />
-              </span>
-            </div>
-          </div>
-
-          {/* IA — clube */}
-          <div className="flex justify-end">
-            <div className="max-w-[85%] rounded-2xl rounded-tr-sm bg-[#005c4b] px-3 py-2 text-white">
-              Quer conhecer nosso Clube de assinatura? Te explico os planos — e a
-              assinatura é rapidinha pelo app da barbearia. Te mando o link? 💈
-              <span className="mt-1 flex items-center justify-end gap-1 text-[10px] text-white/60">
-                23:48
                 <CheckCircle2 className="h-3 w-3 text-[#53bdeb]" />
               </span>
             </div>
@@ -231,7 +232,7 @@ function WhatsAppChat() {
           {/* Cliente */}
           <div className="flex justify-start">
             <div className="max-w-[80%] rounded-2xl rounded-tl-sm bg-[#202c33] px-3 py-2 text-gray-100">
-              Pode mandar sim 👊
+              Show, obrigado! 🙏
               <span className="mt-1 block text-right text-[10px] text-gray-400">
                 23:48
               </span>
@@ -340,8 +341,9 @@ export default function AgenteIaWhatsappPage() {
                 <div>
                   <WhatsAppChat />
                   <p className="mt-5 text-center text-xs text-gray-400 max-w-[340px] mx-auto">
-                    Seu agente de IA atendendo um cliente sozinho — entendeu o
-                    áudio, agendou às 23h e ainda explicou o Clube.
+                    Seu agente atendendo sozinho às 23h — entendeu o áudio,
+                    reconheceu o assinante e agendou aplicando o benefício do
+                    plano.
                   </p>
                 </div>
               </div>
@@ -436,9 +438,9 @@ export default function AgenteIaWhatsappPage() {
                 },
                 {
                   icon: Crown,
-                  title: "Explica o seu clube",
+                  title: "Reconhece seus assinantes",
                   description:
-                    "Quando o cliente pergunta sobre a assinatura, o agente explica como funciona o seu clube e direciona ele para assinar pelo app da barbearia.",
+                    "Se o cliente tem um plano de assinatura ativo, o agente reconhece, valida se o serviço está incluso no plano e agenda usando o benefício — sem confusão nem cobrança indevida.",
                 },
                 {
                   icon: UserPlus,
@@ -451,6 +453,18 @@ export default function AgenteIaWhatsappPage() {
                   title: "Responde sobre a barbearia",
                   description:
                     "Endereço, horário de funcionamento, serviços, como funciona o espaço — o agente tira as dúvidas do cliente com informação completa.",
+                },
+                {
+                  icon: SlidersHorizontal,
+                  title: "Com a personalidade da sua barbearia",
+                  description:
+                    "Você define o tom, o estilo e a personalidade do agente. Ele atende com a cara da sua marca — não com voz de robô genérico.",
+                },
+                {
+                  icon: BarChart3,
+                  title: "Você acompanha tudo",
+                  description:
+                    "Um painel mostra as conversas em tempo real e as estatísticas de atendimento (volume e desempenho) — visão gerencial completa do que o agente faz.",
                 },
               ].map((feature) => (
                 <div
@@ -499,12 +513,12 @@ export default function AgenteIaWhatsappPage() {
                   ai: "Você já tem um horário marcado na sexta às 10h com o João 👍 Quer manter, remarcar ou cancelar?",
                 },
                 {
-                  tag: "Explicou o clube",
+                  tag: "Assinante reconhecido",
                   client: {
                     type: "text" as const,
-                    text: "Como funciona a assinatura de vocês?",
+                    text: "Quero marcar minha barba de sexta",
                   },
-                  ai: "Te explico rapidinho como funciona o nosso Clube 💈 A assinatura você faz direto pelo app da barbearia — quer que eu te mande o link?",
+                  ai: "Fechado! Sua assinatura cobre a barba 💈 Agendei sexta às 16h com o João, sem custo extra.",
                 },
               ].map((scn) => (
                 <div
@@ -704,16 +718,16 @@ export default function AgenteIaWhatsappPage() {
                 {
                   step: "2",
                   icon: Zap,
-                  title: "Liberamos o agente",
+                  title: "Demonstração e ativação",
                   description:
-                    "Ativamos o atendente virtual na sua conta BestBarbers e conectamos ao WhatsApp da sua barbearia e à sua agenda.",
+                    "Fazemos uma demonstração do agente e, na adesão, ativamos na sua conta e configuramos com a personalidade da sua barbearia.",
                 },
                 {
                   step: "3",
                   icon: CalendarClock,
                   title: "Ele começa a atender",
                   description:
-                    "A partir daí, o agente responde seus clientes 24 horas por dia e agenda no automático, direto no seu WhatsApp.",
+                    "Você conecta o WhatsApp (recomendamos um número dedicado) e o agente passa a atender 24 horas por dia, integrado à sua agenda.",
                 },
               ].map((step) => (
                 <div
@@ -789,7 +803,7 @@ export default function AgenteIaWhatsappPage() {
                 {
                   href: "/clube-de-assinaturas",
                   title: "Clube de Assinaturas",
-                  desc: "Receita recorrente que o agente ajuda a divulgar",
+                  desc: "Receita recorrente — o agente agenda usando os benefícios do plano",
                 },
                 {
                   href: "/app-proprio-barbearia",
