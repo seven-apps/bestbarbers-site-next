@@ -10,6 +10,8 @@ interface LeadFormModalProps {
   onClose: () => void;
   /** Descrição de origem para tracking no Ploomes (ex: "[Site]BT-Header") */
   originDesc?: string;
+  /** Origem padrão da página no Ploomes. Fallback ABAIXO de ?origin=/UTM e ACIMA do SITE_ORIGIN_ID global. */
+  originId?: number;
 }
 
 const formFields = [
@@ -57,7 +59,7 @@ const formFields = [
 
 const SITE_ORIGIN_ID = 40210426;
 
-export function LeadFormModal({ isOpen, onClose, originDesc }: LeadFormModalProps) {
+export function LeadFormModal({ isOpen, onClose, originDesc, originId }: LeadFormModalProps) {
   // Prioriza UTM (ex: lead vindo do Meta com fbclid → "ads"/Tráfego Pago).
   // Fallback SITE_ORIGIN_ID só quando navegação é orgânica/direta (sem signal de ad).
   // Antes era hardcoded SITE_ORIGIN_ID — causava leads do Meta entrarem como "site"
@@ -86,7 +88,8 @@ export function LeadFormModal({ isOpen, onClose, originDesc }: LeadFormModalProp
     onError: (error) => {
       console.error("Erro ao enviar formulário:", error);
     },
-    originId: utmMapping.originId ?? SITE_ORIGIN_ID,
+    // Prioridade: ?origin=/UTM (utmMapping) > origem padrão da página (prop) > fallback global do site.
+    originId: utmMapping.originId ?? originId ?? SITE_ORIGIN_ID,
     originDesc: podcastDesc || originDesc || utmMapping.originDesc || "[Site]Modal",
   });
 

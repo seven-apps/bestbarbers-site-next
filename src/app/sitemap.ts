@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const featurePages = [
     'clube-de-assinaturas',
     'agendamento-online',
+    'agente-ia-whatsapp',
     'app-proprio-barbearia',
     'nota-fiscal-barbearia',
     'totem-autoatendimento',

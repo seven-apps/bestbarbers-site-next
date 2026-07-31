@@ -6,10 +6,12 @@ import { LeadFormModal } from "@/components/sections/LeadFormModal";
 interface FeatureCTAProps {
   children: React.ReactNode;
   originDesc: string;
+  /** Origem padrão da página no Ploomes (fallback quando não há ?origin=/UTM). */
+  originId?: number;
   className?: string;
 }
 
-export function FeatureCTA({ children, originDesc, className }: FeatureCTAProps) {
+export function FeatureCTA({ children, originDesc, originId, className }: FeatureCTAProps) {
   const [open, setOpen] = useState(false);
 
   const handleOpen = useCallback(() => setOpen(true), []);
@@ -20,7 +22,12 @@ export function FeatureCTA({ children, originDesc, className }: FeatureCTAProps)
       <button onClick={handleOpen} className={className}>
         {children}
       </button>
-      <LeadFormModal isOpen={open} onClose={handleClose} originDesc={originDesc} />
+      <LeadFormModal
+        isOpen={open}
+        onClose={handleClose}
+        originDesc={originDesc}
+        originId={originId}
+      />
     </>
   );
 }
