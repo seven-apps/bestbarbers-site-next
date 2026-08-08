@@ -1,0 +1,408 @@
+"use client";
+
+import { useLeadForm, useUtmParams } from "@/hooks";
+import { ArrowRight, ShieldCheck, Users2, BadgeDollarSign, X } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+// Reuse dos benchmarks do diretório de produção (sem duplicar).
+import { REAIS } from "../../tabela-precificacao-clube/_components/benchmarks";
+
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+  /** Chamado no envio bem-sucedido — a página fecha o modal + libera o resultado. */
+  onSuccess?: () => void;
+}
+
+const formFields = [
+  { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
+  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "(11) 99999-9999", type: "tel" },
+  {
+    name: "monthlyRevenue",
+    label: "Qual o faturamento médio da sua barbearia?",
+    placeholder: "Selecione",
+    type: "select",
+    options: [
+      { value: "", label: "Selecione" },
+      { value: "Até R$ 2.000", label: "Até R$ 2.000" },
+      { value: "R$ 2.000 a R$ 10.000", label: "R$ 2.000 a R$ 10.000" },
+      { value: "De R$ 10.000 a R$ 30.000", label: "De R$ 10.000 a R$ 30.000" },
+      { value: "Acima de R$ 30.000", label: "Acima de R$ 30.000" },
+    ],
+  },
+  {
+    name: "interestedTool",
+    label: "Qual ferramenta mais te interessa hoje?",
+    placeholder: "Selecione",
+    type: "select",
+    options: [
+      { value: "", label: "Selecione" },
+      { value: "Agenda e Controle Financeiro", label: "Agenda e Controle Financeiro" },
+      { value: "Meu Próprio App + Clube de Assinaturas e emissão de NFs", label: "Meu Próprio App + Clube de Assinaturas e emissão de NFs" },
+    ],
+  },
+  {
+    name: "employeeCount",
+    label: "Quantos profissionais trabalham na sua barbearia?",
+    placeholder: "Selecione",
+    type: "select",
+    options: [
+      { value: "", label: "Selecione" },
+      { value: "Sou apenas eu", label: "Sou apenas eu" },
+      { value: "2 a 4 colaboradores", label: "2 a 4 colaboradores" },
+      { value: "5 ou mais colaboradores", label: "5 ou mais colaboradores" },
+    ],
+  },
+];
+
+// Origem dedicada da LP no Ploomes: "Site - Tabela de Precificação de Clubes"
+// (Id 120003643, criada em 21/Jul/2026). Prioriza o canal do UTM (youtube/ads/
+// parceiro) quando presente — mesma lição do LeadFormModal: sobrescrever o canal
+// com a origem da página fazia lead de Meta entrar como "site" e descasava do
+// Ads Manager. A LP fica 100% mensurável mesmo assim: source
+// (tabela_precificacao_clube_gated) + utm_campaign gravam em todo lead.
+// Atribuição IDÊNTICA à variante de produção — só o `source` distingue o A/B.
+const TABELA_ORIGIN_ID = 120003643;
+const TABELA_ORIGIN_DESC = "LP - Tabela de Precificação de Clubes";
+
+function getFormHeading(utmContent: string | null) {
+  const content = utmContent?.toLowerCase() || "";
+  // Message-match com o ângulo de origem (vídeo/anúncio → tabela → form).
+  if (content.includes("preco") || content.includes("precifica") || content.includes("tabela"))
+    return { lead: "Quero montar meu clube", highlight: "com o preço certo" };
+  if (content.includes("clube") || content.includes("assinatura"))
+    return { lead: "Quero montar", highlight: "meu clube de assinaturas" };
+  if (content.includes("recorrencia") || content.includes("recorrente"))
+    return { lead: "Quero faturamento recorrente", highlight: "todo mês no automático" };
+  if (content.includes("barbeiro") || content.includes("comissao"))
+    return { lead: "Quero um clube que", highlight: "paga bem meu barbeiro" };
+  return { lead: "Quero montar meu clube", highlight: "com o preço certo" };
+}
+
+export function FormModalTabelaGated({ isOpen, onClose, onSuccess }: Props) {
+  const { getUtmParams, getOriginMapping } = useUtmParams();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const utmContent = useMemo(
+    () => (mounted ? getUtmParams().utm_content : null),
+    [mounted, getUtmParams]
+  );
+  const heading = useMemo(() => getFormHeading(utmContent), [utmContent]);
+
+  // Canal do UTM vence; origem da LP é o fallback orgânico/direto (guard de
+  // hidratação: só resolve pós-mount, como o utmContent acima).
+  const utmMapping = useMemo(
+    () => (mounted ? getOriginMapping(getUtmParams()) : { originId: null, originDesc: null }),
+    [mounted, getOriginMapping, getUtmParams]
+  );
+
+  const {
+    formData,
+    isSubmitting,
+    submitted,
+    submitError,
+    isDedupChecking,
+    handleInputChange,
+    handleSubmit,
+  } = useLeadForm({
+    source: "tabela_precificacao_clube_gated",
+    originId: utmMapping.originId ?? TABELA_ORIGIN_ID,
+    originDesc: utmMapping.originDesc || TABELA_ORIGIN_DESC,
+    requireMonthlyRevenue: true,
+    // Envio bem-sucedido: a página fecha o modal e libera o resultado (Coluna 2).
+    onSuccess: () => {
+      onSuccess?.();
+    },
+    onError: (error) => {
+      console.error("Erro ao enviar formulário:", error);
+      alert("Erro ao enviar formulário. Tente novamente.");
+    },
+  });
+
+  const monthlyRevenueError = !!submitError && submitError.includes("Faturamento");
+
+  // Multi-step: passo 1 = contato (baixa fricção), passo 2 = qualificação (lead_score).
+  const [step, setStep] = useState(1);
+  const STEP1_FIELDS = ["ownerName", "whatsapp"];
+  const visibleFields = formFields.filter(
+    (f) => STEP1_FIELDS.includes(f.name) === (step === 1)
+  );
+  const canAdvanceToStep2 =
+    formData.ownerName.trim() !== "" && formData.whatsapp.trim() !== "";
+  const goToStep2 = () => {
+    if (canAdvanceToStep2) setStep(2);
+  };
+
+  // Fecha com ESC + trava o scroll do body enquanto aberto.
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) {
+      document.addEventListener("keydown", handleEsc);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.removeEventListener("keydown", handleEsc);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, onClose]);
+
+  // Clique no backdrop fecha (só quando o alvo é o próprio overlay).
+  const handleOverlayClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (e.target === e.currentTarget) onClose();
+    },
+    [onClose]
+  );
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center px-4 py-6"
+      onClick={handleOverlayClick}
+      role="dialog"
+      aria-modal="true"
+    >
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-fade-in" />
+
+      {/* Card do modal */}
+      <div
+        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-3xl"
+        style={{ background: "#ffffff", boxShadow: "0 24px 80px rgba(0,0,0,0.5)" }}
+      >
+        {/* Botão fechar */}
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full transition-colors"
+          style={{ background: "rgba(0,0,0,0.06)" }}
+          aria-label="Fechar"
+        >
+          <X className="w-4 h-4" style={{ color: "#1e1e1e" }} />
+        </button>
+
+        <div
+          className="h-1.5 w-full"
+          style={{ background: "linear-gradient(90deg, #ebad04, #f5c842, #ebad04)" }}
+        />
+
+        <div className="px-6 md:px-10 py-10 md:py-12 flex flex-col items-center">
+          {/* Badge */}
+          <div className="flex justify-center mb-6">
+            <span
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-sm font-bold"
+              style={{
+                background: "rgba(235,173,4,0.1)",
+                borderColor: "rgba(235,173,4,0.4)",
+                color: "#b38900",
+                fontFamily: "var(--font-montserrat)",
+              }}
+            >
+              <BadgeDollarSign className="w-4 h-4" />
+              SEU CLUBE COM O PREÇO CERTO
+            </span>
+          </div>
+
+          {/* Título — message-match */}
+          <h2
+            className="text-center mb-3 leading-tight"
+            style={{
+              fontFamily: "var(--font-vollkorn)",
+              fontWeight: 800,
+              fontSize: "clamp(24px, 4vw, 34px)",
+              color: "#1e1e1e",
+            }}
+          >
+            {heading.lead} <span style={{ color: "#ebad04" }}>{heading.highlight}</span>
+          </h2>
+
+          <p
+            className="text-center text-[14px] mb-7 max-w-sm"
+            style={{ color: "#6b6b6b", fontFamily: "var(--font-montserrat)" }}
+          >
+            Deixe seu contato e um especialista monta o clube com você — plano, preço e cobrança
+            automática no cartão, renovando todo mês sem você correr atrás.
+          </p>
+
+          {/* Trust badges */}
+          <div className="flex justify-center gap-6 mb-8 w-full">
+            <div className="flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4" style={{ color: "#ebad04" }} fill="currentColor" />
+              <span className="text-xs font-medium" style={{ color: "#1e1e1e", opacity: 0.7, fontFamily: "var(--font-montserrat)" }}>
+                Consultoria gratuita
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Users2 className="w-4 h-4" style={{ color: "#ebad04" }} fill="currentColor" />
+              <span className="text-xs font-medium" style={{ color: "#1e1e1e", opacity: 0.7, fontFamily: "var(--font-montserrat)" }}>
+                {REAIS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias
+              </span>
+            </div>
+          </div>
+
+          {/* Error */}
+          {submitError && (
+            <div
+              className="w-full rounded-xl p-4 mb-6 border"
+              style={{ background: "rgba(239,68,68,0.08)", borderColor: "rgba(239,68,68,0.3)" }}
+            >
+              <p className="text-sm font-medium text-center" style={{ color: "#dc2626", fontFamily: "var(--font-montserrat)" }}>
+                {submitError}
+              </p>
+            </div>
+          )}
+
+          {/* Progresso */}
+          <div className="flex items-center justify-center gap-2 mb-5 w-full">
+            <span className="h-1.5 rounded-full transition-all duration-300" style={{ width: 28, background: "#ebad04" }} />
+            <span className="h-1.5 rounded-full transition-all duration-300" style={{ width: 28, background: step === 2 ? "#ebad04" : "#e0e0e0" }} />
+            <span className="text-xs font-semibold ml-1" style={{ color: "#1e1e1e", opacity: 0.55, fontFamily: "var(--font-montserrat)" }}>
+              Passo {step} de 2
+            </span>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4 w-full">
+            {visibleFields.map((field) => (
+              <div key={field.name} className="space-y-1.5">
+                <label
+                  className="block font-semibold text-[13px] leading-[20px]"
+                  style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
+                >
+                  {field.label}
+                </label>
+                {field.type === "select" ? (
+                  (() => {
+                    const fieldHasError = field.name === "monthlyRevenue" && monthlyRevenueError;
+                    return (
+                      <>
+                        <select
+                          name={field.name}
+                          value={formData[field.name as keyof typeof formData]}
+                          onChange={handleInputChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}
+                          required
+                          className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 appearance-none cursor-pointer outline-none"
+                          style={{
+                            background: "#f5f5f5",
+                            border: `1.5px solid ${fieldHasError ? "#dc2626" : "#e0e0e0"}`,
+                            color: "#1e1e1e",
+                            fontFamily: "var(--font-montserrat)",
+                          }}
+                          onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
+                          onBlur={(e) => { e.currentTarget.style.borderColor = fieldHasError ? "#dc2626" : "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
+                        >
+                          {field.options?.map((opt) => (
+                            <option key={opt.value} value={opt.value} disabled={opt.value === ""}>
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
+                        {fieldHasError && (
+                          <p className="text-xs font-medium" style={{ color: "#dc2626", fontFamily: "var(--font-montserrat)" }}>
+                            Selecione o faturamento médio para continuar
+                          </p>
+                        )}
+                      </>
+                    );
+                  })()
+                ) : (
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    value={formData[field.name as keyof typeof formData]}
+                    onChange={handleInputChange}
+                    placeholder={field.placeholder}
+                    required
+                    className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
+                    style={{
+                      background: "#f5f5f5",
+                      border: "1.5px solid #e0e0e0",
+                      color: "#1e1e1e",
+                      fontFamily: "var(--font-montserrat)",
+                    }}
+                    onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
+                    onBlur={(e) => { e.currentTarget.style.borderColor = "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
+                  />
+                )}
+              </div>
+            ))}
+
+            {/* Submit */}
+            <div className="pt-3">
+              <button
+                type="button"
+                onClick={step === 1 ? goToStep2 : handleSubmit}
+                disabled={step === 1 ? !canAdvanceToStep2 : (isSubmitting || submitted || isDedupChecking)}
+                className="w-full text-white font-extrabold text-[15px] md:text-[16px] px-6 py-5 rounded-full transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 active:scale-[0.98]"
+                style={{
+                  background: "linear-gradient(135deg, #029912, #02ab15)",
+                  boxShadow: "0 4px 14px 0 rgba(2,171,21,0.39)",
+                  fontFamily: "var(--font-montserrat)",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 6px 20px rgba(2,171,21,0.23)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 14px 0 rgba(2,171,21,0.39)"; e.currentTarget.style.transform = "translateY(0)"; }}
+              >
+                {step === 1 ? (
+                  <>
+                    CONTINUAR
+                    <ArrowRight className="w-5 h-5" />
+                  </>
+                ) : isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    ENVIANDO...
+                  </>
+                ) : submitted ? (
+                  <>✓ RECEBEMOS SEU CONTATO!</>
+                ) : isDedupChecking ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    VALIDANDO...
+                  </>
+                ) : (
+                  <>
+                    QUERO MONTAR MEU CLUBE
+                    <ArrowRight className="w-5 h-5" />
+                  </>
+                )}
+              </button>
+              {step === 2 && (
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="w-full mt-3 text-center text-[13px] font-medium underline"
+                  style={{ color: "#1e1e1e", opacity: 0.5, fontFamily: "var(--font-montserrat)" }}
+                >
+                  ← Voltar
+                </button>
+              )}
+            </div>
+
+            {/* Brand */}
+            <div className="text-center mt-6">
+              <span
+                className="text-lg md:text-xl font-bold tracking-tighter"
+                style={{ color: "#ebad04", fontFamily: "var(--font-vollkorn)", textShadow: "0 2px 10px rgba(235,173,4,0.1)" }}
+              >
+                BestBarbers
+              </span>
+            </div>
+
+            <p
+              className="text-center text-[10px] uppercase tracking-wider mt-2 flex items-center justify-center gap-1.5 opacity-60"
+              style={{ color: "#1e1e1e", opacity: 0.6, fontFamily: "var(--font-montserrat)" }}
+            >
+              <ShieldCheck className="w-3 h-3" fill="currentColor" />
+              Seus dados estão seguros
+            </p>
+          </form>
+        </div>
+
+        <div className="h-1 w-full" style={{ background: "linear-gradient(90deg, transparent, #ebad04, transparent)" }} />
+      </div>
+    </div>
+  );
+}
