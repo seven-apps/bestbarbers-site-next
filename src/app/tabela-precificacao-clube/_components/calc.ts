@@ -38,7 +38,8 @@ export type Agenda = "tranquila" | "movimentada" | "lotada";
 
 export const AGENDA_OPCOES: { value: Agenda; label: string; hint: string }[] = [
   { value: "tranquila", label: "Sobra horário", hint: "Preço mais convidativo — prioridade é encher a agenda" },
-  { value: "movimentada", label: "Movimentada", hint: "Meio da faixa saudável" },
+  // \u00AD = hífen condicional: quebra "Movimen-/tada" só quando o botão do mobile é estreito demais
+  { value: "movimentada", label: "Movimen\u00ADtada", hint: "Meio da faixa saudável" },
   { value: "lotada", label: "Quase lotada", hint: "Topo da faixa — você pode cobrar mais" },
 ];
 
