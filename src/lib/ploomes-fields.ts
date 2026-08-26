@@ -32,6 +32,20 @@ export const PLOOMES_CONTACT_FIELDS = {
   bb_lead_event_id:  'contact_15FDF793-85B5-4024-A866-348C44A2D67B',
 } as const;
 
+/**
+ * Campos NUMÉRICOS do Contact — escrever via IntegerValue (não StringValue).
+ * Separados de PLOOMES_CONTACT_FIELDS porque createContact itera aquele mapa como texto.
+ */
+export const PLOOMES_CONTACT_INT_FIELDS = {
+  /**
+   * Score do lead como número (FieldId 120015188, "Número inteiro" — criado 26/Ago/26 por
+   * bestbarbers-ai/scripts/ploomes/setup-fields-lead-score.ts). A automação do Ploomes
+   * espelha no Deal (bb_lead_score, FieldId 120015189). O prefixo `[SCORE: n]` na
+   * Descrição da Campanha CONTINUA sendo gravado — este campo é a cópia filtrável.
+   */
+  bb_lead_score: 'contact_9E104860-064A-498D-A670-1A6CFCF5FD09',
+} as const;
+
 // Campos legados (ownerName, descrição string, cadeiras, faturamento) — não-bb_*.
 export const PLOOMES_LEGACY_FIELDS = {
   ownerName:        'contact_DA6F2406-FE50-4EFC-BBB5-A3463435B427',

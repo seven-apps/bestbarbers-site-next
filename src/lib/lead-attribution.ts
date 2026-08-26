@@ -37,6 +37,12 @@ export interface LeadAttribution {
   /** Descrição da campanha COMPLETA, já com [SCORE:] e [Interesse:] na frente. */
   originDesc: string | null;
   fields: LeadAttributionFields;
+  /**
+   * Score do lead como NÚMERO — vai para `bb_lead_score` (inteiro) no Contact
+   * (usePloomesAPI.createContact) e no Deal de recadastro (backend). undefined = a LP
+   * não calcula score (v8/v9/v10, forms IG) → campo fica vazio, nunca 0.
+   */
+  leadScore?: number;
 }
 
 export interface BuildLeadAttributionInput {
@@ -134,5 +140,5 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   put("bb_gclid", utmParams.gclid);
   put("bb_lead_event_id", leadEventId);
 
-  return { originId, originDesc, fields };
+  return { originId, originDesc, fields, ...(leadScore !== undefined ? { leadScore } : {}) };
 }

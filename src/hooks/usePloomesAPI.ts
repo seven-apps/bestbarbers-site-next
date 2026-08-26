@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useUtmParams } from './useUtmParams';
-import { PLOOMES_CONTACT_FIELDS, PLOOMES_LEGACY_FIELDS } from '@/lib/ploomes-fields';
+import { PLOOMES_CONTACT_FIELDS, PLOOMES_CONTACT_INT_FIELDS, PLOOMES_LEGACY_FIELDS } from '@/lib/ploomes-fields';
 import { buildLeadAttribution, type LeadAttribution } from '@/lib/lead-attribution';
 
 export interface PloomesContactData {
@@ -76,16 +76,22 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
   }, [getUtmParams, getOriginMapping, customOriginId, customOriginDesc]);
 
   const createContact = useCallback(async (data: PloomesContactData): Promise<PloomesAPIResponse> => {
-    const { originId, originDesc, fields } = buildAttribution(data);
+    const { originId, originDesc, fields, leadScore } = buildAttribution(data);
 
     // Campos estruturados bb_* (criados abr/2026 + mai/2026). FieldKeys ficam em
     // src/lib/ploomes-fields.ts (single source). A automação Ploomes espelha esses
     // campos para o Deal criado a partir do Contact.
     // O FieldKey legacy contact_2D7EF0B1... é mantido como resumo legível para SDR.
-    const bbProps: Array<{ FieldKey: string; StringValue: string }> = [];
+    const bbProps: Array<{ FieldKey: string; StringValue: string } | { FieldKey: string; IntegerValue: number }> = [];
     for (const [nome, valor] of Object.entries(fields)) {
       const key = PLOOMES_CONTACT_FIELDS[nome as keyof typeof PLOOMES_CONTACT_FIELDS];
       if (key && valor) bbProps.push({ FieldKey: key, StringValue: valor });
+    }
+    // Score como NÚMERO (bb_lead_score, inteiro) — além do prefixo [SCORE: n] que segue no
+    // texto da Descrição da Campanha. Só grava quando a LP calculou score (0 e negativo
+    // são valores válidos; undefined é "não calculado" e deixa o campo vazio).
+    if (typeof leadScore === 'number' && Number.isFinite(leadScore)) {
+      bbProps.push({ FieldKey: PLOOMES_CONTACT_INT_FIELDS.bb_lead_score, IntegerValue: Math.trunc(leadScore) });
     }
 
     const ploomesData = {

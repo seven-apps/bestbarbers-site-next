@@ -56,6 +56,8 @@ export async function criarCardRecadastro(input: RecadastroInput): Promise<Recad
         ...(input.atribuicao.originDesc ? { origemDesc: input.atribuicao.originDesc } : {}),
         ...(input.faturamento ? { faturamento: input.faturamento } : {}),
         ...(input.colaboradores ? { colaboradores: input.colaboradores } : {}),
+        // Score numérico → bb_lead_score do card (o backend traduz para a FieldKey do deal).
+        ...(typeof input.atribuicao.leadScore === 'number' ? { leadScore: Math.trunc(input.atribuicao.leadScore) } : {}),
         atribuicao: input.atribuicao.fields,
       }),
     });
