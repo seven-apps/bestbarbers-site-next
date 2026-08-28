@@ -3,7 +3,8 @@
 import { useState, useCallback } from "react";
 import { NavbarClube } from "@/components/clube/NavbarClube";
 import { HeroClube } from "@/components/clube/HeroClube";
-import { ForkClube } from "@/components/clube/ForkClube";
+import { ComparativoClube } from "@/components/clube/ComparativoClube";
+import { MigracaoBandaClube } from "@/components/clube/MigracaoBandaClube";
 import { AssinaturasClube } from "@/components/clube/AssinaturasClube";
 import { NotasFiscaisClube } from "@/components/clube/NotasFiscaisClube";
 import { FuncionalidadesClube } from "@/components/clube/FuncionalidadesClube";
@@ -41,9 +42,8 @@ export function ClubePage() {
     <main className="min-h-screen">
       <NavbarClube onCtaClick={() => openModal("[Site-Clube]BT-Header")} />
       <HeroClube onCtaClick={() => openModal("[Site-Clube]BT-Hero")} />
-      <ForkClube
-        onCriarClick={() => openModal("[Site-Clube]BT-Criar")}
-        onMigrarClick={() => openModal("[Site-Clube]BT-Migracao")}
+      <ComparativoClube
+        onCtaClick={() => openModal("[Site-Clube]BT-Comparativo")}
       />
       <AssinaturasClube
         onCtaClick={() => openModal("[Site-Clube]BT-Assinatura")}
@@ -60,6 +60,9 @@ export function ClubePage() {
       />
       <ClientesClube />
       <DepoimentosClube />
+      <MigracaoBandaClube
+        onCtaClick={() => openModal("[Site-Clube]BT-Migracao")}
+      />
       <PassosClube onCtaClick={() => openModal("[Site-Clube]BT-Passos")} />
       <BasicPlanSection />
       <FAQClube />

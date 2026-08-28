@@ -43,46 +43,44 @@ export const clubeContent = {
     },
   },
 
-  // ===== FORK: CRIAR × MIGRAR =====
-  fork: {
+  // ===== COMPARATIVO: COM CLUBE × SEM CLUBE =====
+  comparativo: {
     title: {
-      main: "Vai criar o clube — ",
-      highlight: "ou trazer um que já existe?",
+      main: "O que muda quando a barbearia ",
+      highlight: "roda com clube",
     },
-    criar: {
-      kicker: "PARA QUEM VAI COMEÇAR",
-      title: "Criar o clube do zero",
-      description:
-        "Você define os planos — créditos ou dias de uso —, os preços e os serviços, e o clube nasce dentro do seu app. O caminho que 1.200+ barbearias já percorreram.",
+    sem: {
+      badge: "SEM CLUBE",
+      title: "O mês recomeça do zero",
       itens: [
-        "Planos por créditos ou dias de uso — você define",
-        "Preços e serviços do seu jeito",
-        "Seu cliente assina direto pelo app com a sua marca",
+        "A receita depende da agenda encher de novo, todo mês",
+        "Cliente bom volta quando lembra — a frequência é dele, não sua",
+        "Semana fraca se resolve com promoção, comendo a margem",
+        "\u201CNo fim do mês, nunca sobra\u201D",
       ],
-      cta: "QUERO CRIAR MEU CLUBE",
     },
-    migrar: {
-      kicker: "PARA QUEM JÁ TEM CLUBE",
-      title: "Trazer o clube que já roda",
-      description:
-        "Você provou que assinatura funciona, no PIX e na planilha. Agora ela ganha sistema:",
-      pares: [
-        { antes: "Cobrar um a um", depois: "Cobrança automática" },
-        {
-          antes: "Descobrir inadimplente no fechamento",
-          depois: "Status monitorado no dia",
-        },
-        {
-          antes: "Reajuste empurrado de mês em mês",
-          depois: "Planos ajustáveis no painel",
-        },
-        {
-          antes: "Cada assinante de cabeça",
-          depois: "Relatório que o contador entende",
-        },
+    com: {
+      badge: "COM CLUBE",
+      title: "O mês começa pago",
+      itens: [
+        "As mensalidades caem no automático antes do primeiro corte do mês",
+        "Assinante gasta até 2,8× mais que o cliente avulso ao longo do ano",
+        "Agenda cheia de cliente que já pagou — frequência monitorada pelo sistema",
+        "Você sabe no dia 1 quanto o clube vai pagar no mês",
       ],
-      cta: "COMO FUNCIONA A MIGRAÇÃO DO MEU CLUBE?",
+      caseLinha:
+        "Foi assim numa barbearia de 4 cadeiras em Belo Horizonte: de R$2.724 para R$10.486 por mês de clube, em 15 meses.",
+      cta: "QUERO O CLUBE NA MINHA BARBEARIA",
     },
+  },
+
+  // ===== FAIXA DO MIGRADOR (herdeira da fork) =====
+  migracaoBanda: {
+    kicker: "JÁ TEM CLUBE NO PIX OU NA PLANILHA?",
+    title: "Você provou que assinatura funciona. Agora ela ganha sistema.",
+    linha:
+      "Cobrança automática no lugar do PIX um a um · status de pagamento no dia · planos ajustáveis no painel · relatório que o contador entende.",
+    cta: "COMO FUNCIONA A MIGRAÇÃO DO MEU CLUBE?",
   },
 
   // ===== ASSINATURAS =====
