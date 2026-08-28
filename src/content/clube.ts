@@ -48,7 +48,7 @@ export const clubeContent = {
     kicker: "A DIFERENÇA",
     title: {
       main: "E se o seu mês ",
-      highlight: "já começasse no azul?",
+      highlight: "já começasse faturando?",
     },
     sub: "Essa é a promessa do clube de assinaturas: receita caindo no automático, chova ou faça sol. Olha a diferença entre viver de agenda e viver de assinatura:",
     sem: {
@@ -65,7 +65,7 @@ export const clubeContent = {
     },
     com: {
       badge: "COM CLUBE",
-      title: "O mês já começa pago",
+      title: "O mês já começa faturando",
       heroNumero: "R$ 16.152",
       heroSufixo: "/mês",
       heroDerivacao:
