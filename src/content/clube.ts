@@ -43,34 +43,39 @@ export const clubeContent = {
     },
   },
 
-  // ===== COMPARATIVO: COM CLUBE × SEM CLUBE =====
+  // ===== COMPARATIVO: COM CLUBE × SEM CLUBE (promessa → dor → solução) =====
   comparativo: {
+    kicker: "A DIFERENÇA",
     title: {
-      main: "O que muda quando a barbearia ",
-      highlight: "roda com clube",
+      main: "E se o seu mês ",
+      highlight: "já começasse pago?",
     },
+    sub: "Essa é a promessa do clube de assinaturas: receita caindo no automático, chova ou faça sol. Olha a diferença entre viver de agenda e viver de assinatura:",
     sem: {
       badge: "SEM CLUBE",
       title: "O mês recomeça do zero",
       itens: [
-        "A receita depende da agenda encher de novo, todo mês",
-        "Cliente bom volta quando lembra — a frequência é dele, não sua",
-        "Semana fraca se resolve com promoção, comendo a margem",
-        "\u201CNo fim do mês, nunca sobra\u201D",
+        "O que você faturou este mês não garante nada no dia 1º — o contador volta pro zero",
+        "Chuva, feriado, semana fraca: cadeira parada e as contas chegando do mesmo jeito",
+        "O cliente de anos some sem avisar — e você só descobre quando fecha o caixa",
+        "Pra mover a semana parada, o jeito é promoção — comendo uma margem que já era apertada",
       ],
+      voc: "\u201CTrabalho o mês inteiro e, no fim, nunca sobra.\u201D",
+      vocLabel: "— a frase que a gente mais escuta de dono de barbearia",
     },
     com: {
       badge: "COM CLUBE",
-      title: "O mês começa pago",
+      title: "O mês já começa pago",
+      heroNumero: "R$ 16.152",
+      heroSufixo: "/mês",
+      heroDerivacao:
+        "No automático — barbearia de 2 cadeiras em São Paulo/SP, com 75 assinantes pagando pelo app da própria marca. Começou com R$ 4.844 por mês; 10 meses depois, R$ 16.152.",
       itens: [
-        "As mensalidades caem no automático antes do primeiro corte do mês",
-        "Assinante gasta até 2,8× mais que o cliente avulso ao longo do ano",
-        "Agenda cheia de cliente que já pagou — frequência monitorada pelo sistema",
-        "Você sabe no dia 1 quanto o clube vai pagar no mês",
+        "As mensalidades caem sozinhas, antes do primeiro corte do mês",
+        "Cliente que já pagou volta todo mês — e gasta até 2,8× mais que o avulso no ano",
+        "Você sabe no dia 1º quanto o clube vai te pagar no mês",
       ],
-      caseLinha:
-        "Foi assim numa barbearia de 4 cadeiras em Belo Horizonte: de R$2.724 para R$10.486 por mês de clube, em 15 meses.",
-      cta: "QUERO O CLUBE NA MINHA BARBEARIA",
+      cta: "QUERO ESSE RESULTADO NA MINHA BARBEARIA",
     },
   },
 
