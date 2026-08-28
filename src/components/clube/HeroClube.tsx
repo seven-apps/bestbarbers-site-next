@@ -36,7 +36,7 @@ export function HeroClube({ onCtaClick }: HeroClubeProps) {
 
             <Button
               onClick={onCtaClick}
-              className="text-sm font-bold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
+              className="min-h-[44px] h-auto text-sm font-bold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
               style={{ backgroundColor: "#121212", color: "#ffaf02" }}
             >
               {hero.cta.text}

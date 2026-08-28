@@ -55,7 +55,7 @@ export function NotificacoesClube({ onCtaClick }: NotificacoesClubeProps) {
 
             <Button
               onClick={onCtaClick}
-              className="btn-primary bg-white text-neutral-bg2 hover:bg-neutral-card-grey text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors mt-6"
+              className="min-h-[44px] h-auto btn-primary bg-white text-neutral-bg2 hover:bg-neutral-card-grey text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors mt-6"
               style={{ backgroundColor: "#121212", color: "#ffaf02" }}
             >
               {notifications.cta.text}

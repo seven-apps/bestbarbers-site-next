@@ -55,7 +55,7 @@ export function TotemClube({ onCtaClick }: TotemClubeProps) {
 
             <Button
               onClick={onCtaClick}
-              className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6 whitespace-pre-line text-center"
+              className="min-h-[44px] h-auto btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6 whitespace-pre-line text-center"
               style={{ backgroundColor: "#ffaf02", color: "#121212" }}
             >
               {totem.cta.text}

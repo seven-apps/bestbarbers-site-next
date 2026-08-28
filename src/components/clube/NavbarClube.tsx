@@ -59,13 +59,13 @@ export function NavbarClube({ onCtaClick }: NavbarClubeProps) {
             href={navbar.buttons.secondary.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center whitespace-nowrap border border-white/20 text-white/70 px-3 py-2 rounded-full text-[11px] font-semibold leading-none hover:border-white/40 hover:text-white transition-all duration-200"
+            className="inline-flex items-center min-h-[44px] whitespace-nowrap border border-white/20 text-white/70 px-3 py-2 rounded-full text-[11px] font-semibold leading-none hover:border-white/40 hover:text-white transition-all duration-200"
           >
             Já sou cliente
           </Link>
           <button
             onClick={onCtaClick}
-            className="inline-flex items-center gap-1 whitespace-nowrap bg-[#ffaf02] text-[#121212] px-3.5 py-2 rounded-full text-[11px] font-bold leading-none shadow-[0_2px_8px_rgba(255,175,2,0.25)] active:scale-[0.98] transition-transform duration-200"
+            className="inline-flex items-center min-h-[44px] gap-1 whitespace-nowrap bg-[#ffaf02] text-[#121212] px-3.5 py-2 rounded-full text-[11px] font-bold leading-none shadow-[0_2px_8px_rgba(255,175,2,0.25)] active:scale-[0.98] transition-transform duration-200"
           >
             {navbar.buttons.primary.textMobile}
             <ArrowRight className="w-3.5 h-3.5 shrink-0" />

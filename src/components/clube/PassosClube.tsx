@@ -82,7 +82,7 @@ export function PassosClube({ onCtaClick }: PassosClubeProps) {
           <div className="mt-0">
             <Button
               onClick={onCtaClick}
-              className="btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
+              className="min-h-[44px] h-auto btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover"
               style={{ backgroundColor: "#ffaf02", color: "#121212" }}
             >
               {steps.cta.text}

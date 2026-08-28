@@ -46,7 +46,7 @@ export function NotasFiscaisClube({ onCtaClick }: NotasFiscaisClubeProps) {
 
             <Button
               onClick={onCtaClick}
-              className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
+              className="min-h-[44px] h-auto btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
               style={{ backgroundColor: "#ffaf02", color: "#121212" }}
             >
               {invoices.cta.text}

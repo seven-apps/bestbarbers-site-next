@@ -31,7 +31,7 @@ export const clubeContent = {
       subtitle: "com a cara da sua Barbearia",
     },
     description:
-      "O mês começa com receita na conta — não com a agenda em branco. Seu cliente assina o plano pelo app da sua própria barbearia e a mensalidade cai todo mês, no automático.",
+      "O mês começa com receita na conta — não com a agenda em branco. Seu cliente assina pelo app com a sua marca e a mensalidade cai todo mês, no automático — seja criando o clube do zero, seja aposentando a planilha e o PIX cobrado um a um.",
     cta: {
       text: "QUERO O CLUBE\nNA MINHA BARBEARIA",
     },
@@ -73,12 +73,12 @@ export const clubeContent = {
           depois: "Status monitorado no dia",
         },
         {
-          antes: "Preço parado há um ano",
+          antes: "Reajuste empurrado de mês em mês",
           depois: "Planos ajustáveis no painel",
         },
         {
-          antes: "Clube do tamanho da sua mão",
-          depois: "Operação que cresce",
+          antes: "Cada assinante de cabeça",
+          depois: "Relatório que o contador entende",
         },
       ],
       cta: "COMO FUNCIONA A MIGRAÇÃO DO MEU CLUBE?",
@@ -129,7 +129,7 @@ export const clubeContent = {
       {
         title: "Nenhuma nota digitada à mão:",
         description:
-          "90 assinantes são 90 cobranças por mês — e a NFS-e sai automaticamente a cada pagamento de assinatura ou atendimento",
+          "com 10 ou com 90 assinantes, a NFS-e sai sozinha a cada pagamento de assinatura ou atendimento — e, se hoje você cobra no PIX e não emite, o suporte te ajuda a configurar a emissão desde o início",
       },
       {
         title: "Integração com a prefeitura:",
@@ -158,7 +158,7 @@ export const clubeContent = {
     badge: "Funcionalidades",
     title: "O clube na frente, o sistema completo atrás",
     subtitle:
-      "Assinaturas, agenda, financeiro e nota fiscal no mesmo sistema — tudo que a operação da sua barbearia precisa em um só lugar.",
+      "O assinante agenda pelo app, o corte desconta do plano sozinho, o financeiro registra a receita e a nota sai emitida — agenda, financeiro e fiscal ligados na mesma engrenagem do clube.",
     items: homeContent.features.items,
     cta: {
       text: "QUERO O CLUBE NA MINHA BARBEARIA",
@@ -168,7 +168,7 @@ export const clubeContent = {
   // ===== TOTEM =====
   totem: {
     title: {
-      main: "Adquira também:",
+      main: "Opcional, para quando o clube crescer:",
       highlight: "o Totem que recebe o seu assinante",
     },
     features: [
@@ -202,7 +202,7 @@ export const clubeContent = {
       {
         title: "Reativação:",
         description:
-          "quem some da cadeira, o sistema chama de volta com comunicação segmentada",
+          "quem some da cadeira recebe o chamado de volta pelo app — sem você caçar cliente no WhatsApp",
       },
       {
         title: "Push com a sua marca:",
@@ -227,7 +227,7 @@ export const clubeContent = {
     titleAfterCount: " assinantes",
     titleMiddle: " pagando todo mês,",
     titleEnd: " em 1.200+ barbearias",
-    subline: "R$5M+ processados por mês · 6M+ agendamentos mensais",
+    subline: "R$5M+ processados por mês por toda a rede BestBarbers",
   },
 
   // ===== PASSO A PASSO =====
@@ -241,19 +241,19 @@ export const clubeContent = {
         number: "1",
         title: "Preencha o formulário",
         description:
-          "Nosso especialista trabalhará com você para entender seus objetivos e necessidades — e, se você já tem clube, como ele roda hoje: planos, valores, assinantes.",
+          "Nosso especialista desenha o clube com você — e, se você já tem um, entende como ele roda hoje: planos, valores, assinantes e o que acontece com as cobranças em andamento na virada. Você sai da conversa sabendo valores e o desenho do seu plano.",
       },
       {
         number: "2",
         title: "Assinatura do contrato",
         description:
-          "Hora de formalizarmos a nossa parceria e oficializarmos esse grande passo da sua barbearia.",
+          "O contrato formaliza o que já ficou combinado na conversa — valores, planos e cronograma. Nada aparece aqui que você não tenha visto antes.",
       },
       {
         number: "3",
         title: "Desenvolvimento e homologação",
         description:
-          "Contamos com um time de desenvolvedores experts na produção de aplicativos. Seu app ficará pronto mais rápido do que você imagina!",
+          "Nosso time de desenvolvimento produz e publica o seu app na App Store e na Play Store — em média, de 15 a 30 dias úteis após o contrato e o envio dos seus dados.",
       },
       {
         number: "4",
@@ -265,7 +265,7 @@ export const clubeContent = {
         number: "5",
         title: "Entrega do App Personalizado",
         description:
-          "Desfrute de todos os benefícios da exclusividade do aplicativo próprio e proporcione uma experiência fantástica para seus clientes!",
+          "Seu app no ar, com o nome da sua barbearia nas lojas — e seus clientes assinando o clube por ele. Daqui em diante, a mensalidade cai todo mês, no automático.",
       },
     ],
     cta: {

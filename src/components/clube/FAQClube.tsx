@@ -49,6 +49,12 @@ const faqItems: FAQItem[] = [
   },
   {
     category: "Clube de Assinaturas",
+    question: "Quanto custa ter o clube no app da minha barbearia?",
+    answer:
+      "O clube no app com a sua marca faz parte do plano de App Próprio Personalizado, a partir de R$299/mês. O valor exato depende do desenho do seu clube — planos, serviços e porte da operação — e fica definido na primeira conversa, antes de qualquer contrato.",
+  },
+  {
+    category: "Clube de Assinaturas",
     question: "Já tenho clube em outro sistema — como funciona a migração?",
     answer:
       "Essa é a primeira conversa com o nosso time: como os assinantes atuais entram, o que acontece com as cobranças em andamento e o cronograma da virada. Preencha o formulário e traga os números do seu clube — planos, valores e quantidade de assinantes.",
@@ -309,7 +315,7 @@ export function FAQClube() {
                   setActiveCategory(category);
                   setOpenItems(new Set([0]));
                 }}
-                className={`flex-shrink-0 px-4 py-2.5 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] animate-fade-in ${
+                className={`flex-shrink-0 min-h-[44px] px-4 py-2.5 md:px-5 md:py-3 rounded-full text-xs md:text-sm font-semibold transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] animate-fade-in ${
                   activeCategory === category
                     ? "bg-gradient-to-r from-[#ffaf02] to-[#ffc233] text-black "
                     : "bg-[#1a1a1a]/80 backdrop-blur-sm text-gray-300 hover:bg-[#252525] border border-gray-800/50 hover:border-gray-700"

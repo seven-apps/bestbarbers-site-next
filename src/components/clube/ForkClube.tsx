@@ -86,8 +86,10 @@ export function ForkClube({ onCriarClick, onMigrarClick }: ForkClubeProps) {
                   className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm md:text-[15px] leading-snug"
                 >
                   <span className="text-gray-500">{par.antes}</span>
-                  <MoveRight className="w-4 h-4 text-[#ffaf02] shrink-0" />
-                  <span className="text-white font-semibold">{par.depois}</span>
+                  <span className="inline-flex items-center gap-2 text-white font-semibold">
+                    <MoveRight className="w-4 h-4 text-[#ffaf02] shrink-0" />
+                    {par.depois}
+                  </span>
                 </li>
               ))}
             </ul>

@@ -59,7 +59,7 @@ export function FooterClube() {
                 className="w-[150px] md:w-[180px] lg:w-[200px] h-auto mb-4"
               />
             </motion.div>
-            <p className="text-gray-500 text-sm max-w-xs mt-4 hidden lg:block">
+            <p className="text-gray-500 text-sm max-w-xs mt-4 hidden lg:block py-2 inline-flex items-center">
               Transformando barbearias em negócios lucrativos desde 2020.
             </p>
           </motion.div>
@@ -86,7 +86,7 @@ export function FooterClube() {
                       >
                         <Link
                           href={link.href}
-                          className="text-gray-400 hover:text-[#ffaf02] transition-colors text-sm inline-flex items-center gap-2"
+                          className="text-gray-400 hover:text-[#ffaf02] transition-colors text-sm inline-flex items-center gap-2 py-2 inline-flex items-center"
                         >
                           {link.text}
                         </Link>
@@ -116,7 +116,7 @@ export function FooterClube() {
                             className="w-4 h-4"
                           />
                         </div>
-                        <span className="text-sm">
+                        <span className="text-sm py-2 inline-flex items-center">
                           {section.contact.whatsapp.text}
                         </span>
                       </Link>
@@ -132,7 +132,7 @@ export function FooterClube() {
                           className="w-4 h-4"
                         />
                       </div>
-                      <span className="text-sm">{section.contact.email}</span>
+                      <span className="text-sm py-2 inline-flex items-center">{section.contact.email}</span>
                     </div>
                   </div>
                 )}
@@ -196,7 +196,7 @@ export function FooterClube() {
                     <Link
                       key={linkIndex}
                       href={link.href}
-                      className="text-gray-400 hover:text-[#ffaf02] transition-colors text-sm"
+                      className="text-gray-400 hover:text-[#ffaf02] transition-colors text-sm py-2 inline-flex items-center"
                     >
                       {link.text}
                     </Link>
@@ -221,7 +221,7 @@ export function FooterClube() {
                         className="w-4 h-4"
                       />
                     </div>
-                    <span className="text-sm">
+                    <span className="text-sm py-2 inline-flex items-center">
                       {section.contact.whatsapp.text}
                     </span>
                   </Link>
@@ -236,7 +236,7 @@ export function FooterClube() {
                         className="w-4 h-4"
                       />
                     </div>
-                    <span className="text-sm">{section.contact.email}</span>
+                    <span className="text-sm py-2 inline-flex items-center">{section.contact.email}</span>
                   </div>
                 </div>
               )}
@@ -252,7 +252,7 @@ export function FooterClube() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-12 flex justify-center"
         >
-          <p className="text-center text-sm md:text-base text-gray-400">
+          <p className="text-center text-sm md:text-base text-gray-400 py-2 inline-flex items-center">
             {migracao.text}{" "}
             <Link
               href={migracao.href}
@@ -280,7 +280,7 @@ export function FooterClube() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-xs"
+          className="flex flex-col md:flex-row justify-between items-center gap-4 text-gray-500 text-xs py-2 inline-flex items-center"
         >
           <p>
             © {new Date().getFullYear()} BestBarbers. Todos os direitos
