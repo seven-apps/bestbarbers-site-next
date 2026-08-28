@@ -17,7 +17,7 @@ export function HeroClube({ onCtaClick }: HeroClubeProps) {
   return (
     <section
       className="section-primary pt-32 pb-8 md:pb-12 lg:pb-0 flex justify-center items-end relative overflow-hidden"
-      style={{ backgroundColor: "#ffaf02" }}
+      style={{ backgroundColor: "#ffaf02", borderBottomLeftRadius: 0 }}
     >
       <div className="container-custom relative">
         <div className="flex flex-col lg:flex-row items-end justify-between gap-0 w-full lg:min-h-[420px]">
