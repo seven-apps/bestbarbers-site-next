@@ -102,6 +102,9 @@ export const useUtmParams = () => {
       "rafael-guapo": 120003783,
       "mauro-elegance": 120003786,
       "gabriel-reis": 120003825,
+      "jefferson-aux": 120004060,
+      "vittor-pallace": 120004061,
+      "lucas-start": 120004062,
       // Spotify → /podcast?desc=<temporada>.<episodio>. SEM entrada no descMap:
       // a descrição (temporada + episódio) vem dinâmica via utm_desc (PodcastAttribution).
       podcast: 120001484,
@@ -146,6 +149,12 @@ export const useUtmParams = () => {
         "LP - Mauro Oliveira (Elegance Barbearia) - Programa de indicações",
       "gabriel-reis":
         "LP - Gabriel Reis (Reis Barbearia) - Programa de indicações",
+      "jefferson-aux":
+        "LP - Jefferson Xavier (AUX Barbearia) - Programa de indicações",
+      "vittor-pallace":
+        "LP - Vittor Manoel (Pallace Barbearia) - Programa de indicações",
+      "lucas-start":
+        "LP - Lucas Alexandre (Start Barbearia) - Programa de indicações",
     }),
     []
   );

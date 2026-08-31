@@ -33,6 +33,9 @@ import ottoniImg from "@/app/parceiros/assets/ottoni.png";
 import rafaelGuapoImg from "@/app/parceiros/assets/rafael-guapo.png";
 import mauroEleganceImg from "@/app/parceiros/assets/mauro-elegance.png";
 import gabrielReisImg from "@/app/parceiros/assets/gabriel-reis.png";
+import jeffersonAuxImg from "@/app/parceiros/assets/jefferson-aux.png";
+import vittorPallaceImg from "@/app/parceiros/assets/vittor-pallace.png";
+import lucasStartImg from "@/app/parceiros/assets/lucas-start.png";
 
 
 interface HeroPartnerSectionProps {
@@ -73,6 +76,9 @@ export function HeroPartnerSection({
     "rafael-guapo": rafaelGuapoImg,
     "mauro-elegance": mauroEleganceImg,
     "gabriel-reis": gabrielReisImg,
+    "jefferson-aux": jeffersonAuxImg,
+    "vittor-pallace": vittorPallaceImg,
+    "lucas-start": lucasStartImg,
   }), []);
 
   const isPartnerImage = !!(source && imageMap[source]);

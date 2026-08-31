@@ -85,6 +85,15 @@ export const useWhatsAppRedirect = () => {
           "%0AConheci%20através%20do%20Mauro%20da%20Elegance%20Barbearia",
         "gabriel-reis":
           baseLink + "%0AConheci%20através%20do%20Gabriel%20Reis",
+        "jefferson-aux":
+          baseLink +
+          "%0AConheci%20através%20do%20Jefferson%20da%20AUX%20Barbearia",
+        "vittor-pallace":
+          baseLink +
+          "%0AConheci%20através%20do%20Vittor%20da%20Pallace%20Barbearia",
+        "lucas-start":
+          baseLink +
+          "%0AConheci%20através%20do%20Lucas%20da%20Start%20Barbearia",
       };
 
       // Verifica UTM inf primeiro (tem prioridade)
@@ -180,6 +189,15 @@ export const useWhatsAppRedirect = () => {
           "%0AConheci%20através%20do%20Mauro%20da%20Elegance%20Barbearia",
         "gabriel-reis":
           baseLink + "%0AConheci%20através%20do%20Gabriel%20Reis",
+        "jefferson-aux":
+          baseLink +
+          "%0AConheci%20através%20do%20Jefferson%20da%20AUX%20Barbearia",
+        "vittor-pallace":
+          baseLink +
+          "%0AConheci%20através%20do%20Vittor%20da%20Pallace%20Barbearia",
+        "lucas-start":
+          baseLink +
+          "%0AConheci%20através%20do%20Lucas%20da%20Start%20Barbearia",
       };
 
       // Verifica UTM inf primeiro
