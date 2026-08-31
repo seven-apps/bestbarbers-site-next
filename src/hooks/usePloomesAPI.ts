@@ -31,21 +31,30 @@ export interface UsePloomesAPIOptions {
 }
 
 /**
- * Hook para integração com a API do Ploomes CRM.
- *
- * SEGURANÇA (ago/2026): o browser NÃO fala mais direto com api2.ploomes.com — a
- * chave da API vivia hardcoded aqui e ia no bundle público. Todas as chamadas
- * passam pelo route handler interno /api/ploomes (src/app/api/ploomes/route.ts),
- * que lê a chave de process.env.PLOOMES_API_KEY e faz o forward transparente
- * (mesmo payload, mesmo status e corpo de resposta do Ploomes).
- *
+ * Monta o predicado OData para casar um telefone no Ploomes apesar da formatação
+ * (ex: "(31) 97226-8877"). contains() faz match literal, então "972268877" NÃO
+ * acha por causa do traço. Solução: 2 chunks sempre contíguos em qualquer formato —
+ * últimos 4 dígitos (após o traço) + 5 dígitos anteriores (antes do traço, celular BR).
+ */
+function buildPhonePredicate(phone: string): string {
+  const digits = phone.replace(/\D/g, '');
+  const last4 = digits.slice(-4);
+  const firstChunk = digits.slice(-9, -4);
+  return firstChunk.length >= 4
+    ? `contains(p/PhoneNumber, '${last4}') and contains(p/PhoneNumber, '${firstChunk}')`
+    : `contains(p/PhoneNumber, '${last4}')`;
+}
+
+/**
+ * Hook para integração com a API do Ploomes CRM
  * @param options - Opções para customizar o originId e originDesc
  */
 export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
   const { originId: customOriginId, originDesc: customOriginDesc } = options;
   const { getUtmParams, getOriginMapping } = useUtmParams();
 
-  const PLOOMES_PROXY_URL = '/api/ploomes';
+  const PLOOMES_API_KEY = 'B59785E2FC60B0D69BFE51222FE4516699B00F0F97420BBA48E25F648510FB55245A64F7CDB0C89E438AC6C0C56D973F73F99DB7FEF93422E040A2B8816B323B';
+  const PLOOMES_BASE_URL = 'https://api2.ploomes.com';
 
   /**
    * Atribuição do cadastro (origem, descrição da campanha, campos bb_*) resolvida pela
@@ -118,13 +127,14 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       ]
     };
 
-    const response = await fetch(PLOOMES_PROXY_URL, {
+    const response = await fetch(`${PLOOMES_BASE_URL}/Contacts`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'user-key': PLOOMES_API_KEY
       },
-      body: JSON.stringify({ action: 'createContact', payload: ploomesData })
+      body: JSON.stringify(ploomesData)
     });
 
     if (!response.ok) {
@@ -162,13 +172,14 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       ]
     };
 
-    const response = await fetch(PLOOMES_PROXY_URL, {
+    const response = await fetch(`${PLOOMES_BASE_URL}/Deals`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'user-key': PLOOMES_API_KEY
       },
-      body: JSON.stringify({ action: 'createDeal', payload: dealData })
+      body: JSON.stringify(dealData)
     });
 
     if (!response.ok) {
@@ -181,17 +192,17 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
 
   const checkPhoneExists = useCallback(async (phone: string): Promise<boolean> => {
     try {
+      const filter = encodeURIComponent(`Phones/any(p: ${buildPhonePredicate(phone)})`);
+      const url = `${PLOOMES_BASE_URL}/Contacts?$filter=${filter}&$top=1&$select=Id,Name`;
+
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 3000);
 
-      // O predicado OData (match por chunks de dígitos) mora no route handler.
-      const response = await fetch(PLOOMES_PROXY_URL, {
-        method: 'POST',
+      const response = await fetch(url, {
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json',
+          'user-key': PLOOMES_API_KEY,
         },
-        body: JSON.stringify({ action: 'checkPhone', phone }),
         signal: controller.signal,
       });
 
@@ -199,7 +210,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
 
       if (!response.ok) return false;
       const data = await response.json();
-      return data.exists === true;
+      return (data.value?.length || 0) > 0;
     } catch {
       return false;
     }

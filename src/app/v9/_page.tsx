@@ -17,8 +17,9 @@ import { usePhoneMask } from "@/hooks/usePhoneMask";
 import Image from "next/image";
 import { useEffect, useState, useCallback, useMemo } from "react";
 
-// Chamadas ao Ploomes passam pelo proxy server-side /api/ploomes — a chave da API
-// vive só em process.env.PLOOMES_API_KEY (nunca no bundle do client).
+const PLOOMES_API_KEY =
+  "B59785E2FC60B0D69BFE51222FE4516699B00F0F97420BBA48E25F648510FB55245A64F7CDB0C89E438AC6C0C56D973F73F99DB7FEF93422E040A2B8816B323B";
+const PLOOMES_BASE_URL = "https://api2.ploomes.com";
 
 // ─── Cases reais (No Invention — source: memória do projeto) ────
 
@@ -245,23 +246,20 @@ export default function V9QuizPage() {
         // PATCH com tag dor do quiz
         if (createdId) {
           try {
-            await fetch("/api/ploomes", {
-              method: "POST",
+            await fetch(`${PLOOMES_BASE_URL}/Contacts(${createdId})`, {
+              method: "PATCH",
               headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
+                "user-key": PLOOMES_API_KEY,
               },
               body: JSON.stringify({
-                action: "patchContact",
-                contactId: createdId,
-                payload: {
-                  OtherProperties: [
-                    {
-                      FieldKey: "contact_2D7EF0B1-E99E-414A-A7DA-4106F05DD4BB",
-                      StringValue: `LP V9 Quiz | dor=${answers.pain || ""}`,
-                    },
-                  ],
-                },
+                OtherProperties: [
+                  {
+                    FieldKey: "contact_2D7EF0B1-E99E-414A-A7DA-4106F05DD4BB",
+                    StringValue: `LP V9 Quiz | dor=${answers.pain || ""}`,
+                  },
+                ],
               }),
             });
           } catch {
