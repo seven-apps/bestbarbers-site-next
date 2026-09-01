@@ -5,7 +5,21 @@ import { Navbar } from "@/components/sections/Navbar";
 import { FooterSimple } from "@/components/sections/FooterSimple";
 import { useMetaPixel } from "@/hooks";
 import { GuiaForm } from "./_components/GuiaForm";
-import { Eye, MessageSquareText, MousePointerClick, ArrowRight, Search, Send } from "lucide-react";
+import {
+  ClipboardList,
+  MessageSquareText,
+  CalendarCheck,
+  SlidersHorizontal,
+  Smartphone,
+  RefreshCcw,
+  ArrowRight,
+} from "lucide-react";
+
+// LP de captura fria do guia "Do Zero à Assinatura". Molde: /cadeira-cheia — mesma
+// estrutura de seções, mesma moldura visual, strings trocadas. Toda a copy abaixo sai
+// do conteúdo do guia (bestbarbers-ai/docs/operacional/ebook-do-zero-a-assinatura.md):
+// a Ficha da Cadeira Vaga (Cap. 1), as 3 frases da cadeira (Cap. 2), a régua de uso e
+// as 3 travas (Cap. 4), o Quadro da Manhã (Cap. 7) e a Autópsia (Cap. 5).
 
 const AMBER = "#ebad04";
 
@@ -14,55 +28,62 @@ function scrollToForm() {
 }
 
 // --- Seção: o que você vai receber (3 bullets) ---
+// Cada card é um bloco que o dono PREENCHE no guia — oferta concreta, não diagnóstico.
 const RECEBE = [
   {
-    icon: Eye,
-    title: "Como enxergar quem sumiu",
-    body: "O mapa simples pra saber quais clientes pararam de voltar e há quanto tempo — o ponto cego que quase toda barbearia tem.",
+    icon: ClipboardList,
+    title: "A ficha que te dá o seu número",
+    body: "São seis linhas: cinco você responde de cabeça, uma pede meia hora com o caderno aberto. No fim você tem escrito quantos assinantes cabem na sua agenda hoje e quanto isso põe no dia 1º.",
   },
   {
     icon: MessageSquareText,
-    title: "O que dizer (e quando)",
-    body: "As mensagens que reativam sem parecer promoção — pra quem enviar, em que ordem, e o timing que faz o cliente responder.",
+    title: "As três frases da cadeira",
+    body: "O que o barbeiro fala no fim do corte, com a capa ainda no pescoço do cliente: a pergunta, o número na mesa e o fechamento. Ele decora e adapta pro jeito dele — não precisa virar vendedor.",
   },
   {
-    icon: MousePointerClick,
-    title: "Como virar rotina sem trabalho braçal",
-    body: "O app te mostra quem sumiu e você chama todo mundo de volta com 1 clique — sem planilha, sem caçar telefone.",
+    icon: CalendarCheck,
+    title: "A régua de uso do seu plano",
+    body: "Quais dias de utilização o plano dá, o que entra, o que não entra e as três travas escritas antes do primeiro assinante entrar. É o que responde ao “e se ele vier toda semana?”.",
   },
 ];
 
-// --- Seção: como funciona (1 clique), 3 passos ---
+// --- Seção: como funciona dentro do app, 3 passos ---
+// Sai da contracapa do guia (data/iscas/ebooks.json → do-zero-a-assinatura), que é o
+// que o produto de fato faz: planos por dias de uso, assinatura pelo app e cobrança
+// recorrente. Nada além disso.
 const PASSOS = [
   {
     n: "1",
-    icon: Search,
-    title: "Descubra quem parou de voltar",
-    body: "O Relatório de Frequência mostra quem não aparece há 30, 60, 90 dias ou mais. Sem planilha, sem caçar telefone.",
+    icon: SlidersHorizontal,
+    title: "Você desenha o plano",
+    body: "No painel você configura os dias de utilização de cada plano, o preço e os serviços que entram. A régua é sua — o sistema só aplica igual pra todo assinante, todo mês.",
   },
   {
     n: "2",
-    icon: MessageSquareText,
-    title: "Escreva a mensagem certa",
-    body: "Um texto que reconhece a ausência e convida de volta — no seu tom, do jeito da sua casa. O guia entrega os modelos prontos.",
+    icon: Smartphone,
+    title: "O cliente assina pelo celular",
+    body: "A conversa que começou na cadeira fecha no app: ele escolhe o plano e cadastra o cartão ali mesmo, antes de levantar. Entre o “quero” e o “está feito” não entra papel nem fila.",
   },
   {
     n: "3",
-    icon: Send,
-    title: "Dispare pra lista toda com 1 clique",
-    body: "Você seleciona a lista de sumidos e envia push e WhatsApp com 1 clique — grátis e sem limite de envios.",
+    icon: RefreshCcw,
+    title: "A mensalidade entra sozinha",
+    body: "A cobrança recorre todo mês e o pagamento fica acompanhado no painel — você descobre quem não pagou no dia, não no fechamento.",
   },
 ];
 
-export default function CadeiraCheiaPage() {
+export default function DoZeroAAssinaturaPage() {
   const { trackCustomEvent } = useMetaPixel();
   const [showStickyCta, setShowStickyCta] = useState(false);
 
   // ViewContent no load (visibilidade de topo de funil no Events Manager).
+  // A chave `isca` repete o id do mapa (src/lib/iscas.ts) pra cortar as iscas no
+  // Events Manager sem depender de parsear o content_name.
   useEffect(() => {
     trackCustomEvent("ViewContent", {
-      content_name: "LP Cadeira Cheia - Guia Reativação",
+      content_name: "LP Do Zero à Assinatura - Guia Clube",
       content_category: "landing_page",
+      isca: "do-zero-a-assinatura",
     });
   }, [trackCustomEvent]);
 
@@ -112,20 +133,21 @@ export default function CadeiraCheiaPage() {
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold uppercase tracking-wide mb-6"
                 style={{ background: "rgba(235,173,4,0.1)", borderColor: "rgba(235,173,4,0.35)", color: AMBER }}
               >
-                Guia grátis · Método Cadeira Cheia
+                Guia grátis · Método Do Zero à Assinatura
               </span>
 
               <h1
                 className="text-white leading-[1.08] mb-5"
                 style={{ fontFamily: "var(--font-vollkorn)", fontWeight: 800, fontSize: "clamp(30px, 5vw, 52px)" }}
               >
-                Você não perdeu o cliente.{" "}
-                <span style={{ color: AMBER }}>Só não chamou ele de volta ainda.</span>
+                O horário que ficou vazio ontem já diz{" "}
+                <span style={{ color: AMBER }}>quantos assinantes cabem na sua barbearia.</span>
               </h1>
 
               <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
-                O guia grátis <strong className="text-white">Cadeira Cheia</strong> traz o passo a passo pra encher
-                a cadeira de novo — chamando de volta, com um clique seu, quem já foi seu freguês.
+                O guia grátis <strong className="text-white">Do Zero à Assinatura</strong> traz a ficha de seis
+                linhas que te entrega esse número hoje — e o que faz ele acontecer: as frases que o barbeiro fala
+                na cadeira, a régua de uso do plano e os cinco números que você olha toda manhã.
               </p>
 
               {/* prova rápida inline */}
@@ -136,7 +158,7 @@ export default function CadeiraCheiaPage() {
                 </span>
                 <span className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full" style={{ background: AMBER }} />
-                  Material direto ao ponto
+                  Pra quem nunca cobrou e pra quem já cobra no caderno
                 </span>
               </div>
             </div>
@@ -157,14 +179,16 @@ export default function CadeiraCheiaPage() {
               className="text-white leading-tight mb-6"
               style={{ fontFamily: "var(--font-vollkorn)", fontWeight: 800, fontSize: "clamp(26px, 4vw, 40px)" }}
             >
-              Some 1 hoje. 2 semana que vem.{" "}
-              <span style={{ color: AMBER }}>No fim do mês, é meia agenda vazia.</span>
+              Você não precisa de mais gente.{" "}
+              <span style={{ color: AMBER }}>Precisa que a mesma gente volte mais vezes.</span>
             </h2>
             <p className="text-white/70 text-base md:text-lg leading-relaxed">
-              Quando um cliente novo não chega, você sente na hora. Mas quando um antigo some, ninguém sente — a
-              agenda roda com os outros e o buraco fica invisível. Ele não brigou, não avisou. Só parou de aparecer.
-              E esse é o cliente mais barato que existe: você já pagou por ele uma vez, ele já conhece seu trabalho
-              e já confiou na sua tesoura. Trazer de volta não custa mídia — custa método.
+              Pra lotar a agenda no avulso, cada horário cheio é um nome novo — ou um antigo que resolveu voltar
+              naquele dia. Por isso o mês inteiro depende de quem lembra de aparecer, e a quarta de manhã continua
+              com buraco. Com assinante, a mesma pessoa volta mais de uma vez dentro do mesmo mês, e o dinheiro
+              entra no dia 1º. Só que “quantos assinantes eu quero?” é a pergunta errada: a sua meta não é um
+              número bonito, é o número que cabe na sua agenda. E ele já existe hoje, antes de você vender
+              qualquer coisa — está escrito nos horários que ficaram vazios ontem.
             </p>
           </div>
         </div>
@@ -180,7 +204,7 @@ export default function CadeiraCheiaPage() {
             O que você vai receber no guia
           </h2>
           <p className="text-white/55 text-center mb-12 max-w-2xl mx-auto">
-            Na linguagem de quem está na cadeira — sem enrolação, pronto pra usar hoje.
+            Não é um livro pra ler. É um livro pra preencher — à caneta, com os números da sua casa.
           </p>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -201,10 +225,16 @@ export default function CadeiraCheiaPage() {
               </div>
             ))}
           </div>
+
+          <p className="text-white/45 text-sm text-center mt-8 max-w-3xl mx-auto leading-relaxed">
+            E ainda: a conta que você mostra pro barbeiro antes de anunciar o clube, os cinco números que você
+            olha toda manhã em dois minutos e — se você já tentou um clube e viu a turma minguar — a autópsia que
+            mostra do que ele morreu, antes de você abrir a segunda vez.
+          </p>
         </div>
       </section>
 
-      {/* 4. PROVA +1.200 */}
+      {/* 4. PROVA — o número público de assinantes de clube na plataforma */}
       <section className="py-16 md:py-24 border-t border-white/5">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
@@ -213,31 +243,40 @@ export default function CadeiraCheiaPage() {
               style={{ borderColor: "rgba(235,173,4,0.25)", background: "rgba(235,173,4,0.06)" }}
             >
               <span style={{ color: AMBER, fontFamily: "var(--font-vollkorn)", fontWeight: 800, fontSize: "clamp(32px, 6vw, 52px)" }}>
-                +1.200
+                +51.000
               </span>
-              <span className="text-white/70 text-sm md:text-base">barbearias na BestBarbers</span>
+              <span className="text-white/70 text-sm md:text-base">assinantes de clube na BestBarbers</span>
             </div>
+            {/*
+              Os dois números entram COMO NO GUIA (Cap. 4): "são 51.000+ assinantes de clube e 1.200+
+              barbearias rodando na plataforma hoje" — dois fatos oficiais somados por "e", nunca um
+              dentro do outro. A redação anterior ("51.000 assinantes EM mais de 1.200 barbearias")
+              afirmava que todas as 1.200 têm clube, o que é falso e não é um número que a gente possa
+              publicar. Prova macro = só os 4 oficiais [[feedback_numeros_oficiais_marca]].
+            */}
             <p className="text-white/70 text-base md:text-lg leading-relaxed">
-              Mais de 1.200 barbearias usam a BestBarbers para organizar agenda, financeiro e a relação com o
-              cliente no mesmo lugar. Este guia reúne, na linguagem de quem está na cadeira, o que essas operações
-              fazem pra não perder cliente por esquecimento. Material gratuito, direto ao ponto.
+              São mais de 51.000 assinantes de clube e mais de 1.200 barbearias rodando na BestBarbers hoje — a
+              plataforma que junta agenda, financeiro e clube no mesmo lugar. Este guia é o método no papel: a
+              conta que dimensiona a carteira, as frases que fecham na cadeira e a régua que segura o clube de pé
+              depois que a primeira turma entra. Material gratuito, direto ao ponto.
             </p>
           </div>
         </div>
       </section>
 
-      {/* 5. COMO FUNCIONA (1 clique) */}
+      {/* 5. COMO FUNCIONA (dentro do app) */}
       <section className="py-16 md:py-24 border-t border-white/5" style={{ background: "#0c0c10" }}>
         <div className="container-custom">
           <h2
             className="text-white text-center leading-tight mb-3"
             style={{ fontFamily: "var(--font-vollkorn)", fontWeight: 800, fontSize: "clamp(26px, 4vw, 40px)" }}
           >
-            E dentro do app, vira rotina de{" "}
-            <span style={{ color: AMBER }}>1 clique</span>
+            E dentro do app, a{" "}
+            <span style={{ color: AMBER }}>régua roda sozinha</span>
           </h2>
           <p className="text-white/55 text-center mb-12 max-w-2xl mx-auto">
-            O guia funciona no papel. Com o app, o trabalho braçal some.
+            O guia funciona no caderno. O que ninguém aguenta fazer na mão — aplicar a mesma régua em cada
+            assinante, todo mês, sem falhar um — é o que o app tira das suas costas.
           </p>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -263,8 +302,8 @@ export default function CadeiraCheiaPage() {
           </div>
 
           <p className="text-white/40 text-xs text-center mt-8 max-w-xl mx-auto">
-            O envio é manual: você escolhe a lista e dispara com 1 clique. Grátis, sem limite — e nada sai sem
-            você mandar.
+            O que continua seu: decidir qual régua vale, quem o seu time convida na cadeira e até onde a carteira
+            cresce. Sistema nenhum vende assinatura por você.
           </p>
         </div>
       </section>
@@ -279,10 +318,19 @@ export default function CadeiraCheiaPage() {
             >
               Quem faz o guia
             </h2>
+            {/*
+              "no quarto mês" saiu daqui. O 4º mês existe no guia como a LINHA DE UMA FICHA — a Autópsia
+              do Capítulo 5 pergunta "quantos sobraram no 4º mês?" —, e ali ele é a data de uma conta que
+              o dono faz sobre a PRÓPRIA carteira. Dito na voz da casa ("o que a gente aprendeu vendo…"),
+              o mesmo número vira estatística de permanência da base BestBarbers, que é exatamente o tipo
+              de dado vetado em copy pública [[feedback_copy_cases_vetados]]. A frase abaixo mantém a
+              observação sem cravar prazo.
+            */}
             <p className="text-white/70 text-base md:text-lg leading-relaxed">
               A BestBarbers é a plataforma que ajuda mais de 1.200 barbearias a organizar agenda, financeiro,
               clube de assinaturas e a relação com o cliente — tudo no mesmo lugar. Este guia é o que a gente
-              aprendeu observando o que as melhores operações fazem pra não perder cliente por esquecimento.
+              aprendeu vendo clube nascer, encher e, às vezes, minguar: o que separa a carteira que fica de pé
+              da que esvazia depois que a novidade passa.
             </p>
           </div>
         </div>
@@ -296,17 +344,11 @@ export default function CadeiraCheiaPage() {
               className="text-white leading-tight mb-4"
               style={{ fontFamily: "var(--font-vollkorn)", fontWeight: 800, fontSize: "clamp(26px, 4vw, 40px)" }}
             >
-              Pegue o passo a passo pra{" "}
-              <span style={{ color: AMBER }}>reencher sua cadeira</span>
+              Pegue a ficha e escreva{" "}
+              <span style={{ color: AMBER }}>o seu número</span>
             </h2>
             <p className="text-white/65 text-base md:text-lg leading-relaxed mb-8">
-              {/*
-                NÃO prometer entrega por WhatsApp/e-mail: não existe executor desses canais
-                (a única rota do site é /api/ploomes, que só cria o lead no CRM). A /obrigado
-                entrega o PDF no botão, na própria página — a promessa que estava aqui
-                contradizia a tela seguinte do mesmo fluxo.
-              */}
-              Grátis, direto ao ponto e pronto pra usar hoje. O download do PDF abre na tela seguinte.
+              Grátis, direto ao ponto e pronto pra preencher hoje. O download do PDF abre na tela seguinte.
             </p>
             <button
               onClick={scrollToForm}
@@ -326,9 +368,9 @@ export default function CadeiraCheiaPage() {
       <FooterSimple />
       <div className="bg-[#0a0a0a] pb-10 px-4">
         <p className="text-white/35 text-[11px] leading-relaxed text-center max-w-2xl mx-auto">
-          Ao enviar seus dados, você autoriza a BestBarbers a entrar em contato sobre o guia Cadeira Cheia e suas
-          soluções, conforme a Lei Geral de Proteção de Dados (LGPD). Seus dados não são compartilhados com
-          terceiros e você pode pedir a remoção a qualquer momento.
+          Ao enviar seus dados, você autoriza a BestBarbers a entrar em contato sobre o guia Do Zero à Assinatura
+          e suas soluções, conforme a Lei Geral de Proteção de Dados (LGPD). Seus dados não são compartilhados
+          com terceiros e você pode pedir a remoção a qualquer momento.
         </p>
       </div>
 

@@ -15,17 +15,18 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-// Página de agradecimento pós-conversão — noindex (não é conteúdo público).
-// O título/descrição aqui são genéricos porque a página serve VÁRIAS iscas (lê `?isca=`);
-// o título com o nome do guia é ajustado no client, dentro do useEffect da page.tsx.
-// A descrição não promete canal nenhum: a entrega é o download na própria página.
+// LP de captura (tráfego pago) — noindex pra não competir com as páginas de SEO
+// (/clube-de-assinaturas, /clube) nem ser indexada como conteúdo orgânico.
+// Mesmo padrão da /cadeira-cheia.
 export const metadata: Metadata = {
-  title: "Seu guia está aqui | BestBarbers",
-  description: "Obrigado! Baixe o seu guia em PDF agora, direto nesta página.",
+  title: "Do Zero à Assinatura — o guia grátis pra montar o clube da sua barbearia | BestBarbers",
+  description:
+    "Baixe o guia gratuito Do Zero à Assinatura: a ficha de seis linhas que mostra quantos assinantes cabem na sua barbearia hoje — sem contratar ninguém e sem cadeira nova.",
   robots: { index: false, follow: false },
+  alternates: { canonical: "/do-zero-a-assinatura" },
 };
 
-export default function ObrigadoLayout({
+export default function DoZeroAAssinaturaLayout({
   children,
 }: {
   children: React.ReactNode;

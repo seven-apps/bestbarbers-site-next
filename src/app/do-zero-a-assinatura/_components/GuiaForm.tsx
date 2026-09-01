@@ -6,43 +6,53 @@ import { useLeadForm, useUtmParams } from "@/hooks";
 import { hrefObrigado } from "@/lib/iscas";
 import { ArrowRight, ShieldCheck, Users2, Gift } from "lucide-react";
 
-// ORIGEM DEDICADA DO COORTE (ver needsHumanReview) ----------------------------------
-// PLACEHOLDER SEGURO: reusa a origem "Tráfego Pago" (ads, 40210173) como default.
-// Por que o default é a origem "ads" e não um ID novo inventado:
+// CLONE do form da /cadeira-cheia (src/app/cadeira-cheia/_components/GuiaForm.tsx).
+// Por que clonar em vez de parametrizar: com DUAS iscas no ar o padrão ainda não está
+// provado — o componente de lá tem título, origem, source e destino cravados na isca
+// dele. Generalizar agora seria abstrair em cima de uma amostra de dois. Quando a
+// terceira isca nascer e as três forem realmente iguais, aí vale extrair o componente
+// único (o mapa em src/lib/iscas.ts já é o lugar natural dos dados).
+
+// ORIGEM DEDICADA DO COORTE ----------------------------------------------------------
+// PLACEHOLDER SEGURO, idêntico ao da /cadeira-cheia: reusa a origem "Tráfego Pago"
+// (ads, 40210173) como default. Por que o default é a origem "ads" e não um ID novo:
 //   1. A automação de Deal do Ploomes (pipe Qualificação 40043772) JÁ dispara para
-//      essa origem — então o lead do guia NÃO nasce como Contact órfão (invisível pro
-//      SDR), que é exatamente o risco que o brief §5.5 manda validar.
+//      essa origem — o lead do guia NÃO nasce como Contact órfão (invisível pro SDR).
 //   2. Inventar um OriginId numérico que o Ploomes não conhece quebraria a automação.
-// @devops / admin Ploomes: crie um OriginId DEDICADO para o coorte do guia (p/ medir
-// CPQ isolado) e troque SÓ o número abaixo. Enquanto não existir, o coorte continua
-// filtrável pela descrição (CADEIRA_CHEIA_ORIGIN_DESC) e pelo source 'lp_guia_reativacao'.
-const CADEIRA_CHEIA_ORIGIN_ID = 40210173;
-const CADEIRA_CHEIA_ORIGIN_DESC = "LP Cadeira Cheia - Guia Reativação";
+// @devops / admin Ploomes: crie um OriginId DEDICADO para o coorte deste guia (p/ medir
+// CPQ isolado por isca) e troque SÓ o número abaixo. Enquanto não existir, o coorte é
+// filtrável pela descrição (DO_ZERO_ORIGIN_DESC), pelo source 'lp_guia_do_zero_a_assinatura'
+// e pelo bb_lp_version 'do-zero-a-assinatura' (derivado do pathname em lead-attribution.ts).
+const DO_ZERO_ORIGIN_ID = 40210173;
+const DO_ZERO_ORIGIN_DESC = "LP Do Zero à Assinatura - Guia Clube";
 
 // Campos alinhados ao form CANÔNICO (src/app/v12/_components/FormSectionV12.tsx),
-// pra que useLeadForm calcule o MESMO lead_score de qualquer outra LP (ver fórmula
-// em src/hooks/useLeadForm.ts:210-238). O que muda LP a LP é só a moldura visual/copy
-// — os nomes de campo, opções de faturamento/equipe e o cálculo em si são o padrão:
-//   Faturamento  → Até R$2.000 -100 · R$2k-10k +20 · R$10k-30k +40 · Acima R$30k +40
+// pra que useLeadForm calcule o MESMO lead_score de qualquer outra LP (fórmula em
+// src/hooks/useLeadForm.ts). O que muda LP a LP é só a moldura visual/copy — os nomes
+// de campo, as opções de faturamento/equipe e o cálculo em si são o padrão:
+//   monthlyRevenue → Até R$2.000 -100 · R$2k-10k +20 · R$10k-30k +40 · Acima R$30k +40
 //   interestedTool → Agenda e Controle Financeiro +10 · App+Clube+NFs +40
 //   employeeCount  → Sou apenas eu +0 · 2 a 4 colaboradores +10 · 5+ colaboradores +20
 // "Nome" é o nome da pessoa (ownerName); o nome da barbearia não é perguntado (mantém
-// a fricção baixa do guia), então espelhamos ownerName → barbershopName no onChange
-// (o hook exige barbershopName e o Ploomes usa como Contact.Name). Isso NÃO afeta o
-// score: barbershopName não entra na fórmula em nenhuma LP.
+// a fricção baixa do guia), então espelhamos ownerName → barbershopName no onChange.
 const formFields = [
   { name: "ownerName", label: "Seu nome", placeholder: "Ex: João Silva", type: "text" },
   { name: "whatsapp", label: "Seu WhatsApp", placeholder: "(11) 99999-9999", type: "tel" },
-  // E-mail: segundo caminho de CONTATO, não canal de entrega — o guia é baixado na
-  // /obrigado, nada é enviado (não existe executor de e-mail/WhatsApp; a única rota do
-  // site é /api/ploomes). O rótulo antigo ("pra receber o guia") prometia um envio que
-  // nunca acontece. Fica OPCIONAL COM MOTIVO de propósito: é o formato que mede 95,9%
-  // de preenchimento nesta LP — tirar o motivo derruba a taxa. Não entra no lead_score.
-  { name: "email", label: "Seu e-mail (opcional, pra gente falar com você depois)", placeholder: "Ex: joao@email.com", type: "email" },
   {
-    // Maior driver do lead_score. Options IDÊNTICAS ao canônico (V12) — string precisa
-    // bater exatamente com o mapa em useLeadForm.ts, senão a faixa de faturamento não
-    // pontua. Campo ausente no GuiaForm original; era o gap que descalibrava o score.
+    // E-mail OPCIONAL e sem promessa de entrega: o guia é baixado na tela seguinte,
+    // não enviado (ver src/app/obrigado/page.tsx). O rótulo antigo da /cadeira-cheia
+    // ("pra receber o guia") prometia um envio que nunca acontece — aqui o campo diz o
+    // que ele é: o segundo caminho de contato, o mesmo que a LGPD no rodapé autoriza.
+    // OPCIONAL COM MOTIVO, não "opcional" seco: é o formato que mede 95,9% de
+    // preenchimento na /cadeira-cheia — sem o motivo a taxa cai. Mesmo rótulo lá.
+    name: "email",
+    label: "Seu e-mail (opcional, pra gente falar com você depois)",
+    placeholder: "Ex: joao@email.com",
+    type: "email",
+  },
+  {
+    // Maior driver do lead_score. Options IDÊNTICAS ao canônico (V12) — a string precisa
+    // bater exatamente com o mapa em useLeadForm.ts, senão a faixa não pontua.
     name: "monthlyRevenue",
     label: "Qual o faturamento médio da sua barbearia?",
     placeholder: "Selecione",
@@ -57,10 +67,11 @@ const formFields = [
   },
   {
     // Porte da barbearia. Os VALUES são os do canônico (score: Sou apenas eu +0 ·
-    // 2 a 4 +10 · 5+ +20) — já batiam no GuiaForm original. Só os LABELS falam em
-    // "cadeiras" (framing do tema "Cadeira Cheia"); não altera o score.
+    // 2 a 4 +10 · 5+ +20). Só os LABELS falam em "cadeiras" — e aqui isso não é só
+    // framing: "cadeiras que atendem hoje" é a linha A da Ficha da Cadeira Vaga, o
+    // primeiro número que o guia manda o dono levantar. Não altera o score.
     name: "employeeCount",
-    label: "Quantas cadeiras tem sua barbearia?",
+    label: "Quantas cadeiras atendem hoje na sua barbearia?",
     placeholder: "Selecione",
     type: "select",
     options: [
@@ -71,9 +82,7 @@ const formFields = [
     ],
   },
   {
-    // Substitui o antigo "já usa sistema de agendamento?" (options que não casavam com
-    // NENHUMA faixa do score — contribuição sempre 0, por design, mas incompatível com
-    // o padrão). Segue o canônico (V12): options e label idênticos, pra pontuar +10/+40.
+    // Segue o canônico (V12): options e label idênticos, pra pontuar +10/+40.
     name: "interestedTool",
     label: "Qual ferramenta mais te interessa hoje?",
     placeholder: "Selecione",
@@ -90,11 +99,10 @@ export function GuiaForm() {
   const router = useRouter();
 
   // Atribuição de PARCEIRO/CANAL: quando o guia é distribuído por um influenciador
-  // (ex: /cadeira-cheia?source=mauro-elegance) o UTM VENCE — o lead nasce creditado
-  // ao parceiro (originId/desc do originMap em useUtmParams). A origem dedicada do
-  // guia (CADEIRA_CHEIA_*) fica como fallback orgânico/direto. Mesmo padrão da
-  // tabela-precificacao-clube (FormSectionTabela.tsx). Guard de hidratação: só
-  // resolve pós-mount, senão o SSR descasa a origem.
+  // (ex: /do-zero-a-assinatura?source=algum-parceiro) o UTM VENCE — o lead nasce
+  // creditado ao parceiro (originId/desc do originMap em useUtmParams). A origem
+  // dedicada do guia (DO_ZERO_*) fica como fallback orgânico/direto. Guard de
+  // hidratação: só resolve pós-mount, senão o SSR descasa a origem.
   const { getUtmParams, getOriginMapping } = useUtmParams();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -112,19 +120,20 @@ export function GuiaForm() {
     handleInputChange,
     handleSubmit,
   } = useLeadForm({
-    source: "lp_guia_reativacao",
-    originId: utmMapping.originId ?? CADEIRA_CHEIA_ORIGIN_ID,
-    originDesc: utmMapping.originDesc || CADEIRA_CHEIA_ORIGIN_DESC,
-    // Igual ao V12: exige faturamento no submit. Sem isso, quem pula o campo pontuaria
-    // 0 na faixa de faturamento (silencioso) em vez de ficar de fora do padrão por opção
-    // — quebraria a comparabilidade do lead_score entre esta LP e as demais.
+    // Identifica ESTA isca nos relatórios da BBAI. A /cadeira-cheia usa
+    // 'lp_guia_reativacao'; aqui o nome espelha o id da isca (o mesmo que vai no
+    // ?isca= da /obrigado, na chave `isca` dos eventos de pixel e no bb_lp_version
+    // derivado do pathname) — uma string só pra cruzar Ploomes, pixel e rota.
+    source: "lp_guia_do_zero_a_assinatura",
+    originId: utmMapping.originId ?? DO_ZERO_ORIGIN_ID,
+    originDesc: utmMapping.originDesc || DO_ZERO_ORIGIN_DESC,
+    // Igual ao V12 e à /cadeira-cheia: exige faturamento no submit, senão quem pula o
+    // campo pontuaria 0 na faixa (silencioso) e quebraria a comparabilidade do score.
     requireMonthlyRevenue: true,
     // O evento Lead (Pixel + CAPI) dispara AQUI dentro do hook, no submit, e é awaited
-    // antes deste onSuccess. Por isso o /obrigado NÃO refaz Lead (evita double-count —
-    // o mesmo bug que o comentário do v12/layout.tsx documenta).
-    // A /obrigado serve várias iscas: o destino sai do builder tipado (nunca string
-    // à mão), pra o tsc pegar id de isca digitado errado.
-    onSuccess: () => router.push(hrefObrigado("cadeira-cheia")),
+    // antes deste onSuccess. Por isso a /obrigado NÃO refaz Lead (evita double-count).
+    // O destino sai do builder tipado (nunca string à mão), pra o tsc pegar id errado.
+    onSuccess: () => router.push(hrefObrigado("do-zero-a-assinatura")),
     onError: (error) => {
       console.error("Erro ao enviar formulário:", error);
       alert("Não foi possível enviar agora. Confira os dados e tente de novo.");
@@ -179,7 +188,7 @@ export function GuiaForm() {
             color: "#1e1e1e",
           }}
         >
-          Baixe o guia <span style={{ color: "#ebad04" }}>Cadeira Cheia</span>
+          Baixe o guia Do Zero à <span style={{ color: "#ebad04" }}>Assinatura</span>
         </h2>
         <p
           className="text-center text-sm mb-6"
