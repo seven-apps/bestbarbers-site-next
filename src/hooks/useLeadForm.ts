@@ -79,7 +79,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   // trackLead em todo submit válido (gate aberto — Operação 400) + trackQualifiedLead
   // adicional quando score >= 30 (preserva leitura de CPQL). trackCompleteRegistration
   // foi removido em 910a080 (gerava duplicação Meta vs Ploomes 50% inflado).
-  const { trackLead, trackQualifiedLead } = useMetaPixel();
+  const { trackLead, trackQualifiedLead, trackQualifiedLead60 } = useMetaPixel();
   const { getUtmParams } = useUtmParams();
 
   // O Ploomes é a AUTORIDADE do "esse telefone já existe?". Desde 23/Jul/26 a resposta
@@ -222,11 +222,31 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         leadScore += 20;
       }
 
-      // Gate por campanha (usado no pixel/CAPI abaixo E exposto ao dataLayer):
-      // ESCALA (OP400-ESCALA-*) otimiza por 'Lead' qualidade → só dispara score >= 30.
-      const isEscalaQualidade = /OP400-ESCALA/i.test(utmParams.utm_campaign || '');
+      // GATE DE SCORE POR CÉLULA — o registro das células que otimizam por QUALIDADE.
+      //
+      // Uma célula assim não pode treinar o algoritmo com volume não qualificado: nela o
+      // 'Lead' só dispara acima do corte. Célula fora deste registro dispara Lead cru em
+      // TODO submit — inclusive com score negativo — que é o comportamento das LPs
+      // orgânicas e das células de volume, preservado tal como está.
+      //
+      // A chave é o CONJUNTO (url_tags manda publico={{adset.name}}), não a campanha: o
+      // corte pertence à célula testada, não à verba que a hospeda — duas células na mesma
+      // campanha podem otimizar cortes diferentes. Comparação EXATA, não substring: um
+      // conjunto novo com nome parecido não deve herdar régua sem alguém decidir isso.
+      //
+      // Ao acrescentar uma célula aqui: o nome tem de bater LETRA POR LETRA com o do
+      // conjunto na Meta. Se divergir, o gate não casa e a célula otimiza Lead cru sem
+      // avisar — é o que o smoke test do dia do deploy existe para pegar (um lead de teste
+      // com score entre 30 e 59 NÃO pode gerar 'Lead' na célula).
+      const CELULAS_COM_CORTE: ReadonlyArray<{ conjunto: string; min: number; nota: string }> = [
+        { conjunto: 'BROAD-ADV-Q60', min: 60, nota: 'SINAL-Q60 · set/26 · veredito 22/Set' },
+      ];
+      const celula = CELULAS_COM_CORTE.find(
+        (c) => c.conjunto.toUpperCase() === (utmParams.publico || '').trim().toUpperCase()
+      );
       const leadQualifica = leadScore >= 30;
-      const metaLeadFired = !isEscalaQualidade || leadQualifica;
+      const leadQualifica60 = leadScore >= 60;
+      const metaLeadFired = celula ? leadScore >= celula.min : true;
 
       // _fbp/_fbc são os cookies que a Meta usa para parear o evento do navegador com
       // o do servidor (CAPI/Stape). Sem eles a dedup depende só do event_id e pode contar 2×.
@@ -251,9 +271,13 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
           event_type: 'form_init', // Tag adicional para satisfazer a nomenclatura citada
           event_id: leadEventId,
           // Se o container server (Stape/GTM) re-emitir 'Lead' a partir deste push, ele
-          // DEVE respeitar meta_lead_fired (false = Lead suprimido pelo gate ESCALA; re-emitir
+          // DEVE respeitar meta_lead_fired (false = Lead suprimido pelo gate da célula; re-emitir
           // criaria Lead sem par de dedup e furaria o gate) e usar fbp/fbc para o pareamento.
           meta_lead_fired: metaLeadFired,
+          // Qual célula falou e qual corte ela impôs — sem isto o container vê o Lead
+          // suprimido e não sabe por quê, e o gate só é auditável dentro do navegador.
+          celula_publico: utmParams.publico || null,
+          celula_score_min: celula?.min ?? null,
           user_data: {
             email: formData.email.toLowerCase().trim(),
             phone: phoneWithPlus,
@@ -322,14 +346,16 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // perfil para o learning da campanha. Consequência assumida: a série de
       // pixel-lead sobe a partir de 23/Jul (antes o duplicado era barrado ANTES do
       // pixel) — o Ploomes separa via bb_lead_tipo, o pixel não separa.
-      // GATE POR CAMPANHA (Operação 400, rev. 16/Jun/26):
-      // ESCALA (OP400-ESCALA-*) otimiza por 'Lead' qualidade → só dispara score >= 30.
-      // Demais campanhas/LPs (VALIDACAO, orgânico) → 'Lead' cru em todo submit.
-      // 'QualifiedLead' (trackCustom) dispara sempre que score >= 30 (leitura de CPQL).
+      // GATE DE SCORE POR CÉLULA (ver CELULAS_COM_CORTE acima):
+      // a célula registrada com corte 60 só dispara 'Lead' acima de 60; as demais
+      // (orgânico, volume) disparam Lead cru em todo submit.
+      // 'QualifiedLead' (>= 30) e 'QualifiedLead60' (>= 60) são MEDIÇÃO: disparam em
+      // qualquer campanha, independentes do gate, e nunca são o evento otimizado fora
+      // da célula que os declara.
       // CAPI direta → bbai.bestbarbers.app (bestbarbers-ai dashboard). Fire-and-forget.
       // Meta deduplica via event_id → Pixel + Stape + CAPI direta = 1 evento contado.
       const capiUrl = process.env.NEXT_PUBLIC_BBAI_DASHBOARD_URL;
-      const sendCapiEvent = (eventName: 'Lead' | 'QualifiedLead', eventId: string): void => {
+      const sendCapiEvent = (eventName: 'Lead' | 'QualifiedLead' | 'QualifiedLead60', eventId: string): void => {
         if (!capiUrl) return;
         const nameParts = formData.ownerName.trim().split(/\s+/);
         fetch(`${capiUrl}/api/meta-capi/track`, {
@@ -379,6 +405,14 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         sendCapiEvent('QualifiedLead', `${leadEventId}-q`);
       }
 
+      // QualifiedLead60 — MEDIÇÃO, dispara em qualquer campanha assim que o score passa
+      // de 60. É o evento que a SINAL-Q60 otimiza; nas demais células ele só constrói a
+      // série histórica do corte (sem ela, não há linha de base para comparar em 22/Set).
+      if (leadQualifica60) {
+        pixelPromises.push(trackQualifiedLead60(pixelData, `${leadEventId}-q60`));
+        sendCapiEvent('QualifiedLead60', `${leadEventId}-q60`);
+      }
+
       await Promise.all(pixelPromises);
 
       // Marca como enviado com sucesso (mantém botão desabilitado durante redirect)
@@ -408,6 +442,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     redirect,
     trackLead,
     trackQualifiedLead,
+    trackQualifiedLead60,
     getUtmParams,
     submitLead,
     buildAttribution,

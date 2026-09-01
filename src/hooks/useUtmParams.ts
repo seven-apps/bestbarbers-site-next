@@ -8,6 +8,12 @@ export interface UtmParams {
   utm_campaign: string | null;
   utm_content: string | null;
   utm_term: string | null;
+  // Nome do CONJUNTO na Meta — o url_tags de toda campanha manda publico={{adset.name}}.
+  // É a chave que o gate de score do useLeadForm usa para saber QUAL célula está falando.
+  // Fica aqui e não como corte numérico na URL (?score_min=60) por decisão do André: o
+  // parâmetro numérico é editável por quem visita e viaja em link compartilhado; o nome do
+  // conjunto é só uma etiqueta, e a régua que ela destrava mora no código.
+  publico: string | null;
   // Atribuição EXPLÍCITA por originId do Ploomes na própria URL (?origin=120003825).
   // Emitida pelo gerador de links do dashboard (OS), que lê as origens do Ploomes AO VIVO
   // — então origem nova no CRM já atribui sem depender de uma entrada no originMap abaixo
@@ -25,6 +31,7 @@ export interface UtmParams {
 }
 
 export const SS_KEY = 'bb_utm_snapshot';
+
 
 const readCookie = (name: string): string | null => {
   if (typeof document === 'undefined') return null;
@@ -169,6 +176,7 @@ export const useUtmParams = () => {
         utm_campaign: null,
         utm_content: null,
         utm_term: null,
+        publico: null,
         origin: null,
         odesc: null,
         fbclid: null,
@@ -185,6 +193,7 @@ export const useUtmParams = () => {
     const utmCampaign = urlParams.get("utm_campaign");
     const utmContent = urlParams.get("utm_content");
     const utmTerm = urlParams.get("utm_term");
+    const publicoParam = urlParams.get("publico");
 
     // Click IDs — Meta adiciona fbclid em todo click de ad; Google Ads adiciona gclid.
     // FRESH = só da URL desta visita (clicou no ad AGORA). Cookies (_fbc/_gcl_aw) são
@@ -211,6 +220,7 @@ export const useUtmParams = () => {
       utm_campaign: utmCampaign,
       utm_content: utmContent,
       utm_term: utmTerm,
+      publico: publicoParam,
       origin: originParam,
       odesc: odescParam,
       fbclid,
@@ -223,7 +233,7 @@ export const useUtmParams = () => {
     // hasSignal usa os click IDs FRESCOS (URL), não os de cookie — senão o snapshot
     // nasceria contaminado por _fbc/_gcl_aw de visitas antigas.
     try {
-      const hasSignal = !!(utmSource || legacySource || originParam || fbclidUrl || gclidUrl || utmCampaign);
+      const hasSignal = !!(utmSource || legacySource || originParam || fbclidUrl || gclidUrl || utmCampaign || publicoParam);
       const stored = sessionStorage.getItem(SS_KEY);
       if (hasSignal && !stored) {
         sessionStorage.setItem(SS_KEY, JSON.stringify(params));
@@ -238,6 +248,17 @@ export const useUtmParams = () => {
           utm_campaign: params.utm_campaign ?? restored.utm_campaign ?? null,
           utm_content: params.utm_content ?? restored.utm_content ?? null,
           utm_term: params.utm_term ?? restored.utm_term ?? null,
+          // `publico` NÃO é restaurado do snapshot — de propósito, e é a única exceção aqui.
+          // O snapshot é first-touch: quem clica no ad da célula com corte e depois no ad do
+          // CONTROLE (mesma arte, mesmo broad — a frequência cruzada entre os dois é esperada,
+          // não hipotética) navegaria com o `publico` da PRIMEIRA célula preso na sessão. O
+          // gate de score seria aplicado à célula errada, suprimindo 'Lead' do controle e
+          // roubando sinal de conversão de quem serve de régua para a experiência.
+          // Sem restore, o gate só age com o conjunto vindo da URL ao vivo: erra para o lado
+          // seguro (Lead cru, como sempre foi) e nunca para o lado que contamina o controle.
+          // Bônus: passa a ler da MESMA fonte que `buildLeadAttribution`, que também lê a URL
+          // viva — pixel e CRM contam a mesma história sobre qual célula gerou o lead.
+          publico: params.publico,
           origin: params.origin ?? restored.origin ?? null,
           odesc: params.odesc ?? restored.odesc ?? null,
           fbclid: params.fbclid ?? restored.fbclid ?? null,

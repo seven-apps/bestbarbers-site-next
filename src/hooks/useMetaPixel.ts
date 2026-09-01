@@ -172,6 +172,37 @@ export const useMetaPixel = () => {
   }, []);
 
   /**
+   * Dispara evento customizado QualifiedLead60 (lead com score >= 60).
+   * É o corte que a experiência SINAL-Q60 (set/26) otimiza, e serve de MEDIÇÃO para
+   * todas as demais campanhas: dispara sempre que o score passa de 60, independente
+   * do gate da célula. Corte mais largo que o de ICP (>= 70) de propósito — em agosto
+   * o >= 60 deu 275 leads onde o >= 70 deu 168, e 21 dias não decidem com 168.
+   * ATENÇÃO: as faixas são ANINHADAS (>= 60 contém >= 70) — ao ler, medir a faixa
+   * marginal 60-69 isolada, nunca as cumulativas uma contra a outra.
+   */
+  const trackQualifiedLead60 = useCallback((data?: MetaPixelEventData, externalEventId?: string): Promise<void> => {
+    const eventId = externalEventId || generateEventId();
+    const mergedData: MetaPixelEventData = {
+      content_name: 'BestBarbers Qualified Lead 60',
+      content_category: 'lead_generation',
+      ...data,
+    };
+
+    if (typeof window !== 'undefined' && window.fbq) {
+      try {
+        window.fbq('trackCustom', 'QualifiedLead60', mergedData, { eventID: eventId });
+        console.log('Meta Pixel: QualifiedLead60 event tracked via fbq', mergedData);
+      } catch (error) {
+        console.error('Erro ao rastrear evento QualifiedLead60 do Meta Pixel:', error);
+      }
+    } else {
+      console.warn('Meta Pixel: fbq indisponível, usando apenas image pixel');
+    }
+
+    return sendImagePixel('QualifiedLead60', eventId, mergedData);
+  }, []);
+
+  /**
    * Dispara evento customizado
    */
   const trackCustomEvent = useCallback((eventName: string, data?: MetaPixelEventData, externalEventId?: string): Promise<void> => {
@@ -200,6 +231,7 @@ export const useMetaPixel = () => {
     trackLead,
     trackCompleteRegistration,
     trackQualifiedLead,
+    trackQualifiedLead60,
     trackCustomEvent,
     isPixelAvailable
   };
