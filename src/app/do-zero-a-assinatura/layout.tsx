@@ -19,9 +19,10 @@ const montserrat = Montserrat({
 // (/clube-de-assinaturas, /clube) nem ser indexada como conteúdo orgânico.
 // Mesmo padrão da /cadeira-cheia.
 export const metadata: Metadata = {
-  title: "Do Zero à Assinatura — o guia grátis pra montar o clube da sua barbearia | BestBarbers",
+  title:
+    "Assinatura do Zero — o guia grátis pra montar o clube da sua barbearia na ordem certa | BestBarbers",
   description:
-    "Baixe o guia gratuito Do Zero à Assinatura: a ficha de seis linhas que mostra quantos assinantes cabem na sua barbearia hoje — sem contratar ninguém e sem cadeira nova.",
+    "Baixe o guia gratuito Assinatura do Zero: 8 capítulos, 20 minutos de leitura. Como desenhar o plano, quanto cobrar, o que dizer pra equipe, os 12 erros que derrubam o clube e o que esperar do mês 1 ao mês 12.",
   robots: { index: false, follow: false },
   alternates: { canonical: "/do-zero-a-assinatura" },
 };

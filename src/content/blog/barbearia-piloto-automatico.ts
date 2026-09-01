@@ -200,14 +200,14 @@ export const barbeariaPilotoAutomatico: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "Tirar a barbearia do piloto automático é uma jornada — e ninguém precisa fazer essa virada sozinho. Em breve, vamos aprofundar esses temas em um novo canal: conversas sem rodeios sobre gestão, recorrência e caixa, com quem vive a realidade da cadeira todo dia.",
+          text: "Tirar a barbearia do piloto automático é uma jornada — e ninguém precisa fazer essa virada sozinho. Esses temas já estão aprofundados no nosso podcast: conversas sem rodeios sobre gestão, recorrência e caixa, com quem vive a realidade da cadeira todo dia.",
         },
         {
           type: "link-box",
-          title: "BestBarbers Podcast — está chegando",
+          title: "BestBarbers Podcast — 12 episódios no ar",
           href: "/podcast",
           description:
-            "Conteúdo direto ao ponto sobre gestão, dados e crescimento de barbearia. Conheça a página e fique por dentro do lançamento.",
+            "A temporada Assinatura do Zero está completa: 12 episódios curtos sobre montar, precificar, vender e gerir o clube de assinaturas. De graça, no Spotify.",
         },
       ],
     },

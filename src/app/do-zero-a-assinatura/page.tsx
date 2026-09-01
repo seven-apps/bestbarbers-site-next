@@ -6,20 +6,29 @@ import { FooterSimple } from "@/components/sections/FooterSimple";
 import { useMetaPixel } from "@/hooks";
 import { GuiaForm } from "./_components/GuiaForm";
 import {
-  ClipboardList,
-  MessageSquareText,
-  CalendarCheck,
-  SlidersHorizontal,
-  Smartphone,
-  RefreshCcw,
+  Calculator,
+  Users2,
+  AlertTriangle,
+  CreditCard,
+  Percent,
+  LayoutDashboard,
   ArrowRight,
 } from "lucide-react";
 
-// LP de captura fria do guia "Do Zero à Assinatura". Molde: /cadeira-cheia — mesma
-// estrutura de seções, mesma moldura visual, strings trocadas. Toda a copy abaixo sai
-// do conteúdo do guia (bestbarbers-ai/docs/operacional/ebook-do-zero-a-assinatura.md):
-// a Ficha da Cadeira Vaga (Cap. 1), as 3 frases da cadeira (Cap. 2), a régua de uso e
-// as 3 travas (Cap. 4), o Quadro da Manhã (Cap. 7) e a Autópsia (Cap. 5).
+// LP de captura fria do guia "Assinatura do Zero". Molde: /cadeira-cheia — mesma
+// estrutura de seções, mesma moldura visual, strings trocadas.
+//
+// FONTE DA COPY (01/Set/2026): bestbarbers-ai/docs/operacional/ebook-assinatura-do-zero-guia.md
+// — 8 capítulos destilados dos 12 episódios da 1ª temporada do podcast: (1) o que é e o
+// que não é · (2) como o dinheiro muda de forma · (3) o desenho do plano · (4) o preço ·
+// (5) a equipe · (6) a venda · (7) os riscos que derrubam o clube · (8) o que esperar,
+// mês a mês. O guia é ENSINO, não diagnóstico.
+//
+// ATENÇÃO À PRÓXIMA SESSÃO: o markdown `ebook-do-zero-a-assinatura.md` (e a versão
+// `-curto`) é o produto ANTERIOR, REPROVADO pelo André em 01/Set — prometia a "ficha de
+// seis linhas" que diz "quantos assinantes cabem na sua barbearia". Nada dessa promessa
+// pode voltar pra esta página: o guia entregue não tem ficha nenhuma, e quem baixa
+// esperando o diagnóstico recebe outra coisa.
 
 const AMBER = "#ebad04";
 
@@ -28,47 +37,49 @@ function scrollToForm() {
 }
 
 // --- Seção: o que você vai receber (3 bullets) ---
-// Cada card é um bloco que o dono PREENCHE no guia — oferta concreta, não diagnóstico.
+// Oferta CONCRETA: cada card é um capítulo que o dono lê e sai sabendo fazer. Nenhum
+// número de exemplo do guia vira promessa de resultado aqui (todos são "a conta do
+// episódio", com barbearia hipotética) — o que a LP promete é o MÉTODO, não o ganho.
 const RECEBE = [
   {
-    icon: ClipboardList,
-    title: "A ficha que te dá o seu número",
-    body: "São seis linhas: cinco você responde de cabeça, uma pede meia hora com o caderno aberto. No fim você tem escrito quantos assinantes cabem na sua agenda hoje e quanto isso põe no dia 1º.",
+    icon: Calculator,
+    title: "O preço, com conta e não com chute",
+    body: "A regra dos dois cortes te dá o teto da mensalidade em uma linha. Os cinco dados da capacidade — profissionais, dias, horas, tempo de serviço e ocupação — dizem onde parar dentro desse teto e quantos horários vagos você tem pra preencher. Inclui a sequência de reajuste: avulso primeiro, assinatura só de três a cinco meses depois.",
   },
   {
-    icon: MessageSquareText,
-    title: "As três frases da cadeira",
-    body: "O que o barbeiro fala no fim do corte, com a capa ainda no pescoço do cliente: a pergunta, o número na mesa e o fechamento. Ele decora e adapta pro jeito dele — não precisa virar vendedor.",
+    icon: Users2,
+    title: "A conversa com a equipe, com a conta pronta",
+    body: "No dia do anúncio alguém vai dizer que vai ganhar menos. O guia traz a conta que responde — ganho por mês, não por corte — e a regra do pote pra dividir a comissão do clube por fichas de serviço, sem planilha paralela e sem briga.",
   },
   {
-    icon: CalendarCheck,
-    title: "A régua de uso do seu plano",
-    body: "Quais dias de utilização o plano dá, o que entra, o que não entra e as três travas escritas antes do primeiro assinante entrar. É o que responde ao “e se ele vier toda semana?”.",
+    icon: AlertTriangle,
+    title: "Os 12 erros que derrubam o clube",
+    body: "Cada um com o que custa e o que fazer no lugar: lançar com preço de três cortes, abrir com plano limitado, pedir aprovação da equipe, tirar as travas da agenda, o dono entrar no clube como barbeiro. Clube quase nunca morre de cliente ou de concorrência — morre de decisão do dono.",
   },
 ];
 
 // --- Seção: como funciona dentro do app, 3 passos ---
-// Sai da contracapa do guia (data/iscas/ebooks.json → do-zero-a-assinatura), que é o
-// que o produto de fato faz: planos por dias de uso, assinatura pelo app e cobrança
-// recorrente. Nada além disso.
+// Sai da contracapa do guia (data/iscas/ebooks.json → assinatura-do-zero): cobrança
+// recorrente com bloqueio automático de inadimplente, comissão fechada sem planilha e o
+// quadro da manhã já montado no painel. Nada além disso.
 const PASSOS = [
   {
     n: "1",
-    icon: SlidersHorizontal,
-    title: "Você desenha o plano",
-    body: "No painel você configura os dias de utilização de cada plano, o preço e os serviços que entram. A régua é sua — o sistema só aplica igual pra todo assinante, todo mês.",
+    icon: CreditCard,
+    title: "A mensalidade entra sozinha",
+    body: "Você desenha o plano com os dias de utilização e os serviços que entram; o cliente cadastra o cartão pelo celular ali na cadeira e a cobrança recorre todo mês. Quem fica em atraso é bloqueado automaticamente — você não precisa cobrar conhecido na porta.",
   },
   {
     n: "2",
-    icon: Smartphone,
-    title: "O cliente assina pelo celular",
-    body: "A conversa que começou na cadeira fecha no app: ele escolhe o plano e cadastra o cartão ali mesmo, antes de levantar. Entre o “quero” e o “está feito” não entra papel nem fila.",
+    icon: Percent,
+    title: "A comissão fecha sem planilha",
+    body: "Você define o percentual de cada profissional e a regra do assinante uma vez. No fechamento do mês a comissão sai calculada do jeito que você combinou com o time — a regra do pote do Capítulo 5 rodando sozinha.",
   },
   {
     n: "3",
-    icon: RefreshCcw,
-    title: "A mensalidade entra sozinha",
-    body: "A cobrança recorre todo mês e o pagamento fica acompanhado no painel — você descobre quem não pagou no dia, não no fechamento.",
+    icon: LayoutDashboard,
+    title: "O quadro da manhã já montado",
+    body: "Receita separada entre avulso e recorrente, assinaturas novas, cancelamentos, inadimplentes, ocupação da agenda e produção por barbeiro. São os números que o Capítulo 7 manda olhar um minuto por dia, no painel.",
   },
 ];
 
@@ -78,10 +89,12 @@ export default function DoZeroAAssinaturaPage() {
 
   // ViewContent no load (visibilidade de topo de funil no Events Manager).
   // A chave `isca` repete o id do mapa (src/lib/iscas.ts) pra cortar as iscas no
-  // Events Manager sem depender de parsear o content_name.
+  // Events Manager sem depender de parsear o content_name. O id (e a rota) seguem
+  // `do-zero-a-assinatura` de propósito: trocar o slug quebraria a série histórica e
+  // os links já distribuídos. O que mudou foi o PRODUTO entregue e o nome exibido.
   useEffect(() => {
     trackCustomEvent("ViewContent", {
-      content_name: "LP Do Zero à Assinatura - Guia Clube",
+      content_name: "LP Assinatura do Zero - Guia Clube",
       content_category: "landing_page",
       isca: "do-zero-a-assinatura",
     });
@@ -129,25 +142,30 @@ export default function DoZeroAAssinaturaPage() {
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
             {/* Copy do hero */}
             <div>
+              {/*
+                Badge no formato do canon: FORMATO GRÁTIS · ESFORÇO. "20 minutos" é a
+                palavra do próprio guia (primeira linha do Capítulo 1) e a contagem real
+                do texto bate: 3.769 palavras em 12 páginas. Não prometer 5 nem 10.
+              */}
               <span
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold uppercase tracking-wide mb-6"
                 style={{ background: "rgba(235,173,4,0.1)", borderColor: "rgba(235,173,4,0.35)", color: AMBER }}
               >
-                Guia grátis · Método Do Zero à Assinatura
+                Guia grátis · 8 capítulos · 20 minutos
               </span>
 
               <h1
                 className="text-white leading-[1.08] mb-5"
                 style={{ fontFamily: "var(--font-vollkorn)", fontWeight: 800, fontSize: "clamp(30px, 5vw, 52px)" }}
               >
-                O horário que ficou vazio ontem já diz{" "}
-                <span style={{ color: AMBER }}>quantos assinantes cabem na sua barbearia.</span>
+                O passo a passo pra montar o clube da sua barbearia{" "}
+                <span style={{ color: AMBER }}>na ordem certa.</span>
               </h1>
 
               <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
-                O guia grátis <strong className="text-white">Do Zero à Assinatura</strong> traz a ficha de seis
-                linhas que te entrega esse número hoje — e o que faz ele acontecer: as frases que o barbeiro fala
-                na cadeira, a régua de uso do plano e os cinco números que você olha toda manhã.
+                <strong className="text-white">Assinatura do Zero</strong> é um guia rápido, de graça: como
+                desenhar o plano, quanto cobrar, o que dizer pra equipe antes de anunciar, como vender na
+                cadeira, os 12 erros que derrubam o clube e o que esperar do mês 1 ao mês 12.
               </p>
 
               {/* prova rápida inline */}
@@ -171,7 +189,8 @@ export default function DoZeroAAssinaturaPage() {
         </div>
       </section>
 
-      {/* 2. ESPELHO DA DOR */}
+      {/* 2. ESPELHO DA DOR — a tese do Capítulo 1 (clube é arquitetura) + o medo do
+          Capítulo 2 ("ele vem todo dia e me quebra") respondido na mesma seção. */}
       <section className="py-16 md:py-24 border-t border-white/5">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
@@ -179,16 +198,16 @@ export default function DoZeroAAssinaturaPage() {
               className="text-white leading-tight mb-6"
               style={{ fontFamily: "var(--font-vollkorn)", fontWeight: 800, fontSize: "clamp(26px, 4vw, 40px)" }}
             >
-              Você não precisa de mais gente.{" "}
-              <span style={{ color: AMBER }}>Precisa que a mesma gente volte mais vezes.</span>
+              Clube não é desconto.{" "}
+              <span style={{ color: AMBER }}>Clube é arquitetura.</span>
             </h2>
             <p className="text-white/70 text-base md:text-lg leading-relaxed">
-              Pra lotar a agenda no avulso, cada horário cheio é um nome novo — ou um antigo que resolveu voltar
-              naquele dia. Por isso o mês inteiro depende de quem lembra de aparecer, e a quarta de manhã continua
-              com buraco. Com assinante, a mesma pessoa volta mais de uma vez dentro do mesmo mês, e o dinheiro
-              entra no dia 1º. Só que “quantos assinantes eu quero?” é a pergunta errada: a sua meta não é um
-              número bonito, é o número que cabe na sua agenda. E ele já existe hoje, antes de você vender
-              qualquer coisa — está escrito nos horários que ficaram vazios ontem.
+              “Paga R$ 70 e leva 2 cortes” não é clube — é promoção com nome bonito, e reduz o seu ticket.
+              Clube é o contrário: redesenha como o dinheiro entra na barbearia. O mecanismo tem nome, o sim
+              repetido. O avulso pede um sim novo a cada visita, e cada sim novo é uma chance de dizer não: ele
+              adia, some por 45 dias e às vezes volta já cortado em outro lugar. O assinante decide uma vez —
+              compromete o cartão e a cabeça. E não, ele não vem todo dia te quebrar: você não acelera o cabelo
+              do cliente. O que decide se o clube fica de pé é a ordem em que você monta.
             </p>
           </div>
         </div>
@@ -204,7 +223,8 @@ export default function DoZeroAAssinaturaPage() {
             O que você vai receber no guia
           </h2>
           <p className="text-white/55 text-center mb-12 max-w-2xl mx-auto">
-            Não é um livro pra ler. É um livro pra preencher — à caneta, com os números da sua casa.
+            Oito capítulos, um por página, na ordem — a ordem é o método. Vinte minutos de uma vez, ou um
+            capítulo por dia.
           </p>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -227,9 +247,9 @@ export default function DoZeroAAssinaturaPage() {
           </div>
 
           <p className="text-white/45 text-sm text-center mt-8 max-w-3xl mx-auto leading-relaxed">
-            E ainda: a conta que você mostra pro barbeiro antes de anunciar o clube, os cinco números que você
-            olha toda manhã em dois minutos e — se você já tentou um clube e viu a turma minguar — a autópsia que
-            mostra do que ele morreu, antes de você abrir a segunda vez.
+            E ainda: o calendário de pré-venda de 30 dias, o script de três frases que o barbeiro diz no fim do
+            corte, os sete números do quadro da manhã e o mês a mês do primeiro ano — do mês 1 (preparar) ao
+            mês 7-12 (escalar), com o gatilho pra avançar em cada etapa. Fecha com um checklist de 13 itens.
           </p>
         </div>
       </section>
@@ -248,17 +268,18 @@ export default function DoZeroAAssinaturaPage() {
               <span className="text-white/70 text-sm md:text-base">assinantes de clube na BestBarbers</span>
             </div>
             {/*
-              Os dois números entram COMO NO GUIA (Cap. 4): "são 51.000+ assinantes de clube e 1.200+
-              barbearias rodando na plataforma hoje" — dois fatos oficiais somados por "e", nunca um
-              dentro do outro. A redação anterior ("51.000 assinantes EM mais de 1.200 barbearias")
-              afirmava que todas as 1.200 têm clube, o que é falso e não é um número que a gente possa
-              publicar. Prova macro = só os 4 oficiais [[feedback_numeros_oficiais_marca]].
+              Os dois números entram COMO NO GUIA (Cap. 8): "1.200+ barbearias e 51.000+
+              assinantes ativos" — dois fatos oficiais somados por "e", nunca um dentro do
+              outro. A redação anterior ("51.000 assinantes EM mais de 1.200 barbearias")
+              afirmava que todas as 1.200 têm clube, o que é falso e não é um número que a
+              gente possa publicar. Prova macro = só os 4 oficiais
+              [[feedback_numeros_oficiais_marca]].
             */}
             <p className="text-white/70 text-base md:text-lg leading-relaxed">
               São mais de 51.000 assinantes de clube e mais de 1.200 barbearias rodando na BestBarbers hoje — a
-              plataforma que junta agenda, financeiro e clube no mesmo lugar. Este guia é o método no papel: a
-              conta que dimensiona a carteira, as frases que fecham na cadeira e a régua que segura o clube de pé
-              depois que a primeira turma entra. Material gratuito, direto ao ponto.
+              plataforma que junta agenda, financeiro e clube no mesmo lugar. Este guia é a nossa primeira
+              temporada de podcast destilada: 12 episódios sobre clube de assinatura viraram 8 capítulos, na
+              ordem em que as coisas precisam acontecer. Material gratuito, direto ao ponto.
             </p>
           </div>
         </div>
@@ -271,12 +292,12 @@ export default function DoZeroAAssinaturaPage() {
             className="text-white text-center leading-tight mb-3"
             style={{ fontFamily: "var(--font-vollkorn)", fontWeight: 800, fontSize: "clamp(26px, 4vw, 40px)" }}
           >
-            E dentro do app, a{" "}
-            <span style={{ color: AMBER }}>régua roda sozinha</span>
+            E dentro do app, a parte que{" "}
+            <span style={{ color: AMBER }}>não pode falhar nenhum mês</span>
           </h2>
           <p className="text-white/55 text-center mb-12 max-w-2xl mx-auto">
-            O guia funciona no caderno. O que ninguém aguenta fazer na mão — aplicar a mesma régua em cada
-            assinante, todo mês, sem falhar um — é o que o app tira das suas costas.
+            Cobrar todo mundo, bloquear quem ficou em atraso, fechar a comissão certa e medir o clube todo dia:
+            é o que ninguém aguenta fazer na mão e o que o app tira das suas costas.
           </p>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -301,9 +322,13 @@ export default function DoZeroAAssinaturaPage() {
             ))}
           </div>
 
+          {/*
+            Preço SEMPRE com o "a partir de" (restrição do CEO): nunca "R$ 299/mês" seco.
+            E a ressalva é literal do guia (págs. 9 e 12) — o sistema não decide por você.
+          */}
           <p className="text-white/40 text-xs text-center mt-8 max-w-xl mx-auto">
-            O que continua seu: decidir qual régua vale, quem o seu time convida na cadeira e até onde a carteira
-            cresce. Sistema nenhum vende assinatura por você.
+            A partir de R$ 299/mês, sem taxa de implantação. O que o sistema não faz é decidir por você: a
+            régua, o preço e a conversa continuam sendo trabalho de dono.
           </p>
         </div>
       </section>
@@ -316,21 +341,20 @@ export default function DoZeroAAssinaturaPage() {
               className="text-white leading-tight mb-5"
               style={{ fontFamily: "var(--font-vollkorn)", fontWeight: 800, fontSize: "clamp(24px, 3.5vw, 36px)" }}
             >
-              Quem faz o guia
+              De onde vem o guia
             </h2>
             {/*
-              "no quarto mês" saiu daqui. O 4º mês existe no guia como a LINHA DE UMA FICHA — a Autópsia
-              do Capítulo 5 pergunta "quantos sobraram no 4º mês?" —, e ali ele é a data de uma conta que
-              o dono faz sobre a PRÓPRIA carteira. Dito na voz da casa ("o que a gente aprendeu vendo…"),
-              o mesmo número vira estatística de permanência da base BestBarbers, que é exatamente o tipo
-              de dado vetado em copy pública [[feedback_copy_cases_vetados]]. A frase abaixo mantém a
-              observação sem cravar prazo.
+              A autoria é a prova mais forte que a página tem: o guia é a 1ª temporada do
+              podcast destilada, não observação da base. Dizer "a gente vê clube nascer e
+              minguar" flerta com dado de permanência da base, que é vetado em copy pública
+              [[feedback_copy_cases_vetados]] — e joga fora a prova real.
             */}
             <p className="text-white/70 text-base md:text-lg leading-relaxed">
               A BestBarbers é a plataforma que ajuda mais de 1.200 barbearias a organizar agenda, financeiro,
-              clube de assinaturas e a relação com o cliente — tudo no mesmo lugar. Este guia é o que a gente
-              aprendeu vendo clube nascer, encher e, às vezes, minguar: o que separa a carteira que fica de pé
-              da que esvazia depois que a novidade passa.
+              clube de assinaturas e a relação com o cliente — tudo no mesmo lugar. Este guia não foi escrito do
+              zero: são os 12 episódios da primeira temporada do nosso podcast, sobre clube de assinatura,
+              condensados em 8 capítulos curtos. Cada capítulo diz de qual episódio ele veio, se você quiser
+              ouvir a conversa inteira.
             </p>
           </div>
         </div>
@@ -344,11 +368,11 @@ export default function DoZeroAAssinaturaPage() {
               className="text-white leading-tight mb-4"
               style={{ fontFamily: "var(--font-vollkorn)", fontWeight: 800, fontSize: "clamp(26px, 4vw, 40px)" }}
             >
-              Pegue a ficha e escreva{" "}
-              <span style={{ color: AMBER }}>o seu número</span>
+              Pegue o guia e monte o clube{" "}
+              <span style={{ color: AMBER }}>na ordem certa</span>
             </h2>
             <p className="text-white/65 text-base md:text-lg leading-relaxed mb-8">
-              Grátis, direto ao ponto e pronto pra preencher hoje. O download do PDF abre na tela seguinte.
+              Grátis, 8 capítulos, 20 minutos de leitura. O download do PDF abre na tela seguinte.
             </p>
             <button
               onClick={scrollToForm}
@@ -368,7 +392,7 @@ export default function DoZeroAAssinaturaPage() {
       <FooterSimple />
       <div className="bg-[#0a0a0a] pb-10 px-4">
         <p className="text-white/35 text-[11px] leading-relaxed text-center max-w-2xl mx-auto">
-          Ao enviar seus dados, você autoriza a BestBarbers a entrar em contato sobre o guia Do Zero à Assinatura
+          Ao enviar seus dados, você autoriza a BestBarbers a entrar em contato sobre o guia Assinatura do Zero
           e suas soluções, conforme a Lei Geral de Proteção de Dados (LGPD). Seus dados não são compartilhados
           com terceiros e você pode pedir a remoção a qualquer momento.
         </p>

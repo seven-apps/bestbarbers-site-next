@@ -88,7 +88,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className="scroll-smooth overflow-x-hidden" suppressHydrationWarning>
+    /* `scroll-pt-*`: a navbar é `fixed` e não ocupa espaço no fluxo, então tudo
+       que rola para o topo — âncora com #hash, foco de teclado, scrollIntoView —
+       parava DEBAIXO dela e o toque acertava a navbar em vez do alvo. O valor é a
+       altura medida da barra (71px no celular, 81px a partir do md) mais uma folga
+       de 13px. É scroll-padding no <html> (e não scroll-margin espalhado por alvo)
+       porque o problema é da barra, não dos alvos: vale para o site inteiro. */
+    <html
+      lang="pt-BR"
+      className="scroll-smooth scroll-pt-[84px] md:scroll-pt-[94px] overflow-x-hidden"
+      suppressHydrationWarning
+    >
       <head>
         {/* Google Tag Manager */}
         <script

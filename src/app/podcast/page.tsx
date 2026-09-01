@@ -4,9 +4,10 @@ import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { PodcastAttribution } from "@/components/podcast/PodcastAttribution";
 import {
-  PlayFirstEpisodeButton,
-  PodcastPlayerProvider,
-} from "@/components/podcast/PodcastPlayer";
+  FirstEpisodeCta,
+  ShowBadgeLink,
+  ShowFollowLink,
+} from "@/components/podcast/SpotifyLinks";
 import { EpisodeList } from "@/components/podcast/EpisodeList";
 import { SpotifyGlyph } from "@/components/podcast/SpotifyGlyph";
 import {
@@ -16,7 +17,6 @@ import {
   episodeDescriptionFull,
   isoDuration,
   spotifyEpisodeUrl,
-  spotifyShowUrl,
 } from "@/content/podcast";
 import { seasonTotalMinutes } from "@/content/podcast/temporada";
 
@@ -26,7 +26,7 @@ import { seasonTotalMinutes } from "@/content/podcast/temporada";
  *
  * Antes desta versão a rota renderizava <HomePage/> (espelho da home). Quem ouvia
  * um episódio e digitava o link caía numa página que não mencionava o podcast.
- * Agora a página mostra a temporada que está no ar, com player embutido.
+ * Agora a página é a VITRINE da temporada que está no ar.
  *
  * SEMEADURA: a página não pede nada. Sem formulário, sem modal — nem o CTA da
  * Navbar (por isso `withoutCta`). O único caminho para a BestBarbers é um link
@@ -36,22 +36,29 @@ import { seasonTotalMinutes } from "@/content/podcast/temporada";
  * SÓ DADO VERIFICÁVEL: os 12 episódios vêm de src/content/podcast, com título,
  * duração e ID medidos ao vivo no Spotify. Episódio sem spotifyId não é renderizado.
  *
- * ESCUTA: a página inteira tem UM player do Spotify, montado uma vez e reaproveitado
- * — os 12 botões da listagem trocam o episódio dentro dele. Daí saem as três coisas
- * que a rota precisava: um clique em vez de dois, "clicou em outro, o anterior para"
- * sem nenhum listener (não existe segundo player), e 1 embed em vez de 12. Toda a
- * mecânica, os limites do autoplay e o plano B estão documentados em
- * src/components/podcast/PodcastPlayer.tsx.
+ * ESCUTA — DECISÃO DE 01/Set/2026 (André): o player embutido SAIU e cada episódio
+ * virou link para o Spotify. Duas medições sustentam o corte: play pelo embed não
+ * conta no painel do Spotify (163s de escuta real não moveram plays, streams nem
+ * listeners — o embed fala com endpoints "unauth" mesmo com o usuário logado), e
+ * autoplay ao abrir a página é impossível em todos os navegadores. Some a isso o
+ * comportamento do lead: ninguém para para ouvir 13 minutos no segundo em que clica
+ * num anúncio. No Spotify ele salva, segue, ouve depois — e entra no algoritmo da
+ * própria conta. O porquê completo, e o desenho do evento que sobrevive ao clique,
+ * estão em src/components/podcast/SpotifyLinks.tsx.
  *
- * O QUE MUDOU EM 01/Set/2026 (pedido do André, olhando a página no celular): saíram
- * os dois cartões que ficavam entre o hero e a lista — "COMECE POR AQUI / Episódio
- * 1" e "A temporada em quatro blocos". Eles empurravam a primeira linha da lista
- * para 2.134px do topo, 2,5 telas de rolagem, e a intenção da página é o contrário:
- * quem abre tem que ver na hora que existe uma temporada inteira. Nada do que eles
- * faziam se perdeu — o "comece por aqui" virou uma linha do hero mais o botão
- * `PlayFirstEpisodeButton`, e os quatro blocos viraram os cabeçalhos dos trechos da
- * própria lista. O player, que morava dentro do primeiro cartão, passou a nascer
- * como barra fixa no rodapé.
+ * POR QUE A PÁGINA CONTINUA NO MEIO DO CAMINHO (em vez de o anúncio apontar direto
+ * para o Spotify): o pixel da Meta só marca quem passa pelo NOSSO domínio, e a
+ * célula de mídia do podcast é de semeadura — existe para marcar gente barata e
+ * alimentar o retargeting depois. Esta é a estação de marcação.
+ *
+ * O QUE MUDOU ANTES, EM 01/Set/2026 (pedido do André, olhando a página no celular):
+ * saíram os dois cartões que ficavam entre o hero e a lista — "COMECE POR AQUI /
+ * Episódio 1" e "A temporada em quatro blocos". Eles empurravam a primeira linha da
+ * lista para 2.134px do topo, 2,5 telas de rolagem, e a intenção da página é o
+ * contrário: quem abre tem que ver na hora que existe uma temporada inteira. Nada do
+ * que eles faziam se perdeu — o "comece por aqui" virou uma linha do hero mais o CTA
+ * `FirstEpisodeCta`, e os quatro blocos viraram os cabeçalhos dos trechos da própria
+ * lista.
  *
  * noindex MANTIDO: a razão antiga ("espelho da home") acabou, mas trocar o status
  * de indexação é decisão do André. Para indexar: apagar o bloco `robots` abaixo e
@@ -63,7 +70,7 @@ const PAGE_URL = "https://www.bestbarbers.app/podcast";
 export const metadata: Metadata = {
   title: "BestBarbers Podcast — Assinatura do Zero | Clube de assinaturas na barbearia",
   description:
-    "Temporada 1 do BestBarbers Podcast: 12 episódios curtos sobre como montar, precificar, vender e gerir o clube de assinaturas da sua barbearia. Ouça de graça.",
+    "Temporada 1 do BestBarbers Podcast: 12 episódios curtos sobre como montar, precificar, vender e gerir o clube de assinaturas da sua barbearia. Ouça de graça no Spotify.",
   keywords: [
     "podcast para barbearia",
     "clube de assinaturas barbearia",
@@ -161,10 +168,9 @@ export default function PodcastPage() {
 
       <Navbar withoutCta />
 
-      <PodcastPlayerProvider episodes={publishedEpisodes}>
       <main className="pt-[70px] md:pt-[80px] bg-white">
         {/* ---------------------------------------------------------- */}
-        {/*  HERO — o que é, para quem é, e o play                      */}
+        {/*  HERO — o que é, para quem é, e por onde começar           */}
         {/* ---------------------------------------------------------- */}
         <section
           className="bg-[#121212] pt-10 pb-10 md:pt-16 md:pb-16"
@@ -205,16 +211,7 @@ export default function PodcastPage() {
               </h1>
 
               {/* Selo da plataforma nº 1 — em 1 segundo o lead sabe onde ouvir. */}
-              <a
-                href={spotifyShowUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Abrir o ${PODCAST_SHOW_NAME} no Spotify`}
-                className="mt-5 inline-flex min-h-11 items-center gap-2.5 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-white transition-colors duration-200 hover:border-[#1DB954]/60 hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1DB954] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] motion-reduce:transition-none"
-              >
-                <SpotifyGlyph className="h-5 w-5 shrink-0 text-[#1DB954]" />
-                <span aria-hidden>Ouça no Spotify</span>
-              </a>
+              <ShowBadgeLink />
 
               <p className="mt-6 text-base md:text-lg text-gray-300 leading-relaxed max-w-xl">
                 Um podcast para o dono de barbearia que decidiu montar — ou
@@ -230,14 +227,16 @@ export default function PodcastPage() {
                 <strong className="text-gray-200">
                   Os {totalEpisodios} episódios estão no ar
                 </strong>{" "}
-                — a temporada inteira, na ordem, logo aqui embaixo. Se estiver em
-                dúvida por onde entrar, comece pelo episódio 1: é ele que vira a
-                chave de que clube não é desconto.
+                — a temporada inteira, na ordem, logo aqui embaixo. Escolha o
+                assunto e o episódio abre no Spotify, de graça: dá para ouvir na
+                hora ou salvar para depois. Se estiver em dúvida por onde entrar,
+                comece pelo episódio 1: é ele que desmonta a ideia de que clube é
+                desconto.
               </p>
 
               {primeiro && (
                 <div className="mt-7">
-                  <PlayFirstEpisodeButton episode={primeiro} />
+                  <FirstEpisodeCta episode={primeiro} />
                 </div>
               )}
 
@@ -297,10 +296,11 @@ export default function PodcastPage() {
               </h2>
             </div>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-gray-400 md:text-base">
-              Aperte o play e o episódio toca aqui mesmo — sem sair da página,
-              sem cadastro. É um player só para a temporada inteira: ao tocar
-              outro episódio, o anterior para. Se preferir ouvir no aplicativo,
-              cada episódio também abre direto no Spotify.
+              A temporada inteira, na ordem, com o resumo de cada episódio —
+              leia por onde está o seu problema e toque na linha: o episódio
+              abre no Spotify, em uma aba nova, de graça e sem cadastro. No
+              aplicativo dá para ouvir agora, salvar para depois e continuar de
+              onde parou.
             </p>
 
             <div className="mt-10">
@@ -343,25 +343,14 @@ export default function PodcastPage() {
                   clube não é desconto, passam por preço, frequência, comissão e
                   a conversa com a equipe, e terminam no roteiro dos primeiros
                   assinantes. É uma sequência — não uma pilha de episódios
-                  soltos — e ela está inteira aqui, para ouvir no seu ritmo.
+                  soltos — e ela está inteira no ar, para ouvir no seu ritmo.
                 </p>
               </div>
             </div>
 
             {/* Fecho: quem preferir o aplicativo sai daqui direto para o programa. */}
             <div className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-white/[0.08] pt-8">
-              <a
-                href={spotifyShowUrl()}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Seguir o ${PODCAST_SHOW_NAME} no Spotify`}
-                className="inline-flex min-h-11 items-center gap-2.5 text-sm font-bold text-white transition-colors duration-200 hover:text-[#1DB954] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1DB954] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] motion-reduce:transition-none"
-              >
-                <SpotifyGlyph className="h-6 w-6 shrink-0 text-[#1DB954]" />
-                <span aria-hidden>
-                  Seguir o {PODCAST_SHOW_NAME} no Spotify
-                </span>
-              </a>
+              <ShowFollowLink />
               <p className="text-sm text-gray-500">
                 No aplicativo dá para baixar, ouvir offline e continuar de onde
                 parou.
@@ -414,7 +403,6 @@ export default function PodcastPage() {
           </div>
         </section>
       </main>
-      </PodcastPlayerProvider>
 
       <Footer />
     </>

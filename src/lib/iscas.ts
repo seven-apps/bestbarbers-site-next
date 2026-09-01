@@ -64,17 +64,24 @@ export const ISCAS: Record<IscaId, Isca> = {
       "Olá!%20Baixei%20o%20guia%20Cadeira%20Cheia%20e%20quero%20ver%20como%20o%20app%20me%20mostra%20quem%20sumiu.",
     pixelId: "Guia Cadeira Cheia",
   },
+  /*
+   * O ID e o caminho do PDF continuam `do-zero-a-assinatura` de propósito: a rota da LP,
+   * a série de pixel e os links já distribuídos apontam pra eles. O que mudou em
+   * 01/Set/2026 foi o PRODUTO — o arquivo em /public agora é o guia "Assinatura do Zero"
+   * (12 páginas, 8 capítulos, ENSINO), no lugar do guia de diagnóstico reprovado pelo
+   * André (30 páginas, a "ficha de seis linhas"). Nada da promessa antiga volta aqui.
+   */
   "do-zero-a-assinatura": {
-    titulo: "Do Zero à Assinatura",
-    palavraDestaque: "Assinatura",
+    titulo: "Assinatura do Zero",
+    palavraDestaque: "do Zero",
     pdf: "/guia-do-zero-a-assinatura.pdf",
     subtitulo:
-      "Comece pela “Ficha da Cadeira Vaga”, no Capítulo 1: são seis linhas e você já sai com o seu número.",
+      "Leia na ordem — a ordem é o método. Se for abrir por um só, abra o “Capítulo 7”: são os 12 erros que derrubam o clube.",
     consultor:
-      "Quer ver a régua de uso do seu clube — os dias de utilização de cada plano — montada com os números da sua Ficha? Um consultor da BestBarbers faz a conta com você numa conversa rápida de 15 min, sem compromisso.",
+      "Quer ver o clube da sua barbearia montado com os números do seu Capítulo 4 — o preço, os dias de utilização de cada plano e a cobrança? Um consultor da BestBarbers faz a conta com você numa conversa rápida de 15 min, sem compromisso.",
     whatsapp:
-      "Olá!%20Baixei%20o%20guia%20Do%20Zero%20à%20Assinatura%20e%20quero%20ver%20como%20o%20app%20aplica%20a%20régua%20de%20uso%20do%20clube%20e%20cobra%20a%20mensalidade.",
-    pixelId: "Guia Do Zero à Assinatura",
+      "Olá!%20Baixei%20o%20guia%20Assinatura%20do%20Zero%20e%20quero%20ver%20como%20o%20app%20cobra%20a%20mensalidade%20e%20fecha%20a%20comissão%20do%20clube.",
+    pixelId: "Guia Assinatura do Zero",
   },
 };
 

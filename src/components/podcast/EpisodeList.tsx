@@ -1,22 +1,13 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import {
-  formatDuration,
-  spotifyEpisodeUrl,
-  type PodcastEpisode,
-} from "@/content/podcast";
+import { formatDuration, type PodcastEpisode } from "@/content/podcast";
 import {
   SEASON_COVER,
   seasonBlocks,
   type SeasonBlock,
 } from "@/content/podcast/temporada";
-import {
-  NowPlayingBars,
-  PauseGlyph,
-  PlayGlyph,
-  usePodcastPlayer,
-} from "@/components/podcast/PodcastPlayer";
+import { EpisodeRowLink } from "@/components/podcast/SpotifyLinks";
 import { SpotifyGlyph } from "@/components/podcast/SpotifyGlyph";
 
 interface EpisodeListProps {
@@ -25,35 +16,32 @@ interface EpisodeListProps {
 
 /**
  * Lista dos episódios no desenho do Spotify: capa quadrada, título, "data ·
- * duração", o resumo do episódio em duas linhas e o play redondo à direita.
+ * duração" e o resumo do episódio em duas linhas.
  *
- * Nenhuma linha monta player próprio — todas mandam no player único da página (ver
- * PodcastPlayer). É daí que vem "clicou em outro, o anterior para": não existe um
- * segundo player para continuar tocando.
+ * UMA AÇÃO SÓ (01/Set/2026): a linha inteira é um link para o episódio no Spotify.
+ * Antes ela tinha um play que tocava a página inteira num embed; o embed saiu
+ * porque a escuta que acontecia nele não contava no painel do Spotify (nem play,
+ * nem stream, nem listener) e porque quem clica num anúncio não para 13 minutos ali
+ * — no aplicativo ele salva, segue e ouve depois. O ícone verde e o rótulo "Ouvir
+ * no Spotify" são a affordance; quem carrega o clique é a camada de link que cobre
+ * o cartão (ver EpisodeRowLink, em SpotifyLinks). Com o play fora, a linha ganhou a
+ * largura que o botão ocupava.
  *
- * O estado visual (tocando / pausado) vem do evento `playback_update` do Spotify,
- * não de um `useState` otimista: se a pessoa apertar o ⏸ de dentro do iframe, a
- * linha acompanha na hora.
- *
- * DESCRIÇÃO (01/Set/2026): a lista passou a mostrar o resumo de cada episódio — o
- * MESMO texto publicado no Spotify, medido ao vivo e limpo, vivendo no campo
- * `description` de content/podcast. O comentário que existia aqui dizia que o
- * Spotify não devolvia descrição; era falso — o texto está no `<meta
- * name="description">`, não no `og:description`. O card mostra o resumo (≤300
+ * DESCRIÇÃO: o resumo é o MESMO texto publicado no Spotify, medido ao vivo e limpo,
+ * vivendo no campo `description` de content/podcast. O card mostra o resumo (≤300
  * caracteres) cortado em 2 linhas, expansível ao toque. O texto COMPLETO dos
- * episódios longos não entra na linha: ele é grande demais para um item de lista e
- * já viaja no JSON-LD da página (`episodeDescriptionFull`) e no próprio Spotify.
+ * episódios longos não entra na linha: é grande demais para um item de lista e já
+ * viaja no JSON-LD da página (`episodeDescriptionFull`) e no próprio Spotify.
  *
  * BLOCOS DA TEMPORADA: o cartão "A temporada em quatro blocos" saiu do hero. O
  * conteúdo dele não se perdeu — virou o cabeçalho de cada trecho da própria lista,
  * onde ele orienta a leitura corrida em vez de competir com ela.
  *
- * GEOMETRIA DE TOQUE (a causa medida do "pausar não funciona" no celular): o link
- * do Spotify e o botão de play ficavam a 2,0px um do outro, com 28×32 e 40×40 de
- * área — o dedo escorregava para o link, que abre outra aba com o áudio seguindo
- * atrás. Agora eles estão em LINHAS DIFERENTES do cartão, ambos com 44×44 de área
- * mínima: o play no alto, à direita do título; o link do Spotify no rodapé da
- * linha, com a marca verde e rótulo visível.
+ * GEOMETRIA DE TOQUE: o alvo agora é o cartão inteiro (bem acima dos 44px em
+ * qualquer tela). O único outro alvo da linha é o "Ler mais", com 44px de altura e
+ * num plano acima do link — é o motivo de o link ser uma camada absoluta e não um
+ * `<a>` embrulhando tudo: botão dentro de link é HTML inválido, e foi colar alvo
+ * pequeno em alvo grande que quebrou esta linha no celular da última vez.
  *
  * A regra "episódio sem spotifyId não entra" continua sendo aplicada na origem
  * (`publishedEpisodes`); aqui renderizamos exatamente o que recebemos.
@@ -152,15 +140,6 @@ function EpisodeGroup({
 /* ------------------------------------------------------------------ */
 
 function EpisodeRow({ episode: ep }: { episode: PodcastEpisode }) {
-  const {
-    activeEpisodeId,
-    isPlaying,
-    isBuffering,
-    needsManualPlay,
-    hasStarted,
-    toggle,
-  } = usePodcastPlayer();
-
   const [isExpanded, setIsExpanded] = useState(false);
   const [canExpand, setCanExpand] = useState(false);
   const summaryRef = useRef<HTMLParagraphElement | null>(null);
@@ -188,16 +167,6 @@ function EpisodeRow({ episode: ep }: { episode: PodcastEpisode }) {
   }, [isExpanded]);
 
   const num = String(ep.number).padStart(2, "0");
-  // O episódio 1 já nasce CARREGADO no player, mas ninguém o escolheu ainda —
-  // destacar a linha antes da primeira escolha diria que ele está tocando.
-  const isActive = hasStarted && activeEpisodeId === ep.spotifyId;
-  // Enquanto o player pede confirmação manual ele está PARADO, por mais que o
-  // estado otimista diga que mandamos tocar. Mostrar ⏸ aqui seria mentir para
-  // a pessoa — e faria o próximo clique pausar um áudio que nunca começou.
-  const isThisPlaying = isActive && isPlaying && !needsManualPlay;
-  // "carregando…" para de valer quando o player pediu confirmação manual —
-  // aí quem espera é a pessoa, não a rede.
-  const isThisBuffering = isActive && isBuffering && !needsManualPlay;
   // "15 jun 2026" em vez de "15 de jun. de 2026": no celular a coluna de texto
   // é estreita e a forma longa jogava a linha de contexto para duas linhas.
   const published = new Date(`${ep.publishDate}T12:00:00`);
@@ -207,18 +176,10 @@ function EpisodeRow({ episode: ep }: { episode: PodcastEpisode }) {
   const publishedLabel = `${published.getDate()} ${month} ${published.getFullYear()}`;
 
   return (
-    <li
-      aria-current={isThisPlaying ? "true" : undefined}
-      className={`relative border-b border-white/[0.07] py-4 transition-colors duration-200 motion-reduce:transition-none ${
-        isActive ? "bg-white/[0.04]" : ""
-      }`}
-    >
-      {isActive && (
-        <span
-          aria-hidden
-          className="absolute inset-y-0 -left-2 w-[3px] rounded-full bg-[#ffaf02] md:-left-3"
-        />
-      )}
+    <li className="group relative border-b border-white/[0.07] py-4 transition-colors duration-200 hover:bg-white/[0.04] motion-reduce:transition-none">
+      {/* A camada que faz a linha inteira valer um clique. Vem antes do conteúdo
+          no DOM para que a ordem de tabulação seja "episódio → Ler mais". */}
+      <EpisodeRowLink episode={ep} />
 
       <div className="flex items-start gap-3 md:gap-4">
         {/* Capa da temporada — a mesma arte que o Spotify mostra nos 12 episódios. */}
@@ -233,11 +194,6 @@ function EpisodeRow({ episode: ep }: { episode: PodcastEpisode }) {
             decoding="async"
             className="h-full w-full object-cover"
           />
-          {isThisPlaying && (
-            <span className="absolute inset-0 flex items-center justify-center bg-black/60 text-[#ffaf02]">
-              <NowPlayingBars />
-            </span>
-          )}
         </div>
 
         <div className="min-w-0 flex-1">
@@ -250,11 +206,7 @@ function EpisodeRow({ episode: ep }: { episode: PodcastEpisode }) {
             EP {num}
           </p>
 
-          <h4
-            className={`mt-1.5 text-[15px] font-bold leading-snug md:text-base ${
-              isActive ? "text-[#ffaf02]" : "text-white"
-            }`}
-          >
+          <h4 className="mt-1.5 text-[15px] font-bold leading-snug text-white transition-colors duration-200 group-hover:text-[#ffaf02] md:text-base motion-reduce:transition-none">
             <span className="sr-only">Episódio {ep.number}: </span>
             {ep.title}
           </h4>
@@ -264,38 +216,29 @@ function EpisodeRow({ episode: ep }: { episode: PodcastEpisode }) {
             <span aria-hidden> · </span>
             <span className="sr-only">Duração: </span>
             <span>{formatDuration(ep.durationSeconds)}</span>
-            {isThisBuffering && (
-              <span className="ml-2 text-[#ffaf02]">carregando…</span>
-            )}
           </p>
         </div>
 
-        {/* O play fica SOZINHO nesta linha: nada de alvo pequeno colado nele. */}
-        <button
-          type="button"
-          onClick={() => toggle(ep)}
-          aria-label={
-            isThisPlaying
-              ? `Pausar episódio ${ep.number} — ${ep.title}`
-              : `Tocar episódio ${ep.number} — ${ep.title}`
-          }
-          className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#ffaf02] text-[#121212] transition-transform duration-200 hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffaf02] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c0c0c] motion-reduce:transition-none motion-reduce:hover:scale-100"
-        >
-          {isThisPlaying ? (
-            <PauseGlyph className="h-[18px] w-[18px]" />
-          ) : (
-            <PlayGlyph className="ml-0.5 h-[18px] w-[18px]" />
-          )}
-        </button>
       </div>
 
       {/* Resumo — largura cheia no celular (é onde ele tem espaço para respirar),
-          alinhado com o título a partir do md. */}
+          alinhado com o título a partir do md.
+
+          MEDIDA (`max-w-[68ch]`): sem teto o resumo corria 928px no 1440, o texto
+          mais largo da página — mais largo que o parágrafo do hero (768px). O teto
+          está em `ch` de propósito, e NÃO nas escalas nomeadas: src/styles/tokens.css
+          redefine --container-sm/md/lg/xl/2xl como os valores de BREAKPOINT
+          (640/768/1024/1280/1536px), e no Tailwind v4 é dessas variáveis que
+          `max-w-*` vive — ou seja, neste site `max-w-2xl` vale 1536px e não prende
+          nada abaixo disso (medido: com max-w-2xl o parágrafo continuou em 928px).
+          `ch` também diz o que a regra quer: caberem ~68 caracteres por linha.
+          Fica no <p> e não no container para a linha de ação embaixo continuar
+          livre. */}
       <div className="mt-2.5 md:pl-20">
         <p
           ref={summaryRef}
           id={summaryId}
-          className={`text-[13px] leading-relaxed text-gray-300 md:text-sm ${
+          className={`max-w-[68ch] text-[13px] leading-relaxed text-gray-300 md:text-sm ${
             isExpanded ? "" : "line-clamp-2"
           }`}
         >
@@ -304,27 +247,40 @@ function EpisodeRow({ episode: ep }: { episode: PodcastEpisode }) {
 
         <div className="mt-1 flex flex-wrap items-center gap-x-4">
           {canExpand && (
+            /* z-20: fica ACIMA da camada de link, senão o toque abriria o Spotify
+               em vez de expandir o texto. É o único alvo da linha que não leva
+               para fora. */
             <button
               type="button"
               onClick={() => setIsExpanded((value) => !value)}
               aria-expanded={isExpanded}
               aria-controls={summaryId}
-              className="inline-flex min-h-11 items-center text-xs font-bold text-gray-400 transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffaf02] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c0c0c] motion-reduce:transition-none"
+              className="relative z-20 inline-flex min-h-11 items-center text-xs font-bold text-gray-400 transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffaf02] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c0c0c] motion-reduce:transition-none"
             >
               {isExpanded ? "Ler menos" : "Ler mais"}
             </button>
           )}
 
-          <a
-            href={spotifyEpisodeUrl(ep)}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Abrir o episódio ${ep.number} no Spotify — ${ep.title}`}
-            className="ml-auto inline-flex min-h-11 items-center gap-2 text-xs font-bold text-gray-400 transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffaf02] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c0c0c] motion-reduce:transition-none"
+          {/* A affordance da linha: uma só, com rótulo, no mesmo lugar em toda
+              tela. É DECORAÇÃO — quem tem nome acessível é a camada de link que
+              cobre o cartão; um segundo link aqui faria o leitor de tela anunciar
+              o mesmo destino duas vezes e criaria um alvo pequeno dentro de um
+              alvo grande (foi assim que esta linha quebrou no celular da última
+              vez). Desenhada como pílula porque precisa PARECER o botão que era o
+              play — o cartão inteiro clica, mas o olho procura um botão.
+
+              SEM `ml-auto`: encostada na direita ela ficava, no desktop, sozinha a
+              ~760px do texto a que pertence — e em 11 dos 12 episódios o resumo
+              cabe nas duas linhas, então o "Ler mais" some e sobra uma faixa vazia
+              inteira à esquerda dela. Aqui ela segue o fluxo do texto: nasce
+              embaixo do resumo, ao lado do "Ler mais" quando ele existe. */}
+          <span
+            aria-hidden
+            className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/[0.12] bg-white/[0.04] px-4 text-xs font-bold text-white transition-colors duration-200 group-hover:border-[#1DB954]/60 group-hover:bg-[#1DB954]/10 md:text-[13px] motion-reduce:transition-none"
           >
             <SpotifyGlyph className="h-[18px] w-[18px] shrink-0 text-[#1DB954]" />
-            <span aria-hidden>Ouvir no Spotify</span>
-          </a>
+            Ouvir no Spotify
+          </span>
         </div>
       </div>
     </li>

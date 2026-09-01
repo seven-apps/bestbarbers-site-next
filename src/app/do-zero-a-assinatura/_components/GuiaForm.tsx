@@ -23,8 +23,10 @@ import { ArrowRight, ShieldCheck, Users2, Gift } from "lucide-react";
 // CPQ isolado por isca) e troque SÓ o número abaixo. Enquanto não existir, o coorte é
 // filtrável pela descrição (DO_ZERO_ORIGIN_DESC), pelo source 'lp_guia_do_zero_a_assinatura'
 // e pelo bb_lp_version 'do-zero-a-assinatura' (derivado do pathname em lead-attribution.ts).
+// A descrição nomeia o guia ENTREGUE ("Assinatura do Zero", 01/Set/2026) — é o rótulo pelo
+// qual o SDR e os relatórios enxergam este coorte. O id da rota/source segue o histórico.
 const DO_ZERO_ORIGIN_ID = 40210173;
-const DO_ZERO_ORIGIN_DESC = "LP Do Zero à Assinatura - Guia Clube";
+const DO_ZERO_ORIGIN_DESC = "LP Assinatura do Zero - Guia Clube";
 
 // Campos alinhados ao form CANÔNICO (src/app/v12/_components/FormSectionV12.tsx),
 // pra que useLeadForm calcule o MESMO lead_score de qualquer outra LP (fórmula em
@@ -68,8 +70,9 @@ const formFields = [
   {
     // Porte da barbearia. Os VALUES são os do canônico (score: Sou apenas eu +0 ·
     // 2 a 4 +10 · 5+ +20). Só os LABELS falam em "cadeiras" — e aqui isso não é só
-    // framing: "cadeiras que atendem hoje" é a linha A da Ficha da Cadeira Vaga, o
-    // primeiro número que o guia manda o dono levantar. Não altera o score.
+    // framing: "quem atende hoje" é o dado 1 da conta de capacidade do Capítulo 4 do
+    // guia, o primeiro número que o dono precisa levantar pra precificar o plano.
+    // Não altera o score.
     name: "employeeCount",
     label: "Quantas cadeiras atendem hoje na sua barbearia?",
     placeholder: "Selecione",
@@ -188,7 +191,7 @@ export function GuiaForm() {
             color: "#1e1e1e",
           }}
         >
-          Baixe o guia Do Zero à <span style={{ color: "#ebad04" }}>Assinatura</span>
+          Baixe o guia Assinatura <span style={{ color: "#ebad04" }}>do Zero</span>
         </h2>
         <p
           className="text-center text-sm mb-6"

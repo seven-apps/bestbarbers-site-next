@@ -113,7 +113,7 @@ function RenderSection({ section, index }: { section: BlogSection; index: number
           .replace(/[\u0300-\u036f]/g, "")
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/(^-|-$)/g, "")}
-        className="text-2xl font-bold text-[#121212] mb-4 scroll-mt-24"
+        className="text-2xl font-bold text-[#121212] mb-4"
       >
         {section.heading}
       </h2>
