@@ -199,6 +199,11 @@ export function spotifyEpisodeUrl(episode: PodcastEpisode): string {
   return `https://open.spotify.com/episode/${episode.spotifyId}`;
 }
 
+/** URL pública do programa no Spotify — destino dos selos da marca na página. */
+export function spotifyShowUrl(): string {
+  return `https://open.spotify.com/show/${PODCAST_SHOW_ID}`;
+}
+
 /** URL do player embutível (iframe compacto, 152px de altura). */
 export function spotifyEmbedUrl(episode: PodcastEpisode): string {
   return `https://open.spotify.com/embed/episode/${episode.spotifyId}`;

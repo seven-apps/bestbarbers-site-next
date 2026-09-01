@@ -46,7 +46,13 @@ export interface SeasonBlock {
  * mas a descrição real de cada episódio está no `<meta name="description">`, servido
  * só para user-agent de crawler. Os 12 textos foram medidos e agora vivem no campo
  * `description` de src/content/podcast/index.ts — a listagem usa a descrição de
- * verdade, e o bloco continua disponível apenas como rótulo de seção.
+ * verdade.
+ *
+ * ONDE ISTO APARECE (01/Set/2026): o cartão "A temporada em quatro blocos" saiu do
+ * hero a pedido do André — ele empurrava a listagem para 2,5 telas de rolagem no
+ * celular. Os blocos não morreram: viraram os cabeçalhos dos quatro trechos da
+ * própria lista de episódios (EpisodeList), onde orientam a leitura corrida em vez
+ * de disputar espaço com ela.
  */
 export const seasonBlocks: SeasonBlock[] = [
   {
@@ -79,12 +85,11 @@ export const seasonBlocks: SeasonBlock[] = [
   },
 ];
 
-/** Bloco a que o episódio pertence — `undefined` se ele cair fora das faixas. */
-export function blockOfEpisode(episodeNumber: number): SeasonBlock | undefined {
-  return seasonBlocks.find(
-    (b) => episodeNumber >= b.from && episodeNumber <= b.to
-  );
-}
+/* `blockOfEpisode()` morava aqui e servia à segunda linha de cada episódio ("O
+   conceito · 15 jun 2026 · 13:22"). Com o bloco virando cabeçalho de trecho da
+   lista, repetir o nome dele em toda linha era ruído — e a linha ganhou de volta a
+   largura que ele consumia. Quem reparte os episódios agora é `groupByBlock()`,
+   em EpisodeList, direto sobre `seasonBlocks`. */
 
 /** Duração somada dos episódios no ar, em minutos inteiros (arredondado para baixo). */
 export const seasonTotalMinutes: number = Math.floor(

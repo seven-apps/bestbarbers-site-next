@@ -9,11 +9,11 @@ import {
   useRef,
   useState,
 } from "react";
-import { formatDuration, type PodcastEpisode } from "@/content/podcast";
+import { type PodcastEpisode } from "@/content/podcast";
 import { SEASON_COVER } from "@/content/podcast/temporada";
 
 /**
- * UM player do Spotify para a página inteira.
+ * UM player do Spotify para a página inteira, morando numa BARRA FIXA no rodapé.
  *
  * DESENHO: existe um único `<iframe>` do Spotify, criado uma vez pela IFrame API
  * (`createController`) e reaproveitado para sempre. Trocar de episódio é
@@ -26,18 +26,35 @@ import { SEASON_COVER } from "@/content/podcast/temporada";
  *     HTML + ~1,7 MB de JS dentro do próprio iframe; 12 deles matariam o LCP do
  *     tráfego frio no 4G, que era a razão da fachada de botão que existia aqui antes.
  *  3. O player não pode ANDAR pela lista: re-parentar o iframe dispara `ready` de
- *     novo, ou seja, recarrega e perde a posição do áudio. Por isso ele mora num
- *     lugar fixo (o cartão "COMECE POR AQUI") e vira barra `position: fixed` no
- *     rodapé quando esse cartão sai da tela — mudança de CSS, nunca de pai no DOM.
+ *     novo, ou seja, recarrega e perde a posição do áudio. Por isso ele tem um lugar
+ *     só no DOM — esta barra — e nunca troca de pai.
+ *
+ * POR QUE A BARRA E NÃO UM CARTÃO (mudança de 01/Set/2026): o player morava dentro
+ * do cartão "COMECE POR AQUI", no hero, e só virava barra quando o cartão saía da
+ * tela. Esse cartão foi removido a pedido do André — a listagem dos 12 episódios
+ * agora vem logo depois do hero, sem nada no meio. O player passou a nascer já como
+ * barra, escondida abaixo da dobra até a primeira escolha, e sobe quando a pessoa
+ * toca em qualquer episódio. É o padrão do aplicativo do Spotify: a lista é a tela,
+ * o player é a faixa. De quebra some o "buraco" de 152px que o slot deixava no
+ * cartão depois de o player docar.
+ *
+ * ESPAÇO DE ROLAGEM (defeito medido no celular): uma barra `fixed` sem reserva de
+ * rolagem cobre uma linha inteira da lista — em 390×844 a barra come 13,6% da tela,
+ * e um toque no botão daquela linha morre no iframe em vez de chegar ao botão. A
+ * reserva é `padding-bottom` no `body`, MEDIDA da barra com ResizeObserver e
+ * re-medida quando a altura muda. A versão anterior media uma vez só, no commit em
+ * que a barra aparecia, e cravava 199px para uma barra de 115px.
  *
  * UM CLIQUE, COM REDE DE SEGURANÇA: o comando de play é disparado DENTRO da pilha
  * de execução do clique (ver `toggle`). Isso não é detalhe de estilo — é a condição
  * para o navegador aceitar. O Chrome trata a permissão como PEGAJOSA por documento
  * de topo e a delega ao iframe pelo `allow="autoplay"` que a própria API põe no
- * iframe que cria; o Safari, principalmente no iOS, historicamente exige o gesto na
- * MESMA pilha de chamada. Por isso o caminho normal não tem `await` nem
- * `setTimeout` entre o clique e o `play()` — quando o player já está montado (que é
- * o caso, porque ele monta sozinho no idle), o comando sai direto.
+ * iframe que cria (medido em 01/Set: o atributo vem com `autoplay`; ainda assim
+ * `ensureAutoplayAllowed` confere e completa, porque o atributo é de terceiro); o
+ * Safari, principalmente no iOS, historicamente exige o gesto na MESMA pilha de
+ * chamada. Por isso o caminho normal não tem `await` nem `setTimeout` entre o
+ * clique e o `play()` — quando o player já está montado (que é o caso, porque ele
+ * monta sozinho no idle), o comando sai direto.
  *
  * MEDIDO em 01/Set/2026, Chrome desktop: um clique real na linha do EP 08 começou a
  * tocar sem nenhum segundo toque. Isso NÃO vira promessa para Safari iOS, que não
@@ -45,19 +62,19 @@ import { SEASON_COVER } from "@/content/podcast/temporada";
  *
  * A rede de segurança continua: se 4 segundos depois do comando o `playback_update`
  * ainda não tiver mostrado posição andando, a página convida a tocar no ▶ do player
- * — que já está montado, visível e com o episódio CERTO carregado. Melhor caso 1
- * clique, pior caso 2, nunca pior do que era antes. ATENÇÃO ao ler esse aviso como
- * métrica: ele não distingue "barrado" de "lento" — na mesma medição de 01/Set um
- * começo que funcionou demorou mais de 4 segundos e o aviso apareceu no caminho,
+ * — que já está montado, visível na barra e com o episódio CERTO carregado. Melhor
+ * caso 1 clique, pior caso 2, nunca pior do que era antes. ATENÇÃO ao ler esse aviso
+ * como métrica: ele não distingue "barrado" de "lento" — na mesma medição de 01/Set
+ * um começo que funcionou demorou mais de 4 segundos e o aviso apareceu no caminho,
  * sumindo sozinho quando o áudio andou. Por isso o texto do aviso pergunta em vez
  * de afirmar que o navegador bloqueou.
  *
- * CUSTO ASSUMIDO: o player passou a montar sozinho (no idle, depois da primeira
- * pintura) em vez de esperar clique. É o que "já deixa aberto direto o player"
- * pede, e o preço é o cookie de terceiro do Spotify para quem só passa pela
- * página. Duas mitigações ficaram no código: a montagem espera o navegador ficar
- * ocioso (não disputa com o LCP) e é PULADA em conexão magra (`saveData` ou 2g) —
- * nesses casos o cartão-fachada continua lá e o primeiro clique monta e toca.
+ * CUSTO ASSUMIDO: o player monta sozinho (no idle, depois da primeira pintura) em
+ * vez de esperar clique — é o que garante o play em UM toque. O preço é o cookie de
+ * terceiro do Spotify para quem só passa pela página. Duas mitigações ficaram no
+ * código: a montagem espera o navegador ficar ocioso (não disputa com o LCP) e é
+ * PULADA em conexão magra (`saveData` ou 2g) — nesses casos o primeiro toque monta
+ * e manda tocar, e a barra mostra "carregando" enquanto o iframe nasce.
  */
 
 /* ------------------------------------------------------------------ */
@@ -106,9 +123,12 @@ declare global {
 
 const IFRAME_API_SRC = "https://open.spotify.com/embed/iframe-api/v1";
 
-/** Altura do embed no cartão do hero e na barra do rodapé (medidas: 152 e 80 renderizam). */
-const HEIGHT_IN_FLOW = 152;
-const HEIGHT_DOCKED = 80;
+/**
+ * Altura do embed na barra. 80px é a forma compacta do embed do Spotify (capa,
+ * título, ▶ e a linha do tempo) — medida: renderiza inteira nessa altura. Agora é
+ * uma constante só: o player nasce e morre como barra, nunca mais muda de altura.
+ */
+const PLAYER_HEIGHT = 80;
 
 /** Quanto esperamos o áudio realmente andar antes de pedir confirmação manual. */
 const PLAY_WATCHDOG_MS = 4000;
@@ -146,6 +166,20 @@ function loadSpotifyIframeApi(): Promise<SpotifyIframeApi> {
   return apiPromise;
 }
 
+/**
+ * O `allow` do iframe é escrito pela API do Spotify, não por nós — e sem `autoplay`
+ * ali dentro a permissão do documento de topo NÃO é delegada, e o play em um toque
+ * morre. Medido em 01/Set/2026: a API já entrega
+ * `autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture`.
+ * Esta função não conserta um defeito conhecido — ela impede que uma mudança do
+ * lado do Spotify quebre o play sem ninguém perceber.
+ */
+function ensureAutoplayAllowed(iframe: HTMLIFrameElement) {
+  const allow = iframe.getAttribute("allow") ?? "";
+  if (/(^|;)\s*autoplay\b/.test(allow)) return;
+  iframe.setAttribute("allow", allow ? `autoplay; ${allow}` : "autoplay");
+}
+
 /* ------------------------------------------------------------------ */
 /*  Contexto                                                           */
 /* ------------------------------------------------------------------ */
@@ -163,11 +197,8 @@ interface PodcastPlayerValue {
   isPlayerMounted: boolean;
   /** true a partir do primeiro episódio que a pessoa escolheu — antes disso nada é destacado. */
   hasStarted: boolean;
-  isDocked: boolean;
-  slotRef: React.RefObject<HTMLDivElement | null>;
-  hostRef: React.RefObject<HTMLDivElement | null>;
   toggle: (episode: PodcastEpisode) => void;
-  dismissDock: () => void;
+  dismissPlayer: () => void;
 }
 
 const PodcastPlayerContext = createContext<PodcastPlayerValue | null>(null);
@@ -215,8 +246,8 @@ interface ProviderProps {
 }
 
 export function PodcastPlayerProvider({ episodes, children }: ProviderProps) {
-  const slotRef = useRef<HTMLDivElement | null>(null);
   const hostRef = useRef<HTMLDivElement | null>(null);
+  const barRef = useRef<HTMLDivElement | null>(null);
   const controllerRef = useRef<SpotifyEmbedController | null>(null);
   const mountingRef = useRef<Promise<SpotifyEmbedController | null> | null>(null);
 
@@ -246,7 +277,6 @@ export function PodcastPlayerProvider({ episodes, children }: ProviderProps) {
   const [hasFailed, setHasFailed] = useState(false);
   const [isPlayerMounted, setIsPlayerMounted] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const [isSlotVisible, setIsSlotVisible] = useState(true);
   const [isDismissed, setIsDismissed] = useState(false);
 
   /** Estado e espelho andam juntos: a tela lê o state, o clique lê o ref. */
@@ -356,7 +386,7 @@ export function PodcastPlayerProvider({ episodes, children }: ProviderProps) {
                 {
                   uri: `spotify:episode:${spotifyId}`,
                   width: "100%",
-                  height: HEIGHT_IN_FLOW,
+                  height: PLAYER_HEIGHT,
                 },
                 (controller) => {
                   controllerRef.current = controller;
@@ -447,8 +477,11 @@ export function PodcastPlayerProvider({ episodes, children }: ProviderProps) {
 
       // Só quando o player AINDA não montou (conexão magra, ou clique antes de o
       // navegador ficar ocioso) é que existe espera — e aí não há como evitar: o
-      // iframe precisa nascer antes de receber ordem. Neste caminho o segundo
-      // clique, no ▶ do próprio player, é esperado.
+      // iframe precisa nascer antes de receber ordem. Neste caminho a barra sobe
+      // mostrando "carregando", e o segundo toque, no ▶ do próprio player, é
+      // esperado.
+      setHasStarted(true);
+      setIsDismissed(false);
       void ensureController(episode.spotifyId).then((controller) => {
         if (controller) command(episode, controller);
       });
@@ -456,7 +489,7 @@ export function PodcastPlayerProvider({ episodes, children }: ProviderProps) {
     [command, ensureController]
   );
 
-  const dismissDock = useCallback(() => {
+  const dismissPlayer = useCallback(() => {
     awaitingStartRef.current = false;
     controllerRef.current?.pause();
     clearWatchdog();
@@ -502,31 +535,48 @@ export function PodcastPlayerProvider({ episodes, children }: ProviderProps) {
     };
   }, [episodes, ensureController]);
 
-  /* O cartão do hero saiu da tela e há áudio em jogo → o player vira barra fixa. */
-  useEffect(() => {
-    const slot = slotRef.current;
-    if (!slot || typeof IntersectionObserver === "undefined") return;
+  /** A barra só existe depois da primeira escolha — e some se a pessoa fechar. */
+  const isBarVisible = hasStarted && !isDismissed;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsSlotVisible(entry.isIntersecting),
-      { threshold: 0 }
-    );
-    observer.observe(slot);
-    return () => observer.disconnect();
-  }, []);
-
-  const isDocked = isPlayerMounted && hasStarted && !isSlotVisible && !isDismissed;
-
-  /* Altura do embed: 152 no cartão, 80 na barra. Mudar altura NÃO recarrega o iframe. */
+  /* Altura e atributos do iframe: quem cria é a API do Spotify, então conferimos. */
   useEffect(() => {
     const iframe = hostRef.current?.querySelector("iframe");
     if (!iframe) return;
-    iframe.style.height = `${isDocked ? HEIGHT_DOCKED : HEIGHT_IN_FLOW}px`;
+    iframe.style.height = `${PLAYER_HEIGHT}px`;
+    ensureAutoplayAllowed(iframe);
     // O iframe é criado pela API do Spotify, então o `title` não passa por nós.
     // Um iframe sem título é um quadro anônimo para quem navega por leitor de tela;
     // só preenchemos se a API não tiver posto nada.
     if (!iframe.title) iframe.title = "Player do BestBarbers Podcast no Spotify";
-  }, [isDocked, isPlayerMounted]);
+  }, [isPlayerMounted]);
+
+  /**
+   * Reserva de rolagem sob a barra fixa — MEDIDA, e re-medida quando a altura muda
+   * (o aviso de confirmação entra e sai, o iframe assenta depois do commit). Sem
+   * isto a barra come uma linha inteira da lista no celular e o toque no botão
+   * daquela linha morre no iframe.
+   */
+  useEffect(() => {
+    const bar = barRef.current;
+    if (!bar || !isBarVisible) return;
+
+    const previous = document.body.style.paddingBottom;
+    const apply = () => {
+      document.body.style.paddingBottom = `${bar.offsetHeight + 12}px`;
+    };
+    apply();
+
+    let observer: ResizeObserver | undefined;
+    if (typeof ResizeObserver !== "undefined") {
+      observer = new ResizeObserver(apply);
+      observer.observe(bar);
+    }
+
+    return () => {
+      observer?.disconnect();
+      document.body.style.paddingBottom = previous;
+    };
+  }, [isBarVisible]);
 
   useEffect(
     () => () => {
@@ -534,6 +584,7 @@ export function PodcastPlayerProvider({ episodes, children }: ProviderProps) {
       controllerRef.current?.destroy();
       controllerRef.current = null;
       mountingRef.current = null;
+      document.body.style.paddingBottom = "";
     },
     []
   );
@@ -553,11 +604,8 @@ export function PodcastPlayerProvider({ episodes, children }: ProviderProps) {
       hasFailed,
       isPlayerMounted,
       hasStarted,
-      isDocked,
-      slotRef,
-      hostRef,
       toggle,
-      dismissDock,
+      dismissPlayer,
     }),
     [
       episodes,
@@ -568,22 +616,121 @@ export function PodcastPlayerProvider({ episodes, children }: ProviderProps) {
       hasFailed,
       isPlayerMounted,
       hasStarted,
-      isDocked,
       toggle,
-      dismissDock,
+      dismissPlayer,
     ]
   );
+
+  // "Tocando agora" só quando o áudio está andando. Enquanto o aviso de
+  // confirmação estiver na tela o player está parado — dizer o contrário na mesma
+  // barra que pede o toque no ▶ seria contradizer a própria instrução.
+  const isAudible = isPlaying && !needsManualPlay;
 
   return (
     <PodcastPlayerContext.Provider value={value}>
       <PlayerStyles />
       {/* Leitor de tela acompanha a troca de episódio sem precisar procurar o player. */}
       <p className="sr-only" aria-live="polite">
-        {activeEpisode && isPlaying && !needsManualPlay
+        {activeEpisode && isAudible
           ? `Tocando: episódio ${activeEpisode.number}, ${activeEpisode.title}`
           : ""}
       </p>
+
       {children}
+
+      {/* ---------------------------------------------------------------- */}
+      {/*  A BARRA — único lugar do iframe no DOM, da primeira pintura ao   */}
+      {/*  fim da página. Antes da primeira escolha ela fica abaixo da      */}
+      {/*  dobra (translate-y-full): o iframe existe e carrega, mas não     */}
+      {/*  ocupa tela nem recebe toque.                                      */}
+      {/* ---------------------------------------------------------------- */}
+      <div
+        ref={barRef}
+        aria-label="Player do podcast"
+        className={`fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#0c0c0c]/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-10px_36px_rgba(0,0,0,0.55)] backdrop-blur-sm transition-transform duration-300 ease-out motion-reduce:transition-none ${
+          isBarVisible
+            ? "translate-y-0"
+            : "pointer-events-none translate-y-full"
+        }`}
+      >
+        {/* ALTURA É ORÇAMENTO DE TELA: a barra come 12% de um celular de 844px.
+            Por isso o botão de fechar fica AO LADO do embed, não numa faixa
+            própria em cima dele — a faixa custava mais 50px de altura só para
+            repetir "Tocando agora", que o próprio embed já mostra. Quem anuncia
+            a troca de episódio para leitor de tela é a região `aria-live` lá em
+            cima, não um texto aqui. */}
+        <div className="mx-auto w-full max-w-3xl px-3 py-2.5 md:px-6">
+          <div className="flex items-center gap-2">
+            <div className="min-w-0 flex-1">
+              {/* O React renderiza este nó SEMPRE vazio: quem manda no conteúdo é a API. */}
+              <div
+                ref={hostRef}
+                className="overflow-hidden rounded-xl [&>iframe]:block [&>iframe]:w-full"
+              />
+
+              {!isPlayerMounted && !hasFailed && (
+                <div className="flex items-center gap-3 py-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={SEASON_COVER.src}
+                    alt=""
+                    width={SEASON_COVER.width}
+                    height={SEASON_COVER.height}
+                    className="h-11 w-11 shrink-0 rounded-md object-cover"
+                  />
+                  <p className="flex min-w-0 items-center gap-2 text-xs leading-snug text-gray-300">
+                    {isAudible && <NowPlayingBars className="h-3 shrink-0 text-[#ffaf02]" />}
+                    <span>
+                      Carregando o player do Spotify
+                      {activeEpisode ? ` — episódio ${activeEpisode.number}` : ""}…
+                    </span>
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={dismissPlayer}
+              tabIndex={isBarVisible ? undefined : -1}
+              aria-label="Fechar o player"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffaf02] motion-reduce:transition-none"
+            >
+              <svg
+                aria-hidden
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                className="h-5 w-5"
+              >
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
+            </button>
+          </div>
+
+          {hasFailed && (
+            <p className="pt-2 text-xs leading-snug text-gray-400">
+              O player do Spotify não carregou aqui (pode ser um bloqueador de
+              rastreadores). Use o link{" "}
+              <span className="text-gray-300">Ouvir no Spotify</span> de qualquer
+              episódio da lista.
+            </p>
+          )}
+
+          {needsManualPlay && (
+            // O aviso NÃO afirma que o navegador bloqueou: medido em 01/Set, um
+            // clique que funcionou levou mais de 4 segundos para o áudio andar, e
+            // o aviso apareceu no meio do caminho. O watchdog não distingue
+            // "barrado" de "lento", então o texto só pode dizer o que é verdade
+            // nos dois casos — e a instrução é a mesma de qualquer jeito.
+            <p className="pt-1 text-xs leading-snug text-gray-400">
+              Ainda não começou? Toque no ▶ do player nesta barra.
+            </p>
+          )}
+        </div>
+      </div>
     </PodcastPlayerContext.Provider>
   );
 }
@@ -645,160 +792,47 @@ export function PauseGlyph({ className = "" }: { className?: string }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Cartão-fachada — o que a pessoa vê antes do embed montar           */
+/*  "Comece por aqui" — o que sobrou do cartão removido                */
 /* ------------------------------------------------------------------ */
 
-function FacadeCard({ episode }: { episode: PodcastEpisode }) {
-  const { toggle } = usePodcastPlayer();
+/**
+ * O cartão "COMECE POR AQUI" saiu do hero (ele empurrava a listagem para 2,5 telas
+ * de rolagem no celular). A função dele — dizer por onde começar e deixar começar
+ * em um toque — coube num botão só, que continua mandando no mesmo player único.
+ */
+export function PlayFirstEpisodeButton({
+  episode,
+}: {
+  episode: PodcastEpisode;
+}) {
+  const { toggle, activeEpisodeId, isPlaying, needsManualPlay, hasStarted } =
+    usePodcastPlayer();
+
+  const isThisPlaying =
+    hasStarted &&
+    activeEpisodeId === episode.spotifyId &&
+    isPlaying &&
+    !needsManualPlay;
+
   return (
     <button
       type="button"
       onClick={() => toggle(episode)}
-      aria-label={`Tocar episódio ${episode.number} — ${episode.title}`}
-      className="group flex w-full items-center gap-4 rounded-xl border border-white/10 bg-white/[0.04] p-3 text-left transition-colors duration-200 hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffaf02] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] motion-reduce:transition-none"
+      aria-label={
+        isThisPlaying
+          ? `Pausar o episódio ${episode.number} — ${episode.title}`
+          : `Tocar o episódio ${episode.number} — ${episode.title}`
+      }
+      className="inline-flex min-h-11 items-center gap-3 rounded-full bg-[#ffaf02] px-5 py-3 text-sm font-bold text-[#121212] transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffaf02] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] motion-reduce:transition-none motion-reduce:hover:scale-100"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={SEASON_COVER.src}
-        alt=""
-        width={SEASON_COVER.width}
-        height={SEASON_COVER.height}
-        className="h-14 w-14 shrink-0 rounded-md object-cover"
-      />
-      <span className="min-w-0 flex-1">
-        <span className="block truncate text-sm font-bold text-white">
-          {episode.title}
-        </span>
-        <span className="mt-0.5 block text-xs text-gray-400">
-          {formatDuration(episode.durationSeconds)} · Spotify
-        </span>
-      </span>
-      <span
-        aria-hidden
-        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#ffaf02] text-[#121212] shadow-[0_2px_10px_rgba(255,175,2,0.3)] transition-transform duration-200 group-hover:scale-105 motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-      >
-        <PlayGlyph className="ml-0.5 h-5 w-5" />
+      {isThisPlaying ? (
+        <PauseGlyph className="h-4 w-4 shrink-0" />
+      ) : (
+        <PlayGlyph className="h-4 w-4 shrink-0" />
+      )}
+      <span>
+        {isThisPlaying ? "Pausar" : "Começar pelo episódio 1"}
       </span>
     </button>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  O player em si — mora aqui e só aqui                               */
-/* ------------------------------------------------------------------ */
-
-/**
- * Renderize UMA vez na página, no lugar onde o player deve morar em repouso (o
- * cartão "COMECE POR AQUI"). O nó `hostRef` guarda o iframe do Spotify pela vida
- * inteira da página e nunca troca de pai — o que muda, quando o cartão sai da tela,
- * é só a posição CSS do invólucro.
- */
-export function PodcastPlayerSurface({ episode }: { episode: PodcastEpisode }) {
-  const {
-    isPlaying,
-    needsManualPlay,
-    hasFailed,
-    isPlayerMounted,
-    isDocked,
-    slotRef,
-    hostRef,
-    dismissDock,
-  } = usePodcastPlayer();
-
-  const dockRef = useRef<HTMLDivElement | null>(null);
-
-  // "Tocando agora" só quando o áudio está andando. Enquanto o aviso de
-  // confirmação estiver na tela o player está parado — dizer o contrário na mesma
-  // barra que pede o toque no ▶ seria contradizer a própria instrução.
-  const isAudible = isPlaying && !needsManualPlay;
-
-  /**
-   * A barra fixa não pode cobrir o fim da página nem o rodapé. A folga é MEDIDA da
-   * própria barra, não chutada: a altura muda conforme o aviso de confirmação
-   * aparece ou some, e um número fixo deixaria conteúdo escondido atrás dela.
-   */
-  useEffect(() => {
-    if (!isDocked) return;
-    const height = dockRef.current?.offsetHeight ?? 0;
-    const previous = document.body.style.paddingBottom;
-    document.body.style.paddingBottom = `${height + 12}px`;
-    return () => {
-      document.body.style.paddingBottom = previous;
-    };
-  }, [isDocked, needsManualPlay, isPlaying]);
-
-  return (
-    <div ref={slotRef} className="min-h-[152px]">
-      <div
-        ref={dockRef}
-        className={
-          isDocked
-            ? "fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#0c0c0c]/95 shadow-[0_-10px_36px_rgba(0,0,0,0.55)] backdrop-blur-sm"
-            : ""
-        }
-      >
-        <div className={isDocked ? "container-custom py-2.5" : ""}>
-          {isDocked && (
-            // O embed do Spotify já mostra capa e título — a faixa acrescenta só o
-            // que ele não diz: o estado e a saída. Repetir o título aqui seria ruído.
-            <div className="flex items-center justify-between gap-3 pb-1.5">
-              <p className="flex min-w-0 items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[#ffaf02]">
-                {isAudible && <NowPlayingBars className="h-3 shrink-0" />}
-                <span className="truncate">
-                  {isAudible ? "Tocando agora" : "No player"}
-                </span>
-              </p>
-              <button
-                type="button"
-                onClick={dismissDock}
-                aria-label="Fechar o player"
-                className="shrink-0 rounded-full p-1.5 text-gray-400 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffaf02] motion-reduce:transition-none"
-              >
-                <svg
-                  aria-hidden
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  className="h-4 w-4"
-                >
-                  <path d="M6 6l12 12M18 6L6 18" />
-                </svg>
-              </button>
-            </div>
-          )}
-
-          {/* O React renderiza este nó SEMPRE vazio: quem manda no conteúdo é a API. */}
-          <div
-            ref={hostRef}
-            className="overflow-hidden rounded-xl [&>iframe]:block [&>iframe]:w-full"
-          />
-
-          {!isPlayerMounted && <FacadeCard episode={episode} />}
-
-          {hasFailed && (
-            <p className="mt-2 text-[11px] leading-snug text-gray-400">
-              O player do Spotify não carregou aqui (pode ser um bloqueador de
-              rastreadores). Use o link{" "}
-              <span className="text-gray-300">Abrir no Spotify</span> de qualquer
-              episódio da lista.
-            </p>
-          )}
-
-          {needsManualPlay && (
-            // O aviso NÃO afirma que o navegador bloqueou: medido em 01/Set, um
-            // clique que funcionou levou mais de 4 segundos para o áudio andar, e
-            // o aviso apareceu no meio do caminho. O watchdog não distingue
-            // "barrado" de "lento", então o texto só pode dizer o que é verdade
-            // nos dois casos — e a instrução é a mesma de qualquer jeito.
-            <p className="mt-1.5 text-[11px] leading-snug text-gray-400">
-              Ainda não começou? Toque no ▶ do player
-              {isDocked ? " nesta barra" : " aqui em cima"}.
-            </p>
-          )}
-        </div>
-      </div>
-    </div>
   );
 }

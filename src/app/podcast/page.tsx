@@ -4,10 +4,11 @@ import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { PodcastAttribution } from "@/components/podcast/PodcastAttribution";
 import {
+  PlayFirstEpisodeButton,
   PodcastPlayerProvider,
-  PodcastPlayerSurface,
 } from "@/components/podcast/PodcastPlayer";
 import { EpisodeList } from "@/components/podcast/EpisodeList";
+import { SpotifyGlyph } from "@/components/podcast/SpotifyGlyph";
 import {
   PODCAST_SHOW_NAME,
   currentSeason,
@@ -15,12 +16,9 @@ import {
   episodeDescriptionFull,
   isoDuration,
   spotifyEpisodeUrl,
+  spotifyShowUrl,
 } from "@/content/podcast";
-import {
-  SEASON_COVER,
-  seasonBlocks,
-  seasonTotalMinutes,
-} from "@/content/podcast/temporada";
+import { seasonTotalMinutes } from "@/content/podcast/temporada";
 
 /**
  * Destino da campanha de atenção do podcast — e destino dos links publicados na
@@ -44,6 +42,16 @@ import {
  * sem nenhum listener (não existe segundo player), e 1 embed em vez de 12. Toda a
  * mecânica, os limites do autoplay e o plano B estão documentados em
  * src/components/podcast/PodcastPlayer.tsx.
+ *
+ * O QUE MUDOU EM 01/Set/2026 (pedido do André, olhando a página no celular): saíram
+ * os dois cartões que ficavam entre o hero e a lista — "COMECE POR AQUI / Episódio
+ * 1" e "A temporada em quatro blocos". Eles empurravam a primeira linha da lista
+ * para 2.134px do topo, 2,5 telas de rolagem, e a intenção da página é o contrário:
+ * quem abre tem que ver na hora que existe uma temporada inteira. Nada do que eles
+ * faziam se perdeu — o "comece por aqui" virou uma linha do hero mais o botão
+ * `PlayFirstEpisodeButton`, e os quatro blocos viraram os cabeçalhos dos trechos da
+ * própria lista. O player, que morava dentro do primeiro cartão, passou a nascer
+ * como barra fixa no rodapé.
  *
  * noindex MANTIDO: a razão antiga ("espelho da home") acabou, mas trocar o status
  * de indexação é decisão do André. Para indexar: apagar o bloco `robots` abaixo e
@@ -131,8 +139,9 @@ const breadcrumbJsonLd = {
 /* ------------------------------------------------------------------ */
 /*  Página                                                             */
 /* ------------------------------------------------------------------ */
-/* O roteiro da temporada em quatro blocos virou dado em
-   src/content/podcast/temporada.ts — o hero e a listagem leem do mesmo lugar. */
+/* O roteiro da temporada em quatro blocos é dado, em
+   src/content/podcast/temporada.ts. Quem o consome hoje é só a listagem, que o usa
+   como cabeçalho dos quatro trechos — o hero deixou de repeti-lo num cartão. */
 export default function PodcastPage() {
   const primeiro = publishedEpisodes[0];
   const totalEpisodios = publishedEpisodes.length;
@@ -158,143 +167,109 @@ export default function PodcastPage() {
         {/*  HERO — o que é, para quem é, e o play                      */}
         {/* ---------------------------------------------------------- */}
         <section
-          className="bg-[#121212] pt-12 pb-14 md:pt-16 md:pb-20"
+          className="bg-[#121212] pt-10 pb-10 md:pt-16 md:pb-16"
           aria-labelledby="hero-title"
         >
           <div className="container-custom">
             <nav
               aria-label="Breadcrumb"
-              className="flex items-center gap-2 text-xs text-gray-500 mb-8"
+              className="mb-5 flex items-center gap-2 text-xs text-gray-500 md:mb-7"
             >
-              <Link href="/" className="hover:text-[#ffaf02] transition-colors">
+              {/* `min-h-11` porque no celular este é um alvo de dedo, não de mouse. */}
+              <Link
+                href="/"
+                className="inline-flex min-h-11 items-center pr-1 transition-colors hover:text-[#ffaf02] motion-reduce:transition-none"
+              >
                 Home
               </Link>
               <span aria-hidden>/</span>
               <span className="text-gray-400">Podcast</span>
             </nav>
 
-            <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-14 items-start">
-              {/* Coluna esquerda — texto + player do episódio 1 */}
-              <div>
-                <p className="text-xs md:text-sm font-bold tracking-[0.18em] uppercase text-[#ffaf02]">
-                  {PODCAST_SHOW_NAME} · Temporada {currentSeason.number}
-                </p>
+            <div className="max-w-3xl">
+              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs md:text-sm font-bold tracking-[0.14em] md:tracking-[0.18em] uppercase text-[#ffaf02]">
+                <span>{PODCAST_SHOW_NAME}</span>
+                <span aria-hidden>·</span>
+                {/* "Temporada 1" não quebra: com o tracking em caixa alta o número
+                    ficava órfão sozinho na segunda linha no celular. */}
+                <span className="whitespace-nowrap">
+                  Temporada {currentSeason.number}
+                </span>
+              </p>
 
-                <h1
-                  id="hero-title"
-                  className="mt-4 text-3xl md:text-5xl font-extrabold text-white leading-[1.1]"
-                >
-                  {currentSeason.name}
-                </h1>
-
-                <p className="mt-5 text-base md:text-lg text-gray-300 leading-relaxed max-w-xl">
-                  Um podcast para o dono de barbearia que decidiu montar — ou
-                  consertar — o clube de assinaturas. Um assunto por episódio,
-                  do conceito à conta que fecha no fim do mês.
-                </p>
-
-                <p className="mt-4 text-sm md:text-base text-gray-400 leading-relaxed max-w-xl">
-                  Sem convidado e sem enrolação: é a BestBarbers falando do que
-                  vê acontecer na operação de quem já roda um clube.{" "}
-                  <strong className="text-gray-200">
-                    Os 12 episódios estão no ar
-                  </strong>{" "}
-                  — dá para ouvir a temporada inteira, na ordem, sem esperar
-                  episódio novo.
-                </p>
-
-                {/* Fatos verificáveis da temporada */}
-                <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-xs md:text-sm text-gray-400">
-                  <li className="flex items-center gap-2">
-                    <span
-                      aria-hidden
-                      className="w-1.5 h-1.5 rounded-full bg-[#ffaf02]"
-                    />
-                    {totalEpisodios} episódios
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span
-                      aria-hidden
-                      className="w-1.5 h-1.5 rounded-full bg-[#ffaf02]"
-                    />
-                    Nenhum passa de 17 minutos
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span
-                      aria-hidden
-                      className="w-1.5 h-1.5 rounded-full bg-[#ffaf02]"
-                    />
-                    {Math.floor(seasonTotalMinutes / 60)}h{seasonTotalMinutes % 60}{" "}
-                    no total
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span
-                      aria-hidden
-                      className="w-1.5 h-1.5 rounded-full bg-[#ffaf02]"
-                    />
-                    De graça, no Spotify
-                  </li>
-                </ul>
-
-                {primeiro && (
-                  <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.03] p-5 md:p-6">
-                    <div className="flex items-start gap-4">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={SEASON_COVER.src}
-                        alt={SEASON_COVER.alt}
-                        width={SEASON_COVER.width}
-                        height={SEASON_COVER.height}
-                        className="hidden h-20 w-20 shrink-0 rounded-lg object-cover ring-1 ring-white/10 sm:block"
-                      />
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold uppercase tracking-wider text-[#ffaf02]">
-                          Comece por aqui
-                        </p>
-                        <p className="mt-2 text-lg font-bold leading-snug text-white">
-                          Episódio {primeiro.number} — {primeiro.title}
-                        </p>
-                        <p className="mt-1.5 text-xs text-gray-400">
-                          Um clique e toca aqui mesmo. Depois é só descer a lista
-                          — o player desce junto com você.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="mt-5">
-                      <PodcastPlayerSurface episode={primeiro} />
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Coluna direita — o roteiro da temporada */}
-              <aside
-                className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 md:p-8"
-                aria-labelledby="roteiro-title"
+              <h1
+                id="hero-title"
+                className="mt-4 text-3xl md:text-5xl font-extrabold text-white leading-[1.1]"
               >
-                <h2
-                  id="roteiro-title"
-                  className="text-lg md:text-xl font-bold text-white"
-                >
-                  A temporada em quatro blocos
-                </h2>
-                <ol className="mt-6 space-y-6">
-                  {seasonBlocks.map((b) => (
-                    <li key={b.title} className="border-l-2 border-[#ffaf02]/40 pl-4">
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-[#ffaf02]">
-                        {b.range}
-                      </p>
-                      <p className="mt-1 text-sm font-bold text-white">
-                        {b.title}
-                      </p>
-                      <p className="mt-1 text-sm text-gray-400 leading-relaxed">
-                        {b.text}
-                      </p>
-                    </li>
-                  ))}
-                </ol>
-              </aside>
+                {currentSeason.name}
+              </h1>
+
+              {/* Selo da plataforma nº 1 — em 1 segundo o lead sabe onde ouvir. */}
+              <a
+                href={spotifyShowUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Abrir o ${PODCAST_SHOW_NAME} no Spotify`}
+                className="mt-5 inline-flex min-h-11 items-center gap-2.5 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-white transition-colors duration-200 hover:border-[#1DB954]/60 hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1DB954] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] motion-reduce:transition-none"
+              >
+                <SpotifyGlyph className="h-5 w-5 shrink-0 text-[#1DB954]" />
+                <span aria-hidden>Ouça no Spotify</span>
+              </a>
+
+              <p className="mt-6 text-base md:text-lg text-gray-300 leading-relaxed max-w-xl">
+                Um podcast para o dono de barbearia que decidiu montar — ou
+                consertar — o clube de assinaturas. Um assunto por episódio,
+                do conceito à conta que fecha no fim do mês.
+              </p>
+
+              {/* A linha que o cartão "COMECE POR AQUI" fazia: quantos são, que é
+                  uma temporada fechada, e por onde começar. */}
+              <p className="mt-4 text-sm md:text-base text-gray-400 leading-relaxed max-w-xl">
+                Sem convidado e sem enrolação: é a BestBarbers falando do que
+                vê acontecer na operação de quem já roda um clube.{" "}
+                <strong className="text-gray-200">
+                  Os {totalEpisodios} episódios estão no ar
+                </strong>{" "}
+                — a temporada inteira, na ordem, logo aqui embaixo. Se estiver em
+                dúvida por onde entrar, comece pelo episódio 1: é ele que vira a
+                chave de que clube não é desconto.
+              </p>
+
+              {primeiro && (
+                <div className="mt-7">
+                  <PlayFirstEpisodeButton episode={primeiro} />
+                </div>
+              )}
+
+              {/* Fatos verificáveis da temporada */}
+              <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-xs md:text-sm text-gray-400">
+                <li className="flex items-center gap-2">
+                  <span
+                    aria-hidden
+                    className="w-1.5 h-1.5 rounded-full bg-[#ffaf02]"
+                  />
+                  {totalEpisodios} episódios
+                </li>
+                <li className="flex items-center gap-2">
+                  <span
+                    aria-hidden
+                    className="w-1.5 h-1.5 rounded-full bg-[#ffaf02]"
+                  />
+                  Nenhum passa de 17 minutos
+                </li>
+                <li className="flex items-center gap-2">
+                  <span
+                    aria-hidden
+                    className="w-1.5 h-1.5 rounded-full bg-[#ffaf02]"
+                  />
+                  {Math.floor(seasonTotalMinutes / 60)}h{seasonTotalMinutes % 60}{" "}
+                  no total
+                </li>
+                <li className="flex items-center gap-2">
+                  <SpotifyGlyph className="h-4 w-4 shrink-0 text-[#1DB954]" />
+                  De graça, no Spotify
+                </li>
+              </ul>
             </div>
           </div>
         </section>
@@ -303,29 +278,33 @@ export default function PodcastPage() {
         {/*  EPISÓDIOS                                                  */}
         {/* ---------------------------------------------------------- */}
         <section
-          className="border-t border-white/[0.06] bg-[#0c0c0c] py-14 md:py-20"
+          className="border-t border-white/[0.06] bg-[#0c0c0c] pt-10 pb-14 md:pt-16 md:pb-20"
           aria-labelledby="episodios-title"
         >
+          {/* LARGURA: a lista usa o MESMO container de todas as outras seções.
+              Havia um `max-w-4xl` aqui que a deixava 112px mais curta que o resto
+              da página no desktop (terminava em 1112px contra 1224px) — era o
+              desalinhamento que o André viu. A densidade que esse limite protegia
+              agora vem do desenho da própria linha, não de um teto de largura. */}
           <div className="container-custom">
-            {/* Coluna de leitura: a linha do episódio fica densa em vez de esticada
-                pelos 1150px do container, com um vão enorme entre texto e controles. */}
-            <div className="max-w-4xl">
+            <div className="flex items-center gap-3">
+              <SpotifyGlyph className="h-7 w-7 shrink-0 text-[#1DB954] md:h-8 md:w-8" />
               <h2
                 id="episodios-title"
                 className="text-2xl font-extrabold text-white md:text-3xl"
               >
                 Os {totalEpisodios} episódios da temporada
               </h2>
-              <p className="mt-3 text-sm leading-relaxed text-gray-400 md:text-base">
-                Aperte o play e o episódio toca aqui mesmo — sem sair da página,
-                sem cadastro. É um player só para a temporada inteira: ao tocar
-                outro episódio, o anterior para. Se preferir ouvir no aplicativo,
-                cada episódio também abre direto no Spotify.
-              </p>
+            </div>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-gray-400 md:text-base">
+              Aperte o play e o episódio toca aqui mesmo — sem sair da página,
+              sem cadastro. É um player só para a temporada inteira: ao tocar
+              outro episódio, o anterior para. Se preferir ouvir no aplicativo,
+              cada episódio também abre direto no Spotify.
+            </p>
 
-              <div className="mt-10">
-                <EpisodeList episodes={publishedEpisodes} />
-              </div>
+            <div className="mt-10">
+              <EpisodeList episodes={publishedEpisodes} />
             </div>
           </div>
         </section>
@@ -359,14 +338,34 @@ export default function PodcastPage() {
                   Um assunto só, do começo ao fim
                 </h2>
                 <p className="mt-4 text-base text-gray-400 leading-relaxed">
-                  Os 12 episódios tratam de uma coisa só: o clube de assinaturas
-                  da sua barbearia. Começam no reframe de que clube não é
-                  desconto, passam por preço, frequência, comissão e a conversa
-                  com a equipe, e terminam no roteiro dos primeiros assinantes.
-                  É uma sequência — não uma pilha de episódios soltos — e ela
-                  está inteira aqui, para ouvir no seu ritmo.
+                  Os {totalEpisodios} episódios tratam de uma coisa só: o clube
+                  de assinaturas da sua barbearia. Começam no reframe de que
+                  clube não é desconto, passam por preço, frequência, comissão e
+                  a conversa com a equipe, e terminam no roteiro dos primeiros
+                  assinantes. É uma sequência — não uma pilha de episódios
+                  soltos — e ela está inteira aqui, para ouvir no seu ritmo.
                 </p>
               </div>
+            </div>
+
+            {/* Fecho: quem preferir o aplicativo sai daqui direto para o programa. */}
+            <div className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-white/[0.08] pt-8">
+              <a
+                href={spotifyShowUrl()}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Seguir o ${PODCAST_SHOW_NAME} no Spotify`}
+                className="inline-flex min-h-11 items-center gap-2.5 text-sm font-bold text-white transition-colors duration-200 hover:text-[#1DB954] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1DB954] focus-visible:ring-offset-2 focus-visible:ring-offset-[#121212] motion-reduce:transition-none"
+              >
+                <SpotifyGlyph className="h-6 w-6 shrink-0 text-[#1DB954]" />
+                <span aria-hidden>
+                  Seguir o {PODCAST_SHOW_NAME} no Spotify
+                </span>
+              </a>
+              <p className="text-sm text-gray-500">
+                No aplicativo dá para baixar, ouvir offline e continuar de onde
+                parou.
+              </p>
             </div>
           </div>
         </section>
