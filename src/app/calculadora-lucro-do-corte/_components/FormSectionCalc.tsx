@@ -2,12 +2,24 @@
 
 import { useLeadForm, useUtmParams } from "@/hooks";
 import { ArrowRight, ShieldCheck, Users2, TrendingUp } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { trackAvancoPasso2, validarEmailOpcional } from "@/lib/form-passo1";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const formFields = [
   { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
   { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
   { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "(11) 99999-9999", type: "tel" },
+  // E-mail (set/26): segundo caminho de CONTATO, não canal de entrega — nada é enviado
+  // por e-mail para lead do Ploomes (não existe executor), então o rótulo promete só o
+  // que é verdade. OPCIONAL COM MOTIVO, gabarito da cadeira-cheia (GuiaForm.tsx:41), que
+  // é o formato medido em 95,9% de preenchimento; campo opcional SEM motivo mede 90,1%.
+  // Fica no PASSO 1 (ver STEP1_FIELDS) porque é a única tela por onde 100% de quem envia
+  // passa — e a família precificação é a fábrica de ICP que hoje captura só 8,6%.
+  // Não entra no lead_score e não bloqueia o avanço (canAdvanceToStep2 não olha para ele).
+  // Rótulo IGUAL ao da cadeira-cheia, palavra por palavra: além de ser o texto medido,
+  // "Seu e-mail" cabe em 1 linha em 390 px, onde "E-mail do Dono (...)" quebrava em 2 e
+  // empurrava o botão contra a borda do modal rolável da LP gated.
+  { name: "email", label: "Seu e-mail (opcional, pra gente falar com você depois)", placeholder: "Ex: joao@email.com", type: "email" },
   {
     name: "monthlyRevenue",
     label: "Qual o faturamento médio da sua barbearia?",
@@ -76,6 +88,7 @@ export function FormSectionCalc() {
     isDedupChecking,
     handleInputChange,
     handleSubmit,
+    setSubmitError,
   } = useLeadForm({
     source: "calculadora_lucro_corte",
     requireMonthlyRevenue: true,
@@ -89,14 +102,34 @@ export function FormSectionCalc() {
 
   // Multi-step: passo 1 = contato (baixa fricção), passo 2 = qualificação (lead_score).
   const [step, setStep] = useState(1);
-  const STEP1_FIELDS = ["ownerName", "whatsapp"];
+  const STEP1_FIELDS = ["ownerName", "whatsapp", "email"];
   const visibleFields = formFields.filter(
     (f) => STEP1_FIELDS.includes(f.name) === (step === 1)
   );
   const canAdvanceToStep2 =
     formData.ownerName.trim() !== "" && formData.whatsapp.trim() !== "";
+  // Avanço já medido nesta sessão de preenchimento — o "← Voltar" e um segundo
+  // CONTINUAR não são um avanço novo, e contá-los duas vezes estragaria a régua.
+  const avancoMedido = useRef(false);
   const goToStep2 = () => {
-    if (canAdvanceToStep2) setStep(2);
+    if (!canAdvanceToStep2) return;
+    // O campo de e-mail vive AQUI, no passo 1. Validar só no submit (passo 2) fazia a
+    // pessoa ver "E-mail deve ser válido" numa tela sem o campo. Vazio continua
+    // passando: o campo é opcional e não é isto que o avisa.
+    const erroEmail = validarEmailOpcional(formData.email);
+    if (erroEmail) {
+      setSubmitError(erroEmail);
+      return;
+    }
+    setSubmitError(null);
+    if (!avancoMedido.current) {
+      avancoMedido.current = true;
+      trackAvancoPasso2({
+        lpVersion: "calculadora_lucro_corte",
+        emailPreenchido: formData.email.trim() !== "",
+      });
+    }
+    setStep(2);
   };
 
   return (
@@ -260,7 +293,9 @@ export function FormSectionCalc() {
                     value={formData[field.name as keyof typeof formData]}
                     onChange={handleInputChange}
                     placeholder={field.placeholder}
-                    required
+                    // E-mail é o único campo opcional: deixar em branco NUNCA pode barrar
+                    // o envio (useLeadForm só valida o formato quando há algo digitado).
+                    required={field.name !== "email"}
                     className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
                     style={{
                       background: "#f5f5f5",
@@ -336,13 +371,6 @@ export function FormSectionCalc() {
               </span>
             </div>
 
-            <p
-              className="text-center text-[10px] uppercase tracking-wider mt-2 flex items-center justify-center gap-1.5 animate-fade-in opacity-60"
-              style={{ color: "#1e1e1e", opacity: 0.6, fontFamily: "var(--font-montserrat)", animationDelay: "0.8s" }}
-            >
-              <ShieldCheck className="w-3 h-3" fill="currentColor" />
-              Seus dados estão seguros
-            </p>
           </form>
         </div>
 

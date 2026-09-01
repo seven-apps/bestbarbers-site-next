@@ -24,6 +24,12 @@ export interface RecadastroInput {
   atribuicao: LeadAttribution;
   faturamento?: string;
   colaboradores?: string;
+  /**
+   * E-mail digitado no formulário (opcional). No recadastro não nasce contato novo,
+   * então o endereço só chega ao CRM se vier por aqui — o backend o grava no contato
+   * existente APENAS quando o campo está vazio lá, nunca sobrescrevendo.
+   */
+  email?: string;
 }
 
 export interface RecadastroResultado {
@@ -56,6 +62,7 @@ export async function criarCardRecadastro(input: RecadastroInput): Promise<Recad
         ...(input.atribuicao.originDesc ? { origemDesc: input.atribuicao.originDesc } : {}),
         ...(input.faturamento ? { faturamento: input.faturamento } : {}),
         ...(input.colaboradores ? { colaboradores: input.colaboradores } : {}),
+        ...(input.email?.trim() ? { email: input.email.trim().toLowerCase() } : {}),
         // Score numérico → bb_lead_score do card (o backend traduz para a FieldKey do deal).
         ...(typeof input.atribuicao.leadScore === 'number' ? { leadScore: Math.trunc(input.atribuicao.leadScore) } : {}),
         atribuicao: input.atribuicao.fields,

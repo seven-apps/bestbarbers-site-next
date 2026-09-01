@@ -5,6 +5,7 @@ import { useWhatsAppRedirect } from './useWhatsAppRedirect';
 import { useMetaPixel } from './useMetaPixel';
 import { useUtmParams } from './useUtmParams';
 import { criarCardRecadastro } from '@/lib/recadastro';
+import { validarEmailOpcional } from '@/lib/form-passo1';
 
 export interface FormData {
   barbershopName: string;
@@ -139,12 +140,10 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     }
     // E-mail tornou-se opcional (OP400 15/Jun): se preenchido, valida o formato;
     // se vazio, segue (canal de contato é o WhatsApp). Reduz fricção visita→lead.
-    if (formData.email.trim()) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.email.trim())) {
-        return 'E-mail deve ser válido';
-      }
-    }
+    // A regra mora em lib/form-passo1 porque os formulários multi-step rodam a MESMA
+    // validação já no avanço do passo 1, onde o campo de e-mail está na tela.
+    const erroEmail = validarEmailOpcional(formData.email);
+    if (erroEmail) return erroEmail;
     if (!formData.whatsapp.trim()) {
       return 'WhatsApp é obrigatório';
     }
@@ -328,6 +327,10 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
           atribuicao: buildAttribution(ploomesData),
           faturamento: formData.monthlyRevenue || undefined,
           colaboradores: formData.employeeCount || undefined,
+          // Sem isto o e-mail digitado num recadastro morria no caminho (o contato já
+          // existe, então ninguém escrevia o campo). O backend só PREENCHE contato sem
+          // e-mail — nunca sobrescreve o que o CRM já tem.
+          email: ploomesData.email,
         });
 
         if (!recadastro.ok) {
@@ -471,6 +474,10 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     isDedupChecking,
     handleInputChange,
     handleSubmit,
+    // Exposto para o passo 1 dos formulários multi-step conseguir avisar do e-mail
+    // torto na tela em que o campo existe (handleInputChange limpa o aviso sozinho
+    // assim que a pessoa digita de novo).
+    setSubmitError,
     resetForm,
     validateForm,
     isValidPhone: () => isValidPhone(formData.whatsapp),
