@@ -203,6 +203,32 @@ export const useMetaPixel = () => {
   }, []);
 
   /**
+   * Dispara um evento FORA do catálogo padrão da Meta (ScrollDepth, GuiaDownload,
+   * ConsultorClick…) com o verbo certo — `fbq('trackCustom')` — mais o image pixel de
+   * fallback com o MESMO eventID, igual ao trackQualifiedLead.
+   *
+   * Existe porque `trackCustomEvent` (abaixo) manda tudo por `fbq('track')`, o que está
+   * certo para nome do catálogo e ERRADO para nome customizado. Sem a segunda via, o
+   * evento morre para quem usa ad-blocker — e a razão dele contra um evento que TEM
+   * fallback (ex.: ViewContent) sai estruturalmente deprimida, o que se lê errado como
+   * "ninguém rolou a página".
+   */
+  const trackNonCatalogEvent = useCallback((eventName: string, data?: MetaPixelEventData, externalEventId?: string): Promise<void> => {
+    const eventId = externalEventId || generateEventId();
+
+    if (typeof window !== 'undefined' && window.fbq) {
+      try {
+        window.fbq('trackCustom', eventName, data, { eventID: eventId });
+      } catch (error) {
+        console.error(`Erro ao rastrear evento customizado ${eventName} do Meta Pixel:`, error);
+      }
+    }
+
+    // Mesmo eventID nos dois caminhos: a Meta deduplica e conta UMA vez.
+    return sendImagePixel(eventName, eventId, data);
+  }, []);
+
+  /**
    * Dispara evento customizado
    */
   const trackCustomEvent = useCallback((eventName: string, data?: MetaPixelEventData, externalEventId?: string): Promise<void> => {
@@ -232,6 +258,7 @@ export const useMetaPixel = () => {
     trackCompleteRegistration,
     trackQualifiedLead,
     trackQualifiedLead60,
+    trackNonCatalogEvent,
     trackCustomEvent,
     isPixelAvailable
   };
