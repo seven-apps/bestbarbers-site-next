@@ -53,6 +53,25 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
   const { originId: customOriginId, originDesc: customOriginDesc } = options;
   const { getUtmParams, getOriginMapping } = useUtmParams();
 
+  /**
+   * ⚠️ DÍVIDA DE SEGURANÇA ABERTA — NÃO "consertar" isto sozinho.
+   *
+   * Esta chave é servida no bundle público de toda LP que usa o hook (incluindo a
+   * /do-zero-a-assinatura, que recebe tráfego pago). Quem abre o DevTools tem leitura e escrita
+   * no CRM. O conserto certo JÁ FOI ESCRITO e JÁ ESTÁ NO REPO: `src/app/api/ploomes/route.ts`
+   * (commit 49bc6ba), que lê `process.env.PLOOMES_API_KEY` no servidor.
+   *
+   * Ele foi REVERTIDO em 31/Ago (commit 5983f85) por decisão do André: subiu sem a env setada no
+   * provedor, toda submissão respondeu 500 e a captação ficou 3 dias em ZERO lead com ~R$1.686 de
+   * mídia entregues. Reaplicar o proxy sem a env é repetir o apagão — por isso o código voltou.
+   *
+   * Ordem para fechar a dívida (nesta ordem, e nenhum passo é pulável):
+   *   1. setar PLOOMES_API_KEY no provedor de deploy (sem prefixo NEXT_PUBLIC);
+   *   2. confirmar em produção que POST /api/ploomes {action:'checkPhone'} responde 200;
+   *   3. só então trocar as 3 chamadas deste hook (e v9/_page.tsx e os 2 forms de Instagram)
+   *      pelo proxy — é reverter o 5983f85;
+   *   4. ROTACIONAR a chave no Ploomes (esta ficou exposta em bundles públicos).
+   */
   const PLOOMES_API_KEY = 'B59785E2FC60B0D69BFE51222FE4516699B00F0F97420BBA48E25F648510FB55245A64F7CDB0C89E438AC6C0C56D973F73F99DB7FEF93422E040A2B8816B323B';
   const PLOOMES_BASE_URL = 'https://api2.ploomes.com';
 

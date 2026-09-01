@@ -59,7 +59,7 @@ export const ISCAS: Record<IscaId, Isca> = {
     subtitulo:
       "Comece por “enxergar quem sumiu”: é o passo de resultado mais rápido.",
     consultor:
-      "Quer ver como o app te mostra quem sumiu e chama todo mundo de volta com 1 clique — grátis e sem limite? Um consultor da BestBarbers te mostra numa conversa rápida de 15 min, sem compromisso.",
+      "Quer ver como o app te mostra quem sumiu e chama todo mundo de volta com 1 clique — grátis e sem limite? Um consultor da BestBarbers te mostra numa conversa rápida de 15 min.",
     whatsapp:
       "Olá!%20Baixei%20o%20guia%20Cadeira%20Cheia%20e%20quero%20ver%20como%20o%20app%20me%20mostra%20quem%20sumiu.",
     pixelId: "Guia Cadeira Cheia",
@@ -78,7 +78,7 @@ export const ISCAS: Record<IscaId, Isca> = {
     subtitulo:
       "Leia na ordem — a ordem é o método. Se for abrir por um só, abra o “Capítulo 7”: são os 12 erros que derrubam o clube.",
     consultor:
-      "Quer ver o clube da sua barbearia montado com os números do seu Capítulo 4 — o preço, os dias de utilização de cada plano e a cobrança? Um consultor da BestBarbers faz a conta com você numa conversa rápida de 15 min, sem compromisso.",
+      "Quer ver o clube da sua barbearia montado com os números do seu Capítulo 4 — o preço, os dias de utilização de cada plano e a cobrança? Um consultor da BestBarbers faz a conta com você numa conversa rápida de 15 min.",
     whatsapp:
       "Olá!%20Baixei%20o%20guia%20Assinatura%20do%20Zero%20e%20quero%20ver%20como%20o%20app%20cobra%20a%20mensalidade%20e%20fecha%20a%20comissão%20do%20clube.",
     pixelId: "Guia Assinatura do Zero",

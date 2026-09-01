@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useLeadForm, useUtmParams } from "@/hooks";
 import { hrefObrigado } from "@/lib/iscas";
-import { ArrowRight, ShieldCheck, Users2, Gift } from "lucide-react";
+import { ArrowRight, FileText, Users2, Gift } from "lucide-react";
 
 // CLONE do form da /cadeira-cheia (src/app/cadeira-cheia/_components/GuiaForm.tsx).
 // Por que clonar em vez de parametrizar: com DUAS iscas no ar o padrão ainda não está
@@ -202,10 +202,16 @@ export function GuiaForm() {
 
         {/* Trust badges */}
         <div className="flex justify-center gap-6 mb-6 w-full">
+          {/*
+            Antes aqui dizia "100% gratuito" com um escudo. Duas coisas erradas: a regra veta
+            ancorar objeção (dizer que é grátis do lado de um cadeado implanta a suspeita de que
+            poderia não ser), e o "grátis" já está dito no badge da página. Trocado por um FATO
+            de entrega — o mesmo que a /obrigado cumpre: o download abre na tela seguinte.
+          */}
           <div className="flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4" style={{ color: "#ebad04" }} fill="currentColor" />
+            <FileText className="w-4 h-4" style={{ color: "#ebad04" }} />
             <span className="text-xs font-medium" style={{ color: "#1e1e1e", opacity: 0.7, fontFamily: "var(--font-montserrat)" }}>
-              100% gratuito
+              12 páginas · download na hora
             </span>
           </div>
           <div className="flex items-center gap-1.5">
@@ -307,13 +313,6 @@ export function GuiaForm() {
             </button>
           </div>
 
-          <p
-            className="text-center text-[10px] uppercase tracking-wider mt-2 flex items-center justify-center gap-1.5"
-            style={{ color: "#1e1e1e", opacity: 0.55, fontFamily: "var(--font-montserrat)" }}
-          >
-            <ShieldCheck className="w-3 h-3" fill="currentColor" />
-            Seus dados estão seguros
-          </p>
         </form>
       </div>
 

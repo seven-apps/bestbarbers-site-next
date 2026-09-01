@@ -151,7 +151,7 @@ export default function DoZeroAAssinaturaPage() {
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold uppercase tracking-wide mb-6"
                 style={{ background: "rgba(235,173,4,0.1)", borderColor: "rgba(235,173,4,0.35)", color: AMBER }}
               >
-                Guia grátis · 8 capítulos · 20 minutos
+                Guia grátis · 8 capítulos + checklist
               </span>
 
               <h1
@@ -163,9 +163,10 @@ export default function DoZeroAAssinaturaPage() {
               </h1>
 
               <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
-                <strong className="text-white">Assinatura do Zero</strong> é um guia rápido, de graça: como
-                desenhar o plano, quanto cobrar, o que dizer pra equipe antes de anunciar, como vender na
-                cadeira, os 12 erros que derrubam o clube e o que esperar do mês 1 ao mês 12.
+                <strong className="text-white">Assinatura do Zero</strong> é um guia rápido, de graça —
+                20 minutos de leitura: como desenhar o plano, quanto cobrar, o que dizer pra equipe antes de
+                anunciar, como vender na cadeira, os 12 erros que derrubam o clube e o que esperar do mês 1
+                ao mês 12. Fecha com um <strong className="text-white">checklist de 13 caixas</strong>.
               </p>
 
               {/* prova rápida inline */}
@@ -249,7 +250,7 @@ export default function DoZeroAAssinaturaPage() {
           <p className="text-white/45 text-sm text-center mt-8 max-w-3xl mx-auto leading-relaxed">
             E ainda: o calendário de pré-venda de 30 dias, o script de três frases que o barbeiro diz no fim do
             corte, os sete números do quadro da manhã e o mês a mês do primeiro ano — do mês 1 (preparar) ao
-            mês 7-12 (escalar), com o gatilho pra avançar em cada etapa. Fecha com um checklist de 13 itens.
+            mês 7-12 (escalar), com o gatilho pra avançar em cada etapa.
           </p>
         </div>
       </section>
