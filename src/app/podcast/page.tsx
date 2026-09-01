@@ -12,6 +12,7 @@ import {
   PODCAST_SHOW_NAME,
   currentSeason,
   publishedEpisodes,
+  episodeDescriptionFull,
   isoDuration,
   spotifyEpisodeUrl,
 } from "@/content/podcast";
@@ -98,11 +99,15 @@ const podcastJsonLd = {
     name: "BestBarbers",
     url: "https://www.bestbarbers.app",
   },
+  /* `description` é campo válido de PodcastEpisode no schema.org e é o que o
+     buscador usa como sinopse do episódio no resultado rico — vale o texto
+     COMPLETO, não o resumo cortado que o card mostra. */
   hasPart: publishedEpisodes.map((ep) => ({
     "@type": "PodcastEpisode",
     name: ep.title,
     episodeNumber: ep.number,
     datePublished: ep.publishDate,
+    description: episodeDescriptionFull(ep),
     timeRequired: isoDuration(ep.durationSeconds),
     url: spotifyEpisodeUrl(ep),
     inLanguage: "pt-BR",

@@ -7,6 +7,16 @@
  * roteiro. O planejamento (os/data/podcast/seasons.json no repo do OS) diverge de
  * propósito: lá são rascunhos, aqui é o que está no ar.
  *
+ * DESCRIÇÕES: também medidas ao vivo, em 01/Set/2026. Elas NÃO estão no
+ * `og:description` (esse devolve o genérico "BestBarbers Podcast · Episode" nos 12);
+ * estão no `<meta name="description">`, que o Spotify só serve para user-agent de
+ * crawler. O texto passa pela limpeza determinística de
+ * scripts/podcast/spotify-descriptions.mjs — que tira o link auto-referente
+ * bestbarbers.app/podcast (ruído: o leitor já está no destino), os CTAs de "clique
+ * no link" e a duração declarada no texto (errada em 6 dos 9 episódios que a
+ * declaram). Para conferir se o SSOT ainda bate com o Spotify:
+ *   node scripts/podcast/spotify-descriptions.mjs --check
+ *
  * REGRA DURA: episódio sem `spotifyId` NÃO é renderizado na página /podcast.
  * Ao publicar um episódio novo, medir o ID e a duração no Spotify antes de incluir.
  *
@@ -33,6 +43,22 @@ export interface PodcastEpisode {
   spotifyId: string;
   /** Duração real do áudio em segundos (meta music:duration do Spotify). */
   durationSeconds: number;
+  /**
+   * Resumo do episódio para a listagem — o texto publicado no Spotify, limpo e
+   * cortado em fronteira de frase (≤ 300 caracteres). É o que o card mostra.
+   */
+  description: string;
+  /**
+   * Texto publicado completo, limpo. Só existe quando o episódio tem descrição
+   * longa no Spotify (EP1, 2, 4 e 5); nos demais o resumo já é o texto inteiro.
+   * Use `episodeDescriptionFull()` em vez de ler este campo direto.
+   */
+  descriptionFull?: string;
+}
+
+/** Descrição completa do episódio — cai no resumo quando não há versão longa. */
+export function episodeDescriptionFull(episode: PodcastEpisode): string {
+  return episode.descriptionFull ?? episode.description;
 }
 
 export interface PodcastSeason {
@@ -54,6 +80,8 @@ export const currentSeason: PodcastSeason = {
       publishDate: "2026-06-15",
       spotifyId: "0z4AMIzVdeWxE0ceLdJNrv",
       durationSeconds: 802,
+      description: "Quando você ouve falar de clube de assinatura, a primeira imagem que vem à sua cabeça é um combo com desconto? Se a resposta for sim, você corre o risco de fazer parte dos 90% dos donos de negócio que tentam implementar esse modelo e falham.",
+      descriptionFull: "Quando você ouve falar de clube de assinatura, a primeira imagem que vem à sua cabeça é um combo com desconto? Se a resposta for sim, você corre o risco de fazer parte dos 90% dos donos de negócio que tentam implementar esse modelo e falham. Repete comigo: clube não é desconto, é arquitetura financeira. É a ferramenta definitiva para redesenhar a entrada de dinheiro no seu caixa e garantir previsibilidade antes mesmo de abrir as portas no dia primeiro. Neste episódio de estreia da série Assinatura do Zero, você vai descobrir como parar de começar o mês no zero absoluto e entender o reframe que faz você dobrar o ticket médio do mesmo cliente utilizando a frequência correta. Você vai sair deste áudio com 4 perguntas práticas para calcular, em números reais, quanta receita recorrente a sua barbearia está deixando de ganhar todos os meses. Quer descobrir como colocar essa estrutura de recorrência automática e aplicativo próprio para rodar com a marca do seu negócio?",
     },
     {
       number: 2,
@@ -61,6 +89,8 @@ export const currentSeason: PodcastSeason = {
       publishDate: "2026-06-22",
       spotifyId: "4TWCXe8NNMFny2aUMyY5dQ",
       durationSeconds: 709,
+      description: "Neste episódio vai abrir seus olhos para a realidade estrutural do seu negócio. Existem três tipos de barbearia no Brasil hoje: a que vive em uma eterna montanha-russa, a que consegue subir alguns degraus e a que opera com receita garantida na conta antes mesmo do primeiro cliente entrar pela porta.",
+      descriptionFull: "Neste episódio vai abrir seus olhos para a realidade estrutural do seu negócio. Existem três tipos de barbearia no Brasil hoje: a que vive em uma eterna montanha-russa, a que consegue subir alguns degraus e a que opera com receita garantida na conta antes mesmo do primeiro cliente entrar pela porta. Neste segundo episódio da série Assinatura do Zero, você vai descobrir exatamente onde sua barbearia está localizada nesse mapa e o que fazer para mudar de nível. O Diagnóstico dos 3 Ciclos: Entenda detalhadamente o funcionamento da Montanha-russa, da Escada e da Receita Garantida. O Teste das 3 Perguntas: Um método rápido e realista para avaliar seu extrato bancário, seu percentual de recorrência e a real segurança da sua empresa. O Custo Oculto da Inércia: Saiba por que uma barbearia tradicional de 4 cadeiras chega a perder, em média, R$ 95 mil por ano apenas por adiar a profissionalização. O Caminho de 6 Meses: O plano de ação prático e replicável para estruturar, lançar e estabilizar seu próprio clube de assinatura na cadeira. Pare de tomar decisões olhando apenas para o caixa do dia e comece a olhar para o ano inteiro.",
     },
     {
       number: 3,
@@ -68,6 +98,7 @@ export const currentSeason: PodcastSeason = {
       publishDate: "2026-06-29",
       spotifyId: "4xRX27SDxqHTNIp2dK8phs",
       durationSeconds: 701,
+      description: "O maior medo do clube ilimitado é falso. Os dados de 1.200 barbearias sobre frequência real do assinante e os 3 mecanismos que controlam abuso de verdade.",
     },
     {
       number: 4,
@@ -75,6 +106,8 @@ export const currentSeason: PodcastSeason = {
       publishDate: "2026-07-06",
       spotifyId: "5A2STZ3WOzXHgpYJIMjkK7",
       durationSeconds: 647,
+      description: "A Máquina de Vendas Está na Sua Cadeira. O Script de 3 Frases: A abordagem exata e natural que o barbeiro usa no fim do corte para colocar o plano na mesa, sem parecer uma venda agressiva.",
+      descriptionFull: "A Máquina de Vendas Está na Sua Cadeira. O Script de 3 Frases: A abordagem exata e natural que o barbeiro usa no fim do corte para colocar o plano na mesa, sem parecer uma venda agressiva. O Fluxo Digital sem Papel: Por que puxar uma ficha física faz você perder a venda na hora e como fechar o plano pelo celular em poucos segundos. Comissão que Engaja: As duas formas padrão de comissionar o seu time para que os barbeiros vendam o clube com gosto. Os 3 Indicadores Cruciais: Como medir a conversão por profissional, o ganho real de ticket médio e o tempo que o cliente leva para virar assinante. O maior canal de vendas do seu clube de assinatura não é o Instagram, não é o tráfego pago e muito menos a indicação. O seu maior vendedor está na sua frente agora: é o cliente sentado na cadeira, esperando o acabamento do pezinho. Sabia que 80% das assinaturas de sucesso acontecem exatamente nesse momento? O problema é que quase nenhuma barbearia tem um processo desenhado para isso. Revelamos o passo a passo prático para transformar o atendimento comum em uma máquina de receita previsível. O que você vai aprender neste episódio: Pare de tentar vender o seu clube apenas pelas telas do celular. Descubra como usar a afinidade, a proximidade e o momento perfeito da cadeira para faturar mais.",
     },
     {
       number: 5,
@@ -82,6 +115,8 @@ export const currentSeason: PodcastSeason = {
       publishDate: "2026-07-13",
       spotifyId: "4X1AHlqklUQKgQpcXyzkYO",
       durationSeconds: 689,
+      description: "Lançar plano limitado ou ilimitado? Cobrar o preço equivalente a dois ou três cortes avulsos no clube de assinatura? No episódio 5 da série Assinatura do Zero, nós desmistificamos o maior medo dos donos de barbearia: a matemática por trás do modelo ilimitado.",
+      descriptionFull: "Lançar plano limitado ou ilimitado? Cobrar o preço equivalente a dois ou três cortes avulsos no clube de assinatura? No episódio 5 da série Assinatura do Zero, nós desmistificamos o maior medo dos donos de barbearia: a matemática por trás do modelo ilimitado. Você vai descobrir por que limitar o seu clube a 4 acessos por mês é um erro psicológico que pode reduzir a sua conversão de vendas em até 60%, transformando o que deveria ser uma decisão de desejo em uma equação complicada na cabeça do seu cliente. Entenda de uma vez por todas a Regra dos Dois Cortes, a tabela de precificação exata para o seu modelo de negócio e o comportamento real do cliente brasileiro que prova por que o modelo ilimitado é seguro, lucrativo e blinda o seu caixa. Dê o play e descubra como conquistar até 4 vezes mais assinantes nos primeiros 90 dias de lançamento!",
     },
     {
       number: 6,
@@ -89,6 +124,7 @@ export const currentSeason: PodcastSeason = {
       publishDate: "2026-07-20",
       spotifyId: "0pnZ6K3XkoMigYXZZsa5UV",
       durationSeconds: 806,
+      description: "Você não precifica assinatura olhando o corte. Olha a barbearia inteira. Os 5 dados que definem o preço certo e o erro que custa R$95 mil por ano.",
     },
     {
       number: 7,
@@ -96,6 +132,14 @@ export const currentSeason: PodcastSeason = {
       publishDate: "2026-07-27",
       spotifyId: "2dfLtRIt7exZBoIufnxESD",
       durationSeconds: 785,
+      // EXCEÇÃO DECLARADA — a descrição publicada deste episódio no Spotify está
+      // errada: é uma cópia levemente editada da descrição do EP6 e fala de
+      // PRECIFICAÇÃO, não do ganho do barbeiro. Enquanto o Spotify não for
+      // corrigido, o texto abaixo vem do planejamento (seasons.json, EP7 da
+      // t01-clube), ancorado em "+83% de ganho médio do barbeiro em 6 meses".
+      // A exceção está registrada em scripts/podcast/spotify-descriptions.mjs
+      // (OVERRIDES) — corrigido o Spotify, apague lá e rode o script de novo.
+      description: "O dia que você anuncia clube, sua equipe vai dizer 'vou ganhar menos'. A conta que você apresenta para mostrar que o ganho mensal sobe 83%.",
     },
     {
       number: 8,
@@ -103,6 +147,7 @@ export const currentSeason: PodcastSeason = {
       publishDate: "2026-08-03",
       spotifyId: "5wSnqMKVK5cd8jujtZoxny",
       durationSeconds: 796,
+      description: "Você lançou o clube de assinatura e agora precisa dividir a comissão entre 5 barbeiros sem virar briga. A regra do pote, a tabela de fichas e o exemplo numérico completo.",
     },
     {
       number: 9,
@@ -110,6 +155,7 @@ export const currentSeason: PodcastSeason = {
       publishDate: "2026-08-10",
       spotifyId: "21RU7CnMBt0AS4wIyNFonX",
       durationSeconds: 903,
+      description: "Em 60 dias, dá para construir lista de espera com 380 pessoas e vender 60 assinaturas em 48h. O cronograma completo de pré-venda, o lançamento e os 3 lotes.",
     },
     {
       number: 10,
@@ -117,6 +163,7 @@ export const currentSeason: PodcastSeason = {
       publishDate: "2026-08-17",
       spotifyId: "2jQc0qsWxDx5kWCEs44v2D",
       durationSeconds: 973,
+      description: "Três decisões estruturais matam clube de assinatura nos primeiros 6 meses. Quais são, como evitar e o cálculo correto de custo fixo que ninguém te conta.",
     },
     {
       number: 11,
@@ -124,6 +171,7 @@ export const currentSeason: PodcastSeason = {
       publishDate: "2026-08-24",
       spotifyId: "1uldtxHE2Uvhf8ymye5fQV",
       durationSeconds: 851,
+      description: "Quatro decisões separam quem cresce 2,5x de quem cresce 15% em 12 meses. Os 4 pilares inegociáveis e os 7 indicadores que precisam estar abertos toda manhã.",
     },
     {
       number: 12,
@@ -131,6 +179,7 @@ export const currentSeason: PodcastSeason = {
       publishDate: "2026-08-31",
       spotifyId: "2MSpYislZ5pHDJJTwbQEKr",
       durationSeconds: 782,
+      description: "Episódio final: Roadmap consolidado dos primeiros 100 assinantes em 12 meses + case real de uma barbearia 4 cadeiras que saiu de R$15.892 para R$31.690/mês.",
     },
   ],
 };

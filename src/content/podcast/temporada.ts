@@ -38,15 +38,15 @@ export interface SeasonBlock {
 }
 
 /**
- * O roteiro da temporada em quatro blocos. É o texto que já estava no hero da
- * página; virou dado para que a listagem possa rotular cada episódio com o bloco a
- * que ele pertence SEM inventar descrição.
+ * O roteiro da temporada em quatro blocos — classificação nossa, declarada.
  *
- * Por que não há descrição por episódio: nem o SSOT tem o campo, nem o Spotify
- * devolve uma (o og:description de todos os 12 volta o genérico "BestBarbers
- * Podcast · Episode"). Escrever 12 sinopses seria copy nova sobre um áudio que a
- * página não mediu — a regra da rota é só dado verificável, então a linha usa o
- * bloco, que é classificação nossa e declarada.
+ * CORREÇÃO (01/Set/2026): este comentário dizia que "o Spotify não devolve descrição
+ * por episódio, o og:description dos 12 volta o genérico 'BestBarbers Podcast ·
+ * Episode'". A primeira metade era falsa. O og:description realmente volta genérico,
+ * mas a descrição real de cada episódio está no `<meta name="description">`, servido
+ * só para user-agent de crawler. Os 12 textos foram medidos e agora vivem no campo
+ * `description` de src/content/podcast/index.ts — a listagem usa a descrição de
+ * verdade, e o bloco continua disponível apenas como rótulo de seção.
  */
 export const seasonBlocks: SeasonBlock[] = [
   {
