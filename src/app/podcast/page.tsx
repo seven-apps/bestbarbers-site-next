@@ -3,7 +3,10 @@ import Link from "next/link";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { PodcastAttribution } from "@/components/podcast/PodcastAttribution";
-import { SpotifyEmbed } from "@/components/podcast/SpotifyEmbed";
+import {
+  PodcastPlayerProvider,
+  PodcastPlayerSurface,
+} from "@/components/podcast/PodcastPlayer";
 import { EpisodeList } from "@/components/podcast/EpisodeList";
 import {
   PODCAST_SHOW_NAME,
@@ -12,6 +15,11 @@ import {
   isoDuration,
   spotifyEpisodeUrl,
 } from "@/content/podcast";
+import {
+  SEASON_COVER,
+  seasonBlocks,
+  seasonTotalMinutes,
+} from "@/content/podcast/temporada";
 
 /**
  * Destino da campanha de atenção do podcast — e destino dos links publicados na
@@ -28,6 +36,13 @@ import {
  *
  * SÓ DADO VERIFICÁVEL: os 12 episódios vêm de src/content/podcast, com título,
  * duração e ID medidos ao vivo no Spotify. Episódio sem spotifyId não é renderizado.
+ *
+ * ESCUTA: a página inteira tem UM player do Spotify, montado uma vez e reaproveitado
+ * — os 12 botões da listagem trocam o episódio dentro dele. Daí saem as três coisas
+ * que a rota precisava: um clique em vez de dois, "clicou em outro, o anterior para"
+ * sem nenhum listener (não existe segundo player), e 1 embed em vez de 12. Toda a
+ * mecânica, os limites do autoplay e o plano B estão documentados em
+ * src/components/podcast/PodcastPlayer.tsx.
  *
  * noindex MANTIDO: a razão antiga ("espelho da home") acabou, mas trocar o status
  * de indexação é decisão do André. Para indexar: apagar o bloco `robots` abaixo e
@@ -109,38 +124,10 @@ const breadcrumbJsonLd = {
 };
 
 /* ------------------------------------------------------------------ */
-/*  Roteiro da temporada — agrupamento dos episódios que estão no ar    */
-/* ------------------------------------------------------------------ */
-const blocos = [
-  {
-    faixa: "Episódios 1 a 3",
-    titulo: "O conceito",
-    texto:
-      "Por que clube não é desconto, os três ciclos do dinheiro na barbearia e a frequência real de quem assina.",
-  },
-  {
-    faixa: "Episódios 4 e 5",
-    titulo: "O desenho do plano",
-    texto:
-      "Como o cliente avulso vira assinante e por onde começar a montar o plano.",
-  },
-  {
-    faixa: "Episódios 6 a 8",
-    titulo: "A conta",
-    texto:
-      "Quanto cobrar sem matar a margem, o que muda no bolso do barbeiro e como distribuir comissão sem briga.",
-  },
-  {
-    faixa: "Episódios 9 a 12",
-    titulo: "A venda e a operação",
-    texto:
-      "Vender o clube no balcão, destravar o que emperra e chegar aos primeiros 100 assinantes.",
-  },
-];
-
-/* ------------------------------------------------------------------ */
 /*  Página                                                             */
 /* ------------------------------------------------------------------ */
+/* O roteiro da temporada em quatro blocos virou dado em
+   src/content/podcast/temporada.ts — o hero e a listagem leem do mesmo lugar. */
 export default function PodcastPage() {
   const primeiro = publishedEpisodes[0];
   const totalEpisodios = publishedEpisodes.length;
@@ -160,6 +147,7 @@ export default function PodcastPage() {
 
       <Navbar withoutCta />
 
+      <PodcastPlayerProvider episodes={publishedEpisodes}>
       <main className="pt-[70px] md:pt-[80px] bg-white">
         {/* ---------------------------------------------------------- */}
         {/*  HERO — o que é, para quem é, e o play                      */}
@@ -231,25 +219,45 @@ export default function PodcastPage() {
                       aria-hidden
                       className="w-1.5 h-1.5 rounded-full bg-[#ffaf02]"
                     />
+                    {Math.floor(seasonTotalMinutes / 60)}h{seasonTotalMinutes % 60}{" "}
+                    no total
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span
+                      aria-hidden
+                      className="w-1.5 h-1.5 rounded-full bg-[#ffaf02]"
+                    />
                     De graça, no Spotify
                   </li>
                 </ul>
 
                 {primeiro && (
                   <div className="mt-8 rounded-2xl border border-white/10 bg-white/[0.03] p-5 md:p-6">
-                    <p className="text-xs font-bold uppercase tracking-wider text-[#ffaf02]">
-                      Comece por aqui
-                    </p>
-                    <p className="mt-2 text-white font-bold text-lg leading-snug">
-                      Episódio {primeiro.number} — {primeiro.title}
-                    </p>
-                    <div className="mt-5">
-                      <SpotifyEmbed
-                        spotifyId={primeiro.spotifyId}
-                        title={primeiro.title}
-                        label="Ouvir o episódio 1"
-                        featured
+                    <div className="flex items-start gap-4">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={SEASON_COVER.src}
+                        alt={SEASON_COVER.alt}
+                        width={SEASON_COVER.width}
+                        height={SEASON_COVER.height}
+                        className="hidden h-20 w-20 shrink-0 rounded-lg object-cover ring-1 ring-white/10 sm:block"
                       />
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold uppercase tracking-wider text-[#ffaf02]">
+                          Comece por aqui
+                        </p>
+                        <p className="mt-2 text-lg font-bold leading-snug text-white">
+                          Episódio {primeiro.number} — {primeiro.title}
+                        </p>
+                        <p className="mt-1.5 text-xs text-gray-400">
+                          Um clique e toca aqui mesmo. Depois é só descer a lista
+                          — o player desce junto com você.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="mt-5">
+                      <PodcastPlayerSurface episode={primeiro} />
                     </div>
                   </div>
                 )}
@@ -267,16 +275,16 @@ export default function PodcastPage() {
                   A temporada em quatro blocos
                 </h2>
                 <ol className="mt-6 space-y-6">
-                  {blocos.map((b) => (
-                    <li key={b.titulo} className="border-l-2 border-[#ffaf02]/40 pl-4">
+                  {seasonBlocks.map((b) => (
+                    <li key={b.title} className="border-l-2 border-[#ffaf02]/40 pl-4">
                       <p className="text-[11px] font-bold uppercase tracking-wider text-[#ffaf02]">
-                        {b.faixa}
+                        {b.range}
                       </p>
                       <p className="mt-1 text-sm font-bold text-white">
-                        {b.titulo}
+                        {b.title}
                       </p>
                       <p className="mt-1 text-sm text-gray-400 leading-relaxed">
-                        {b.texto}
+                        {b.text}
                       </p>
                     </li>
                   ))}
@@ -290,24 +298,29 @@ export default function PodcastPage() {
         {/*  EPISÓDIOS                                                  */}
         {/* ---------------------------------------------------------- */}
         <section
-          className="py-14 md:py-20 bg-white"
+          className="border-t border-white/[0.06] bg-[#0c0c0c] py-14 md:py-20"
           aria-labelledby="episodios-title"
         >
           <div className="container-custom">
-            <h2
-              id="episodios-title"
-              className="text-2xl md:text-3xl font-extrabold text-[#121212]"
-            >
-              Os {totalEpisodios} episódios da temporada
-            </h2>
-            <p className="mt-3 text-sm md:text-base text-gray-600 max-w-2xl">
-              Aperte o play e o episódio toca aqui mesmo — sem sair da página,
-              sem cadastro. Se preferir ouvir no aplicativo, cada episódio também
-              abre direto no Spotify.
-            </p>
+            {/* Coluna de leitura: a linha do episódio fica densa em vez de esticada
+                pelos 1150px do container, com um vão enorme entre texto e controles. */}
+            <div className="max-w-4xl">
+              <h2
+                id="episodios-title"
+                className="text-2xl font-extrabold text-white md:text-3xl"
+              >
+                Os {totalEpisodios} episódios da temporada
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-gray-400 md:text-base">
+                Aperte o play e o episódio toca aqui mesmo — sem sair da página,
+                sem cadastro. É um player só para a temporada inteira: ao tocar
+                outro episódio, o anterior para. Se preferir ouvir no aplicativo,
+                cada episódio também abre direto no Spotify.
+              </p>
 
-            <div className="mt-10">
-              <EpisodeList episodes={publishedEpisodes} />
+              <div className="mt-10">
+                <EpisodeList episodes={publishedEpisodes} />
+              </div>
             </div>
           </div>
         </section>
@@ -397,6 +410,7 @@ export default function PodcastPage() {
           </div>
         </section>
       </main>
+      </PodcastPlayerProvider>
 
       <Footer />
     </>
