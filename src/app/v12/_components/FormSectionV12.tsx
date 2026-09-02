@@ -2,14 +2,32 @@
 
 import { useLeadForm, useUtmParams } from "@/hooks";
 import { ArrowRight, ShieldCheck, Users2, Clock } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { MSG_EMAIL_INVALIDO, trackAvancoPasso2, validarEmailOpcional } from "@/lib/form-passo1";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const formFields = [
   { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
-  // E-mail removido (OP400 15/Jun): fricção pura — o canal de contato é o WhatsApp e
-  // o regex obrigatório bloqueava lead por erro de digitação. Ataca o leak visita→lead.
   { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
   { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "(11) 99999-9999", type: "tel" },
+  // E-MAIL: houve uma IDA e uma VOLTA. Quem ler isto daqui a seis meses precisa das duas.
+  //
+  // REMOVIDO (OP400, 15/Jun/26): fricção pura — o canal de contato é o WhatsApp e o campo
+  // era OBRIGATÓRIO, com regex que bloqueava o envio por erro de digitação. Perdia-se lead
+  // inteiro por um "@gmail.con". A remoção atacava o leak visita→lead, e a nota de julho
+  // ("não reintroduzir e-mail na V12") existia por causa desse regex barrando o envio.
+  //
+  // REPOSTO (01/Set/26): o que volta é OPCIONAL, não o campo de junho. Vazio passa direto
+  // (o gate canAdvanceToStep2 exige só ownerName e whatsapp; o `required` do input é
+  // negado para "email") e endereço torto só AVISA, sem prender ninguém — a razão da
+  // remoção deixa de existir. O que forçou a revisão: a família precificação, sem o campo,
+  // capturava e-mail em apenas 8,6% dos leads. Rótulo é opcional COM MOTIVO (gabarito
+  // cadeira-cheia, 95,9% de preenchimento) e não promete entrega por e-mail — não existe
+  // executor para lead do Ploomes. Vai para o campo NATIVO Email do Contact.
+  //
+  // Fica no PASSO 1 (ver STEP1_FIELDS): é a única tela por onde 100% de quem envia passa.
+  // Régua de reversão: trackAvancoPasso2 mede passo 1 → passo 2; queda de conclusão
+  // reabre o leak e o campo sai de novo.
+  { name: "email", label: "Seu e-mail (opcional, pra gente falar com você depois)", placeholder: "Ex: joao@email.com", type: "email" },
   {
     name: "monthlyRevenue",
     label: "Qual o faturamento médio da sua barbearia?",
@@ -89,6 +107,7 @@ export function FormSectionV12() {
     isDedupChecking,
     handleInputChange,
     handleSubmit,
+    setSubmitError,
   } = useLeadForm({
     source: "lp_v12",
     requireMonthlyRevenue: true,
@@ -100,15 +119,58 @@ export function FormSectionV12() {
 
   // Estado de erro do campo de faturamento (validação no submit handler)
   const monthlyRevenueError = !!submitError && submitError.includes("Faturamento");
+  // Estado de erro do campo de e-mail. O aviso dele NÃO pode morar no topo do cartão:
+  // o bloco de erro geral nasce acima do "Passo 1 de 2" e, no mobile, fica atrás da
+  // navbar fixa enquanto a pessoa está rolada até o botão — resultado medido: clica em
+  // CONTINUAR e a tela não muda nada. Um campo opcional que trava sem avisar é a versão
+  // silenciosa do leak que motivou a remoção de junho. O aviso vai EMBAIXO do input,
+  // igual ao do faturamento, e o input recebe o foco (leva a tela até ele sozinho).
+  const emailError = !!submitError && submitError === MSG_EMAIL_INVALIDO;
 
   // Multi-step (OP400 16/Jun): passo 1 = contato (baixa fricção → micro-commitment),
   // passo 2 = qualificação (faturamento/colaboradores alimentam o lead_score).
-  // Reduz a fricção percebida (2 campos, não 6) sem perder a qualificação.
+  // Reduz a fricção percebida (3 campos, não 7 — e 1 dos 3 é opcional) sem perder a
+  // qualificação.
   const [step, setStep] = useState(1);
-  const STEP1_FIELDS = ["ownerName", "whatsapp"];
+  const STEP1_FIELDS = ["ownerName", "whatsapp", "email"];
   const visibleFields = formFields.filter((f) => STEP1_FIELDS.includes(f.name) === (step === 1));
+  // Gate do passo 1 INTOCADO: só nome e WhatsApp. É isto que mantém o e-mail
+  // opcional de verdade — entrar no gate seria repor o campo obrigatório de junho.
   const canAdvanceToStep2 = formData.ownerName.trim() !== "" && formData.whatsapp.trim() !== "";
-  const goToStep2 = () => { if (canAdvanceToStep2) setStep(2); };
+  // Avanço já medido nesta sessão de preenchimento — o "← Voltar" e um segundo
+  // CONTINUAR não são um avanço novo, e contá-los duas vezes estragaria a régua.
+  const avancoMedido = useRef(false);
+  // Referência do input de e-mail: quando o formato está torto, o foco vai para ele.
+  // No mobile o botão CONTINUAR fica abaixo da dobra, então a pessoa clica já rolada —
+  // o foco traz o campo (e o aviso embaixo dele) de volta para a tela sozinho.
+  const emailInputRef = useRef<HTMLInputElement | null>(null);
+  const goToStep2 = () => {
+    if (!canAdvanceToStep2) return;
+    // O campo de e-mail vive AQUI, no passo 1. Validar só no submit (passo 2) fazia a
+    // pessoa ver "E-mail deve ser válido" numa tela sem o campo. Vazio continua
+    // passando: o campo é opcional e não é isto que o avisa.
+    const erroEmail = validarEmailOpcional(formData.email);
+    if (erroEmail) {
+      setSubmitError(erroEmail);
+      emailInputRef.current?.focus();
+      // O onFocus do input roda ANTES do re-render com o erro, então ele ainda pinta o
+      // halo dourado de campo normal. Sobrescreve na hora para vermelho (a borda o
+      // re-render do React já corrige sozinho, pois ela vem do style).
+      if (emailInputRef.current) {
+        emailInputRef.current.style.boxShadow = "0 0 0 3px rgba(220,38,38,0.15)";
+      }
+      return;
+    }
+    setSubmitError(null);
+    if (!avancoMedido.current) {
+      avancoMedido.current = true;
+      trackAvancoPasso2({
+        lpVersion: "lp_v12",
+        emailPreenchido: formData.email.trim() !== "",
+      });
+    }
+    setStep(2);
+  };
 
   return (
     <section
@@ -229,8 +291,11 @@ export function FormSectionV12() {
             </div>
           </div>
 
-          {/* Error display */}
-          {submitError && (
+          {/* Error display — geral. O erro de e-mail sai daqui quando o campo está na
+              tela (passo 1): ele é mostrado embaixo do próprio input, onde a pessoa
+              está olhando. Se por algum caminho ele aparecer no passo 2, sem o campo
+              na tela, este bloco continua sendo o lugar dele. */}
+          {submitError && !(emailError && step === 1) && (
             <div
               className="w-full rounded-xl p-4 mb-6 animate-scale-in border"
               style={{ background: "rgba(239,68,68,0.08)", borderColor: "rgba(239,68,68,0.3)" }}
@@ -305,23 +370,42 @@ export function FormSectionV12() {
                     );
                   })()
                 ) : (
-                  <input
-                    type={field.type}
-                    name={field.name}
-                    value={formData[field.name as keyof typeof formData]}
-                    onChange={handleInputChange}
-                    placeholder={field.placeholder}
-                    required
-                    className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
-                    style={{
-                      background: "#f5f5f5",
-                      border: "1.5px solid #e0e0e0",
-                      color: "#1e1e1e",
-                      fontFamily: "var(--font-montserrat)",
-                    }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
-                  />
+                  (() => {
+                    const fieldHasError = field.name === "email" && emailError;
+                    return (
+                      <>
+                        <input
+                          type={field.type}
+                          name={field.name}
+                          ref={field.name === "email" ? emailInputRef : undefined}
+                          value={formData[field.name as keyof typeof formData]}
+                          onChange={handleInputChange}
+                          placeholder={field.placeholder}
+                          // E-mail é o único campo opcional: deixar em branco NUNCA pode barrar
+                          // o envio (useLeadForm só valida o formato quando há algo digitado).
+                          required={field.name !== "email"}
+                          aria-invalid={fieldHasError || undefined}
+                          className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
+                          style={{
+                            background: "#f5f5f5",
+                            border: `1.5px solid ${fieldHasError ? "#dc2626" : "#e0e0e0"}`,
+                            color: "#1e1e1e",
+                            fontFamily: "var(--font-montserrat)",
+                          }}
+                          onFocus={(e) => { e.currentTarget.style.borderColor = fieldHasError ? "#dc2626" : "#ebad04"; e.currentTarget.style.boxShadow = `0 0 0 3px ${fieldHasError ? "rgba(220,38,38,0.15)" : "rgba(235,173,4,0.15)"}`; }}
+                          onBlur={(e) => { e.currentTarget.style.borderColor = fieldHasError ? "#dc2626" : "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
+                        />
+                        {fieldHasError && (
+                          <p
+                            className="text-xs font-medium"
+                            style={{ color: "#dc2626", fontFamily: "var(--font-montserrat)" }}
+                          >
+                            {submitError}
+                          </p>
+                        )}
+                      </>
+                    );
+                  })()
                 )}
               </div>
             ))}

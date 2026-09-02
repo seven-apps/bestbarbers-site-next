@@ -7,6 +7,10 @@
  * que é o comportamento histórico — links antigos de /obrigado continuam mostrando
  * o Cadeira Cheia.
  *
+ * O parâmetro é sempre lido por `resolverIscaId`, que aceita também os APELIDOS_ISCA
+ * (o nome comercial do guia escrito como id). Id canônico é chave de dado e não muda
+ * quando o produto é renomeado; o apelido é a ponte para quem escreve o link à mão.
+ *
  * Para adicionar uma isca: (1) coloque o PDF em /public, (2) acrescente o id ao
  * union `IscaId`, (3) preencha a entrada em ISCAS. O `tsc` cobra a entrada nova
  * (o Record é exaustivo) e cobra também quem chamar `hrefObrigado` com id errado.
@@ -88,9 +92,40 @@ export const ISCAS: Record<IscaId, Isca> = {
 /** Isca servida quando a /obrigado é aberta sem `?isca=` (ou com um id desconhecido). */
 export const ISCA_PADRAO: IscaId = "cadeira-cheia";
 
-/** Type guard: diz se uma string qualquer (query param) é um id de isca conhecido. */
+/** Type guard: diz se uma string qualquer (query param) é um id CANÔNICO de isca. */
 export function ehIscaId(v: string): v is IscaId {
   return Object.prototype.hasOwnProperty.call(ISCAS, v);
+}
+
+/**
+ * Apelidos aceitos em `?isca=` que resolvem para um id canônico.
+ *
+ * Existe porque o id canônico é CHAVE DE DADO (pixel, atribuição, `?isca=` já
+ * distribuído) e não acompanha a troca de NOME do produto. Em 01/Set/2026 o guia
+ * passou a se chamar "Assinatura do Zero" em tudo que a pessoa lê, mas o id seguiu
+ * `do-zero-a-assinatura` de propósito. Sem este mapa, quem escrevesse o link com o
+ * nome novo — e a partir de hoje é assim que a equipe, o parceiro e qualquer script
+ * novo chamam o guia — caía SILENCIOSAMENTE no `ISCA_PADRAO` e recebia o Cadeira
+ * Cheia: guia errado, PDF errado, `content_name` errado, sem erro nenhum na tela.
+ *
+ * O apelido resolve ANTES de tudo: a página, o PDF e o pixel seguem enxergando o id
+ * canônico, então nada muda na série de eventos nem na atribuição.
+ */
+const APELIDOS_ISCA: Record<string, IscaId> = {
+  // Nome definitivo do guia (decisão do André, 01/Set/2026) usado como se fosse id.
+  "assinatura-do-zero": "do-zero-a-assinatura",
+};
+
+/**
+ * Traduz o `?isca=` cru (canônico, apelido, vazio ou lixo) no id canônico que a
+ * página deve servir. É o ÚNICO caminho de leitura do parâmetro — quem lê o query
+ * param direto volta a ter o bug do apelido engolido.
+ */
+export function resolverIscaId(v: string | null | undefined): IscaId {
+  if (!v) return ISCA_PADRAO;
+  const chave = v.trim().toLowerCase();
+  if (ehIscaId(chave)) return chave;
+  return APELIDOS_ISCA[chave] ?? ISCA_PADRAO;
 }
 
 /**

@@ -16,12 +16,10 @@ const montserrat = Montserrat({
 });
 
 // Página de agradecimento pós-conversão — noindex (não é conteúdo público).
-// O título/descrição aqui são genéricos porque a página serve VÁRIAS iscas (lê `?isca=`);
-// o título com o nome do guia é ajustado no client, dentro do useEffect da page.tsx.
-// A descrição não promete canal nenhum: a entrega é o download na própria página.
+// TÍTULO E DESCRIÇÃO NÃO MORAM AQUI: a página serve VÁRIAS iscas (lê `?isca=`) e o
+// título traz o NOME do guia, montado pelo `generateMetadata` do page.tsx, que tem
+// acesso aos searchParams. O layout guarda só o que vale para todas as iscas.
 export const metadata: Metadata = {
-  title: "Seu guia está aqui | BestBarbers",
-  description: "Obrigado! Baixe o seu guia em PDF agora, direto nesta página.",
   robots: { index: false, follow: false },
 };
 
