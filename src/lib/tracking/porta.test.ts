@@ -147,5 +147,7 @@ test("paramsGuiaBaixado: porta só quando a LP da isca está no mapa", () => {
     tema: "guia-assinatura-do-zero",
     pagina: "/obrigado",
   });
-  assert.deepEqual(paramsGuiaBaixado("cadeira-cheia"), { guia: "cadeira-cheia", pagina: "/obrigado" });
+  // Cadeira Cheia é porta 1 desde 12/Set/26 (decisão do André); uma isca fora do mapa fica sem porta
+  assert.deepEqual(paramsGuiaBaixado("cadeira-cheia"), { guia: "cadeira-cheia", porta: 1, tema: "cadeira-cheia", pagina: "/obrigado" });
+  assert.deepEqual(paramsGuiaBaixado("isca-que-nao-existe"), { guia: "isca-que-nao-existe", pagina: "/obrigado" });
 });
