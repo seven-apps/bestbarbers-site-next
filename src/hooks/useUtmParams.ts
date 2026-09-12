@@ -233,7 +233,10 @@ export const useUtmParams = () => {
     // hasSignal usa os click IDs FRESCOS (URL), não os de cookie — senão o snapshot
     // nasceria contaminado por _fbc/_gcl_aw de visitas antigas.
     try {
-      const hasSignal = !!(utmSource || legacySource || originParam || fbclidUrl || gclidUrl || utmCampaign || publicoParam);
+      // utm_content entra no sinal: o link por porta (`utm_content=p2-regua` no e-mail,
+      // no story, no YouTube) pode vir SEM source/campaign e precisa sobreviver à navegação
+      // interna até o form — senão bb_utm_content chega vazio ao Ploomes (plano §2).
+      const hasSignal = !!(utmSource || legacySource || originParam || fbclidUrl || gclidUrl || utmCampaign || publicoParam || utmContent);
       const stored = sessionStorage.getItem(SS_KEY);
       if (hasSignal && !stored) {
         sessionStorage.setItem(SS_KEY, JSON.stringify(params));

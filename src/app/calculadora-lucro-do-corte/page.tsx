@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Navbar } from "@/components/sections/Navbar";
 import { FooterSimple } from "@/components/sections/FooterSimple";
 import { useMetaPixel } from "@/hooks";
+import { paramsDaPaginaAtual } from "@/lib/tracking/porta";
 import { HeroCalc } from "./_components/HeroCalc";
 import { CalculadoraSection } from "./_components/CalculadoraSection";
 import { FormSectionCalc } from "./_components/FormSectionCalc";
@@ -22,6 +23,8 @@ function CalculadoraContent() {
     trackCustomEvent("ViewContent", {
       content_name: "Calculadora de Lucro por Corte",
       content_category: "lead_magnet",
+      // porta/tema/pagina ao lado do nome (src/lib/tracking/porta.ts) — nome intacto.
+      ...paramsDaPaginaAtual(),
     });
   }, [trackCustomEvent]);
 

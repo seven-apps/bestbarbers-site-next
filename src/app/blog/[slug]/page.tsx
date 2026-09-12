@@ -5,6 +5,7 @@ import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 import { FeatureCTA } from "@/components/FeatureCTA";
 import { CopyableBlock } from "@/components/CopyableBlock";
+import { ViewContentPorta } from "@/components/tracking/ViewContentPorta";
 import { articles } from "@/content/blog";
 import type { ContentBlock, BlogSection } from "@/content/blog/types";
 
@@ -229,6 +230,8 @@ export default async function BlogArticlePage({
 
       <main className="min-h-screen bg-white">
         <Navbar />
+        {/* ViewContent com porta — só dispara para slugs mapeados em PORTA_POR_PAGINA. */}
+        <ViewContentPorta contentName={`Blog - ${article.title}`} contentCategory="blog" />
 
         {/* Hero */}
         <section className="bg-[#121212] pt-28 pb-12 md:pt-32 md:pb-16">

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Navbar } from "@/components/sections/Navbar";
 import { FooterSimple } from "@/components/sections/FooterSimple";
 import { useMetaPixel } from "@/hooks";
+import { paramsDaPaginaAtual } from "@/lib/tracking/porta";
 import { GuiaForm } from "./_components/GuiaForm";
 import {
   Calculator,
@@ -97,6 +98,8 @@ export default function DoZeroAAssinaturaPage() {
       content_name: "LP Assinatura do Zero - Guia Clube",
       content_category: "landing_page",
       isca: "do-zero-a-assinatura",
+      // porta/tema/pagina ao lado do nome (src/lib/tracking/porta.ts) — nome intacto.
+      ...paramsDaPaginaAtual(),
     });
   }, [trackCustomEvent]);
 

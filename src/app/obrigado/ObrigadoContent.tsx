@@ -7,6 +7,7 @@ import { FooterSimple } from "@/components/sections/FooterSimple";
 import { useMetaPixel, useWhatsAppRedirect } from "@/hooks";
 import { Download, CheckCircle2, Eye, ArrowRight } from "lucide-react";
 import { ISCAS, resolverIscaId, partesDoTitulo } from "@/lib/iscas";
+import { EVENTOS_PORTA, paramsGuiaBaixado } from "@/lib/tracking/porta";
 
 const AMBER = "#ebad04";
 
@@ -38,7 +39,7 @@ function destacarAspas(texto: string): ReactNode[] {
 }
 
 function ObrigadoInterno() {
-  const { trackCustomEvent } = useMetaPixel();
+  const { trackCustomEvent, trackNonCatalogEvent } = useMetaPixel();
   const { generateWhatsAppLink } = useWhatsAppRedirect();
   const searchParams = useSearchParams();
 
@@ -62,10 +63,12 @@ function ObrigadoInterno() {
   useEffect(() => {
     if (viewContentDisparado.has(iscaId)) return;
     viewContentDisparado.add(iscaId);
+    // `porta`/`tema`/`guia` da isca entram AO LADO do content_name (série intacta).
     trackCustomEvent("ViewContent", {
       content_name: `Obrigado - ${isca.pixelId}`,
       content_category: "thank_you",
       isca: iscaId,
+      ...paramsGuiaBaixado(iscaId),
     });
   }, [trackCustomEvent, isca.pixelId, iscaId]);
 
@@ -133,12 +136,16 @@ function ObrigadoInterno() {
                 download
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() =>
-                  trackCustomEvent("GuiaDownload", {
+                onClick={() => {
+                  // GuiaDownload segue como está (série desde 07/Jul/26). `guia_baixado` é o
+                  // evento por PORTA do plano (§2): custom de verdade (trackCustom + image
+                  // pixel, mesmo eventID) com {porta, guia} — é ele que vira público na Meta.
+                  void trackCustomEvent("GuiaDownload", {
                     content_name: `${isca.pixelId} PDF`,
                     isca: iscaId,
-                  })
-                }
+                  });
+                  void trackNonCatalogEvent(EVENTOS_PORTA.guiaBaixado, paramsGuiaBaixado(iscaId));
+                }}
                 className="inline-flex items-center justify-center gap-3 w-full sm:w-auto text-[#1e1e1e] font-extrabold text-[16px] md:text-[19px] px-10 py-6 rounded-full transition-all duration-300 active:scale-[0.98]"
                 style={{ background: `linear-gradient(135deg, #f5c842, ${AMBER})`, boxShadow: "0 8px 34px rgba(235,173,4,0.45)" }}
                 onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; }}

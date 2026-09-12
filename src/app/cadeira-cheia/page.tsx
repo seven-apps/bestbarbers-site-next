@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Navbar } from "@/components/sections/Navbar";
 import { FooterSimple } from "@/components/sections/FooterSimple";
 import { useMetaPixel } from "@/hooks";
+import { paramsDaPaginaAtual } from "@/lib/tracking/porta";
 import { GuiaForm } from "./_components/GuiaForm";
 import { Eye, MessageSquareText, MousePointerClick, ArrowRight, Search, Send } from "lucide-react";
 
@@ -63,6 +64,8 @@ export default function CadeiraCheiaPage() {
     trackCustomEvent("ViewContent", {
       content_name: "LP Cadeira Cheia - Guia Reativação",
       content_category: "landing_page",
+      // porta/tema/pagina ao lado do nome (src/lib/tracking/porta.ts) — nome intacto.
+      ...paramsDaPaginaAtual(),
     });
   }, [trackCustomEvent]);
 

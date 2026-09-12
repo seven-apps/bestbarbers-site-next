@@ -6,6 +6,7 @@ import { useMetaPixel } from './useMetaPixel';
 import { useUtmParams } from './useUtmParams';
 import { criarCardRecadastro } from '@/lib/recadastro';
 import { validarEmailOpcional } from '@/lib/form-passo1';
+import { portaDoLead } from '@/lib/tracking/porta';
 
 export interface FormData {
   barbershopName: string;
@@ -357,6 +358,14 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // da célula que os declara.
       // CAPI direta → bbai.bestbarbers.app (bestbarbers-ai dashboard). Fire-and-forget.
       // Meta deduplica via event_id → Pixel + Stape + CAPI direta = 1 evento contado.
+      // Porta do lead (plano §3.1): o link vence a página (`utm_content=p<porta>-…`),
+      // senão a página do form. Vai no PIXEL e na CAPI com o MESMO eventId, para a
+      // cópia do servidor carregar o parâmetro que os públicos por porta filtram.
+      const portaLead = portaDoLead(
+        typeof window !== 'undefined' ? window.location.pathname : '',
+        utmParams.utm_content,
+      );
+
       const capiUrl = process.env.NEXT_PUBLIC_BBAI_DASHBOARD_URL;
       const sendCapiEvent = (eventName: 'Lead' | 'QualifiedLead' | 'QualifiedLead60', eventId: string): void => {
         if (!capiUrl) return;
@@ -377,6 +386,11 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
               fbc,
             },
             eventSourceUrl: typeof window !== 'undefined' ? window.location.href : undefined,
+            // `customData.porta` (1–4) é chave declarada no schema da rota
+            // (lib/integrations/meta-capi-eventos.ts, `.strict()`); a rota anterior
+            // (z.object sem strict) apenas descartava a chave — nunca 400. Sem porta,
+            // o corpo fica igual ao de antes.
+            ...(portaLead !== undefined && { customData: { porta: portaLead } }),
           }),
         }).catch(() => {});
       };
@@ -388,6 +402,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         employee_count: formData.employeeCount,
         lead_score: leadScore,
         ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
+        ...(portaLead !== undefined && { porta: portaLead }),
       };
 
       // Nas campanhas de ESCALA da Operação 400, a Meta passou a otimizar pelo evento

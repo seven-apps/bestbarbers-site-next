@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Navbar } from "@/components/sections/Navbar";
 import { FooterSimple } from "@/components/sections/FooterSimple";
 import { useMetaPixel } from "@/hooks";
+import { paramsDaPaginaAtual } from "@/lib/tracking/porta";
 // Componentes ESTÁVEIS — reusados do diretório de produção (sem duplicar).
 import { HeroTabela } from "../tabela-precificacao-clube/_components/HeroTabela";
 import { MetodoSection } from "../tabela-precificacao-clube/_components/MetodoSection";
@@ -30,6 +31,8 @@ function TabelaContent() {
     trackCustomEvent("ViewContent", {
       content_name: "Tabela de Precificação de Clubes (Gated)",
       content_category: "lead_magnet",
+      // porta/tema/pagina ao lado do nome (src/lib/tracking/porta.ts) — nome intacto.
+      ...paramsDaPaginaAtual(),
     });
   }, [trackCustomEvent]);
 

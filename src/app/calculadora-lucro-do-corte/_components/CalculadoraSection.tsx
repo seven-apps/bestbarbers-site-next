@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { useMetaPixel } from "@/hooks/useMetaPixel";
+import { EVENTOS_PORTA, paramsDaPaginaAtual } from "@/lib/tracking/porta";
 import { ArrowRight, Info, TrendingUp, TrendingDown, Lock } from "lucide-react";
 import { SliderInput } from "./SliderInput";
 import { AnimatedMoney } from "./AnimatedMoney";
@@ -26,8 +28,20 @@ export function CalculadoraSection({ onCtaClick }: CalculadoraSectionProps) {
     atendimentosMes: DEFAULTS.atendimentosMes,
   });
 
-  const set = (key: keyof CalcInputs) => (value: number) =>
+  // `calculadora_usada` dispara UMA vez por carregamento, na primeira mexida em
+  // qualquer slider — "usou", não "viu" (ViewContent). Evento custom com porta 1.
+  const { trackNonCatalogEvent } = useMetaPixel();
+  const usoMarcado = useRef(false);
+  const marcarUso = () => {
+    if (usoMarcado.current) return;
+    usoMarcado.current = true;
+    void trackNonCatalogEvent(EVENTOS_PORTA.calculadoraUsada, { ...paramsDaPaginaAtual(), calculadora: "lucro-do-corte" });
+  };
+
+  const set = (key: keyof CalcInputs) => (value: number) => {
+    marcarUso();
     setInputs((prev) => ({ ...prev, [key]: value }));
+  };
 
   const result = useMemo(() => calcular(inputs), [inputs]);
 

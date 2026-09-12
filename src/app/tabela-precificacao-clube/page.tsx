@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Navbar } from "@/components/sections/Navbar";
 import { FooterSimple } from "@/components/sections/FooterSimple";
 import { useMetaPixel } from "@/hooks";
+import { paramsDaPaginaAtual } from "@/lib/tracking/porta";
 import { HeroTabela } from "./_components/HeroTabela";
 import { TabelaSection } from "./_components/TabelaSection";
 import { MetodoSection } from "./_components/MetodoSection";
@@ -23,6 +24,8 @@ function TabelaContent() {
     trackCustomEvent("ViewContent", {
       content_name: "Tabela de Precificação de Clubes",
       content_category: "lead_magnet",
+      // porta/tema/pagina ao lado do nome (src/lib/tracking/porta.ts) — nome intacto.
+      ...paramsDaPaginaAtual(),
     });
   }, [trackCustomEvent]);
 

@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useMetaPixel } from "@/hooks/useMetaPixel";
+import { CLUBE_FORK, forkDoClube } from "@/lib/tracking/porta";
 import { NavbarClube } from "@/components/clube/NavbarClube";
 import { HeroClube } from "@/components/clube/HeroClube";
 import { ComparativoClube } from "@/components/clube/ComparativoClube";
@@ -47,10 +48,17 @@ export function ClubePage() {
   const { trackCustomEvent, trackNonCatalogEvent } = useMetaPixel();
   const trackedSections = useRef<Set<string>>(new Set());
 
+  // Fork criar × migrar como EVENTO do pixel (plano §7 item 3). Antes o clique só
+  // virava originDesc no Ploomes — invisível para público da Meta. Todo CTA que não é
+  // a faixa de migração conta como "criar" (porta 1); `[Site-Clube]BT-Migracao` é
+  // "migrar" (porta 3). `secao` guarda o botão para cortar no Events Manager.
+  // Evento custom → trackNonCatalogEvent (fbq('trackCustom') + image pixel, mesmo eventID).
   const openModal = useCallback((desc: string) => {
+    const lado = CLUBE_FORK[forkDoClube(desc)];
+    void trackNonCatalogEvent(lado.evento, { porta: lado.porta, secao: desc, pagina: "/clube" });
     setModalDesc(desc);
     setModalOpen(true);
-  }, []);
+  }, [trackNonCatalogEvent]);
 
   const closeModal = useCallback(() => {
     setModalOpen(false);

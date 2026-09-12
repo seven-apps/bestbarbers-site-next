@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FeatureCTA } from "@/components/FeatureCTA";
+import { ViewContentPorta } from "@/components/tracking/ViewContentPorta";
 import { Navbar } from "@/components/sections/Navbar";
 import { Footer } from "@/components/sections/Footer";
 
@@ -18,6 +19,8 @@ export default function GestaoComissoesBarbeiro() {
   return (
     <main className="min-h-screen overflow-x-hidden max-w-[100vw] w-full">
       <Navbar />
+      {/* Porta 2 (comissão): ViewContent com porta — src/lib/tracking/porta.ts */}
+      <ViewContentPorta contentName="Feature - Gestão de Comissões" contentCategory="feature_page" />
 
       {/* Breadcrumb */}
       <section className="bg-[#121212] pt-28 pb-4">

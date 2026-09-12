@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import { useMetaPixel } from "@/hooks/useMetaPixel";
+import { EVENTOS_PORTA, paramsDaPaginaAtual } from "@/lib/tracking/porta";
 import { ArrowRight, Info, Lock, Scissors, Store, UserRound } from "lucide-react";
 // Subcomponentes e utilitários ESTÁVEIS — reusados do diretório de produção
 // (sem duplicar): SliderInput, AnimatedMoney, calc.ts, benchmarks.ts.
@@ -30,8 +32,20 @@ export function TabelaSectionGated({ unlocked = false, onUnlockRequest }: Props)
     agenda: DEFAULTS.agenda,
   });
 
-  const set = (key: keyof CalcInputs) => (value: number) =>
+  // `tabela_usada` (variante gated) — 1ª mexida em qualquer input, uma vez por
+  // carregamento. Mesmo evento da tabela livre; `variante` separa as duas no Events Manager.
+  const { trackNonCatalogEvent } = useMetaPixel();
+  const usoMarcado = useRef(false);
+  const marcarUso = () => {
+    if (usoMarcado.current) return;
+    usoMarcado.current = true;
+    void trackNonCatalogEvent(EVENTOS_PORTA.tabelaUsada, { ...paramsDaPaginaAtual(), variante: "gated" });
+  };
+
+  const set = (key: keyof CalcInputs) => (value: number) => {
+    marcarUso();
     setInputs((prev) => ({ ...prev, [key]: value }));
+  };
 
   // O cálculo continua rodando por baixo — só a RENDERIZAÇÃO fica escondida
   // (blur) até o form. Nenhum número falso legível é afirmado.
@@ -132,7 +146,7 @@ export function TabelaSectionGated({ unlocked = false, onUnlockRequest }: Props)
                       <button
                         key={op.value}
                         type="button"
-                        onClick={() => setInputs((prev) => ({ ...prev, agenda: op.value }))}
+                        onClick={() => { marcarUso(); setInputs((prev) => ({ ...prev, agenda: op.value })); }}
                         className="rounded-xl px-2 py-2.5 text-[12px] md:text-[13px] font-bold transition-all duration-200"
                         style={{
                           background: ativo ? "rgba(235,173,4,0.16)" : "#f5f5f5",
