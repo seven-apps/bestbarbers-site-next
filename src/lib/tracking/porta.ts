@@ -30,9 +30,9 @@ export interface PaginaPorta {
 
 /**
  * Página → porta. Chave = `pathname` sem barra final. Só entra aqui página cujo
- * assunto DECLARA a porta; página genérica (/clube, home, /cadeira-cheia — guia de
- * reativação, não de clube) fica de fora e não recebe `porta` (decisão do André, não
- * do código). Para acrescentar: uma linha aqui; o `tsc` cobra o shape e
+ * assunto DECLARA a porta; página genérica (/clube, home) fica de fora e não recebe
+ * `porta`. /cadeira-cheia entrou como porta 1 por decisão do André (12/Set/26): o guia
+ * de reativação atrai quem ainda não roda assinatura. Para acrescentar: uma linha aqui; o `tsc` cobra o shape e
  * `porta.test.ts` confere que a chave existe de verdade (rota em `src/app` ou slug
  * em `src/content/blog`) — chave errada = ViewContent que nunca dispara, em silêncio.
  */
@@ -43,6 +43,7 @@ export const PORTA_POR_PAGINA = {
   "/calculadora-lucro-do-corte": { porta: 1, tema: "calculadora-lucro" },
   "/calculadora-prejuizo": { porta: 1, tema: "calculadora-prejuizo" },
   "/do-zero-a-assinatura": { porta: 1, tema: "guia-assinatura-do-zero" },
+  "/cadeira-cheia": { porta: 1, tema: "cadeira-cheia" },
   "/blog/precificar-clube-assinatura-barbearia": { porta: 1, tema: "precificacao" },
   "/blog/clube-assinatura-barbearia": { porta: 1, tema: "montar-clube" },
   "/blog/barbearia-por-assinatura": { porta: 1, tema: "montar-clube" },
@@ -77,9 +78,9 @@ export type EventoPorta = (typeof EVENTOS_PORTA)[keyof typeof EVENTOS_PORTA];
  * Notificações, Passos); a faixa `[Site-Clube]BT-Migracao` é "migrar".
  *
  * Porta: criar = 1 (quer montar) · migrar = 3 (plano §5, "P3 · M4 ← clube_bt_migrar").
- * ATENÇÃO: a copy da faixa hoje fala com quem roda "no Pix ou na planilha" (porta 2 no
- * mapa do lead). O evento carrega a porta que o PLANO atribuiu ao clique; quem roda na
- * mão × em outro app só se separa com `clube_status` declarado no form (pendência).
+ * Confirmado pelo André em 12/Set/26: migrar = porta 3, mesmo com a copy da faixa falando
+ * com quem roda "no Pix ou na planilha". Quem roda na mão × em outro app só se separa com
+ * `clube_status` declarado no form (pendência).
  */
 export const CLUBE_FORK = {
   criar: { evento: EVENTOS_PORTA.clubeBtCriar, porta: 1 },
