@@ -5,6 +5,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
+// @ts-expect-error -- TS5097: o `tsc` do Next não liga `allowImportingTsExtensions`; o Node exige a extensão
 import * as modulo from "./lead-attribution.ts";
 const { buildLeadAttribution } = modulo as typeof import("./lead-attribution");
 
