@@ -10,6 +10,11 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    // `npm test` roda `node --test` direto no .ts, e o resolvedor do Node EXIGE a
+    // extensão no import relativo. Com esta opção o import `./lead-score.ts` é legal
+    // para o tsc também (ela requer `noEmit`, que já está ligado) e os testes deixam de
+    // precisar de `@ts-expect-error` para compilar.
+    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,

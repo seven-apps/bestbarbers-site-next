@@ -1,6 +1,9 @@
 "use client";
 
 import { useLeadForm } from "@/hooks";
+import { PerguntasQualificacao } from "@/components/forms/PerguntasQualificacao";
+import { AvisoPrivacidade } from "@/components/forms/AvisoPrivacidade";
+import { errosDeQualificacao } from "@/lib/qualificacao";
 import { ArrowRight, Sparkles, Shield, Clock, Users } from "lucide-react";
 
 interface FormSectionProps {
@@ -15,29 +18,13 @@ interface FormSectionProps {
   source?: string;
 }
 
+// Perguntas 1 a 4 — contato. As 5 a 8 vêm do <PerguntasQualificacao> (formulário
+// único, André 14/Set/26). Ordem decidida: dono → WhatsApp → e-mail → barbearia.
 const formFields = [
-  { name: "barbershopName", label: "Nome da Barbearia", placeholder: "Digite o nome da sua barbearia", type: "text" },
   { name: "ownerName", label: "Nome do Dono", placeholder: "Digite o nome do dono da barbearia", type: "text" },
-  { name: "email", label: "E-mail do Dono", placeholder: "Digite seu melhor e-mail", type: "email" },
   { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "Celular - whatsapp do dono da barbearia", type: "tel" },
-  { name: "monthlyRevenue", label: "Qual o faturamento médio da sua barbearia?", placeholder: "Selecione", type: "select", options: [
-    { value: "", label: "Selecione" },
-    { value: "Até R$ 2.000", label: "Até R$ 2.000" },
-    { value: "R$ 2.000 a R$ 10.000", label: "R$ 2.000 a R$ 10.000" },
-    { value: "De R$ 10.000 a R$ 30.000", label: "De R$ 10.000 a R$ 30.000" },
-    { value: "Acima de R$ 30.000", label: "Acima de R$ 30.000" },
-  ] },
-  { name: "interestedTool", label: "Qual ferramenta mais te interessa hoje?", placeholder: "Selecione", type: "select", options: [
-    { value: "", label: "Selecione" },
-    { value: "Agenda e Controle Financeiro", label: "Agenda e Controle Financeiro" },
-    { value: "Meu Próprio App + Clube de Assinaturas e emissão de NFs", label: "Meu Próprio App + Clube de Assinaturas e emissão de NFs" },
-  ] },
-  { name: "employeeCount", label: "Quantos profissionais trabalham na sua barbearia?", placeholder: "Selecione", type: "select", options: [
-    { value: "", label: "Selecione" },
-    { value: "Sou apenas eu", label: "Sou apenas eu" },
-    { value: "2 a 4 colaboradores", label: "2 a 4 colaboradores" },
-    { value: "5 ou mais colaboradores", label: "5 ou mais colaboradores" },
-  ] },
+  { name: "email", label: "Seu e-mail (opcional, pra gente falar com você depois)", placeholder: "Digite seu melhor e-mail", type: "email" },
+  { name: "barbershopName", label: "Nome da Barbearia", placeholder: "Digite o nome da sua barbearia", type: "text" },
 ];
 
 const trustBadges = [
@@ -70,6 +57,8 @@ export function FormSection({
     originDesc,
     source,
   });
+
+  const erros = errosDeQualificacao(submitError);
 
   return (
     <section
@@ -174,41 +163,34 @@ export function FormSection({
                 className="space-y-2 animate-fade-in-up"
                 style={{ animationDelay: `${0.4 + index * 0.05}s` }}
               >
-                <label 
+                <label
+                  htmlFor={`form-section-${field.name}`}
                   className="block font-bold text-[11px] md:text-xs uppercase tracking-widest text-white/50"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                 >
                   {field.label}
                 </label>
-                {field.type === "select" ? (
-                  <select
-                    name={field.name}
-                    value={formData[field.name as keyof typeof formData]}
-                    onChange={handleInputChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}
-                    required
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-white font-medium text-[15px] transition-all duration-300 outline-none appearance-none cursor-pointer hover:border-white/20 focus:border-[#ebad04]/50 focus:bg-white/[0.05]"
-                    style={{ fontFamily: "var(--font-montserrat)" }}
-                  >
-                    {field.options?.map((opt) => (
-                      <option key={opt.value} value={opt.value} disabled={opt.value === ""}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <input
-                    type={field.type}
-                    name={field.name}
-                    value={formData[field.name as keyof typeof formData]}
-                    onChange={handleInputChange}
-                    placeholder={field.placeholder}
-                    required
-                    className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/20 font-medium text-[15px] transition-all duration-300 outline-none hover:border-white/20 focus:border-[#ebad04]/50 focus:bg-white/[0.05]"
-                    style={{ fontFamily: "var(--font-montserrat)" }}
-                  />
-                )}
+                <input
+                  id={`form-section-${field.name}`}
+                  type={field.type}
+                  name={field.name}
+                  value={formData[field.name as keyof typeof formData]}
+                  onChange={handleInputChange}
+                  placeholder={field.placeholder}
+                  required={field.name !== "email"}
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/20 font-medium text-[15px] transition-all duration-300 outline-none hover:border-white/20 focus:border-[#ebad04]/50 focus:bg-white/[0.05]"
+                  style={{ fontFamily: "var(--font-montserrat)" }}
+                />
               </div>
             ))}
+
+            <PerguntasQualificacao
+              variante="escuro"
+              valores={formData}
+              onChange={handleInputChange}
+              erros={erros}
+              className="space-y-6"
+            />
 
             {/* Submit Button */}
             <div className="pt-6 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
@@ -242,6 +224,8 @@ export function FormSection({
                 </button>
               </div>
             </div>
+
+            <AvisoPrivacidade variante="escuro" />
 
             {/* Brand Signature estilo V12 */}
             <div className="text-center mt-8">

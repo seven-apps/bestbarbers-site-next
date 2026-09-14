@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { useLeadForm, useUtmParams } from "@/hooks";
+import { PerguntasQualificacao } from "@/components/forms/PerguntasQualificacao";
+import { AvisoPrivacidade } from "@/components/forms/AvisoPrivacidade";
+import { errosDeQualificacao } from "@/lib/qualificacao";
 import { ArrowRight, ShieldCheck, Users2, Ticket, CheckCircle2 } from "lucide-react";
 
 // Origem DEDICADA do evento (criada 02/Set/26 via scripts/ploomes/cadastrar-lead.ts
@@ -14,36 +17,13 @@ const EVENTO_ORIGIN_DESC = "LP Dezembro Lotado - 25 vagas app";
 // Campos CANÔNICOS (mesmos nomes/values do V12 → useLeadForm calcula o mesmo
 // lead_score de qualquer outra LP). Ver o racional completo no GuiaForm da
 // cadeira-cheia — aqui só muda a moldura/copy.
+// Perguntas 1 a 4 — contato. As 5 a 8 (faturamento, sistema, clube e profissionais)
+// vêm do <PerguntasQualificacao>, igual em todas as portas (André, 14/Set/26).
 const formFields = [
   { name: "ownerName", label: "Seu nome", placeholder: "Ex: João Silva", type: "text" },
-  { name: "barbershopName", label: "Nome da sua barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
   { name: "whatsapp", label: "Seu WhatsApp", placeholder: "(31) 99999-9999", type: "tel" },
   { name: "email", label: "Seu e-mail (opcional, pra gente falar com você depois)", placeholder: "Ex: joao@email.com", type: "email" },
-  {
-    name: "monthlyRevenue",
-    label: "Qual o faturamento médio da sua barbearia?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Até R$ 2.000", label: "Até R$ 2.000" },
-      { value: "R$ 2.000 a R$ 10.000", label: "R$ 2.000 a R$ 10.000" },
-      { value: "De R$ 10.000 a R$ 30.000", label: "De R$ 10.000 a R$ 30.000" },
-      { value: "Acima de R$ 30.000", label: "Acima de R$ 30.000" },
-    ],
-  },
-  {
-    name: "employeeCount",
-    label: "Quantas cadeiras tem sua barbearia?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Sou apenas eu", label: "1 cadeira (sou eu)" },
-      { value: "2 a 4 colaboradores", label: "2 a 4 cadeiras" },
-      { value: "5 ou mais colaboradores", label: "5 ou mais cadeiras" },
-    ],
-  },
+  { name: "barbershopName", label: "Nome da sua barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
 ];
 
 export function EventoForm() {
@@ -68,7 +48,6 @@ export function EventoForm() {
     source: "lp_evento_dezlotado",
     originId: utmMapping.originId ?? EVENTO_ORIGIN_ID,
     originDesc: utmMapping.originDesc || EVENTO_ORIGIN_DESC,
-    requireMonthlyRevenue: true,
     // Sucesso INLINE (sem redirect): a /obrigado fala de download de guia — aqui a
     // promessa é outra (vaga na lista) e a confirmação precisa dizer exatamente o
     // que acontece: time chama no WhatsApp + fechamento é no evento.
@@ -78,21 +57,15 @@ export function EventoForm() {
     },
   });
 
-  const monthlyRevenueError = !!submitError && submitError.includes("Faturamento");
+  // Qual das quatro perguntas de qualificação está com erro.
+  const erros = errosDeQualificacao(submitError);
+  // Prefixo dos ids — mantém `label htmlFor` único se o formulário montar duas vezes.
+  const idFormulario = useId();
 
-  // O form pergunta a ferramenta de interesse? Não — a LP É sobre o app personalizado.
-  // O hook aceita interestedTool via formData; fixamos o value canônico que pontua +40
-  // no lead score (é literalmente o interesse declarado por quem pede esta vaga).
-  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    handleInputChange(e);
-  };
-  useEffect(() => {
-    if (!mounted) return;
-    handleInputChange({
-      target: { name: "interestedTool", value: "Meu Próprio App + Clube de Assinaturas e emissão de NFs" },
-    } as React.ChangeEvent<HTMLInputElement>);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mounted]);
+  // A LP não fixa mais "App + Clube" por baixo do pano (era o `interestedTool` cravado
+  // num useEffect). Quem responde a pergunta 7 é o dono, em todas as portas — cravar a
+  // resposta aqui inventava um interesse que ninguém declarou e inflava o score de um
+  // coorte inteiro.
 
   if (submitted) {
     return (
@@ -183,54 +156,31 @@ export function EventoForm() {
         <form onSubmit={handleSubmit} className="space-y-4 w-full">
           {formFields.map((field) => (
             <div key={field.name} className="space-y-1.5">
-              <label className="block font-semibold text-[13px] leading-[20px]" style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}>
+              <label htmlFor={`${idFormulario}-${field.name}`} className="block font-semibold text-[13px] leading-[20px]" style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}>
                 {field.label}
               </label>
-              {field.type === "select" ? (
-                (() => {
-                  const fieldHasError = field.name === "monthlyRevenue" && monthlyRevenueError;
-                  return (
-                    <>
-                      <select
-                        name={field.name}
-                        value={formData[field.name as keyof typeof formData]}
-                        onChange={onChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}
-                        required
-                        className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 appearance-none cursor-pointer outline-none"
-                        style={{ background: "#f5f5f5", border: `1.5px solid ${fieldHasError ? "#dc2626" : "#e0e0e0"}`, color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
-                        onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
-                        onBlur={(e) => { e.currentTarget.style.borderColor = fieldHasError ? "#dc2626" : "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
-                      >
-                        {field.options?.map((opt) => (
-                          <option key={opt.value} value={opt.value} disabled={opt.value === ""}>
-                            {opt.label}
-                          </option>
-                        ))}
-                      </select>
-                      {fieldHasError && (
-                        <p className="text-xs font-medium" style={{ color: "#dc2626", fontFamily: "var(--font-montserrat)" }}>
-                          Selecione o faturamento médio para continuar
-                        </p>
-                      )}
-                    </>
-                  );
-                })()
-              ) : (
-                <input
-                  type={field.type}
-                  name={field.name}
-                  value={formData[field.name as keyof typeof formData]}
-                  onChange={onChange}
-                  placeholder={field.placeholder}
-                  required={field.name !== "email"}
-                  className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
-                  style={{ background: "#f5f5f5", border: "1.5px solid #e0e0e0", color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
-                />
-              )}
+              <input
+                id={`${idFormulario}-${field.name}`}
+                type={field.type}
+                name={field.name}
+                value={formData[field.name as keyof typeof formData]}
+                onChange={handleInputChange}
+                placeholder={field.placeholder}
+                required={field.name !== "email"}
+                className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
+                style={{ background: "#f5f5f5", border: "1.5px solid #e0e0e0", color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
+              />
             </div>
           ))}
+
+          {/* Perguntas 5 a 8 — as mesmas de todas as portas. */}
+          <PerguntasQualificacao
+            valores={formData}
+            onChange={handleInputChange}
+            erros={erros}
+          />
 
           <div className="pt-2">
             <button
@@ -259,6 +209,8 @@ export function EventoForm() {
               )}
             </button>
           </div>
+
+          <AvisoPrivacidade />
 
           <p
             className="text-center text-[10px] uppercase tracking-wider mt-2 flex items-center justify-center gap-1.5"

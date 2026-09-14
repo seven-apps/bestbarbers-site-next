@@ -10,7 +10,10 @@ export interface PloomesContactData {
   whatsapp: string;
   monthlyRevenue?: string;
   employeeCount: string;
-  interestedTool?: string;
+  /** Pergunta 7 — situação do clube. Também é a origem do `[Interesse: ...]` legado. */
+  clubStatus?: string;
+  /** Pergunta 6 — sistema usado hoje. */
+  currentSystem?: string;
   leadScore?: number;
   /** Meta CAPI / Pixel event ID compartilhado entre browser e server (deduplicação) */
   leadEventId?: string;
@@ -88,7 +91,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       utmParams,
       originId: customOriginId ?? utmMapping.originId,
       originDesc: customOriginDesc ?? utmMapping.originDesc,
-      interestedTool: data.interestedTool,
+      clubStatus: data.clubStatus,
       leadScore: data.leadScore,
       leadEventId: data.leadEventId,
     });
@@ -112,6 +115,14 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     if (typeof leadScore === 'number' && Number.isFinite(leadScore)) {
       bbProps.push({ FieldKey: PLOOMES_CONTACT_INT_FIELDS.bb_lead_score, IntegerValue: Math.trunc(leadScore) });
     }
+    // Perguntas 7 e 6 do formulário v2 (campos criados no Ploomes em 14/Set/26). Gravam
+    // a opção EXATA — é o que permite ao SDR ler a resposta, e não só a nota que ela gerou.
+    if (data.clubStatus) {
+      bbProps.push({ FieldKey: PLOOMES_CONTACT_FIELDS.bb_situacao_clube, StringValue: data.clubStatus });
+    }
+    if (data.currentSystem) {
+      bbProps.push({ FieldKey: PLOOMES_CONTACT_FIELDS.bb_sistema_atual, StringValue: data.currentSystem });
+    }
 
     const ploomesData = {
       Name: data.barbershopName,
@@ -134,6 +145,9 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
           FieldKey: PLOOMES_LEGACY_FIELDS.campaignDescStr,
           StringValue: originDesc || ''
         },
+        // Campos LEGADOS de faturamento e colaboradores: recebem as STRINGS NOVAS
+        // (as 5 faixas e as 4 de porte do formulário v2), não as antigas traduzidas.
+        // O campo é o mesmo, o vocabulário é o novo — a data do deploy marca a virada.
         {
           FieldKey: PLOOMES_LEGACY_FIELDS.employeeCount,
           StringValue: data.employeeCount

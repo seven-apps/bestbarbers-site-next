@@ -16,7 +16,6 @@ import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-// @ts-expect-error -- TS5097: o `tsc` do Next não liga `allowImportingTsExtensions`; o Node exige a extensão
 import * as modulo from "./porta.ts";
 
 const {

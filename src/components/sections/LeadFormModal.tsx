@@ -3,6 +3,9 @@
 import { useEffect, useCallback } from "react";
 import { useLeadForm } from "@/hooks";
 import { useUtmParams } from "@/hooks/useUtmParams";
+import { PerguntasQualificacao } from "@/components/forms/PerguntasQualificacao";
+import { AvisoPrivacidade } from "@/components/forms/AvisoPrivacidade";
+import { errosDeQualificacao } from "@/lib/qualificacao";
 import { X, ArrowRight, Shield } from "lucide-react";
 
 interface LeadFormModalProps {
@@ -14,47 +17,16 @@ interface LeadFormModalProps {
   originId?: number;
 }
 
+// Perguntas 1 a 4 — contato. As 5 a 8 (faturamento, sistema, clube, profissionais)
+// vêm do <PerguntasQualificacao>, igual em todas as portas (André, 14/Set/26).
+// A ORDEM é a decidida: dono → WhatsApp → e-mail (opcional) → barbearia.
 const formFields = [
   { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
-  { name: "email", label: "E-mail do Dono", placeholder: "Ex: joao@email.com", type: "email" },
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
   { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "(11) 99999-9999", type: "tel" },
-  {
-    name: "monthlyRevenue",
-    label: "Qual o faturamento médio da sua barbearia?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Até R$ 2.000", label: "Até R$ 2.000" },
-      { value: "R$ 2.000 a R$ 10.000", label: "R$ 2.000 a R$ 10.000" },
-      { value: "De R$ 10.000 a R$ 30.000", label: "De R$ 10.000 a R$ 30.000" },
-      { value: "Acima de R$ 30.000", label: "Acima de R$ 30.000" },
-    ],
-  },
-  {
-    name: "interestedTool",
-    label: "Qual ferramenta mais te interessa hoje?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Agenda e Controle Financeiro", label: "Agenda e Controle Financeiro" },
-      { value: "Meu Próprio App + Clube de Assinaturas e emissão de NFs", label: "Meu Próprio App + Clube de Assinaturas e emissão de NFs" },
-    ],
-  },
-  {
-    name: "employeeCount",
-    label: "Quantos profissionais trabalham na sua barbearia?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Sou apenas eu", label: "Sou apenas eu" },
-      { value: "2 a 4 colaboradores", label: "2 a 4 colaboradores" },
-      { value: "5 ou mais colaboradores", label: "5 ou mais colaboradores" },
-    ],
-  },
+  // E-mail OPCIONAL COM MOTIVO — o rótulo medido nas LPs (95,9% de preenchimento) e o
+  // único campo sem `required`: vazio nunca pode barrar ninguém.
+  { name: "email", label: "Seu e-mail (opcional, pra gente falar com você depois)", placeholder: "Ex: joao@email.com", type: "email" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
 ];
 
 const SITE_ORIGIN_ID = 40210426;
@@ -92,6 +64,8 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId }: LeadFor
     originId: utmMapping.originId ?? originId ?? SITE_ORIGIN_ID,
     originDesc: podcastDesc || originDesc || utmMapping.originDesc || "[Site]Modal",
   });
+
+  const erros = errosDeQualificacao(submitError);
 
   // Fecha modal com ESC
   useEffect(() => {
@@ -169,36 +143,28 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId }: LeadFor
           <form onSubmit={handleSubmit} className="space-y-4">
             {formFields.map((field) => (
               <div key={field.name} className="space-y-1.5">
-                <label className="block font-semibold text-[13px] md:text-[14px] text-white/90">
+                <label htmlFor={`modal-${field.name}`} className="block font-semibold text-[13px] md:text-[14px] text-white/90">
                   {field.label}
                 </label>
-                {field.type === "select" ? (
-                  <select
-                    name={field.name}
-                    value={formData[field.name as keyof typeof formData]}
-                    onChange={handleInputChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}
-                    required
-                    className="w-full bg-[#1a1d25] border-2 border-[#2a2d35] rounded-xl px-4 py-3.5 text-white font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45] appearance-none cursor-pointer"
-                  >
-                    {field.options?.map((opt) => (
-                      <option key={opt.value} value={opt.value} disabled={opt.value === ""} className="bg-[#1a1d25]">
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                ) : (
-                  <input
-                    type={field.type}
-                    name={field.name}
-                    value={formData[field.name as keyof typeof formData]}
-                    onChange={handleInputChange}
-                    placeholder={field.placeholder}
-                    required
-                    className="w-full bg-[#1a1d25] border-2 border-[#2a2d35] rounded-xl px-4 py-3.5 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45]"
-                  />
-                )}
+                <input
+                  id={`modal-${field.name}`}
+                  type={field.type}
+                  name={field.name}
+                  value={formData[field.name as keyof typeof formData]}
+                  onChange={handleInputChange}
+                  placeholder={field.placeholder}
+                  required={field.name !== "email"}
+                  className="w-full bg-[#1a1d25] border-2 border-[#2a2d35] rounded-xl px-4 py-3.5 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45]"
+                />
               </div>
             ))}
+
+            <PerguntasQualificacao
+              variante="escuro"
+              valores={formData}
+              onChange={handleInputChange}
+              erros={erros}
+            />
 
             {/* Botao submit */}
             <div className="pt-3">
@@ -224,6 +190,8 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId }: LeadFor
                 )}
               </button>
             </div>
+
+            <AvisoPrivacidade variante="escuro" />
 
             <p className="text-center text-gray-500 text-xs flex items-center justify-center gap-1.5">
               <Shield className="w-3.5 h-3.5" />

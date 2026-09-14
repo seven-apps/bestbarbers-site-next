@@ -5,14 +5,22 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-// @ts-expect-error -- TS5097: o `tsc` do Next não liga `allowImportingTsExtensions`; o Node exige a extensão
 import * as modulo from "./lead-attribution.ts";
 const { buildLeadAttribution } = modulo as typeof import("./lead-attribution");
 
+// `window` falso só com o que o builder lê (search + pathname) — tipado como parcial
+// em vez de `any`, para o lint não precisar de exceção num arquivo de teste.
+type JanelaDeTeste = { window?: { location: { search: string; pathname: string } } };
+
 const comUrl = (search: string, utm: Record<string, string> = { utm_content: "VIDEO-X-MEIO" }) => {
-  (globalThis as any).window = { location: { search, pathname: "/clube" } };
-  const r = buildLeadAttribution({ utmParams: utm as any, originId: 1, originDesc: null });
-  delete (globalThis as any).window;
+  const global = globalThis as unknown as JanelaDeTeste;
+  global.window = { location: { search, pathname: "/clube" } };
+  const r = buildLeadAttribution({
+    utmParams: utm as unknown as Parameters<typeof buildLeadAttribution>[0]["utmParams"],
+    originId: 1,
+    originDesc: null,
+  });
+  delete global.window;
   return r;
 };
 

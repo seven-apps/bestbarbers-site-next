@@ -30,6 +30,13 @@ export const PLOOMES_CONTACT_FIELDS = {
   bb_fbclid:         'contact_7AFF1DE0-4FF9-429D-80A7-08E0478A31CE',
   bb_gclid:          'contact_6341952B-8446-47E2-93A6-F10921A9E218',
   bb_lead_event_id:  'contact_15FDF793-85B5-4024-A866-348C44A2D67B',
+
+  // Formulário v2 — set/2026 (perguntas 6 e 7 do formulário único de 8 perguntas).
+  // Campos criados no Ploomes em 14/Set/26. Texto puro (StringValue): gravam a opção
+  // EXATA escolhida, as mesmas strings de `src/lib/lead-score.ts` — é isso que permite
+  // reconciliar o `bb_lead_score` com as respostas que o geraram.
+  bb_situacao_clube: 'contact_6D563B37-DAFF-4063-B041-5D171D04773A',
+  bb_sistema_atual:  'contact_16643D92-422D-4B50-8FF5-BE66A32328E8',
 } as const;
 
 /**

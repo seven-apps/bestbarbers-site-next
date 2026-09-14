@@ -6,16 +6,31 @@ import { useMetaPixel } from './useMetaPixel';
 import { useUtmParams } from './useUtmParams';
 import { criarCardRecadastro } from '@/lib/recadastro';
 import { validarEmailOpcional } from '@/lib/form-passo1';
+import { calcularScoreV2, interesseLegado } from '@/lib/lead-score';
+import { MSG_CLUBE, MSG_FATURAMENTO, MSG_PROFISSIONAIS, MSG_SISTEMA } from '@/lib/qualificacao';
 import { portaDoLead } from '@/lib/tracking/porta';
 
+/**
+ * Formulário ÚNICO de 8 perguntas (André, 14/Set/26): dono · WhatsApp · e-mail
+ * (opcional) · barbearia · faturamento · sistema · clube · profissionais.
+ *
+ * `interestedTool` ("qual ferramenta mais te interessa") SAIU: a pergunta 7 (clube)
+ * ocupa o lugar dela na pontuação e o `[Interesse: ...]` do CRM passa a ser derivado
+ * por `interesseLegado(clubStatus)` — nenhum leitor legado quebra, e ninguém mais
+ * responde duas vezes a mesma coisa.
+ */
 export interface FormData {
   barbershopName: string;
   ownerName: string;
   email: string;
   whatsapp: string;
   monthlyRevenue: string;
+  /** Pergunta 8 — faixas novas ("Sou apenas eu", "2 profissionais", …). */
   employeeCount: string;
-  interestedTool: string;
+  /** Pergunta 7 — situação do clube de assinaturas. */
+  clubStatus: string;
+  /** Pergunta 6 — sistema usado hoje (lista fechada; "Utilizo outro" cobre o resto). */
+  currentSystem: string;
 }
 
 export interface UseLeadFormOptions {
@@ -28,11 +43,6 @@ export interface UseLeadFormOptions {
   originDesc?: string;
   /** Source identifier para BBAI API (atribuição em relatórios). Default: 'lp_v5' (retrocompat). */
   source?: string;
-  /**
-   * Exige seleção de faturamento médio no submit. Opt-in porque nem todo form
-   * tem o campo monthlyRevenue (MultiStepForm, V5, V7). V12 passa true.
-   */
-  requireMonthlyRevenue?: boolean;
 }
 
 declare global {
@@ -54,7 +64,6 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     originId,
     originDesc,
     source = 'lp_v5',
-    requireMonthlyRevenue = false,
   } = options;
 
   const [formData, setFormData] = useState<FormData>({
@@ -64,7 +73,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     whatsapp: '',
     monthlyRevenue: '',
     employeeCount: '',
-    interestedTool: ''
+    clubStatus: '',
+    currentSystem: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -151,17 +161,23 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     if (!isValidPhone(formData.whatsapp)) {
       return 'WhatsApp deve ter formato válido';
     }
-    if (requireMonthlyRevenue && !formData.monthlyRevenue?.trim()) {
-      return 'Faturamento médio é obrigatório';
+    // Perguntas 5 a 8 obrigatórias em TODAS as portas (André, 14/Set/26) — antes o
+    // faturamento era opt-in por LP (`requireMonthlyRevenue`) e quem esquecia a flag
+    // deixava o lead entrar sem a resposta que mais pesa no score, em silêncio.
+    if (!formData.monthlyRevenue?.trim()) {
+      return MSG_FATURAMENTO;
+    }
+    if (!formData.currentSystem?.trim()) {
+      return MSG_SISTEMA;
+    }
+    if (!formData.clubStatus?.trim()) {
+      return MSG_CLUBE;
     }
     if (!formData.employeeCount?.trim()) {
-      return 'Número de colaboradores é obrigatório';
-    }
-    if (!formData.interestedTool?.trim()) {
-      return 'Interesse é obrigatório';
+      return MSG_PROFISSIONAIS;
     }
     return null;
-  }, [formData, isValidPhone, requireMonthlyRevenue]);
+  }, [formData, isValidPhone]);
 
   const handleSubmit = useCallback(async (e?: React.FormEvent | React.MouseEvent) => {
     e?.preventDefault();
@@ -192,35 +208,18 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         ? cachedDedup
         : await resolveDedup(formData.whatsapp);
 
-      // 2. Cálculo de Lead Scoring (0-100+)
-      let leadScore = 0;
-      
-      // Faturamento (Até -100 ou +40)
-      if (formData.monthlyRevenue === 'Até R$ 2.000') {
-        leadScore -= 100; // Desqualificado
-      } else if (formData.monthlyRevenue === 'R$ 2.000 a R$ 10.000') {
-        leadScore += 20;
-      } else if (formData.monthlyRevenue === 'De R$ 10.000 a R$ 30.000') {
-        leadScore += 40;
-      } else if (formData.monthlyRevenue === 'Acima de R$ 30.000') {
-        leadScore += 40;
-      }
-
-      // Interesse (10 ou 40)
-      if (formData.interestedTool === 'Agenda e Controle Financeiro') {
-        leadScore += 10;
-      } else if (formData.interestedTool === 'Meu Próprio App + Clube de Assinaturas e emissão de NFs') {
-        leadScore += 40;
-      }
-
-      // Colaboradores (0, 10 ou 20)
-      if (formData.employeeCount === 'Sou apenas eu') {
-        leadScore += 0;
-      } else if (formData.employeeCount === '2 a 4 colaboradores') {
-        leadScore += 10;
-      } else if (formData.employeeCount === '5 ou mais colaboradores') {
-        leadScore += 20;
-      }
+      // 2. LEAD SCORE v2 — a fórmula vive em src/lib/lead-score.ts (com teste), não aqui.
+      // Devolve `null` quando falta faturamento, clube ou profissionais: ausência de
+      // resposta NUNCA vira 0, porque 0 é uma nota válida da escala e confundir as duas
+      // coisas transformaria "não respondeu" em "respondeu mal" em todo leitor do CRM.
+      const leadScore = calcularScoreV2({
+        faturamento: formData.monthlyRevenue,
+        clube: formData.clubStatus,
+        profissionais: formData.employeeCount,
+        sistema: formData.currentSystem,
+      });
+      // `[Interesse: ...]` do CRM e `interested_tool` das tags: traduzidos da pergunta 7.
+      const interestedTool = interesseLegado(formData.clubStatus);
 
       // GATE DE SCORE POR CÉLULA — o registro das células que otimizam por QUALIDADE.
       //
@@ -244,9 +243,12 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       const celula = CELULAS_COM_CORTE.find(
         (c) => c.conjunto.toUpperCase() === (utmParams.publico || '').trim().toUpperCase()
       );
-      const leadQualifica = leadScore >= 30;
-      const leadQualifica60 = leadScore >= 60;
-      const metaLeadFired = celula ? leadScore >= celula.min : true;
+      // Score ausente não satisfaz corte nenhum: a célula que otimiza por qualidade
+      // exige a prova, e "sem resposta" não é prova. Fora das células com corte, o
+      // comportamento é o de sempre (Lead cru em todo submit).
+      const leadQualifica = leadScore !== null && leadScore >= 30;
+      const leadQualifica60 = leadScore !== null && leadScore >= 60;
+      const metaLeadFired = celula ? leadScore !== null && leadScore >= celula.min : true;
 
       // _fbp/_fbc são os cookies que a Meta usa para parear o evento do navegador com
       // o do servidor (CAPI/Stape). Sem eles a dedup depende só do event_id e pode contar 2×.
@@ -291,7 +293,11 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
             barbershop_name: formData.barbershopName,
             monthly_revenue: formData.monthlyRevenue,
             employee_count: formData.employeeCount,
-            interested_tool: formData.interestedTool,
+            // `interested_tool` continua preenchido (derivado do clube) para nenhuma tag
+            // do GTM que casa por essa chave parar de disparar na virada do formulário.
+            interested_tool: interestedTool,
+            club_status: formData.clubStatus,
+            current_system: formData.currentSystem,
             lead_score: leadScore,
             lp_version: source,
           },
@@ -313,8 +319,10 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         whatsapp: formData.whatsapp,
         monthlyRevenue: formData.monthlyRevenue || undefined,
         employeeCount: formData.employeeCount,
-        interestedTool: formData.interestedTool,
-        leadScore,
+        clubStatus: formData.clubStatus,
+        currentSystem: formData.currentSystem,
+        // `undefined` = a LP não calculou score → o campo do CRM fica VAZIO, nunca 0.
+        leadScore: leadScore ?? undefined,
         leadEventId,
       };
       if (dedup.exists) {
@@ -328,6 +336,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
           atribuicao: buildAttribution(ploomesData),
           faturamento: formData.monthlyRevenue || undefined,
           colaboradores: formData.employeeCount || undefined,
+          clube: formData.clubStatus || undefined,
+          sistema: formData.currentSystem || undefined,
           // Sem isto o e-mail digitado num recadastro morria no caminho (o contato já
           // existe, então ninguém escrevia o campo). O backend só PREENCHE contato sem
           // e-mail — nunca sobrescreve o que o CRM já tem.
@@ -400,7 +410,10 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         content_category: 'lead_generation',
         barbershop_name: formData.barbershopName,
         employee_count: formData.employeeCount,
-        lead_score: leadScore,
+        interested_tool: interestedTool,
+        club_status: formData.clubStatus,
+        current_system: formData.currentSystem,
+        ...(leadScore !== null && { lead_score: leadScore }),
         ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
         ...(portaLead !== undefined && { porta: portaLead }),
       };
@@ -476,7 +489,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       whatsapp: '',
       monthlyRevenue: '',
       employeeCount: '',
-      interestedTool: ''
+      clubStatus: '',
+      currentSystem: ''
     });
     setSubmitError(null);
   }, []);

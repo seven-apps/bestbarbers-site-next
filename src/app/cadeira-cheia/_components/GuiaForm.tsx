@@ -1,8 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { useLeadForm, useUtmParams } from "@/hooks";
+import { PerguntasQualificacao } from "@/components/forms/PerguntasQualificacao";
+import { AvisoPrivacidade } from "@/components/forms/AvisoPrivacidade";
+import { errosDeQualificacao } from "@/lib/qualificacao";
 import { hrefObrigado } from "@/lib/iscas";
 import { ArrowRight, ShieldCheck, Users2, Gift } from "lucide-react";
 
@@ -19,71 +22,22 @@ import { ArrowRight, ShieldCheck, Users2, Gift } from "lucide-react";
 const CADEIRA_CHEIA_ORIGIN_ID = 40210173;
 const CADEIRA_CHEIA_ORIGIN_DESC = "LP Cadeira Cheia - Guia Reativação";
 
-// Campos alinhados ao form CANÔNICO (src/app/v12/_components/FormSectionV12.tsx),
-// pra que useLeadForm calcule o MESMO lead_score de qualquer outra LP (ver fórmula
-// em src/hooks/useLeadForm.ts:210-238). O que muda LP a LP é só a moldura visual/copy
-// — os nomes de campo, opções de faturamento/equipe e o cálculo em si são o padrão:
-//   Faturamento  → Até R$2.000 -100 · R$2k-10k +20 · R$10k-30k +40 · Acima R$30k +40
-//   interestedTool → Agenda e Controle Financeiro +10 · App+Clube+NFs +40
-//   employeeCount  → Sou apenas eu +0 · 2 a 4 colaboradores +10 · 5+ colaboradores +20
-// "Nome" é o nome da pessoa (ownerName); o nome da barbearia não é perguntado (mantém
-// a fricção baixa do guia), então espelhamos ownerName → barbershopName no onChange
-// (o hook exige barbershopName e o Ploomes usa como Contact.Name). Isso NÃO afeta o
-// score: barbershopName não entra na fórmula em nenhuma LP.
+// A régua do score vive em `src/lib/lead-score.ts` (com teste) e as perguntas 5 a 8
+// no `<PerguntasQualificacao>` — não há mais fórmula nem lista de opções copiada por
+// LP. O que muda de porta para porta é só a moldura visual e a copy.
+// Perguntas 1 a 4 — contato. As perguntas 5 a 8 (faturamento, sistema, clube e
+// profissionais) vêm do <PerguntasQualificacao>, idêntico em todas as portas
+// (André, 14/Set/26). O guia PASSA A PERGUNTAR o nome da barbearia: espelhar o nome
+// do dono ali nascia de uma economia de fricção que o formulário único encerrou — e
+// enchia o Contact.Name do Ploomes com o nome da pessoa no lugar do da casa.
 const formFields = [
   { name: "ownerName", label: "Seu nome", placeholder: "Ex: João Silva", type: "text" },
   { name: "whatsapp", label: "Seu WhatsApp", placeholder: "(11) 99999-9999", type: "tel" },
-  // E-mail: segundo caminho de CONTATO, não canal de entrega — o guia é baixado na
-  // /obrigado, nada é enviado (não existe executor de e-mail/WhatsApp; a única rota do
-  // site é /api/ploomes). O rótulo antigo ("pra receber o guia") prometia um envio que
-  // nunca acontece. Fica OPCIONAL COM MOTIVO de propósito: é o formato que mede 95,9%
-  // de preenchimento nesta LP — tirar o motivo derruba a taxa. Não entra no lead_score.
+  // E-mail OPCIONAL e sem promessa de entrega: o guia é baixado na tela seguinte, não
+  // enviado. OPCIONAL COM MOTIVO, não "opcional" seco — é o formato que mede 95,9% de
+  // preenchimento aqui; sem o motivo a taxa cai.
   { name: "email", label: "Seu e-mail (opcional, pra gente falar com você depois)", placeholder: "Ex: joao@email.com", type: "email" },
-  {
-    // Maior driver do lead_score. Options IDÊNTICAS ao canônico (V12) — string precisa
-    // bater exatamente com o mapa em useLeadForm.ts, senão a faixa de faturamento não
-    // pontua. Campo ausente no GuiaForm original; era o gap que descalibrava o score.
-    name: "monthlyRevenue",
-    label: "Qual o faturamento médio da sua barbearia?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Até R$ 2.000", label: "Até R$ 2.000" },
-      { value: "R$ 2.000 a R$ 10.000", label: "R$ 2.000 a R$ 10.000" },
-      { value: "De R$ 10.000 a R$ 30.000", label: "De R$ 10.000 a R$ 30.000" },
-      { value: "Acima de R$ 30.000", label: "Acima de R$ 30.000" },
-    ],
-  },
-  {
-    // Porte da barbearia. Os VALUES são os do canônico (score: Sou apenas eu +0 ·
-    // 2 a 4 +10 · 5+ +20) — já batiam no GuiaForm original. Só os LABELS falam em
-    // "cadeiras" (framing do tema "Cadeira Cheia"); não altera o score.
-    name: "employeeCount",
-    label: "Quantas cadeiras tem sua barbearia?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Sou apenas eu", label: "1 cadeira (sou eu)" },
-      { value: "2 a 4 colaboradores", label: "2 a 4 cadeiras" },
-      { value: "5 ou mais colaboradores", label: "5 ou mais cadeiras" },
-    ],
-  },
-  {
-    // Substitui o antigo "já usa sistema de agendamento?" (options que não casavam com
-    // NENHUMA faixa do score — contribuição sempre 0, por design, mas incompatível com
-    // o padrão). Segue o canônico (V12): options e label idênticos, pra pontuar +10/+40.
-    name: "interestedTool",
-    label: "Qual ferramenta mais te interessa hoje?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Agenda e Controle Financeiro", label: "Agenda e Controle Financeiro" },
-      { value: "Meu Próprio App + Clube de Assinaturas e emissão de NFs", label: "Meu Próprio App + Clube de Assinaturas e emissão de NFs" },
-    ],
-  },
+  { name: "barbershopName", label: "Nome da sua barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
 ];
 
 export function GuiaForm() {
@@ -118,7 +72,6 @@ export function GuiaForm() {
     // Igual ao V12: exige faturamento no submit. Sem isso, quem pula o campo pontuaria
     // 0 na faixa de faturamento (silencioso) em vez de ficar de fora do padrão por opção
     // — quebraria a comparabilidade do lead_score entre esta LP e as demais.
-    requireMonthlyRevenue: true,
     // O evento Lead (Pixel + CAPI) dispara AQUI dentro do hook, no submit, e é awaited
     // antes deste onSuccess. Por isso o /obrigado NÃO refaz Lead (evita double-count —
     // o mesmo bug que o comentário do v12/layout.tsx documenta).
@@ -131,19 +84,11 @@ export function GuiaForm() {
     },
   });
 
-  // Estado de erro do campo de faturamento (mesmo padrão do V12: validação no submit).
-  const monthlyRevenueError = !!submitError && submitError.includes("Faturamento");
-
-  // Espelha o nome da pessoa no nome da barbearia (campo exigido pelo hook, não
-  // perguntado no form pra manter a fricção baixa).
-  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    handleInputChange(e);
-    if (e.target.name === "ownerName") {
-      handleInputChange({
-        target: { name: "barbershopName", value: e.target.value },
-      } as React.ChangeEvent<HTMLInputElement>);
-    }
-  };
+  // Qual das quatro perguntas de qualificação está com erro (comparação EXATA pela
+  // mensagem do hook, não mais por `includes("Faturamento")`).
+  const erros = errosDeQualificacao(submitError);
+  // Prefixo dos ids — mantém `label htmlFor` único se o formulário montar duas vezes.
+  const idFormulario = useId();
 
   return (
     <div
@@ -215,54 +160,31 @@ export function GuiaForm() {
         <form onSubmit={handleSubmit} className="space-y-4 w-full">
           {formFields.map((field) => (
             <div key={field.name} className="space-y-1.5">
-              <label className="block font-semibold text-[13px] leading-[20px]" style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}>
+              <label htmlFor={`${idFormulario}-${field.name}`} className="block font-semibold text-[13px] leading-[20px]" style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}>
                 {field.label}
               </label>
-              {field.type === "select" ? (
-                (() => {
-                  const fieldHasError = field.name === "monthlyRevenue" && monthlyRevenueError;
-                  return (
-                    <>
-                      <select
-                        name={field.name}
-                        value={formData[field.name as keyof typeof formData]}
-                        onChange={onChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}
-                        required
-                        className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 appearance-none cursor-pointer outline-none"
-                        style={{ background: "#f5f5f5", border: `1.5px solid ${fieldHasError ? "#dc2626" : "#e0e0e0"}`, color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
-                        onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
-                        onBlur={(e) => { e.currentTarget.style.borderColor = fieldHasError ? "#dc2626" : "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
-                      >
-                        {field.options?.map((opt) => (
-                          <option key={opt.value} value={opt.value} disabled={opt.value === ""}>
-                            {opt.label}
-                          </option>
-                        ))}
-                      </select>
-                      {fieldHasError && (
-                        <p className="text-xs font-medium" style={{ color: "#dc2626", fontFamily: "var(--font-montserrat)" }}>
-                          Selecione o faturamento médio para continuar
-                        </p>
-                      )}
-                    </>
-                  );
-                })()
-              ) : (
-                <input
-                  type={field.type}
-                  name={field.name}
-                  value={formData[field.name as keyof typeof formData]}
-                  onChange={onChange}
-                  placeholder={field.placeholder}
-                  required={field.name !== "email"}
-                  className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
-                  style={{ background: "#f5f5f5", border: "1.5px solid #e0e0e0", color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
-                />
-              )}
+              <input
+                id={`${idFormulario}-${field.name}`}
+                type={field.type}
+                name={field.name}
+                value={formData[field.name as keyof typeof formData]}
+                onChange={handleInputChange}
+                placeholder={field.placeholder}
+                required={field.name !== "email"}
+                className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
+                style={{ background: "#f5f5f5", border: "1.5px solid #e0e0e0", color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
+              />
             </div>
           ))}
+
+          {/* Perguntas 5 a 8 — as mesmas de todas as portas. */}
+          <PerguntasQualificacao
+            valores={formData}
+            onChange={handleInputChange}
+            erros={erros}
+          />
 
           <div className="pt-2">
             <button
@@ -294,6 +216,8 @@ export function GuiaForm() {
               )}
             </button>
           </div>
+
+          <AvisoPrivacidade />
 
           <p
             className="text-center text-[10px] uppercase tracking-wider mt-2 flex items-center justify-center gap-1.5"

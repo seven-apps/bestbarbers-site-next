@@ -1,69 +1,36 @@
 "use client";
 
 import { useLeadForm, useUtmParams } from "@/hooks";
+import { PerguntasQualificacao } from "@/components/forms/PerguntasQualificacao";
+import { AvisoPrivacidade } from "@/components/forms/AvisoPrivacidade";
+import { errosDeQualificacao } from "@/lib/qualificacao";
 import { ArrowRight, ShieldCheck, Users2, Clock } from "lucide-react";
 import { MSG_EMAIL_INVALIDO, trackAvancoPasso2, validarEmailOpcional } from "@/lib/form-passo1";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 
+// Perguntas 1 a 4 — contato, no passo 1. As perguntas 5 a 8 (faturamento, sistema,
+// clube e profissionais) vivem no passo 2, dentro do <PerguntasQualificacao>:
+// formulário único em todas as portas (André, 14/Set/26). O "qual ferramenta mais te
+// interessa" SAIU — a pergunta de clube ocupa o lugar dele na pontuação.
+// A ordem decidida é dono → WhatsApp → e-mail → barbearia.
 const formFields = [
   { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
   { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "(11) 99999-9999", type: "tel" },
   // E-MAIL: houve uma IDA e uma VOLTA. Quem ler isto daqui a seis meses precisa das duas.
   //
   // REMOVIDO (OP400, 15/Jun/26): fricção pura — o canal de contato é o WhatsApp e o campo
   // era OBRIGATÓRIO, com regex que bloqueava o envio por erro de digitação. Perdia-se lead
-  // inteiro por um "@gmail.con". A remoção atacava o leak visita→lead, e a nota de julho
-  // ("não reintroduzir e-mail na V12") existia por causa desse regex barrando o envio.
+  // inteiro por um "@gmail.con".
   //
   // REPOSTO (01/Set/26): o que volta é OPCIONAL, não o campo de junho. Vazio passa direto
   // (o gate canAdvanceToStep2 exige só ownerName e whatsapp; o `required` do input é
-  // negado para "email") e endereço torto só AVISA, sem prender ninguém — a razão da
-  // remoção deixa de existir. O que forçou a revisão: a família precificação, sem o campo,
-  // capturava e-mail em apenas 8,6% dos leads. Rótulo é opcional COM MOTIVO (gabarito
-  // cadeira-cheia, 95,9% de preenchimento) e não promete entrega por e-mail — não existe
-  // executor para lead do Ploomes. Vai para o campo NATIVO Email do Contact.
+  // negado para "email") e endereço torto só AVISA, sem prender ninguém. Rótulo é opcional
+  // COM MOTIVO (gabarito cadeira-cheia, 95,9% de preenchimento) e não promete entrega por
+  // e-mail. Vai para o campo NATIVO Email do Contact.
   //
   // Fica no PASSO 1 (ver STEP1_FIELDS): é a única tela por onde 100% de quem envia passa.
-  // Régua de reversão: trackAvancoPasso2 mede passo 1 → passo 2; queda de conclusão
-  // reabre o leak e o campo sai de novo.
   { name: "email", label: "Seu e-mail (opcional, pra gente falar com você depois)", placeholder: "Ex: joao@email.com", type: "email" },
-  {
-    name: "monthlyRevenue",
-    label: "Qual o faturamento médio da sua barbearia?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Até R$ 2.000", label: "Até R$ 2.000" },
-      { value: "R$ 2.000 a R$ 10.000", label: "R$ 2.000 a R$ 10.000" },
-      { value: "De R$ 10.000 a R$ 30.000", label: "De R$ 10.000 a R$ 30.000" },
-      { value: "Acima de R$ 30.000", label: "Acima de R$ 30.000" },
-    ],
-  },
-  {
-    name: "interestedTool",
-    label: "Qual ferramenta mais te interessa hoje?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Agenda e Controle Financeiro", label: "Agenda e Controle Financeiro" },
-      { value: "Meu Próprio App + Clube de Assinaturas e emissão de NFs", label: "Meu Próprio App + Clube de Assinaturas e emissão de NFs" },
-    ],
-  },
-  {
-    name: "employeeCount",
-    label: "Quantos profissionais trabalham na sua barbearia?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Sou apenas eu", label: "Sou apenas eu" },
-      { value: "2 a 4 colaboradores", label: "2 a 4 colaboradores" },
-      { value: "5 ou mais colaboradores", label: "5 ou mais colaboradores" },
-    ],
-  },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
 ];
 
 function getFormHeading(utmContent: string | null) {
@@ -110,15 +77,17 @@ export function FormSectionV12() {
     setSubmitError,
   } = useLeadForm({
     source: "lp_v12",
-    requireMonthlyRevenue: true,
     onError: (error) => {
       console.error("Erro ao enviar formulário:", error);
       alert("Erro ao enviar formulário. Tente novamente.");
     },
   });
 
-  // Estado de erro do campo de faturamento (validação no submit handler)
-  const monthlyRevenueError = !!submitError && submitError.includes("Faturamento");
+  // Qual das quatro perguntas de qualificação está com erro (comparação EXATA pela
+  // mensagem do hook — `includes("Faturamento")` casava com a mensagem de um campo só).
+  const erros = errosDeQualificacao(submitError);
+  // Prefixo dos ids — mantém `label htmlFor` único se o formulário montar duas vezes.
+  const idFormulario = useId();
   // Estado de erro do campo de e-mail. O aviso dele NÃO pode morar no topo do cartão:
   // o bloco de erro geral nasce acima do "Passo 1 de 2" e, no mobile, fica atrás da
   // navbar fixa enquanto a pessoa está rolada até o botão — resultado medido: clica em
@@ -327,88 +296,60 @@ export function FormSectionV12() {
                 style={{ animationDelay: `${0.25 + index * 0.05}s` }}
               >
                 <label
+                  htmlFor={`${idFormulario}-${field.name}`}
                   className="block font-semibold text-[13px] leading-[20px]"
                   style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
                 >
                   {field.label}
                 </label>
-                {field.type === "select" ? (
-                  (() => {
-                    const fieldHasError = field.name === "monthlyRevenue" && monthlyRevenueError;
-                    return (
-                      <>
-                        <select
-                          name={field.name}
-                          value={formData[field.name as keyof typeof formData]}
-                          onChange={handleInputChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}
-                          required
-                          className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 appearance-none cursor-pointer outline-none"
-                          style={{
-                            background: "#f5f5f5",
-                            border: `1.5px solid ${fieldHasError ? "#dc2626" : "#e0e0e0"}`,
-                            color: "#1e1e1e",
-                            fontFamily: "var(--font-montserrat)",
-                          }}
-                          onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
-                          onBlur={(e) => { e.currentTarget.style.borderColor = fieldHasError ? "#dc2626" : "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
+                {(() => {
+                  const fieldHasError = field.name === "email" && emailError;
+                  return (
+                    <>
+                      <input
+                        id={`${idFormulario}-${field.name}`}
+                        type={field.type}
+                        name={field.name}
+                        ref={field.name === "email" ? emailInputRef : undefined}
+                        value={formData[field.name as keyof typeof formData]}
+                        onChange={handleInputChange}
+                        placeholder={field.placeholder}
+                        // E-mail é o único campo opcional: deixar em branco NUNCA pode barrar
+                        // o envio (useLeadForm só valida o formato quando há algo digitado).
+                        required={field.name !== "email"}
+                        aria-invalid={fieldHasError || undefined}
+                        className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
+                        style={{
+                          background: "#f5f5f5",
+                          border: `1.5px solid ${fieldHasError ? "#dc2626" : "#e0e0e0"}`,
+                          color: "#1e1e1e",
+                          fontFamily: "var(--font-montserrat)",
+                        }}
+                        onFocus={(e) => { e.currentTarget.style.borderColor = fieldHasError ? "#dc2626" : "#ebad04"; e.currentTarget.style.boxShadow = `0 0 0 3px ${fieldHasError ? "rgba(220,38,38,0.15)" : "rgba(235,173,4,0.15)"}`; }}
+                        onBlur={(e) => { e.currentTarget.style.borderColor = fieldHasError ? "#dc2626" : "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
+                      />
+                      {fieldHasError && (
+                        <p
+                          className="text-xs font-medium"
+                          style={{ color: "#dc2626", fontFamily: "var(--font-montserrat)" }}
                         >
-                          {field.options?.map((opt) => (
-                            <option key={opt.value} value={opt.value} disabled={opt.value === ""}>
-                              {opt.label}
-                            </option>
-                          ))}
-                        </select>
-                        {fieldHasError && (
-                          <p
-                            className="text-xs font-medium"
-                            style={{ color: "#dc2626", fontFamily: "var(--font-montserrat)" }}
-                          >
-                            Selecione o faturamento médio para continuar
-                          </p>
-                        )}
-                      </>
-                    );
-                  })()
-                ) : (
-                  (() => {
-                    const fieldHasError = field.name === "email" && emailError;
-                    return (
-                      <>
-                        <input
-                          type={field.type}
-                          name={field.name}
-                          ref={field.name === "email" ? emailInputRef : undefined}
-                          value={formData[field.name as keyof typeof formData]}
-                          onChange={handleInputChange}
-                          placeholder={field.placeholder}
-                          // E-mail é o único campo opcional: deixar em branco NUNCA pode barrar
-                          // o envio (useLeadForm só valida o formato quando há algo digitado).
-                          required={field.name !== "email"}
-                          aria-invalid={fieldHasError || undefined}
-                          className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
-                          style={{
-                            background: "#f5f5f5",
-                            border: `1.5px solid ${fieldHasError ? "#dc2626" : "#e0e0e0"}`,
-                            color: "#1e1e1e",
-                            fontFamily: "var(--font-montserrat)",
-                          }}
-                          onFocus={(e) => { e.currentTarget.style.borderColor = fieldHasError ? "#dc2626" : "#ebad04"; e.currentTarget.style.boxShadow = `0 0 0 3px ${fieldHasError ? "rgba(220,38,38,0.15)" : "rgba(235,173,4,0.15)"}`; }}
-                          onBlur={(e) => { e.currentTarget.style.borderColor = fieldHasError ? "#dc2626" : "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
-                        />
-                        {fieldHasError && (
-                          <p
-                            className="text-xs font-medium"
-                            style={{ color: "#dc2626", fontFamily: "var(--font-montserrat)" }}
-                          >
-                            {submitError}
-                          </p>
-                        )}
-                      </>
-                    );
-                  })()
-                )}
+                          {submitError}
+                        </p>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
             ))}
+
+            {/* Perguntas 5 a 8 — passo 2, iguais em todas as portas. */}
+            {step === 2 && (
+              <PerguntasQualificacao
+                valores={formData}
+                onChange={handleInputChange}
+                erros={erros}
+              />
+            )}
 
             {/* Mensalidade badge */}
             <div className="flex justify-center py-1">
@@ -477,6 +418,8 @@ export function FormSectionV12() {
                 </button>
               )}
             </div>
+
+            <AvisoPrivacidade />
 
             {/* Brand Signature */}
             <div 

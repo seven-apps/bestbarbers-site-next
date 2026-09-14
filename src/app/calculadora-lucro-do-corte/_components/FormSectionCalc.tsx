@@ -1,61 +1,22 @@
 "use client";
 
 import { useLeadForm, useUtmParams } from "@/hooks";
+import { PerguntasQualificacao } from "@/components/forms/PerguntasQualificacao";
+import { AvisoPrivacidade } from "@/components/forms/AvisoPrivacidade";
+import { errosDeQualificacao } from "@/lib/qualificacao";
 import { ArrowRight, ShieldCheck, Users2, TrendingUp } from "lucide-react";
 import { trackAvancoPasso2, validarEmailOpcional } from "@/lib/form-passo1";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 
+// Perguntas 1 a 4 — contato, no passo 1 (o e-mail é o único campo opcional). As
+// perguntas 5 a 8 (faturamento, sistema, clube e profissionais) vivem no passo 2,
+// dentro do <PerguntasQualificacao>: formulário único em todas as portas
+// (André, 14/Set/26). As opções saíram daqui e moram em `@/lib/lead-score`.
 const formFields = [
   { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
   { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "(11) 99999-9999", type: "tel" },
-  // E-mail (set/26): segundo caminho de CONTATO, não canal de entrega — nada é enviado
-  // por e-mail para lead do Ploomes (não existe executor), então o rótulo promete só o
-  // que é verdade. OPCIONAL COM MOTIVO, gabarito da cadeira-cheia (GuiaForm.tsx:41), que
-  // é o formato medido em 95,9% de preenchimento; campo opcional SEM motivo mede 90,1%.
-  // Fica no PASSO 1 (ver STEP1_FIELDS) porque é a única tela por onde 100% de quem envia
-  // passa — e a família precificação é a fábrica de ICP que hoje captura só 8,6%.
-  // Não entra no lead_score e não bloqueia o avanço (canAdvanceToStep2 não olha para ele).
-  // Rótulo IGUAL ao da cadeira-cheia, palavra por palavra: além de ser o texto medido,
-  // "Seu e-mail" cabe em 1 linha em 390 px, onde "E-mail do Dono (...)" quebrava em 2 e
-  // empurrava o botão contra a borda do modal rolável da LP gated.
   { name: "email", label: "Seu e-mail (opcional, pra gente falar com você depois)", placeholder: "Ex: joao@email.com", type: "email" },
-  {
-    name: "monthlyRevenue",
-    label: "Qual o faturamento médio da sua barbearia?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Até R$ 2.000", label: "Até R$ 2.000" },
-      { value: "R$ 2.000 a R$ 10.000", label: "R$ 2.000 a R$ 10.000" },
-      { value: "De R$ 10.000 a R$ 30.000", label: "De R$ 10.000 a R$ 30.000" },
-      { value: "Acima de R$ 30.000", label: "Acima de R$ 30.000" },
-    ],
-  },
-  {
-    name: "interestedTool",
-    label: "Qual ferramenta mais te interessa hoje?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Agenda e Controle Financeiro", label: "Agenda e Controle Financeiro" },
-      { value: "Meu Próprio App + Clube de Assinaturas e emissão de NFs", label: "Meu Próprio App + Clube de Assinaturas e emissão de NFs" },
-    ],
-  },
-  {
-    name: "employeeCount",
-    label: "Quantos profissionais trabalham na sua barbearia?",
-    placeholder: "Selecione",
-    type: "select",
-    options: [
-      { value: "", label: "Selecione" },
-      { value: "Sou apenas eu", label: "Sou apenas eu" },
-      { value: "2 a 4 colaboradores", label: "2 a 4 colaboradores" },
-      { value: "5 ou mais colaboradores", label: "5 ou mais colaboradores" },
-    ],
-  },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
 ];
 
 function getFormHeading(utmContent: string | null) {
@@ -91,14 +52,17 @@ export function FormSectionCalc() {
     setSubmitError,
   } = useLeadForm({
     source: "calculadora_lucro_corte",
-    requireMonthlyRevenue: true,
     onError: (error) => {
       console.error("Erro ao enviar formulário:", error);
       alert("Erro ao enviar formulário. Tente novamente.");
     },
   });
 
-  const monthlyRevenueError = !!submitError && submitError.includes("Faturamento");
+  // Qual das quatro perguntas de qualificação está com erro (comparação exata pela
+  // mensagem do hook, não mais por `includes("Faturamento")`).
+  const erros = errosDeQualificacao(submitError);
+  // Prefixo dos ids dos campos — mantém `label htmlFor` único se o form montar 2×.
+  const idFormulario = useId();
 
   // Multi-step: passo 1 = contato (baixa fricção), passo 2 = qualificação (lead_score).
   const [step, setStep] = useState(1);
@@ -247,68 +211,43 @@ export function FormSectionCalc() {
                 style={{ animationDelay: `${0.25 + index * 0.05}s` }}
               >
                 <label
+                  htmlFor={`${idFormulario}-${field.name}`}
                   className="block font-semibold text-[13px] leading-[20px]"
                   style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
                 >
                   {field.label}
                 </label>
-                {field.type === "select" ? (
-                  (() => {
-                    const fieldHasError = field.name === "monthlyRevenue" && monthlyRevenueError;
-                    return (
-                      <>
-                        <select
-                          name={field.name}
-                          value={formData[field.name as keyof typeof formData]}
-                          onChange={handleInputChange as unknown as React.ChangeEventHandler<HTMLSelectElement>}
-                          required
-                          className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 appearance-none cursor-pointer outline-none"
-                          style={{
-                            background: "#f5f5f5",
-                            border: `1.5px solid ${fieldHasError ? "#dc2626" : "#e0e0e0"}`,
-                            color: "#1e1e1e",
-                            fontFamily: "var(--font-montserrat)",
-                          }}
-                          onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
-                          onBlur={(e) => { e.currentTarget.style.borderColor = fieldHasError ? "#dc2626" : "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
-                        >
-                          {field.options?.map((opt) => (
-                            <option key={opt.value} value={opt.value} disabled={opt.value === ""}>
-                              {opt.label}
-                            </option>
-                          ))}
-                        </select>
-                        {fieldHasError && (
-                          <p className="text-xs font-medium" style={{ color: "#dc2626", fontFamily: "var(--font-montserrat)" }}>
-                            Selecione o faturamento médio para continuar
-                          </p>
-                        )}
-                      </>
-                    );
-                  })()
-                ) : (
-                  <input
-                    type={field.type}
-                    name={field.name}
-                    value={formData[field.name as keyof typeof formData]}
-                    onChange={handleInputChange}
-                    placeholder={field.placeholder}
-                    // E-mail é o único campo opcional: deixar em branco NUNCA pode barrar
-                    // o envio (useLeadForm só valida o formato quando há algo digitado).
-                    required={field.name !== "email"}
-                    className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
-                    style={{
-                      background: "#f5f5f5",
-                      border: "1.5px solid #e0e0e0",
-                      color: "#1e1e1e",
-                      fontFamily: "var(--font-montserrat)",
-                    }}
-                    onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderColor = "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
-                  />
-                )}
+                <input
+                  id={`${idFormulario}-${field.name}`}
+                  type={field.type}
+                  name={field.name}
+                  value={formData[field.name as keyof typeof formData]}
+                  onChange={handleInputChange}
+                  placeholder={field.placeholder}
+                  // E-mail é o único campo opcional: deixar em branco NUNCA pode barrar
+                  // o envio (useLeadForm só valida o formato quando há algo digitado).
+                  required={field.name !== "email"}
+                  className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
+                  style={{
+                    background: "#f5f5f5",
+                    border: "1.5px solid #e0e0e0",
+                    color: "#1e1e1e",
+                    fontFamily: "var(--font-montserrat)",
+                  }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}
+                />
               </div>
             ))}
+
+            {/* Perguntas 5 a 8 — passo 2, iguais em todas as portas. */}
+            {step === 2 && (
+              <PerguntasQualificacao
+                valores={formData}
+                onChange={handleInputChange}
+                erros={erros}
+              />
+            )}
 
             {/* Submit */}
             <div className="pt-3 animate-fade-in-up" style={{ animationDelay: "0.7s" }}>
@@ -360,6 +299,8 @@ export function FormSectionCalc() {
                 </button>
               )}
             </div>
+
+            <AvisoPrivacidade />
 
             {/* Brand */}
             <div className="text-center mt-6 animate-fade-in" style={{ animationDelay: "0.75s" }}>
