@@ -14,7 +14,6 @@
 import type { UtmParams } from "@/hooks/useUtmParams";
 // Extensão explícita: é o que permite ao `node --test` (npm test) carregar este
 // módulo sem build. Ver `allowImportingTsExtensions` no tsconfig.
-import { interesseLegado } from "./lead-score.ts";
 
 /** Campos bb_* em nome lógico — idênticos no Contact e no Deal do Ploomes. */
 export interface LeadAttributionFields {
@@ -53,13 +52,6 @@ export interface BuildLeadAttributionInput {
   /** originId/originDesc do mapeamento de UTM (ou customizados pela página). */
   originId: number | null;
   originDesc: string | null;
-  /**
-   * Resposta da pergunta 7 (situação do clube). O `[Interesse: ...]` da descrição é
-   * DERIVADO dela por `interesseLegado` — a pergunta "qual ferramenta te interessa"
-   * deixou de existir em 14/Set/26, mas os leitores de tráfego e o pool da reativação
-   * casam pelas duas strings antigas, então é a tradução que mantém a série viva.
-   */
-  clubStatus?: string;
   leadScore?: number;
   leadEventId?: string;
 }
@@ -71,7 +63,7 @@ export interface BuildLeadAttributionInput {
  * parseiam hoje (bestbarbers-ai/scripts/trafego-pago/*: split('|') índices 4 e 5).
  */
 export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttribution {
-  const { utmParams, originId, clubStatus, leadScore, leadEventId } = input;
+  const { utmParams, originId, leadScore, leadEventId } = input;
 
   const search = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
   // Macro da Meta não substituída ({{ad.name}}, {{campaign.id}}…) = ausência de dado, nunca
@@ -127,16 +119,18 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
     originDesc = builder || null;
   }
 
-  // Score e Interesse no início da descrição — visibilidade do SDR e leitura de CPQL.
+  // Score no início da descrição — visibilidade do SDR e leitura de CPQL.
+  //
+  // O `[Interesse: ...]` SAIU em 14/Set/26 (decisão do André): a resposta agora mora em campo
+  // próprio no Ploomes (`bb_clube`), filtrável e agrupável. Repeti-la aqui só poluía o texto.
+  // Quem lê card ANTIGO continua encontrando o prefixo — os leitores seguem tolerando-o.
   //
   // O prefixo vale MESMO SEM originDesc. Antes ele vivia dentro de `if (originDesc)`, e
   // quem chegava sem descrição de campanha (/parceiros, as calculadoras e a /v12 orgânica
   // caem no ramo legacy, onde `builder` nasce vazio) perdia o `[SCORE: n]` inteiro — o
   // SDR via o card sem nota e o lead sumia da leitura de CPQL sem nenhum aviso.
-  const interesse = clubStatus ? interesseLegado(clubStatus) : undefined;
   let prefixo = "";
-  if (interesse) prefixo = `[Interesse: ${interesse}] `;
-  if (leadScore !== undefined) prefixo = `[SCORE: ${leadScore}] ${prefixo}`;
+  if (leadScore !== undefined) prefixo = `[SCORE: ${leadScore}] `;
   if (prefixo) originDesc = `${prefixo}${originDesc ?? ""}`.trim();
 
   const fields: LeadAttributionFields = {};

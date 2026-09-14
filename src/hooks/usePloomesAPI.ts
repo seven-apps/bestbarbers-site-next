@@ -98,7 +98,6 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       utmParams,
       originId: customOriginId ?? utmMapping.originId,
       originDesc: customOriginDesc ?? utmMapping.originDesc,
-      clubStatus: data.clubStatus,
       leadScore: data.leadScore,
       leadEventId: data.leadEventId,
     });
