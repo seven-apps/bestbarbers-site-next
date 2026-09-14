@@ -24,7 +24,7 @@ export const CLUBE_OPCOES = [
   'Já tenho o clube, mas gerencio manualmente',
   'Ainda não tenho, mas tenho muito interesse em implementar',
   'Ainda não tenho, mas quero entender melhor como funciona',
-  'Não tenho nenhum interesse',
+  'Não tenho nenhum interesse em clube de assinaturas',
 ] as const;
 
 /** Lista com os nomes — exceção datada do André (14/Set/26): nome de concorrente pode em OPÇÃO DE FORMULÁRIO, nunca em conteúdo publicado. */
@@ -72,7 +72,7 @@ const PONTOS_CLUBE: Record<SituacaoClube, number> = {
   'Já tenho o clube, mas gerencio manualmente': 25,
   'Ainda não tenho, mas tenho muito interesse em implementar': 25,
   'Ainda não tenho, mas quero entender melhor como funciona': 0,
-  'Não tenho nenhum interesse': 0,
+  'Não tenho nenhum interesse em clube de assinaturas': 0,
 };
 
 /** Quem trabalha sozinho fechou 1 venda em 21 reuniões, contra 16 em 52 de quem tem 2 a 4 (medido em 10/Set/26). */
