@@ -9,10 +9,12 @@
  * As opções vêm de `@/lib/lead-score` — o MESMO módulo que pontua —, então uma opção
  * nova nunca pode existir na tela sem existir na régua.
  *
- * A pergunta 7 é em CARTÕES, não em `<select>`: duas das cinco opções começam com a
- * mesma frase ("Já tenho o clube de assinaturas...") e a diferença mora no fim
- * ("integrado com o meu sistema" × "mas gerencio manualmente"). Num `<select>` de
- * celular o texto é truncado justamente no fim — a pessoa escolheria no escuro.
+ * As quatro perguntas usam o MESMO seletor (André, 14/Set/26: "quero a pergunta do clube
+ * igual os demais seletores"). A versão anterior trazia a 7 em cartões de rádio e foi
+ * reprovada por ele. Ressalva que fica registrada: duas opções da 7 começam com a mesma
+ * frase ("Já tenho o clube de assinaturas…") e a diferença mora no fim — num `<select>`
+ * estreito o fim é o que some. Se isso aparecer na prática, a saída é encurtar o RÓTULO
+ * mantendo o valor gravado, nunca voltar ao cartão sem ele pedir.
  *
  * Emite eventos de mudança nativos (`name`/`value`), então o `handleInputChange` do
  * `useLeadForm` continua sendo o único dono do estado.
@@ -58,7 +60,6 @@ const TEMA: Record<VarianteQualificacao, {
   fundo: string;
   borda: string;
   texto: string;
-  fundoSelecionado: string;
   erro: string;
   fundoOpcao: string;
 }> = {
@@ -68,7 +69,6 @@ const TEMA: Record<VarianteQualificacao, {
     fundo: "#f5f5f5",
     borda: "#e0e0e0",
     texto: "#1e1e1e",
-    fundoSelecionado: "rgba(235,173,4,0.12)",
     erro: "#dc2626",
     fundoOpcao: "#ffffff",
   },
@@ -78,7 +78,6 @@ const TEMA: Record<VarianteQualificacao, {
     fundo: "rgba(255,255,255,0.04)",
     borda: "rgba(255,255,255,0.14)",
     texto: "#ffffff",
-    fundoSelecionado: "rgba(235,173,4,0.16)",
     erro: "#f87171",
     fundoOpcao: "#1a1d25",
   },
@@ -112,13 +111,6 @@ export function PerguntasQualificacao({
     color: tema.texto,
     fontFamily: FONTE,
   });
-
-  /**
-   * Cartão da 7 devolve ao formulário um evento com a MESMA forma de um `<select>`
-   * (`target.name` / `target.value`), para nenhum chamador precisar de um segundo
-   * caminho de escrita no estado.
-   */
-  const aoMarcarClube = (e: ChangeEvent<HTMLInputElement>) => onChange(e);
 
   /**
    * FUNÇÃO, não componente: declarar um componente dentro do render faria o React
@@ -188,9 +180,6 @@ export function PerguntasQualificacao({
     );
   };
 
-  const clubeComErro = Boolean(erros.clubStatus);
-  const idClube = `${prefixo}-clubStatus`;
-
   return (
     <div className={className}>
       {campoSelecao({
@@ -210,55 +199,17 @@ export function PerguntasQualificacao({
         temErro: Boolean(erros.currentSystem),
       })}
 
-      {/* Pergunta 7 — CARTÕES. Ver o porquê no cabeçalho do arquivo. */}
-      <fieldset
-        className="space-y-1.5 border-0 p-0 m-0"
-        aria-invalid={clubeComErro || undefined}
-        aria-describedby={clubeComErro ? `${idClube}-erro` : undefined}
-      >
-        <legend className="block font-semibold text-[13px] leading-[20px] mb-1.5" style={estiloRotulo}>
-          Como está o clube de assinatura na sua barbearia hoje?
-        </legend>
-        <div className="grid grid-cols-1 gap-2">
-          {CLUBE_OPCOES.map((opcao) => {
-            const marcada = valores.clubStatus === opcao;
-            return (
-              <label
-                key={opcao}
-                className="flex items-start gap-3 rounded-xl px-4 py-3 cursor-pointer transition-all duration-200"
-                style={{
-                  background: marcada ? tema.fundoSelecionado : tema.fundo,
-                  border: `1.5px solid ${marcada ? DOURADO : clubeComErro ? tema.erro : tema.borda}`,
-                  color: tema.texto,
-                  fontFamily: FONTE,
-                }}
-              >
-                <input
-                  type="radio"
-                  name="clubStatus"
-                  value={opcao}
-                  checked={marcada}
-                  onChange={aoMarcarClube}
-                  required
-                  className="mt-0.5 shrink-0 w-4 h-4 cursor-pointer"
-                  style={{ accentColor: DOURADO }}
-                />
-                <span className="font-medium text-[14px] leading-[20px]">{opcao}</span>
-              </label>
-            );
-          })}
-        </div>
-        {clubeComErro && (
-          <p id={`${idClube}-erro`} className="text-xs font-medium" style={{ color: tema.erro, fontFamily: FONTE }}>
-            {MSG_CLUBE}
-          </p>
-        )}
-      </fieldset>
+      {campoSelecao({
+        campo: "clubStatus",
+        rotulo: "Como está o clube de assinatura na sua barbearia hoje?",
+        opcoes: CLUBE_OPCOES,
+        mensagemErro: MSG_CLUBE,
+        temErro: Boolean(erros.clubStatus),
+      })}
 
       {campoSelecao({
         campo: "employeeCount",
         rotulo: "Quantos profissionais trabalham na sua barbearia?",
-        ajuda: "Conte você também.",
         opcoes: PROFISSIONAIS_OPCOES,
         mensagemErro: MSG_PROFISSIONAIS,
         temErro: Boolean(erros.employeeCount),
