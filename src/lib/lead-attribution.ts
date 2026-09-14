@@ -65,7 +65,11 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   const { utmParams, originId, interestedTool, leadScore, leadEventId } = input;
 
   const search = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
-  const param = (k: string) => search?.get(k)?.trim() || "";
+  // Macro da Meta não substituída ({{ad.name}}, {{campaign.id}}…) = ausência de dado, nunca
+  // valor: acontece em ~0,8% dos cliques com fbclid (anúncio compartilhado por DM, aberto
+  // pelo perfil). Gravar o placeholder poluía bb_campaign_name/bb_utm_content e a descrição.
+  const semMacro = (v: string | null | undefined) => (v && !v.includes("{{") ? v : "");
+  const param = (k: string) => semMacro(search?.get(k)?.trim());
 
   const pathname = typeof window !== "undefined" ? window.location.pathname : "";
   // bb_lp_version = DE QUAL PÁGINA o lead veio (grava no Ploomes).
@@ -86,7 +90,7 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   // vive em bb_utm_content; a Descrição da Campanha (250 chars) trunca nomes longos.
   const adIdParam = param("ad_id");
   const adId = adIdParam && /^\d+$/.test(adIdParam) ? adIdParam : null;
-  const creative = param("creative") || utmParams.utm_content || "";
+  const creative = param("creative") || semMacro(utmParams.utm_content);
   const angulo = param("angulo");
   const audiencia = param("audiencia") || publico;
 
@@ -122,7 +126,7 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
 
   const fields: LeadAttributionFields = {};
   const put = (k: keyof LeadAttributionFields, v: string | null | undefined) => {
-    if (v) fields[k] = v;
+    if (semMacro(v)) fields[k] = v as string;
   };
 
   // Wave 1 — Meta ad params (url_tags Wave 4)
