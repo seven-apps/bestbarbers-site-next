@@ -201,7 +201,7 @@ export function PerguntasQualificacao({
 
       {campoSelecao({
         campo: "clubStatus",
-        rotulo: "Como está o clube de assinatura na sua barbearia hoje?",
+        rotulo: "Você tem clube de assinaturas na sua barbearia hoje?",
         opcoes: CLUBE_OPCOES,
         mensagemErro: MSG_CLUBE,
         temErro: Boolean(erros.clubStatus),

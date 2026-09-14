@@ -20,11 +20,11 @@ export const FATURAMENTO_OPCOES = [
 ] as const;
 
 export const CLUBE_OPCOES = [
-  'Já tenho o clube de assinaturas implementado na minha barbearia, integrado com o meu sistema',
-  'Já tenho o clube de assinaturas na minha barbearia, mas gerencio manualmente',
-  'Ainda não tenho o clube implementado, mas tenho muito interesse em implementar',
-  'Ainda não tenho o clube, mas quero entender melhor como funciona',
-  'Não tenho nenhum interesse em clube de assinaturas',
+  'Já tenho o clube, integrado no meu sistema de gestão',
+  'Já tenho o clube, mas gerencio manualmente',
+  'Ainda não tenho, mas tenho muito interesse em implementar',
+  'Ainda não tenho, mas quero entender melhor como funciona',
+  'Não tenho nenhum interesse',
 ] as const;
 
 /** Lista com os nomes — exceção datada do André (14/Set/26): nome de concorrente pode em OPÇÃO DE FORMULÁRIO, nunca em conteúdo publicado. */
@@ -68,11 +68,11 @@ const PONTOS_FATURAMENTO: Record<Faturamento, number> = {
 
 /** Ter clube ou querer vale o mesmo (decisão D3). "Quero entender melhor" e "nenhum interesse" valem 0 (decisão de 12/Set). */
 const PONTOS_CLUBE: Record<SituacaoClube, number> = {
-  'Já tenho o clube de assinaturas implementado na minha barbearia, integrado com o meu sistema': 25,
-  'Já tenho o clube de assinaturas na minha barbearia, mas gerencio manualmente': 25,
-  'Ainda não tenho o clube implementado, mas tenho muito interesse em implementar': 25,
-  'Ainda não tenho o clube, mas quero entender melhor como funciona': 0,
-  'Não tenho nenhum interesse em clube de assinaturas': 0,
+  'Já tenho o clube, integrado no meu sistema de gestão': 25,
+  'Já tenho o clube, mas gerencio manualmente': 25,
+  'Ainda não tenho, mas tenho muito interesse em implementar': 25,
+  'Ainda não tenho, mas quero entender melhor como funciona': 0,
+  'Não tenho nenhum interesse': 0,
 };
 
 /** Quem trabalha sozinho fechou 1 venda em 21 reuniões, contra 16 em 52 de quem tem 2 a 4 (medido em 10/Set/26). */
