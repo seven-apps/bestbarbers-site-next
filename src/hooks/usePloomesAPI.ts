@@ -1,6 +1,13 @@
 import { useCallback } from 'react';
 import { useUtmParams } from './useUtmParams';
-import { PLOOMES_CONTACT_FIELDS, PLOOMES_CONTACT_INT_FIELDS, PLOOMES_LEGACY_FIELDS } from '@/lib/ploomes-fields';
+import {
+  PLOOMES_CONTACT_FIELDS,
+  PLOOMES_CONTACT_INT_FIELDS,
+  PLOOMES_CONTACT_OPTION_FIELDS,
+  PLOOMES_LEGACY_FIELDS,
+  PLOOMES_OPCOES_CLUBE,
+  PLOOMES_OPCOES_SISTEMA,
+} from '@/lib/ploomes-fields';
 import { buildLeadAttribution, type LeadAttribution } from '@/lib/lead-attribution';
 
 export interface PloomesContactData {
@@ -115,13 +122,23 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     if (typeof leadScore === 'number' && Number.isFinite(leadScore)) {
       bbProps.push({ FieldKey: PLOOMES_CONTACT_INT_FIELDS.bb_lead_score, IntegerValue: Math.trunc(leadScore) });
     }
-    // Perguntas 7 e 6 do formulário v2 (campos criados no Ploomes em 14/Set/26). Gravam
-    // a opção EXATA — é o que permite ao SDR ler a resposta, e não só a nota que ela gerou.
-    if (data.clubStatus) {
-      bbProps.push({ FieldKey: PLOOMES_CONTACT_FIELDS.bb_situacao_clube, StringValue: data.clubStatus });
+    // Perguntas 7 e 6 do formulário v2: campos de OPÇÕES PRÉ-CADASTRADAS, que gravam o Id da
+    // opção em `IntegerValue`. Resposta fora da tabela não é gravada como texto solto — fica
+    // vazia, e o console registra, porque opção desconhecida aqui significa formulário e CRM
+    // fora de sincronia, não um dado novo do lead.
+    const idClube = data.clubStatus ? PLOOMES_OPCOES_CLUBE[data.clubStatus] : undefined;
+    if (data.clubStatus && !idClube) {
+      console.warn('[Ploomes] opção de clube sem Id na tabela do CRM:', data.clubStatus);
     }
-    if (data.currentSystem) {
-      bbProps.push({ FieldKey: PLOOMES_CONTACT_FIELDS.bb_sistema_atual, StringValue: data.currentSystem });
+    if (idClube) {
+      bbProps.push({ FieldKey: PLOOMES_CONTACT_OPTION_FIELDS.bb_clube, IntegerValue: idClube });
+    }
+    const idSistema = data.currentSystem ? PLOOMES_OPCOES_SISTEMA[data.currentSystem] : undefined;
+    if (data.currentSystem && !idSistema) {
+      console.warn('[Ploomes] opção de sistema sem Id na tabela do CRM:', data.currentSystem);
+    }
+    if (idSistema) {
+      bbProps.push({ FieldKey: PLOOMES_CONTACT_OPTION_FIELDS.bb_sistema, IntegerValue: idSistema });
     }
 
     const ploomesData = {

@@ -32,12 +32,46 @@ export const PLOOMES_CONTACT_FIELDS = {
   bb_lead_event_id:  'contact_15FDF793-85B5-4024-A866-348C44A2D67B',
 
   // Formulário v2 — set/2026 (perguntas 6 e 7 do formulário único de 8 perguntas).
-  // Campos criados no Ploomes em 14/Set/26. Texto puro (StringValue): gravam a opção
-  // EXATA escolhida, as mesmas strings de `src/lib/lead-score.ts` — é isso que permite
-  // reconciliar o `bb_lead_score` com as respostas que o geraram.
-  bb_situacao_clube: 'contact_6D563B37-DAFF-4063-B041-5D171D04773A',
-  bb_sistema_atual:  'contact_16643D92-422D-4B50-8FF5-BE66A32328E8',
 } as const;
+
+/**
+ * Perguntas 7 e 6 do formulário v2 — campos de OPÇÕES PRÉ-CADASTRADAS no Ploomes (tipo 7),
+ * criados em 14/Set/26. Campo desse tipo grava `IntegerValue` com o Id da OPÇÃO, nunca texto:
+ * é o que dá dropdown ao SDR no card e filtro nativo no CRM, e o que tira o nosso código da
+ * dependência de casar resposta por string.
+ *
+ * Os textos são os mesmos de `src/lib/lead-score.ts` — o módulo que pontua. Opção que não
+ * estiver aqui não existe na régua, e o valor vai vazio em vez de inventado.
+ *
+ * (Os campos de texto `bb_situacao_clube` e `bb_sistema_atual`, criados mais cedo no mesmo dia,
+ * ficaram órfãos: a chave da integração só tem permissão de criar campo, não de apagar. Serão
+ * removidos pelo André na interface.)
+ */
+export const PLOOMES_CONTACT_OPTION_FIELDS = {
+  bb_clube:   'contact_3096505C-EF47-409E-ABF9-C57B93CF3B45',
+  bb_sistema: 'contact_13FDA381-E6D5-42ED-9379-D97E2A5CCFAA',
+} as const;
+
+/** Id da opção de `bb_clube` (tabela 12002995). */
+export const PLOOMES_OPCOES_CLUBE: Record<string, number> = {
+  'Já tenho o clube, integrado no meu sistema de gestão': 1200415765,
+  'Já tenho o clube, mas gerencio manualmente': 1200415766,
+  'Ainda não tenho, mas tenho muito interesse em implementar': 1200415767,
+  'Ainda não tenho, mas quero entender melhor como funciona': 1200415768,
+  'Não tenho nenhum interesse em clube de assinaturas': 1200415769,
+};
+
+/** Id da opção de `bb_sistema` (tabela 12002996). */
+export const PLOOMES_OPCOES_SISTEMA: Record<string, number> = {
+  'Não utilizo nenhum': 1200415770,
+  AppBarber: 1200415771,
+  Booksy: 1200415772,
+  'Cash Barber': 1200415773,
+  Fresha: 1200415774,
+  'One Beleza': 1200415775,
+  Trinks: 1200415776,
+  'Utilizo outro': 1200415777,
+};
 
 /**
  * Campos NUMÉRICOS do Contact — escrever via IntegerValue (não StringValue).
