@@ -81,7 +81,11 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   const fase = param("fase");
   const campanha = param("campanha");
   const publico = param("publico") || param("adset");
-  const adName = param("ad") || param("ad_id") || param("adname");
+  const adName = param("ad") || param("adname");
+  // Id NUMÉRICO do anúncio (url_tags `ad_id={{ad.id}}`) — chave 1:1 com a Meta. O nome já
+  // vive em bb_utm_content; a Descrição da Campanha (250 chars) trunca nomes longos.
+  const adIdParam = param("ad_id");
+  const adId = adIdParam && /^\d+$/.test(adIdParam) ? adIdParam : null;
   const creative = param("creative") || utmParams.utm_content || "";
   const angulo = param("angulo");
   const audiencia = param("audiencia") || publico;
@@ -125,7 +129,7 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   put("bb_campaign_id", param("campaign_id") || param("campanha_id"));
   put("bb_campaign_name", campanha);
   put("bb_adset_id", param("adset_id") || publico);
-  put("bb_ad_id", adName);
+  put("bb_ad_id", adId || adName);
   put("bb_lp_version", lpVersion);
   put("bb_wave", fase);
   put("bb_audience_type", audiencia);
