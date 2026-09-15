@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import { PerguntaDono } from "@/components/tracking/PerguntaDono";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -156,6 +157,8 @@ export default function RootLayout({
         {/* End Google Tag Manager (noscript) */}
 
         {children}
+        {/* "Você é dono de barbearia?" — só para o tráfego do TOPO (lib/pergunta-dono.ts); inerte no resto */}
+        <PerguntaDono />
       </body>
     </html>
   );
