@@ -115,6 +115,9 @@ export const useUtmParams = () => {
       // Spotify → /podcast?desc=<temporada>.<episodio>. SEM entrada no descMap:
       // a descrição (temporada + episódio) vem dinâmica via utm_desc (PodcastAttribution).
       podcast: 120001484,
+      // Link da bio do Instagram: /bio → /?source=instabio (next.config.ts). Separa o clique
+      // na bio do "Instagram - Orgânico" (40210374), que fica só para a DM cadastrada pelo SDR.
+      instabio: 120004089,
     }),
     []
   );
@@ -162,6 +165,7 @@ export const useUtmParams = () => {
         "LP - Vittor Manoel (Pallace Barbearia) - Programa de indicações",
       "lucas-start":
         "LP - Lucas Alexandre (Start Barbearia) - Programa de indicações",
+      instabio: "Instagram - Link da bio",
     }),
     []
   );
