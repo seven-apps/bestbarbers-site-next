@@ -239,6 +239,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // com score entre 30 e 59 NÃO pode gerar 'Lead' na célula).
       const CELULAS_COM_CORTE: ReadonlyArray<{ conjunto: string; min: number; nota: string }> = [
         { conjunto: 'BROAD-ADV-Q60', min: 60, nota: 'SINAL-Q60 · set/26 · veredito 22/Set' },
+        // LAB-Q60-ASSINATURA (15/Set/26, decisão do André): 6 vídeos de assinatura, R$300/d, o
+        // conjunto otimiza Lead padrão e o site só dispara Lead com score >= 60. D14 = 29/Set.
+        { conjunto: 'AMPLO-P1-M1-ADVANTAGE-Q60-ASSINATURA', min: 60, nota: 'LAB-Q60-ASSINATURA · set/26 · D14 29/Set' },
       ];
       const celula = CELULAS_COM_CORTE.find(
         (c) => c.conjunto.toUpperCase() === (utmParams.publico || '').trim().toUpperCase()
