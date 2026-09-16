@@ -30,7 +30,7 @@ function campanhaDaSessao(): string | null {
   }
 }
 
-type Estado = "oculto" | "pergunta" | "obrigado";
+type Estado = "oculto" | "pergunta";
 
 /**
  * Pergunta única só para o tráfego do TOPO (regra em `lib/pergunta-dono.ts`).
@@ -66,8 +66,8 @@ export function PerguntaDono() {
       } catch {
         /* GTM ausente */
       }
-      setEstado("obrigado");
-      window.setTimeout(() => setEstado("oculto"), 1400);
+      // Respondeu = fecha na hora, sem "obrigado" (André, 15/Set/26).
+      setEstado("oculto");
     },
     [pathname, trackNonCatalogEvent],
   );
@@ -89,8 +89,6 @@ export function PerguntaDono() {
       {/* Fundo escurecido: tocar fora = fechar sem responder (não insiste nesta sessão) */}
       <button type="button" aria-label="Fechar" onClick={dispensar} className="absolute inset-0 bg-black/70 backdrop-blur-[2px] animate-fade-in cursor-default" />
       <div className="relative w-full max-w-[340px] bg-white rounded-3xl shadow-[0_24px_80px_rgba(0,0,0,0.55)] px-6 pt-7 pb-6 text-center animate-scale-in">
-        {estado === "pergunta" ? (
-          <>
             <button
               type="button"
               onClick={dispensar}
@@ -120,10 +118,6 @@ export function PerguntaDono() {
                 Não sou
               </button>
             </div>
-          </>
-        ) : (
-          <p className="text-[#121212] font-extrabold text-[20px] leading-[28px] py-3">Valeu! Boa leitura. 👊</p>
-        )}
       </div>
     </div>
   );
