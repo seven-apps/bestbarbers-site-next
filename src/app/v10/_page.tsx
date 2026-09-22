@@ -1,3 +1,7 @@
+// Arte trocada em 19/Set/26: `hero-best-5-influencers.png` trazia cinco rostos, dois deles de ex-parceiros banidos.
+// Substituta limpa: `hero-app-proprio-sem-rosto.png` (marca fictícia Barbearia Exemplo).
+// Esta rota está morta hoje (`_page.tsx` não é servido pelo Next), e a troca foi feita
+// justamente para ela não voltar violando se alguém reativar a rota.
 "use client";
 
 import { usePloomesAPI } from "@/hooks/usePloomesAPI";
@@ -530,10 +534,10 @@ export default function V10Page() {
           {/* Influencer bar */}
           <div className="flex justify-center mb-10">
             <Image
-              src="/images/hero-best-5-influencers.png"
+              src="/images/hero-app-proprio-sem-rosto.png"
               alt="Parceiros BestBarbers"
-              width={400}
-              height={100}
+              width={1080}
+              height={434}
               className="w-full max-w-[320px] h-auto opacity-90"
             />
           </div>

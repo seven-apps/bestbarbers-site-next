@@ -8,12 +8,10 @@ import { useMemo } from "react";
 import type { StaticImageData } from "next/image";
 
 // Import partner images
-import raphaImg from "@/app/parceiros/assets/rapha.png";
 import santiagoImg from "@/app/parceiros/assets/santiago.png";
 import maurilioImg from "@/app/parceiros/assets/maurilio-sr-bigode.png";
 import gabrielImg from "@/app/parceiros/assets/gabriel-gordovisk.png";
 import edsonImg from "@/app/parceiros/assets/edson-lapa.png";
-import milenoImg from "@/app/parceiros/assets/mileno.png";
 import henriqueImg from "@/app/parceiros/assets/henrique.png";
 import kaleoImg from "@/app/parceiros/assets/kaleo.png";
 import araujoSalvianoImg from "@/app/parceiros/assets/araujo-salviano.png";
@@ -43,6 +41,16 @@ interface HeroPartnerSectionProps {
   source?: string | null;
 }
 
+/**
+ * Ex-parceiros com uso de imagem revogado. A arte deles já saiu do bundle (o
+ * `import` foi removido acima), mas o link `?source=<slug>` continua circulando
+ * por fora — parceiro compartilha o link, o link não expira. Esta trava existe
+ * para que o slug caia SEMPRE no herói genérico, e para que a arte não volte a
+ * renderizar se alguém reintroduzir o import no mapa: régua em código, não em
+ * prosa. Não remover sem decisão do André sobre o destino desses links.
+ */
+const SOURCES_BANIDOS = new Set(["rapha", "mileno"]);
+
 export function HeroPartnerSection({
   onCtaClick,
   source,
@@ -51,12 +59,10 @@ export function HeroPartnerSection({
 
   // Map source to partner images
   const imageMap: Record<string, StaticImageData> = useMemo(() => ({
-    rapha: raphaImg,
     santiago: santiagoImg,
     "maurilio-sr-bigode": maurilioImg,
     "gabriel-gordovisk": gabrielImg,
     "edson-lapa": edsonImg,
-    mileno: milenoImg,
     "henrique-daniels": henriqueImg,
     kaleo: kaleoImg,
     "araujo-salviano": araujoSalvianoImg,
@@ -81,7 +87,12 @@ export function HeroPartnerSection({
     "lucas-start": lucasStartImg,
   }), []);
 
-  const isPartnerImage = !!(source && imageMap[source]);
+  // Slug desconhecido OU banido cai no herói genérico — fallback, nunca erro.
+  const isPartnerImage = !!(
+    source &&
+    !SOURCES_BANIDOS.has(source.trim().toLowerCase()) &&
+    imageMap[source]
+  );
   const displayImage = isPartnerImage ? imageMap[source!] : hero.image.src;
 
   return (

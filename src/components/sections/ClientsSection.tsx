@@ -9,12 +9,13 @@ interface ClientsSectionProps {
 
 export function ClientsSection({ }: ClientsSectionProps) {
 
-  // All logos for marquee
+  // Logos da esteira. Ex-parceiro com uso de imagem revogado NÃO volta aqui: nem a
+  // arte, nem o logo da barbearia dele — e nem o NOME DO ARQUIVO, que viaja na URL
+  // e no HTML mesmo quando o pixel não tem texto nenhum. Um logo saiu em 19/Set/26.
   const allLogos = [
     "/images/Barber-Style.webp",
     "/images/Sr-Barbearia.webp",
     "/images/Premium.webp",
-    "/images/Rapha_2.webp",
     "/images/Black-House.webp",
     "/images/James.webp",
     "/images/Ferrari.webp",
@@ -32,6 +33,12 @@ export function ClientsSection({ }: ClientsSectionProps) {
     "/images/Urus.webp",
     "/images/Vitor.webp",
   ];
+
+  // As duas fileiras se dividem pelo tamanho real do array — o corte fixo em 10
+  // desequilibrava a esteira sempre que um logo saía da lista.
+  const meio = Math.ceil(allLogos.length / 2);
+  const logosFileira1 = allLogos.slice(0, meio);
+  const logosFileira2 = allLogos.slice(meio);
 
   return (
     <section className="bg-gradient-to-b from-white to-gray-50 py-12 md:py-20 lg:py-24 w-full overflow-hidden">
@@ -65,7 +72,7 @@ export function ClientsSection({ }: ClientsSectionProps) {
           >
             {[0, 1, 2].map((setIndex) => (
               <div key={setIndex} className="inline-flex gap-3 md:gap-6 items-center pr-3 md:pr-6">
-                {allLogos.slice(0, 10).map((logo, index) => (
+                {logosFileira1.map((logo, index) => (
                   <div
                     key={`${setIndex}-${index}`}
                     className="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 flex-shrink-0 flex items-center justify-center bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300 p-2 md:p-3"
@@ -96,7 +103,7 @@ export function ClientsSection({ }: ClientsSectionProps) {
           >
             {[0, 1, 2].map((setIndex) => (
               <div key={setIndex} className="inline-flex gap-3 md:gap-6 items-center pr-3 md:pr-6">
-                {allLogos.slice(10).map((logo, index) => (
+                {logosFileira2.map((logo, index) => (
                   <div
                     key={`${setIndex}-${index}`}
                     className="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 flex-shrink-0 flex items-center justify-center bg-white rounded-xl md:rounded-2xl shadow-sm hover:shadow-md hover:scale-105 transition-all duration-300 p-2 md:p-3"

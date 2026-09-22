@@ -32,7 +32,7 @@ export function HomePage() {
   return (
     <main className="min-h-screen">
       <Navbar onCtaClick={() => openModal("[Site]BT-Header")} />
-      <HeroSection onCtaClick={() => openModal("[Site]BT-Rapha")} />
+      <HeroSection onCtaClick={() => openModal("[Site]BT-Hero")} />
       <SubscriptionsSection onCtaClick={() => openModal("[Site]BT-Assinatura")} />
       <InvoicesSection onCtaClick={() => openModal("[Site]BT-Nota-fiscal")} />
       <FeaturesSection onCtaClick={() => openModal("[Site]BT-Funcionalidades")} />

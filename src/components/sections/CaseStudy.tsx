@@ -8,6 +8,11 @@ interface CaseStudyProps {
   onCtaClick?: () => void;
 }
 
+/**
+ * Só entra aqui caso com consentimento vivo de uso de imagem e de nome.
+ * Ex-parceiro com uso de imagem revogado NÃO volta: nem nome, nem @, nem os
+ * números da rede dele. Um caso saiu em 19/Set/26 por esta regra.
+ */
 const cases = [
   {
     badge: "Embu das Artes/SP · 4 cadeiras",
@@ -35,33 +40,6 @@ const cases = [
     },
     bottomText: "Mesma equipe. Mesmo ponto. A diferenca?",
     bottomHighlight: "Montou clube de assinaturas com BestBarbers.",
-  },
-  {
-    badge: "@omilenorocha · 3 unidades · 521 assinantes",
-    title: "De 1 unidade para 3.",
-    titleHighlight: "R$101K por mes",
-    before: {
-      revenue: "1 unidade",
-      perLabel: "",
-      items: [
-        "Operacao manual em todas as frentes",
-        "Teto de crescimento visivel",
-        "Gestao centralizada no dono",
-        "Sem padronizacao entre unidades",
-      ],
-    },
-    after: {
-      revenue: "3 unidades",
-      perLabel: "",
-      items: [
-        "R$101.798/mes de faturamento",
-        "521 assinantes ativos",
-        "R$918K acumulados em 22 meses",
-        "Gestao multi-unit pelo dashboard",
-      ],
-    },
-    bottomText: "Mileno Rocha escalou de 1 para 3 unidades.",
-    bottomHighlight: "Tudo gerenciado pelo app BestBarbers.",
   },
   {
     badge: "@thaisdantbarber · Solo · 1 cadeira",

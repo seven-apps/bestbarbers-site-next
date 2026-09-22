@@ -35,11 +35,22 @@ export const clubeContent = {
     cta: {
       text: "QUERO O CLUBE\nNA MINHA BARBEARIA",
     },
+    // Arte do herói: PRODUTO, nunca rosto de pessoa (19/Set/26).
+    // Saiu daqui: `hero-best-5-influencers.png`. Aquela arte tem cinco rostos e o alt
+    // desta linha era genérico — por isso nenhuma varredura por nome a encontrava —
+    // mas dois dos cinco são ex-parceiros com uso de imagem revogado (medido abrindo
+    // o pixel: rosto 1 e rosto 3, o do centro). Recorte não resolve: a arte sai inteira.
+    // Entrou: composição só de aparelhos, no mesmo padrão que a `TrustHeroV12` já
+    // aprovou — sem rosto, sem @ e sem logo de barbearia de ex-parceiro.
+    // As três telas são capturas reais do produto (`imagens-mobile/`): clube de
+    // assinatura no pagamento do plano + tela inicial com o espaço da logo do cliente.
+    // Dimensão declarada = dimensão real do arquivo (a anterior, 1712×450, achatava
+    // uma arte 1080×434 na renderização).
     image: {
-      src: "/images/hero-best-5-influencers.png",
-      alt: "Clube de assinaturas no app próprio da barbearia — BestBarbers na App Store e Play Store",
-      width: 1712,
-      height: 450,
+      src: "/images/hero-clube-app-assinaturas.png",
+      alt: "App próprio da barbearia em três celulares: a tela do clube de assinatura no momento do pagamento do plano e a tela inicial com o espaço reservado para a logo da barbearia, no iPhone e no Android",
+      width: 1600,
+      height: 780,
     },
   },
 
@@ -72,7 +83,11 @@ export const clubeContent = {
         "No automático — barbearia de 2 cadeiras em São Paulo/SP, com 75 assinantes pagando pelo app da própria marca. Começou com R$ 4.844 por mês; 10 meses depois, R$ 16.152.",
       itens: [
         "As mensalidades caem sozinhas, antes do primeiro corte do mês",
-        "Cliente que já pagou volta todo mês — e gasta até 2,8× mais que o avulso no ano",
+        // O "2,8× mais que o avulso" saiu daqui: número morto, proibido por nome em
+        // knowledge/marketing/instagram-voz-do-time.md §9 (vem do R$540/ano de avulso,
+        // cuja conta real é R$40 × 8–9 visitas = R$360). O item abaixo diz o que o
+        // clube faz de fato, sem multiplicador inventado.
+        "Cliente que já pagou volta todo mês — sem você ter que lembrar ele",
         "Você sabe no dia 1º quanto o clube vai te pagar no mês",
       ],
       cta: "QUERO ESSE RESULTADO NA MINHA BARBEARIA",
@@ -216,11 +231,19 @@ export const clubeContent = {
     cta: {
       text: "QUERO O CLUBE NA MINHA BARBEARIA",
     },
+    // Saiu daqui: `notifications.webp`. O nome do arquivo não denuncia nada e nenhuma
+    // varredura por nome achou — mas o ícone do app dentro dos três cards é a marca de
+    // um ex-parceiro com uso de imagem revogado ("BARBEARIA DO RAPHA" legível no card
+    // grande, medido abrindo o pixel em 19/Set/26). Entrou a mesma composição de três
+    // cards com o ícone NEUTRO ("SUA LOGO") — que é exatamente o que esta seção promete:
+    // o push sai com a marca de quem contrata. Mesmo arquivo que a home espera
+    // (`home.ts` já aponta para ele; a arte estava pendente).
+    // Dimensão declarada = dimensão real do arquivo (a anterior, 1640×800, achatava).
     image: {
-      src: "/images/notifications.webp",
-      alt: "Notificações push do app da barbearia lembrando o assinante",
+      src: "/images/notifications-app-proprio.webp",
+      alt: "Notificações push do app da barbearia lembrando o assinante — o ícone do app traz o espaço reservado para a logo da barbearia",
       width: 1640,
-      height: 800,
+      height: 857,
     },
   },
 

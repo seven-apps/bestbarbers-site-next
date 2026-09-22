@@ -143,11 +143,19 @@ export function HeroV12({ onCtaClick }: HeroV12Props) {
               style={{ animationDelay: "0.28s" }}
             >
               <div className="relative max-w-[400px] sm:max-w-[460px] mx-auto">
+                {/*
+                  A arte anterior (`lp-v5-app-dashboard-mockup.png`) trazia a marca de um
+                  ex-parceiro com uso de imagem revogado QUEIMADA no pixel da tela do
+                  celular — nome da barbearia, monograma e unidade. Nome de arquivo e `alt`
+                  não denunciavam: só abrindo a imagem. A substituta usa marca FICTÍCIA
+                  ("SUA BARBEARIA"), que além de eliminar o risco reforça a oferta de app
+                  white label. Não reintroduzir captura com marca de cliente real aqui.
+                */}
                 <Image
-                  src="/images/lp-v5-app-dashboard-mockup.png"
-                  alt="App próprio BestBarbers com dashboard financeiro"
-                  width={460}
-                  height={372}
+                  src="/images/app-dashboard-mockup-limpo.png"
+                  alt="App próprio da barbearia com dashboard financeiro BestBarbers"
+                  width={891}
+                  height={933}
                   sizes="(max-width: 640px) 400px, 460px"
                   className="w-full h-auto"
                   style={{ filter: "drop-shadow(0 24px 48px rgba(0,0,0,0.5))" }}
@@ -198,13 +206,13 @@ export function HeroV12({ onCtaClick }: HeroV12Props) {
                     className="text-[20px] font-extrabold leading-tight"
                     style={{ color: "#0a0a0a", fontFamily: "var(--font-vollkorn)" }}
                   >
-                    353
+                    1.200+
                   </p>
                   <p
                     className="text-[9px] font-semibold"
                     style={{ color: "#16a34a", fontFamily: "var(--font-montserrat)" }}
                   >
-                    ↑ +12 esta semana
+                    na plataforma
                   </p>
                 </div>
               </div>
@@ -228,7 +236,7 @@ export function HeroV12({ onCtaClick }: HeroV12Props) {
                 className="mt-3 text-[12px] text-center lg:text-left"
                 style={{ color: "#ffffff", fontFamily: "var(--font-montserrat)", fontWeight: 500, opacity: 0.7 }}
               >
-                A partir de R$299/mês · Sem fidelidade · Cancele quando quiser
+                A partir de R$299/mês · Sem taxa de implantação · Gerente de contas dedicado
               </p>
             </div>
           </div>
@@ -240,10 +248,10 @@ export function HeroV12({ onCtaClick }: HeroV12Props) {
           >
             <div className="relative w-full max-w-[520px]">
               <Image
-                src="/images/lp-v5-app-dashboard-mockup.png"
-                alt="App próprio + dashboard financeiro BestBarbers"
-                width={560}
-                height={460}
+                src="/images/app-dashboard-mockup-limpo.png"
+                alt="App próprio da barbearia + dashboard financeiro BestBarbers"
+                width={891}
+                height={933}
                 sizes="520px"
                 className="w-full h-auto"
                 style={{ filter: "drop-shadow(0 32px 64px rgba(0,0,0,0.55))" }}
@@ -251,9 +259,17 @@ export function HeroV12({ onCtaClick }: HeroV12Props) {
                 fetchPriority="high"
               />
 
-              {/* Floating: economia */}
+              {/* Floating: economia.
+                  Fica no ALTO e não no meio: a arte nova (`app-dashboard-mockup-limpo.png`,
+                  891×933) é mais alta que a que ela substituiu (460×372), então o container
+                  cresceu e o antigo `top-1/3` passou a cair exatamente sobre a marca
+                  "BARBEARIA EXEMPLO" na tela do celular — medido em 19/Set/26: selo em
+                  y 156–235, marca em y 124–167. Cobrir a marca fictícia é apagar justamente
+                  o que a arte existe para mostrar (app white label). Aqui em cima o selo
+                  sobrepõe só o topo vazio da arte e a moldura do aparelho.
+                  Se a arte trocar de novo, confira onde a marca caiu antes de reusar esta posição. */}
               <div
-                className="absolute top-1/3 -left-6 rounded-2xl px-4 py-3 flex items-center gap-3 hero-float-b"
+                className="absolute top-2 -left-6 rounded-2xl px-4 py-3 flex items-center gap-3 hero-float-b"
                 style={{
                   background: "#ebad04",
                   border: "2px solid #0a0a0a",
@@ -311,13 +327,13 @@ export function HeroV12({ onCtaClick }: HeroV12Props) {
                   className="text-2xl font-extrabold leading-tight"
                   style={{ color: "#0a0a0a", fontFamily: "var(--font-vollkorn)" }}
                 >
-                  353
+                  51 mil+
                 </p>
                 <p
                   className="text-[10px] font-semibold"
                   style={{ color: "#16a34a", fontFamily: "var(--font-montserrat)" }}
                 >
-                  ↑ +12 esta semana
+                  na plataforma
                 </p>
               </div>
             </div>

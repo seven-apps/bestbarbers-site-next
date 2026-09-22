@@ -1,5 +1,15 @@
-// LP V6 — 5 variantes de conteudo por utm_content
-// Copy exata do Wave 3 Copy Maximizer (131+ pecas validadas)
+// LP V6 — 4 variantes de conteúdo por utm_content
+// Copy exata do Wave 3 Copy Maximizer (131+ peças validadas)
+//
+// REGRA: só parceiro com colaboração consentida entra aqui. Ex-parceiro com uso de
+// imagem revogado NÃO volta — nem nome, nem handle, nem número dele num agregado.
+// A variante que existia só para um ex-parceiro foi removida inteira (não esvaziada),
+// e o utm_content dele cai no default por `getVariant`. Régua em código, não em prosa.
+//
+// Consequência de atribuição, declarada de propósito (19/Set/26): link antigo ainda em
+// circulação com utm_content de ex-parceiro passa a servir o conteúdo padrão. É o efeito
+// desejado — o conteúdo dele sai do ar —, mas quem ler a conversão desses links depois
+// precisa saber que a mudança tem data.
 
 export interface LPMetric {
   value: string;
@@ -126,12 +136,6 @@ const defaultVariant: LPVariant = {
         badge: "R$15K\u2192R$31K/mes",
       },
       {
-        quote: "De 1 pra 3 unidades. R$100K por mes. Tudo pelo app e dashboard.",
-        name: "Mileno Rocha",
-        detail: "@omilenorocha \u00b7 3 unidades \u00b7 521 assinantes",
-        badge: "R$918K acumulados",
-      },
-      {
         quote: "Uma cadeira. Sozinha. R$12K por mes. Sem WhatsApp, sem papel.",
         name: "Thais D\u2019Antunes",
         detail: "@thaisdantbarber \u00b7 Solo \u00b7 1 cadeira",
@@ -143,100 +147,6 @@ const defaultVariant: LPVariant = {
     headline: "A cada dia sem clube, R$195 perdidos.",
     sub: "Sem taxa. Sem fidelidade. Gerente dedicado. Cancela quando quiser.",
     cta: "VER MEU DIAGNOSTICO GRATUITO",
-  },
-};
-
-// ============================================================
-// MILENO — SCALER (Pub2+Pub3, 3 unidades, R$101K/mes)
-// ============================================================
-const milenoVariant: LPVariant = {
-  hero: {
-    badge: "@omilenorocha \u00b7 3 unidades \u00b7 521 assinantes",
-    headline: "De 1 para 3 barbearias.",
-    highlight: "R$100 mil por mes.",
-    sub: "521 assinantes em 3 unidades. R$0 implantacao.",
-    trustLine: "1.200+ barbearias \u00b7 R$5M+/mes \u00b7 5.0 App Store",
-  },
-  proof: {
-    metrics: [
-      { value: "R$101K", label: "faturamento/mes" },
-      { value: "521", label: "assinantes" },
-      { value: "R$918K", label: "acumulado 22m" },
-      { value: "23K", label: "agendamentos" },
-    ],
-  },
-  pain: {
-    cards: [
-      {
-        icon: "money",
-        scene: "\u201cO movimento melhorava, mas nunca sobrava dinheiro.\u201d",
-        stat: "-R$1,95 por corte. R$1.755/mes.",
-        color: "red",
-      },
-      {
-        icon: "clock",
-        scene: "\u201cTem hor\u00e1rio?\u201d \u201cN\u00e3o d\u00e1.\u201d \u201cDeixa pra l\u00e1.\u201d 30 vezes por dia.",
-        stat: "3 clientes perdidos por dia.",
-        color: "blue",
-      },
-      {
-        icon: "lock",
-        scene: "\u201cSe eu me machucar, a barbearia quebra.\u201d 3 anos sem f\u00e9rias.",
-        stat: "Imagina abrir o celular e ver R$48K ja na conta.",
-        color: "amber",
-      },
-    ],
-    transition: "Mileno comecou com 1 cadeira em Osasco. Hoje: 3 unidades com BestBarbers.",
-  },
-  objections: [
-    {
-      question: "Ja tenho sistema.",
-      answer: "Mileno faturou R$918K depois de migrar. Nao voltaria por nada.",
-    },
-    {
-      question: "E caro.",
-      answer: "R$10 por dia. Se paga com 3 assinantes. Ele tem 521.",
-    },
-    {
-      question: "Nao funciona pra multi-unidade.",
-      answer: "3 unidades. 3 cidades. Tudo no celular.",
-    },
-    {
-      question: "O que ta incluso nos R$299/mes?",
-      answer:
-        "Gestao financeira, clube de assinaturas, agenda online, NFS-e, dashboard multi-unidade e gerente dedicado. Total percebido: R$3.600/mes. Voce paga R$299. 12x menos.",
-    },
-    {
-      question: "Funciona pra barbearia pequena?",
-      answer: "Mileno comecou com 1 cadeira em Osasco. Hoje: R$101K/mes em 3 unidades.",
-    },
-  ],
-  socialProof: {
-    testimonials: [
-      {
-        quote: "O que mudou nao fui eu. Foi o sistema.",
-        name: "Mileno Rocha",
-        detail: "@omilenorocha \u00b7 3 unidades \u00b7 521 assinantes",
-        badge: "R$918K acumulados",
-      },
-      {
-        quote: "Era R$15 mil. Montei o clube. Dobrei em 4 meses.",
-        name: "Barbearia Pirajussara",
-        detail: "Embu das Artes/SP \u00b7 4 cadeiras",
-        badge: "R$15K\u2192R$31K/mes",
-      },
-      {
-        quote: "Uma cadeira. Sozinha. R$12K por mes.",
-        name: "Thais D\u2019Antunes",
-        detail: "@thaisdantbarber \u00b7 Solo",
-        badge: "R$12.589/mes",
-      },
-    ],
-  },
-  ctaFinal: {
-    headline: "A cada dia sem clube, R$195 perdidos.",
-    sub: "Sem taxa. Sem fidelidade. Gerente dedicado. Cancela quando quiser.",
-    cta: "Quero ver o potencial da MINHA barbearia",
   },
 };
 
@@ -312,12 +222,6 @@ const joaoVariant: LPVariant = {
         name: "Joao Seletto",
         detail: "@joaoseletto \u00b7 BH \u00b7 32 meses",
         badge: "ROI 127x",
-      },
-      {
-        quote: "De 1 pra 3 unidades. R$100K por mes.",
-        name: "Mileno Rocha",
-        detail: "@omilenorocha \u00b7 3 unidades",
-        badge: "R$918K acumulados",
       },
       {
         quote: "Era R$15 mil. Dobrei em 4 meses.",
@@ -406,12 +310,6 @@ const kaiqueVariant: LPVariant = {
         name: "Kaique (Bagulho)",
         detail: "@o_kaique_alves \u00b7 RJ \u00b7 469 assinantes",
         badge: "Top 5 Brasil",
-      },
-      {
-        quote: "De 1 pra 3 unidades. R$100K por mes.",
-        name: "Mileno Rocha",
-        detail: "@omilenorocha \u00b7 3 unidades",
-        badge: "R$918K acumulados",
       },
       {
         quote: "Uma cadeira. Sozinha. R$12K por mes.",
@@ -511,12 +409,6 @@ const thaisVariant: LPVariant = {
         detail: "Embu das Artes/SP \u00b7 4 cadeiras",
         badge: "R$15K\u2192R$31K/mes",
       },
-      {
-        quote: "De 1 pra 3 unidades. R$100K por mes.",
-        name: "Mileno Rocha",
-        detail: "@omilenorocha \u00b7 3 unidades",
-        badge: "R$918K acumulados",
-      },
     ],
   },
   ctaFinal: {
@@ -531,7 +423,6 @@ const thaisVariant: LPVariant = {
 // ============================================================
 const variants: Record<string, LPVariant> = {
   default: defaultVariant,
-  mileno: milenoVariant,
   joao: joaoVariant,
   kaique: kaiqueVariant,
   thais: thaisVariant,
@@ -541,7 +432,6 @@ export function getVariant(utmContent: string | null): LPVariant {
   if (!utmContent) return defaultVariant;
   const content = utmContent.toLowerCase();
 
-  if (content.includes("mileno")) return milenoVariant;
   if (content.includes("joao") || content.includes("seletto")) return joaoVariant;
   if (content.includes("kaique") || content.includes("bagulho")) return kaiqueVariant;
   if (content.includes("thais")) return thaisVariant;

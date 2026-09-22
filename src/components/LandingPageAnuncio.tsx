@@ -39,7 +39,14 @@ export default function LandingPageAnuncio() {
             />
           </div>
 
-          <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center">
+          {/*
+            A coluna do mockup saiu: a arte era `rapha_1.webp`, foto de ex-parceiro
+            com uso de imagem revogado — e o nome da barbearia dele estava queimado
+            DENTRO da arte (tela do celular), invisível a qualquer busca por nome no
+            código. Não há substituto aprovado, então o bloco não fica vazio: o hero
+            vira coluna única. Não reintroduzir arte aqui sem peça nova aprovada.
+          */}
+          <div className="lg:max-w-3xl">
             <div>
               {/* Título Principal */}
               <h1 className="font-extrabold text-[32px] leading-[40px] tracking-[-0.96px] text-[#111111] mb-5 md:text-[40px] md:leading-[48px] lg:text-[48px] lg:leading-[56px] lg:tracking-[-1.44px]">
@@ -63,17 +70,6 @@ export default function LandingPageAnuncio() {
               >
                 QUERO MEU APP PERSONALIZADO
               </button>
-            </div>
-
-            {/* Imagem do Mockup */}
-            <div className="mt-5 lg:mt-0">
-              <Image 
-                src="/images/rapha_1.webp"
-                alt="App personalizado para barbearias"
-                width={1712}
-                height={450}
-                className="w-full h-auto object-contain"
-              />
             </div>
           </div>
         </div>

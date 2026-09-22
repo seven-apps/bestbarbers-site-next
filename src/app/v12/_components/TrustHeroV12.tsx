@@ -3,8 +3,12 @@
 import Image from "next/image";
 import { CTAButton } from "@/components/ui/cta-button";
 
-const influencerHandles = [
-  "@omilenorocha",
+/**
+ * Parceiros com colab consentido no Instagram — só estes podem ser citados.
+ * Ex-parceiro com uso de imagem revogado NÃO volta aqui: nem handle, nem `alt`,
+ * nem arte, nem logo da barbearia dele na esteira abaixo.
+ */
+const parceirosNoAr = [
   "@joaoseletto",
   "@o_kaique_alves",
   "@thaisdantbarber",
@@ -12,7 +16,6 @@ const influencerHandles = [
 ];
 
 const allLogos = [
-  "/images/Rapha_2.webp",
   "/images/Sr-Barbearia.webp",
   "/images/Premium.webp",
   "/images/Black-House.webp",
@@ -67,29 +70,33 @@ export function TrustHeroV12({ onCtaClick }: TrustHeroV12Props) {
             Eles já tinham o melhor da cidade
           </p>
 
-          <div className="relative max-w-2xl mx-auto">
-            <Image
-              src="/images/hero-best-5-influencers.png"
-              alt="Mileno Rocha, João Seletto, Kaique Alves, Thaís D'Ant e Rapha — barbeiros parceiros BestBarbers"
-              width={600}
-              height={244}
-              sizes="(max-width: 768px) 100vw, 600px"
-              className="w-full h-auto object-contain"
-              loading="lazy"
+          {/*
+            Composição SEM rosto de pessoa. A arte anterior era um PNG único com cinco
+            rostos, dois deles de ex-parceiros com uso de imagem revogado — não dá para
+            recortar sem refazer a peça, então o prova social passa a ser o próprio
+            handle consentido. Não reintroduzir foto aqui sem arte nova aprovada.
+          */}
+          <div className="relative max-w-3xl mx-auto">
+            <div
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[180px] rounded-full blur-[90px] pointer-events-none"
+              style={{ background: "rgba(235,173,4,0.12)" }}
             />
-          </div>
-
-          {/* Handles */}
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mt-4">
-            {influencerHandles.map((handle) => (
-              <span
-                key={handle}
-                className="text-[11px] md:text-[13px] font-semibold"
-                style={{ color: "#ffffff", fontFamily: "var(--font-montserrat)" }}
-              >
-                {handle}
-              </span>
-            ))}
+            <div className="relative z-10 flex flex-wrap items-center justify-center gap-2.5 md:gap-3">
+              {parceirosNoAr.map((handle) => (
+                <span
+                  key={handle}
+                  className="rounded-full border px-4 py-2.5 md:px-5 md:py-3 text-[12px] md:text-[14px] font-bold"
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    borderColor: "rgba(235,173,4,0.25)",
+                    color: "#ebad04",
+                    fontFamily: "var(--font-montserrat)",
+                  }}
+                >
+                  {handle}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* Resultado */}
@@ -98,7 +105,7 @@ export function TrustHeroV12({ onCtaClick }: TrustHeroV12Props) {
             style={{ color: "#ffffff", fontFamily: "var(--font-montserrat)" }}
           >
             Agora têm os dados para provar.{" "}
-            <span style={{ color: "#ebad04" }}>+2.000 assinantes só entre eles.</span>
+            <span style={{ color: "#ebad04" }}>Mais de 51 mil assinantes ativos na plataforma.</span>
           </p>
           <p
             className="text-lg md:text-xl mt-3 font-medium mb-10"

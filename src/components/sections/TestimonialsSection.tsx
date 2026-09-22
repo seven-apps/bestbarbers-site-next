@@ -9,27 +9,46 @@ interface Testimonial {
   metric: string;
 }
 
+/**
+ * Cases reais, anonimizados por porte + cidade/UF — literais de
+ * knowledge/dominio/cases-clube.json (campos `crescimento` e
+ * `crescimento_assinantes`), todos com `crivel: true` e `bloqueio: null`.
+ *
+ * O que saiu daqui e por quê:
+ * - o arco "4 cadeiras · 353 assinantes · R$15.892 → R$31.690" está declarado MORTO
+ *   em knowledge/marketing/clube-arsenal.md (editorial não reconciliado) e nenhum
+ *   case do banco bate com ele;
+ * - "6 unidades · 1.000 assinantes · R$440K/mês" e "a maior barbearia single-unit
+ *   do Brasil" não têm fonte — o segundo é superlativo não sustentável;
+ * - as frases entre aspas eram falas inventadas atribuídas a barbearias anônimas.
+ *   Aqui o texto é descritivo: número do banco, sem colocar palavra na boca de ninguém.
+ *
+ * Todo número abaixo é RECEITA DE CLUBE (assinaturas), nunca faturamento total.
+ */
 const testimonials: Testimonial[] = [
   {
-    name: "Barbearia com 4 cadeiras",
-    location: "Grande São Paulo/SP",
+    // bb#13285
+    name: "Barbearia de 4 cadeiras",
+    location: "Araxá/MG",
     quote:
-      "4 cadeiras, 353 assinantes, de R$15K para R$31.690/mês. Mesma equipe, mesmo ponto. O clube mudou tudo.",
-    metric: "R$15K → R$31.690/mês",
+      "De 99 para 277 assinantes em 19 meses. A receita do clube saiu de R$9.249 para R$30.447 por mês — mesmas 4 cadeiras.",
+    metric: "R$9.249 → R$30.447/mês",
   },
   {
-    name: "Rede com 6 unidades",
-    location: "Minas Gerais",
+    // bb#10387
+    name: "Barbearia de 8 cadeiras",
+    location: "Belo Horizonte/MG",
     quote:
-      "6 unidades, 1.000 assinantes, R$176K/mês só em clube. R$440K total. O BestBarbers é a espinha dorsal.",
-    metric: "R$440K/mês faturamento",
+      "De 88 para 600 assinantes em 25 meses. Hoje são R$72.577 por mês de receita recorrente, cobrados no automático.",
+    metric: "600 assinantes no clube",
   },
   {
-    name: "Barbearia single-unit",
-    location: "São Paulo/SP",
+    // bb#12164
+    name: "Barbearia de 6 cadeiras",
+    location: "Londrina/PR",
     quote:
-      "Mais de 700 assinantes em uma única unidade. A maior barbearia single-unit do Brasil no clube de assinaturas.",
-    metric: "700+ assinantes",
+      "Começou o clube do zero: 31 assinantes e R$7.682 por mês. Dezessete meses depois, 409 assinantes e R$71.002 por mês.",
+    metric: "R$7.682 → R$71.002/mês",
   },
 ];
 
@@ -43,11 +62,11 @@ export function TestimonialsSection() {
             RESULTADOS REAIS
           </span>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-neutral-black-text mb-3">
-            O que Donos de Barbearia Dizem
+            Clubes reais, números do sistema
           </h2>
           <p className="text-sm md:text-base text-gray-500 max-w-xl mx-auto">
-            Resultados reais de barbearias que transformaram seus negócios com
-            BestBarbers
+            Barbearias reais na plataforma, identificadas por porte e cidade.
+            Os valores são de receita de clube, medidos no próprio sistema.
           </p>
         </div>
 
@@ -76,8 +95,8 @@ export function TestimonialsSection() {
 
               {/* Quote */}
               <blockquote className="mb-6">
-                <p className="text-sm md:text-base text-gray-700 leading-relaxed italic">
-                  &ldquo;{testimonial.quote}&rdquo;
+                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                  {testimonial.quote}
                 </p>
               </blockquote>
 

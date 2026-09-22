@@ -10,13 +10,12 @@ const masterTestimonial = {
   initials: "BP",
 };
 
+/**
+ * Só parceiros com colab consentido no Instagram entram aqui.
+ * Ex-parceiro com uso de imagem revogado NÃO volta: nem handle, nem número dele
+ * somado no rodapé da seção. Mesma régua de `TrustHeroV12.tsx`.
+ */
 const otherTestimonials = [
-  {
-    quote: "Hoje eu tenho mais de R$34 mil pra receber em assinatura. Todo mês. Sem precisar cobrar cliente manualmente.",
-    name: "@omilenorocha",
-    detail: "3 unidades · 521 assinantes",
-    result: "R$101K/mês",
-  },
   {
     quote: "Em 32 meses, R$1.222.716 faturados só com clube. Receita previsível mudou meu jogo.",
     name: "@joaoseletto",
@@ -119,8 +118,8 @@ export function TestimonialsV11() {
         </div>
 
         <p className="text-center text-gray-500 text-sm font-medium mt-8 animate-fade-in" style={{ animationDelay: "0.5s" }}>
-          Cinco barbeiros de referência.{" "}
-          <span className="text-white font-bold">Mais de 2.000 assinantes só entre eles.</span>
+          Barbeiros de referência que abriram os números.{" "}
+          <span className="text-white font-bold">Mais de 51 mil assinantes ativos na plataforma.</span>
         </p>
       </div>
     </section>

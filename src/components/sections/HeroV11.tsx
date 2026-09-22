@@ -1,3 +1,7 @@
+// Arte trocada em 19/Set/26: `lp-v5-app-dashboard-mockup.png` mostrava "BARBEARIA MILENITOS" queimado na tela do celular (rede do Mileno, banido).
+// Substituta limpa: `app-dashboard-mockup-limpo.png` (marca fictícia Barbearia Exemplo).
+// Esta rota está morta hoje (`_page.tsx` não é servido pelo Next), e a troca foi feita
+// justamente para ela não voltar violando se alguém reativar a rota.
 "use client";
 
 import Image from "next/image";
@@ -74,10 +78,10 @@ export function HeroV11({ onCtaClick }: HeroV5Props) {
             <div className="lg:hidden w-full mb-5 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
               <div className="relative max-w-[420px] sm:max-w-[480px] mx-auto -mt-10">
                 <Image
-                  src="/images/lp-v5-app-dashboard-mockup.png"
+                  src="/images/app-dashboard-mockup-limpo.png"
                   alt="App próprio + dashboard BestBarbers"
-                  width={480}
-                  height={388}
+                  width={891}
+                  height={933}
                   sizes="(max-width: 640px) 420px, 480px"
                   className="w-full h-auto drop-shadow-[0_18px_40px_rgba(0,0,0,0.25)]"
                   priority
@@ -126,10 +130,10 @@ export function HeroV11({ onCtaClick }: HeroV5Props) {
           <div className="hidden lg:flex justify-center items-center animate-fade-in-up" style={{ animationDelay: "0.35s" }}>
             <div className="relative w-full max-w-[520px]">
               <Image
-                src="/images/lp-v5-app-dashboard-mockup.png"
+                src="/images/app-dashboard-mockup-limpo.png"
                 alt="App próprio + dashboard financeiro BestBarbers"
-                width={560}
-                height={460}
+                width={891}
+                height={933}
                 sizes="(max-width: 1024px) 0px, 520px"
                 className="w-full h-auto drop-shadow-[0_25px_60px_rgba(0,0,0,0.3)]"
                 priority
