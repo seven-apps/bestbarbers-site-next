@@ -83,6 +83,47 @@ const PONTOS_PROFISSIONAIS: Record<Profissionais, number> = {
   '5 ou mais profissionais': 15,
 };
 
+/**
+ * TEM EQUIPE? — a variável que o A/B de set/26 compra (célula B otimiza o evento
+ * `LeadComEquipe`). Espelha `PONTOS_PROFISSIONAIS` de propósito: `Record<Profissionais, …>`
+ * exaustivo faz o compilador COBRAR a decisão se uma quinta opção entrar em
+ * `PROFISSIONAIS_OPCOES` — com uma negação (`!== 'Sou apenas eu'`) a opção nova entraria
+ * como "tem equipe" em silêncio, e o evento passaria a medir outra coisa no meio do teste.
+ *
+ * NÃO é um score mais duro: medido em 19/Set, "Sou apenas eu" + R$ 10-30 mil + quer clube +
+ * usa sistema dá score 60 exato (50 + 25 − 20 + 5), ou seja o corte Q60 COMPRA dono sozinho.
+ * Equipe e score são perguntas ortogonais, e é por isso que o teste vale a pena.
+ */
+export const EQUIPE_POR_OPCAO: Record<Profissionais, boolean> = {
+  'Sou apenas eu': false,
+  '2 profissionais': true,
+  '3 a 4 profissionais': true,
+  '5 ou mais profissionais': true,
+};
+
+/**
+ * Devolve true só para as respostas que AFIRMAM 2 ou mais profissionais.
+ *
+ * Desconhecido é `false`, nunca `true` — mesma regra que `calcularScoreV2` já aplica ao
+ * devolver `null` em vez de 0: ausência de resposta não vira valor. Isso cobre três casos
+ * vivos hoje: campo vazio (o `validateForm` do useLeadForm barra, mas este helper é público
+ * e a próxima LP que tornar a pergunta opcional não pode quebrar o evento em silêncio), o
+ * vocabulário legado da V11 ("2 a 4 colaboradores") e o número livre da V5/MultiStepForm
+ * ("4") — os mesmos que `calcularScoreV2` já recusa pontuar.
+ *
+ * `Object.hasOwn` e não `in`: o `in` enxerga a cadeia de protótipos, então
+ * `temEquipe('constructor')` devolveria a FUNÇÃO herdada de Object.prototype — que é
+ * truthy e faria o evento disparar, com o TypeScript jurando que o retorno é boolean
+ * (a assinatura mente, o runtime não). Exótico, mas este helper existe exatamente para
+ * garantir que desconhecido nunca vira true, e "quase sempre" não serve como garantia.
+ */
+export function temEquipe(profissionais?: string): boolean {
+  if (!profissionais) return false;
+  return Object.hasOwn(EQUIPE_POR_OPCAO, profissionais)
+    ? EQUIPE_POR_OPCAO[profissionais as Profissionais]
+    : false;
+}
+
 const PONTOS_SISTEMA = 5;
 
 const PISO = -100;

@@ -6,7 +6,7 @@ import { useMetaPixel } from './useMetaPixel';
 import { useUtmParams } from './useUtmParams';
 import { criarCardRecadastro } from '@/lib/recadastro';
 import { validarEmailOpcional } from '@/lib/form-passo1';
-import { calcularScoreV2, interesseLegado } from '@/lib/lead-score';
+import { calcularScoreV2, interesseLegado, temEquipe } from '@/lib/lead-score';
 import { MSG_CLUBE, MSG_FATURAMENTO, MSG_PROFISSIONAIS, MSG_SISTEMA } from '@/lib/qualificacao';
 import { portaDoLead } from '@/lib/tracking/porta';
 
@@ -91,7 +91,11 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   // trackLead em todo submit válido (gate aberto — Operação 400) + trackQualifiedLead
   // adicional quando score >= 30 (preserva leitura de CPQL). trackCompleteRegistration
   // foi removido em 910a080 (gerava duplicação Meta vs Ploomes 50% inflado).
-  const { trackLead, trackQualifiedLead, trackQualifiedLead60 } = useMetaPixel();
+  // `trackNonCatalogEvent` (e não `trackCustomEvent`) para o LeadComEquipe: nome fora do
+  // catálogo da Meta exige o verbo fbq('trackCustom'), e só ele tem o image pixel de
+  // fallback com o MESMO eventID — sem essa segunda via o evento morre para quem usa
+  // ad-blocker, justamente no evento que a célula B do A/B está comprando.
+  const { trackLead, trackQualifiedLead, trackQualifiedLead60, trackNonCatalogEvent } = useMetaPixel();
   const { getUtmParams } = useUtmParams();
 
   // O Ploomes é a AUTORIDADE do "esse telefone já existe?". Desde 23/Jul/26 a resposta
@@ -221,6 +225,11 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // `[Interesse: ...]` do CRM e `interested_tool` das tags: traduzidos da pergunta 7.
       const interestedTool = interesseLegado(formData.clubStatus);
 
+      // TEM EQUIPE? — a variável do A/B de set/26 (57,2% da fila paga é dono sozinho e vende
+      // 0,36%; com 2+ profissionais vende 1,83%). Sai da RESPOSTA do formulário e de mais
+      // nada: a regra exaustiva mora em src/lib/lead-score.ts (com teste), nunca aqui.
+      const comEquipe = temEquipe(formData.employeeCount);
+
       // GATE DE SCORE POR CÉLULA — o registro das células que otimizam por QUALIDADE.
       //
       // Uma célula assim não pode treinar o algoritmo com volume não qualificado: nela o
@@ -283,6 +292,11 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
           // suprimido e não sabe por quê, e o gate só é auditável dentro do navegador.
           celula_publico: utmParams.publico || null,
           celula_score_min: celula?.min ?? null,
+          // Terceira via de disparo: um container server que espelhe eventos para a Meta
+          // precisa da MESMA decisão que o site tomou, não de uma regra própria relida de
+          // `employee_count` — duas regras sobre a mesma string é como nasce a divergência
+          // (e já houve dobra real por container, v12/layout.tsx:24-30, removida em 02/Jul).
+          lead_com_equipe: comEquipe,
           user_data: {
             email: formData.email.toLowerCase().trim(),
             phone: phoneWithPlus,
@@ -380,7 +394,17 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       );
 
       const capiUrl = process.env.NEXT_PUBLIC_BBAI_DASHBOARD_URL;
-      const sendCapiEvent = (eventName: 'Lead' | 'QualifiedLead' | 'QualifiedLead60', eventId: string): void => {
+      // CONTRATO ATRAVESSANDO DOIS REPOSITÓRIOS: esta união literal tem de ser um subconjunto
+      // de `EVENTOS_CAPI` em bestbarbers-ai/lib/integrations/meta-capi-eventos.ts:43-53. Nome
+      // que a rota não conhece volta 400 — e o 400 é INVISÍVEL aqui (ver o if abaixo), com o
+      // agravante de a falha ser assimétrica: o pixel do navegador entrega o evento do mesmo
+      // jeito, então ele APARECE no Events Manager enquanto só a cópia do servidor some, com
+      // as match keys (telefone, e-mail, fbc/fbp) junto. Foi o que aconteceu com o
+      // QualifiedLead60. Por isso o contrato sobe no OS ANTES de o site disparar o nome novo.
+      const sendCapiEvent = (
+        eventName: 'Lead' | 'QualifiedLead' | 'QualifiedLead60' | 'LeadComEquipe',
+        eventId: string,
+      ): void => {
         if (!capiUrl) return;
         const nameParts = formData.ownerName.trim().split(/\s+/);
         fetch(`${capiUrl}/api/meta-capi/track`, {
@@ -398,14 +422,30 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
               fbp,
               fbc,
             },
+            // A rota EXIGE esta URL: a regra da conversão personalizada da Meta casa evento
+            // + url, e sem `eventSourceUrl` a cópia do servidor não satisfaz a condição de
+            // URL — metade dos eventos ficaria de fora da conversão que a célula B compra.
             eventSourceUrl: typeof window !== 'undefined' ? window.location.href : undefined,
-            // `customData.porta` (1–4) é chave declarada no schema da rota
-            // (lib/integrations/meta-capi-eventos.ts, `.strict()`); a rota anterior
-            // (z.object sem strict) apenas descartava a chave — nunca 400. Sem porta,
-            // o corpo fica igual ao de antes.
+            // `customData.porta` (1–4) é chave declarada no `customDataSchema` da rota
+            // (bestbarbers-ai/lib/integrations/meta-capi-eventos.ts:69-97). CORRIGIDO em
+            // 19/Set/26: o comentário antigo dizia que o schema é `.strict()`. Ele NÃO é —
+            // é STRIP de propósito, então chave desconhecida é descartada em SILÊNCIO, sem
+            // 400. Quem mandar um campo novo daqui sem declará-lo lá perde o campo só na
+            // cópia do servidor e nunca fica sabendo. O que devolve 400 é `eventName` fora
+            // do enum. Comentário errado sobre contrato faz estrago igual a código errado.
             ...(portaLead !== undefined && { customData: { porta: portaLead } }),
           }),
-        }).catch(() => {});
+        })
+          // `fetch` NÃO rejeita em HTTP 400 — ele RESOLVE. Sem este `if`, o `.catch` abaixo
+          // nunca é acionado por resposta de erro e o 400 morre sem console, sem log, sem
+          // nada (foi assim que o QualifiedLead60 passou meses com a CAPI muda). Continua
+          // fire-and-forget: avisa, não trava o cadastro nem mostra erro para o lead.
+          .then((res) => {
+            if (!res.ok) {
+              console.warn(`CAPI recusou "${eventName}" (HTTP ${res.status}) — o evento só foi pelo pixel, sem as match keys do servidor.`);
+            }
+          })
+          .catch(() => {});
       };
 
       const pixelData = {
@@ -416,6 +456,10 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         interested_tool: interestedTool,
         club_status: formData.clubStatus,
         current_system: formData.currentSystem,
+        // Booleano ao lado do `employee_count` cru: torna o filtro do Events Manager trivial
+        // e permite ler o A/B por SEGMENTO (quanto do 'Lead' de cada célula tinha equipe),
+        // não só pela contagem do evento novo. Vai em TODOS os eventos, inclusive `false`.
+        tem_equipe: comEquipe,
         ...(leadScore !== null && { lead_score: leadScore }),
         ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
         ...(portaLead !== undefined && { porta: portaLead }),
@@ -445,6 +489,26 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       if (leadQualifica60) {
         pixelPromises.push(trackQualifiedLead60(pixelData, `${leadEventId}-q60`));
         sendCapiEvent('QualifiedLead60', `${leadEventId}-q60`);
+      }
+
+      // LeadComEquipe — o evento que a célula B do A/B de set/26 compra (conversão
+      // personalizada sobre ele; a célula A compra o 'Lead' cru). Duas regras que não podem
+      // ser afrouxadas depois sem invalidar o teste:
+      //
+      // 1. DISPARA PELA RESPOSTA, NUNCA PELA CÉLULA. Não há gate de `celula` aqui de
+      //    propósito: se o evento só nascesse na célula B, os dois lados estariam medindo
+      //    coisas diferentes e não haveria comparação nenhuma — a célula A precisa emitir a
+      //    MESMA série para que a diferença observada seja o evento comprado, e só ele.
+      // 2. SUFIXO NOVO ('-eq'). A Meta deduplica pelo par (event_name, event_id) dentro de
+      //    48h; reaproveitar '-q' ou '-q60' faria a cópia do servidor ser descartada como
+      //    duplicata e o evento chegaria sem telefone/e-mail/fbc — sem erro nenhum à vista.
+      //
+      // Série ANINHADA, como as outras: o mesmo envio pode gerar Lead + QualifiedLead +
+      // QualifiedLead60 + LeadComEquipe (event_ids distintos, nenhuma infla a outra). Elas
+      // não se comparam entre si — ver o aviso em useMetaPixel.ts:177-181.
+      if (comEquipe) {
+        pixelPromises.push(trackNonCatalogEvent('LeadComEquipe', pixelData, `${leadEventId}-eq`));
+        sendCapiEvent('LeadComEquipe', `${leadEventId}-eq`);
       }
 
       await Promise.all(pixelPromises);
@@ -477,6 +541,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     trackLead,
     trackQualifiedLead,
     trackQualifiedLead60,
+    trackNonCatalogEvent,
     getUtmParams,
     submitLead,
     buildAttribution,

@@ -11,6 +11,8 @@ const {
   PROFISSIONAIS_OPCOES,
   SISTEMA_OPCOES,
   CORTE_ICP,
+  temEquipe,
+  EQUIPE_POR_OPCAO,
 } = modulo as typeof import('./lead-score');
 
 const QUER_CLUBE = CLUBE_OPCOES[2];
@@ -100,4 +102,50 @@ test('tradução para os textos legados', () => {
   assert.equal(interesseLegado(CLUBE_OPCOES[3]), 'Agenda e Controle Financeiro');
   assert.equal(faturamentoLegado('De R$ 5.001 a R$ 10.000'), 'R$ 2.000 a R$ 10.000');
   assert.equal(profissionaisLegado('3 a 4 profissionais'), '2 a 4 colaboradores');
+});
+
+// ————— temEquipe: a variável que o A/B de set/26 compra (evento `LeadComEquipe`) —————
+
+test('temEquipe: só "Sou apenas eu" é false entre as opções vivas do formulário', () => {
+  assert.equal(temEquipe('Sou apenas eu'), false);
+  for (const p of PROFISSIONAIS_OPCOES.filter((o) => o !== 'Sou apenas eu')) {
+    assert.equal(temEquipe(p), true, p);
+  }
+});
+
+test('temEquipe: toda opção do formulário tem decisão explícita (Record exaustivo)', () => {
+  // Se uma quinta opção entrar em PROFISSIONAIS_OPCOES, o compilador cobra a entrada no
+  // Record — e este teste cobra que ninguém a acrescente só no select. É o gate que a
+  // negação `!== 'Sou apenas eu'` não teria: lá a opção nova viraria "equipe" em silêncio.
+  assert.deepEqual(Object.keys(EQUIPE_POR_OPCAO).sort(), [...PROFISSIONAIS_OPCOES].sort());
+});
+
+test('temEquipe: campo vazio NÃO é equipe — ausência de resposta nunca vira valor', () => {
+  // A regra é a mesma que calcularScoreV2 aplica devolvendo null em vez de 0. Com uma
+  // negação simples, '' !== 'Sou apenas eu' daria TRUE e o evento que existe para separar
+  // quem tem equipe dispararia justamente para quem não respondeu.
+  assert.equal(temEquipe(''), false);
+  assert.equal(temEquipe('   '), false);
+  assert.equal(temEquipe(undefined), false);
+});
+
+test('temEquipe: vocabulário legado e número livre não viram equipe por acidente', () => {
+  // Os três vocabulários convivem HOJE no mesmo useLeadForm: FormSectionV11 manda
+  // "2 a 4 colaboradores", FormSectionV5/MultiStepForm mandam número livre ("4"). São os
+  // mesmos valores que calcularScoreV2 já recusa pontuar (score null) — coerência, não
+  // rigidez: nas LPs legadas o evento simplesmente não nasce, como o QualifiedLead60.
+  for (const legado of ['2 a 4 colaboradores', '5 ou mais colaboradores', '4', '2', 'sou apenas eu']) {
+    assert.equal(temEquipe(legado), false, legado);
+    assert.equal(calcularScoreV2({ faturamento: 'Acima de R$ 30.000', clube: QUER_CLUBE, profissionais: legado }), null, legado);
+  }
+});
+
+test('temEquipe: chave herdada de Object.prototype não vira equipe', () => {
+  // Com `p in EQUIPE_POR_OPCAO`, 'constructor'/'toString' passariam e a função herdada
+  // (truthy!) seria devolvida como se fosse `true` — a assinatura diz boolean e o runtime
+  // devolve outra coisa. Daí `Object.hasOwn`. Exótico, mas o helper existe justamente
+  // para prometer que desconhecido nunca dispara o evento.
+  for (const herdada of ['constructor', 'toString', 'valueOf', 'hasOwnProperty', '__proto__']) {
+    assert.equal(temEquipe(herdada), false, herdada);
+  }
 });
