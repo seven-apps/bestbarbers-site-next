@@ -1,0 +1,63 @@
+/* Artefato da família «projeto do clube»: a moldura que ocupa o espaço exato da
+   captura final enquanto ela não existe. Consome só tokens `--pc-*` (com literal
+   depois da vírgula, para o componente montar fora do `<div className="pc">` em
+   teste sem ficar transparente). */
+
+.artefato {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--pc-r-2, 16px);
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px;
+  text-align: center;
+  background: var(--pc-papel-fundo, #ebe6dd);
+  border: 1px dashed var(--pc-linha-papel, #e0dacd);
+  color: var(--pc-tinta-2, #4b535e);
+}
+
+.marca {
+  font-size: var(--pc-t-micro, 11px);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pc-ouro-escuro, #8a5d00);
+}
+
+.descricao {
+  margin: 0;
+  max-width: 44ch;
+  font-size: var(--pc-t-peq, 13px);
+  line-height: 1.5;
+  color: var(--pc-tinta-2, #4b535e);
+
+  /* Duas linhas: a moldura precisa caber na proporção do arquivo final, e uma
+     descrição de produção longa esticaria o bloco e mudaria o layout na troca. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.real {
+  background: var(--pc-carvao-alto, #161a21);
+}
+
+.imagem {
+  object-fit: cover;
+}
+
+@media (max-width: 480px) {
+  .descricao {
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+}

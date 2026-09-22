@@ -1,0 +1,461 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   PROJETO DO CLUBE — tokens da família. Escopo: .pc (nada vaza).
+
+   Dono: B2 (sistema visual). Importado UMA vez, no layout.tsx da rota (B1):
+       import "./_components/pc-tokens.css";
+   e o layout envolve children em <div className="pc">.
+
+   REGRAS DE USO (valem para os nove construtores):
+   - NÃO usar cor nomeada do Tailwind: `tailwind.config.ts` é código morto nesta
+     base (v4 sem `@config`), então `bg-amber-500` não pinta nada.
+   - NÃO usar `rounded-2xl`/`rounded-3xl`: a escala está invertida aqui
+     (3xl = 24px é MENOR que 2xl = 32px). Use `var(--pc-r-*)`.
+   - Tailwind só para LAYOUT (flex, grid, gap, px-*). Cor, raio, sombra,
+     tipografia e duração saem destes tokens ou das classes `.pc-*` abaixo.
+
+   ÍNDICE DAS CLASSES PRONTAS (use, não redesenhe):
+     estrutura  .pc-secao [--carvao|--papel|--carvao-fundo] · .pc-medida [--texto|--cheia]
+     texto      .pc-titulo [--1|--2|--3] · .pc-subtitulo · .pc-texto [--grande|--suave]
+                .pc-rotulo [--tinta] · .pc-numero · .pc-tabular · .pc-lista
+     objetos    .pc-cartao [--papel|--carvao|--contorno] · .pc-selo [--acao|--neutro]
+     ação       .pc-botao [--acao|--ouro|--fantasma|--link] [--g] [--bloco]
+     movimento  .pc-flutua · .pc-flutua-2 · .pc-pulsa · .pc-entra · .pc-check · .pc-passo
+                [data-pc-revelar] (só o <PcRevelar> escreve este atributo)
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.pc {
+  /* CHÃO */
+  --pc-carvao:        #0e1116;
+  --pc-carvao-alto:   #161a21;
+  --pc-carvao-fundo:  #0a0c10;
+  --pc-papel:         #f6f3ee;
+  --pc-papel-alto:    #ffffff;
+  --pc-papel-fundo:   #ebe6dd;
+
+  /* MARCA */
+  --pc-ouro:          #ffaf02;
+  --pc-ouro-suave:    #ebad04;
+  --pc-ouro-escuro:   #8a5d00;   /* dourado legível sobre papel (contraste AA) */
+  --pc-ouro-lavado:   rgba(255,175,2,0.12);
+
+  /* AÇÃO (única cor de conversão) */
+  --pc-acao:          #02ab15;
+  --pc-acao-hover:    #029912;
+  --pc-acao-lavado:   rgba(2,171,21,0.15);
+
+  /* TINTA */
+  --pc-tinta:         #14171c;   /* sobre papel */
+  --pc-tinta-2:       #4b535e;
+  --pc-tinta-3:       #7b838f;
+  --pc-luz:           #f3f4f6;   /* sobre carvão */
+  --pc-luz-2:         #a9b0bb;
+  --pc-luz-3:         #6f7783;
+
+  /* LINHAS */
+  --pc-linha-carvao:  rgba(255,255,255,0.10);
+  --pc-linha-papel:   #e0dacd;
+
+  /* ESTADO */
+  --pc-erro-papel:    #dc2626;
+  --pc-erro-carvao:   #f87171;
+  --pc-ok:            #02ab15;
+
+  /* RAIO — nomes próprios, porque os do Tailwind estão invertidos aqui */
+  --pc-r-1: 6px;  --pc-r-2: 10px; --pc-r-3: 16px;
+  --pc-r-4: 22px; --pc-r-5: 30px; --pc-r-pill: 999px;
+
+  /* SOMBRA */
+  --pc-sombra-1: 0 1px 2px rgba(10,12,16,.06), 0 2px 10px rgba(10,12,16,.06);
+  --pc-sombra-2: 0 12px 32px rgba(10,12,16,.14);
+  --pc-sombra-3: 0 24px 70px rgba(10,12,16,.38);
+  --pc-brilho-ouro: 0 0 0 1px rgba(255,175,2,.28), 0 18px 48px rgba(255,175,2,.16);
+  --pc-brilho-acao: 0 10px 34px rgba(2,171,21,.38);
+  --pc-foco:        0 0 0 3px rgba(235,173,4,0.28);
+
+  /* TIPOGRAFIA — Montserrat é imposta pelo globals.css:8 (!important). A identidade
+     desta família vem de peso, tracking e escala, não de uma segunda família. */
+  --pc-fonte: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --pc-t-micro:   11px;
+  --pc-t-rotulo:  13px;
+  --pc-t-corpo:   clamp(15px, 1.05vw + 13px, 17px);
+  --pc-t-corpo-g: clamp(17px, 1.20vw + 14px, 19px);
+  --pc-t-h3:      clamp(18px, 1.20vw + 15px, 22px);
+  --pc-t-h2:      clamp(24px, 2.20vw + 17px, 34px);
+  --pc-t-h1:      clamp(30px, 4.20vw + 16px, 50px);
+  --pc-t-numero:  clamp(34px, 5.00vw + 18px, 60px);
+  --pc-lh-curta:  1.12;
+  --pc-lh-normal: 1.50;
+  --pc-lh-larga:  1.66;
+  --pc-track-micro: .18em;
+  --pc-track-h1:  -0.02em;
+  --pc-peso-corpo: 400;
+  --pc-peso-forte: 600;
+  --pc-peso-titulo: 800;
+
+  /* ESPAÇO */
+  --pc-e-1: 4px;  --pc-e-2: 8px;  --pc-e-3: 12px; --pc-e-4: 16px;
+  --pc-e-5: 24px; --pc-e-6: 32px; --pc-e-7: 48px; --pc-e-8: 64px; --pc-e-9: 96px;
+  --pc-secao-y: clamp(48px, 6vw, 96px);
+  --pc-secao-x: clamp(20px, 5vw, 64px);
+  --pc-max: 1120px;
+  --pc-max-texto: 62ch;
+
+  /* MOVIMENTO */
+  --pc-dur-1: 140ms;   /* micro-interação */
+  --pc-dur-2: 260ms;   /* troca de estado */
+  --pc-dur-3: 460ms;   /* entrada de seção */
+  --pc-dur-4: 700ms;   /* mecanismo */
+  --pc-dur-conta: 1500ms;
+  --pc-ease-saida: cubic-bezier(.22,.61,.36,1);
+  --pc-ease-suave: cubic-bezier(.40,0,.20,1);
+  --pc-deslocamento: 18px;
+  --pc-stagger: 90ms;
+
+  /* CAMADAS */
+  --pc-z-conteudo: 1; --pc-z-sticky: 40; --pc-z-topo: 50;
+
+  background: var(--pc-carvao);
+  color: var(--pc-luz);
+  font-family: var(--pc-fonte);
+}
+
+.pc-papel { background: var(--pc-papel); color: var(--pc-tinta); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   O CONSERTO DO `position: sticky` — escopo de rota, medido na rota real.
+   ═══════════════════════════════════════════════════════════════════════════
+   MEDIDO, não deduzido (19/Set/26, integrador): com a página rolada a 900 px,
+   `getBoundingClientRect().top` do cabeçalho dava −883. Ele subia e sumia junto
+   com o conteúdo: no desktop, onde o CTA fixo é desligado por media query, o
+   visitante ficava sem NENHUM botão persistente em 14 mil pixels de página.
+
+   A causa: `globals.css` (`html, body { overflow-x: hidden }`) mais a classe
+   `overflow-x-hidden` no `<body>` do layout raiz. `overflow-x: hidden` computa
+   `overflow-y: auto`, o `body` vira contêiner de rolagem próprio, e todo
+   `position: sticky` dentro dele passa a grudar num box que nunca rola. Nenhuma
+   outra página do site usa `sticky` — por isso ninguém nunca tinha esbarrado nisso.
+
+   `overflow-x: clip` corta o estouro horizontal EXATAMENTE igual e NÃO cria
+   contêiner de rolagem: é para isso que a palavra existe. Chrome 90+, Firefox 81+,
+   Safari 16+ — e onde não houver suporte, a regra é ignorada e volta ao que está
+   no ar hoje (sem sticky), nunca a um layout quebrado.
+
+   POR QUE AQUI E NÃO NO `globals.css`: aquele arquivo alimenta a /v12, a /clube e
+   toda rota com tráfego. Este arquivo é importado SÓ pelo layout de
+   `/projeto-do-clube`, então a regra só existe nas sete rotas desta família —
+   zero regressão possível nas LPs vivas. O `:has()` amarra a regra à presença do
+   `.pc`, que é a casca que só este layout monta.
+
+   Quando o André der GO para trocar no `globals.css` (com uma passada de regressão
+   nas LPs vivas), este bloco vira redundante e pode sair. */
+html:has(.pc),
+html:has(.pc) > body {
+  overflow-x: clip;
+}
+
+/* ENTRADA DE SEÇÃO — o conteúdo NASCE VISÍVEL. Só se esconde depois que o JS
+   marca [data-pc-revelar="pronto"]; sem JS, sem esconder. */
+.pc [data-pc-revelar] {
+  transition: opacity var(--pc-dur-3) var(--pc-ease-saida),
+              transform var(--pc-dur-3) var(--pc-ease-saida);
+  transition-delay: var(--pc-atraso, 0ms);
+}
+.pc [data-pc-revelar="pronto"]  { opacity: .001; transform: translateY(var(--pc-deslocamento)); }
+.pc [data-pc-revelar="visivel"] { opacity: 1;    transform: none; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ESTRUTURA
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.pc-secao {
+  position: relative;
+  z-index: var(--pc-z-conteudo);
+  padding-block: var(--pc-secao-y);
+  padding-inline: var(--pc-secao-x);
+  background: var(--pc-carvao);
+  color: var(--pc-luz);
+}
+.pc-secao--carvao       { background: var(--pc-carvao);       color: var(--pc-luz); }
+.pc-secao--carvao-fundo { background: var(--pc-carvao-fundo); color: var(--pc-luz); }
+.pc-secao--papel        { background: var(--pc-papel);        color: var(--pc-tinta); }
+
+/* Faixa de 1px que costura carvão e papel sem virar borda dura. */
+.pc-secao--papel + .pc-secao--carvao,
+.pc-secao--papel + .pc-secao--carvao-fundo { border-top: 1px solid var(--pc-linha-papel); }
+
+.pc-medida        { width: 100%; max-width: var(--pc-max); margin-inline: auto; }
+.pc-medida--texto { max-width: var(--pc-max-texto); }
+.pc-medida--cheia { max-width: none; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TEXTO
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.pc-titulo {
+  margin: 0;
+  font-weight: var(--pc-peso-titulo);
+  line-height: var(--pc-lh-curta);
+  letter-spacing: var(--pc-track-h1);
+  text-wrap: balance;
+}
+.pc-titulo--1 { font-size: var(--pc-t-h1); }
+.pc-titulo--2 { font-size: var(--pc-t-h2); }
+.pc-titulo--3 { font-size: var(--pc-t-h3); letter-spacing: -0.01em; }
+
+.pc-subtitulo {
+  margin: 0;
+  font-size: var(--pc-t-corpo-g);
+  font-weight: var(--pc-peso-corpo);
+  line-height: var(--pc-lh-normal);
+  color: var(--pc-luz-2);
+  max-width: var(--pc-max-texto);
+  text-wrap: pretty;
+}
+.pc-papel .pc-subtitulo,
+.pc-secao--papel .pc-subtitulo { color: var(--pc-tinta-2); }
+
+.pc-texto {
+  margin: 0;
+  font-size: var(--pc-t-corpo);
+  font-weight: var(--pc-peso-corpo);
+  line-height: var(--pc-lh-larga);
+  color: var(--pc-luz-2);
+  max-width: var(--pc-max-texto);
+  text-wrap: pretty;
+}
+.pc-texto--grande { font-size: var(--pc-t-corpo-g); line-height: var(--pc-lh-normal); }
+.pc-texto--suave  { color: var(--pc-luz-3); }
+.pc-papel .pc-texto,
+.pc-secao--papel .pc-texto { color: var(--pc-tinta-2); }
+.pc-papel .pc-texto--suave,
+.pc-secao--papel .pc-texto--suave { color: var(--pc-tinta-3); }
+
+.pc-rotulo {
+  display: inline-block;
+  margin: 0;
+  font-size: var(--pc-t-micro);
+  font-weight: var(--pc-peso-forte);
+  line-height: 1;
+  letter-spacing: var(--pc-track-micro);
+  text-transform: uppercase;
+  color: var(--pc-ouro);
+}
+.pc-rotulo--tinta { color: var(--pc-ouro-escuro); }
+.pc-papel .pc-rotulo,
+.pc-secao--papel .pc-rotulo { color: var(--pc-ouro-escuro); }
+
+.pc-numero {
+  display: inline-block;
+  font-size: var(--pc-t-numero);
+  font-weight: var(--pc-peso-titulo);
+  line-height: var(--pc-lh-curta);
+  letter-spacing: var(--pc-track-h1);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+.pc-tabular { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
+
+.pc-lista { margin: 0; padding: 0; list-style: none; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   OBJETOS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.pc-cartao {
+  border-radius: var(--pc-r-3);
+  padding: var(--pc-e-5);
+  background: var(--pc-carvao-alto);
+  border: 1px solid var(--pc-linha-carvao);
+  color: inherit;
+}
+.pc-cartao--carvao { background: var(--pc-carvao-alto); border-color: var(--pc-linha-carvao); }
+.pc-cartao--papel {
+  background: var(--pc-papel-alto);
+  border: 1px solid var(--pc-linha-papel);
+  border-radius: var(--pc-r-4);
+  box-shadow: var(--pc-sombra-3);
+  color: var(--pc-tinta);
+}
+.pc-cartao--contorno { background: transparent; border: 1px solid var(--pc-linha-carvao); }
+.pc-papel .pc-cartao--contorno,
+.pc-secao--papel .pc-cartao--contorno { border-color: var(--pc-linha-papel); color: var(--pc-tinta); }
+
+.pc-selo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pc-e-2);
+  padding: 6px var(--pc-e-3);
+  border-radius: var(--pc-r-pill);
+  font-size: var(--pc-t-micro);
+  font-weight: var(--pc-peso-forte);
+  letter-spacing: var(--pc-track-micro);
+  text-transform: uppercase;
+  line-height: 1;
+  background: var(--pc-ouro-lavado);
+  color: var(--pc-ouro);
+  border: 1px solid rgba(255,175,2,.28);
+}
+.pc-selo--acao   { background: var(--pc-acao-lavado); color: var(--pc-acao); border-color: rgba(2,171,21,.32); }
+.pc-selo--neutro { background: transparent; color: var(--pc-luz-2); border-color: var(--pc-linha-carvao); }
+.pc-papel .pc-selo,
+.pc-secao--papel .pc-selo { color: var(--pc-ouro-escuro); border-color: rgba(138,93,0,.28); }
+.pc-papel .pc-selo--neutro,
+.pc-secao--papel .pc-selo--neutro { color: var(--pc-tinta-3); border-color: var(--pc-linha-papel); }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AÇÃO — M5: micro-interação só em CSS. Nenhum botão embrulhado em componente
+   de animação (o padrão CTAButton custa JS por botão para o que :hover resolve).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.pc-botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pc-e-2);
+  padding: 14px var(--pc-e-6);
+  border: 1px solid transparent;
+  border-radius: var(--pc-r-pill);
+  font-family: inherit;
+  font-size: var(--pc-t-rotulo);
+  font-weight: var(--pc-peso-forte);
+  letter-spacing: .04em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  background: transparent;
+  color: inherit;
+  transition: transform var(--pc-dur-1) var(--pc-ease-saida),
+              box-shadow var(--pc-dur-1) var(--pc-ease-saida),
+              background-color var(--pc-dur-1) var(--pc-ease-saida),
+              border-color var(--pc-dur-1) var(--pc-ease-saida),
+              color var(--pc-dur-1) var(--pc-ease-saida);
+}
+.pc-botao--g     { padding: 18px var(--pc-e-7); font-size: var(--pc-t-rotulo); }
+.pc-botao--bloco { display: flex; width: 100%; }
+
+.pc-botao--acao {
+  background: linear-gradient(135deg, var(--pc-acao-hover), var(--pc-acao));
+  color: #fff;
+  box-shadow: var(--pc-brilho-acao);
+}
+.pc-botao--acao:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 14px 40px rgba(2,171,21,.46); }
+.pc-botao--acao:active:not(:disabled) { transform: translateY(0); }
+
+.pc-botao--ouro {
+  background: transparent;
+  color: var(--pc-ouro);
+  border-color: rgba(255,175,2,.42);
+}
+.pc-botao--ouro:hover:not(:disabled) { transform: translateY(-1px); background: var(--pc-ouro-lavado); box-shadow: var(--pc-brilho-ouro); }
+.pc-papel .pc-botao--ouro,
+.pc-secao--papel .pc-botao--ouro { color: var(--pc-ouro-escuro); border-color: rgba(138,93,0,.38); }
+
+.pc-botao--fantasma { background: transparent; color: var(--pc-luz-2); border-color: var(--pc-linha-carvao); }
+.pc-botao--fantasma:hover:not(:disabled) { transform: translateY(-1px); color: var(--pc-luz); border-color: rgba(255,255,255,.22); }
+.pc-papel .pc-botao--fantasma,
+.pc-secao--papel .pc-botao--fantasma { color: var(--pc-tinta-2); border-color: var(--pc-linha-papel); }
+.pc-papel .pc-botao--fantasma:hover:not(:disabled),
+.pc-secao--papel .pc-botao--fantasma:hover:not(:disabled) { color: var(--pc-tinta); border-color: var(--pc-tinta-3); }
+
+.pc-botao--link {
+  padding: var(--pc-e-1) 0;
+  border: 0;
+  border-radius: 0;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: var(--pc-t-corpo);
+  color: var(--pc-ouro);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+.pc-botao--link:hover:not(:disabled) { text-decoration-thickness: 2px; }
+.pc-papel .pc-botao--link,
+.pc-secao--papel .pc-botao--link { color: var(--pc-ouro-escuro); }
+
+.pc-botao:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ─── CELULAR (revisão de 19/Set/26, medido com Playwright em 360/375/390/430) ───
+   ALVO DE TOQUE. Medido: o `pc-botao` fechava em 32px (cabeçalho) e 42px (chip do
+   seletor) — abaixo dos 44px que o dedo de quem está em pé numa barbearia acerta.
+   `min-height` em vez de mais padding: o botão grande (`--g`, 52-67px) não muda.
+   O `--link` fica de fora porque é texto dentro de parágrafo: nele a área de toque
+   cresce pelo ::after abaixo, sem mexer na altura da linha. */
+.pc .pc-botao:not(.pc-botao--link) { min-height: 44px; }
+
+/* O link de texto ganha 44px de área de toque SEM mudar o layout: a faixa é
+   invisível, centrada na linha, e fica atrás do texto vizinho (z-index não muda). */
+.pc .pc-botao--link { position: relative; }
+.pc .pc-botao--link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
+
+/* CAMPO DE FORMULÁRIO — PISO DE 16px.
+   O Safari do iPhone dá zoom na página inteira quando o campo que recebe foco
+   computa menos de 16px, e não desfaz o zoom ao sair. Medido: os quatro `input`
+   desta família e os quatro `select` do <PerguntasQualificacao> compartilhado
+   estavam todos em 15px — ou seja, o formulário inteiro saltava no primeiro toque.
+   A regra vive aqui porque alcança também o componente compartilhado, que é de
+   outro dono e não pode ser editado nesta fase. */
+.pc :is(input, select, textarea) { font-size: 16px; }
+
+/* FOCO — vence o outline global do globals.css por especificidade. */
+.pc :is(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: var(--pc-foco);
+  border-color: var(--pc-ouro-suave);
+}
+
+.pc ::selection { background: var(--pc-ouro-lavado); color: inherit; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOVIMENTO DE BASE — @keyframes reutilizáveis (M3, M4, M6).
+   Nomes com prefixo pc- porque @keyframes é global, mesmo declarado aqui.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes pc-flutuar       { 0%, 100% { transform: translateY(0); }   50% { transform: translateY(-8px); } }
+@keyframes pc-flutuar-lento { 0%, 100% { transform: translateY(0); }   50% { transform: translateY(-5px); } }
+@keyframes pc-pulso-acao    { 0%, 100% { box-shadow: 0 0 0 0 rgba(2,171,21,0); } 50% { box-shadow: 0 0 0 10px rgba(2,171,21,.14); } }
+@keyframes pc-entrar-alto   { from { opacity: 0; transform: translateY(var(--pc-deslocamento)); } to { opacity: 1; transform: none; } }
+@keyframes pc-passo-entra   { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: none; } }
+@keyframes pc-surgir-check  { from { opacity: 0; transform: scale(.82); } to { opacity: 1; transform: scale(1); } }
+
+/* M6 — loop ambiental. Máximo DOIS por dobra, e nunca em texto.
+   Dessincronizados de propósito (4s e 5s), para não pulsarem juntos. */
+.pc .pc-flutua   { animation: pc-flutuar       4s var(--pc-ease-suave) infinite; will-change: transform; }
+.pc .pc-flutua-2 { animation: pc-flutuar-lento 5s var(--pc-ease-suave) infinite; will-change: transform; }
+
+/* M4 — estados do formulário. */
+.pc .pc-pulsa { animation: pc-pulso-acao 2s var(--pc-ease-suave) infinite; border-radius: var(--pc-r-pill); }
+.pc .pc-passo { animation: pc-passo-entra var(--pc-dur-2) var(--pc-ease-saida) both; }
+.pc .pc-check { animation: pc-surgir-check var(--pc-dur-2) var(--pc-ease-saida) both; color: var(--pc-ok); }
+
+/* Entrada sem observer: para quem já sabe que o elemento está na dobra e quer
+   a mesma curva do PcRevelar (ex.: item que entra por troca de estado). */
+.pc .pc-entra { animation: pc-entrar-alto var(--pc-dur-3) var(--pc-ease-saida) both; animation-delay: var(--pc-atraso, 0ms); }
+
+@media (prefers-reduced-motion: reduce) {
+  .pc {
+    --pc-dur-1: 1ms; --pc-dur-2: 1ms; --pc-dur-3: 1ms;
+    --pc-dur-4: 1ms; --pc-dur-conta: 1ms;
+    --pc-deslocamento: 0px; --pc-stagger: 0ms;
+  }
+  .pc [data-pc-revelar="pronto"] { opacity: 1; transform: none; }
+
+  /* Loop e entrada param de vez — não basta encurtar a duração. */
+  .pc .pc-flutua,
+  .pc .pc-flutua-2,
+  .pc .pc-pulsa { animation: none !important; }
+  .pc .pc-entra,
+  .pc .pc-passo,
+  .pc .pc-check { animation: none !important; opacity: 1; transform: none; }
+  .pc .pc-botao:hover { transform: none; }
+}

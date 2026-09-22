@@ -1,0 +1,503 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   PROJETO DO CLUBE — bloco do formulário (B6).
+
+   Toda cor, raio, sombra, duração e escala sai dos tokens de `pc-tokens.css`
+   (escopo `.pc`). O fallback depois da vírgula em cada `var()` existe por UM
+   motivo: este módulo é carregado por um componente que pode ser montado em
+   teste ou em story sem o `<div className="pc">` do layout por cima. Em
+   produção o token sempre vence.
+
+   Nada de `rounded-2xl`/`3xl` do Tailwind (a escala está invertida nesta base,
+   V13) e nada de cor nomeada do Tailwind (o `tailwind.config.ts` é código
+   morto no v4).
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── CARTÃO ───────────────────────────────────────────────────────────────── */
+
+.secao {
+  padding-block: var(--pc-secao-y, 64px);
+  padding-inline: var(--pc-secao-x, 20px);
+}
+
+.cartao {
+  width: 100%;
+  max-width: 560px;
+  margin-inline: auto;
+  background: var(--pc-papel-alto, #ffffff);
+  border: 1px solid var(--pc-linha-papel, #e0dacd);
+  border-radius: var(--pc-r-4, 22px);
+  box-shadow: var(--pc-sombra-3, 0 24px 70px rgba(10, 12, 16, 0.38));
+  overflow: hidden;
+}
+
+.cartaoCurto {
+  max-width: 480px;
+}
+
+/* Faixa dourada — o único uso de ouro como superfície nesta família. */
+.faixa {
+  height: 4px;
+  background: linear-gradient(90deg, var(--pc-ouro-suave, #ebad04), var(--pc-ouro, #ffaf02), var(--pc-ouro-suave, #ebad04));
+}
+
+.corpo {
+  padding: var(--pc-e-7, 48px) var(--pc-e-6, 32px);
+}
+
+.corpoCurto {
+  padding: var(--pc-e-6, 32px) var(--pc-e-5, 24px);
+}
+
+@media (max-width: 480px) {
+  .corpo,
+  .corpoCurto {
+    padding: var(--pc-e-6, 32px) var(--pc-e-5, 24px);
+  }
+}
+
+/* ── CABEÇALHO DO BLOCO ───────────────────────────────────────────────────── */
+
+.titulo {
+  font-size: var(--pc-t-h2, 28px);
+  font-weight: var(--pc-peso-titulo, 800);
+  line-height: var(--pc-lh-curta, 1.12);
+  letter-spacing: var(--pc-track-h1, -0.02em);
+  color: var(--pc-tinta, #14171c);
+  margin: 0;
+}
+
+.apoio {
+  margin: var(--pc-e-3, 12px) 0 0;
+  max-width: var(--pc-max-texto, 62ch);
+  font-size: var(--pc-t-corpo, 16px);
+  line-height: var(--pc-lh-larga, 1.66);
+  color: var(--pc-tinta-2, #4b535e);
+}
+
+/* ── PROGRESSO ────────────────────────────────────────────────────────────── */
+
+.progresso {
+  display: flex;
+  align-items: center;
+  gap: var(--pc-e-3, 12px);
+  margin-top: var(--pc-e-6, 32px);
+}
+
+.progressoRotulo {
+  flex: none;
+  font-size: var(--pc-t-micro, 11px);
+  font-weight: var(--pc-peso-forte, 600);
+  letter-spacing: var(--pc-track-micro, 0.18em);
+  text-transform: uppercase;
+  color: var(--pc-tinta-3, #7b838f);
+}
+
+.progressoTrilho {
+  flex: 1 1 auto;
+  height: 3px;
+  border-radius: var(--pc-r-pill, 999px);
+  background: var(--pc-papel-fundo, #ebe6dd);
+  overflow: hidden;
+}
+
+.progressoBarra {
+  display: block;
+  height: 100%;
+  border-radius: var(--pc-r-pill, 999px);
+  background: linear-gradient(90deg, var(--pc-ouro-suave, #ebad04), var(--pc-ouro, #ffaf02));
+  transition: width var(--pc-dur-2, 260ms) var(--pc-ease-saida, cubic-bezier(0.22, 0.61, 0.36, 1));
+}
+
+/* ── PASSO ────────────────────────────────────────────────────────────────── */
+
+.passo {
+  margin-top: var(--pc-e-6, 32px);
+}
+
+/*
+ * A entrada só existe na TROCA de passo. Na primeira pintura o passo 1 nasce
+ * visível, sem classe de animação (M4: «o formulário não anima ao abrir», e V6:
+ * nada nasce com opacity 0).
+ */
+.passoEntraAdiante {
+  animation: pcPassoAdiante var(--pc-dur-2, 260ms) var(--pc-ease-saida, cubic-bezier(0.22, 0.61, 0.36, 1)) both;
+}
+
+.passoEntraAtras {
+  animation: pcPassoAtras var(--pc-dur-2, 260ms) var(--pc-ease-saida, cubic-bezier(0.22, 0.61, 0.36, 1)) both;
+}
+
+@keyframes pcPassoAdiante {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pcPassoAtras {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.passoTitulo {
+  font-size: var(--pc-t-h3, 20px);
+  font-weight: var(--pc-peso-titulo, 800);
+  line-height: var(--pc-lh-curta, 1.12);
+  color: var(--pc-tinta, #14171c);
+  margin: 0 0 var(--pc-e-5, 24px);
+  outline: none;
+}
+
+.passoTitulo:focus-visible {
+  box-shadow: var(--pc-foco, 0 0 0 3px rgba(235, 173, 4, 0.28));
+  border-radius: var(--pc-r-1, 6px);
+}
+
+/* ── CAMPOS DE TEXTO ──────────────────────────────────────────────────────── */
+
+.campos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-4, 16px);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rotulo {
+  font-size: var(--pc-t-rotulo, 13px);
+  font-weight: var(--pc-peso-forte, 600);
+  line-height: 20px;
+  color: #1e1e1e; /* mesmo tom do <PerguntasQualificacao variante="claro"> */
+}
+
+.ajuda {
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(30, 30, 30, 0.6); /* idem — os oito campos têm de parecer um só */
+}
+
+/*
+ * Os quatro inputs copiam o tema do <PerguntasQualificacao variante="claro">
+ * de propósito (§3 do contrato): redesenhar aqui deixaria os selects de um
+ * jeito e os inputs de outro no mesmo cartão.
+ */
+.entrada {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #f5f5f5;
+  border: 1.5px solid #e0e0e0;
+  color: #1e1e1e;
+  font-family: inherit;
+  /* 16px é PISO, não estética (revisão de celular, 19/Set/26): abaixo disso o
+     Safari do iPhone dá zoom na página ao focar o campo e não desfaz. Estava 15px,
+     igual ao <PerguntasQualificacao>, e os oito campos saltavam no primeiro toque.
+     O piso também está em pc-tokens.css (`.pc :is(input,select,textarea)`), que é
+     o que alcança os selects compartilhados; aqui fica para o módulo ser correto
+     mesmo montado fora do `<div className="pc">` (teste/story). */
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  outline: none;
+  transition: border-color var(--pc-dur-1, 140ms) var(--pc-ease-suave, cubic-bezier(0.4, 0, 0.2, 1)),
+    box-shadow var(--pc-dur-1, 140ms) var(--pc-ease-suave, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.entrada::placeholder {
+  color: rgba(30, 30, 30, 0.38);
+  font-weight: 400;
+}
+
+.entrada:focus-visible {
+  border-color: var(--pc-ouro-suave, #ebad04);
+  box-shadow: var(--pc-foco, 0 0 0 3px rgba(235, 173, 4, 0.28));
+}
+
+.entradaErro,
+.entradaErro:focus-visible {
+  border-color: var(--pc-erro-papel, #dc2626);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
+.entradaOk {
+  border-color: rgba(2, 171, 21, 0.45);
+}
+
+/*
+ * ERRO DE CAMPO — sempre ABAIXO do campo. O bloco de erro no topo do cartão
+ * some atrás da navbar fixa no mobile (medido na /v12): a pessoa clica, a tela
+ * não muda e ela desiste achando que o botão quebrou.
+ *
+ * O erro NÃO anima (M4): aparece instantâneo.
+ */
+.erroCampo {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: var(--pc-erro-papel, #dc2626);
+}
+
+/* ── ERRO GERAL (backend fora, recadastro que não gravou) ─────────────────── */
+
+.erroGeral {
+  margin-top: var(--pc-e-5, 24px);
+  padding: var(--pc-e-4, 16px);
+  border-radius: var(--pc-r-2, 10px);
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.28);
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-3, 12px);
+}
+
+.erroGeralTexto {
+  margin: 0;
+  font-size: var(--pc-t-rotulo, 13px);
+  font-weight: var(--pc-peso-forte, 600);
+  line-height: var(--pc-lh-normal, 1.5);
+  color: var(--pc-erro-papel, #dc2626);
+}
+
+.erroGeralAcao {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: var(--pc-t-rotulo, 13px);
+  font-weight: var(--pc-peso-forte, 600);
+  color: var(--pc-ouro-escuro, #8a5d00);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  border-radius: var(--pc-r-1, 6px);
+}
+
+.erroGeralAcao:focus-visible {
+  outline: none;
+  box-shadow: var(--pc-foco, 0 0 0 3px rgba(235, 173, 4, 0.28));
+}
+
+/* ── BOTÕES ───────────────────────────────────────────────────────────────── */
+
+.acoes {
+  margin-top: var(--pc-e-6, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-3, 12px);
+}
+
+.botaoAcao {
+  width: 100%;
+  padding: 17px 24px;
+  border: none;
+  border-radius: var(--pc-r-pill, 999px);
+  background: linear-gradient(135deg, var(--pc-acao-hover, #029912), var(--pc-acao, #02ab15));
+  box-shadow: var(--pc-brilho-acao, 0 10px 34px rgba(2, 171, 21, 0.38));
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: transform var(--pc-dur-1, 140ms) var(--pc-ease-suave, cubic-bezier(0.4, 0, 0.2, 1)),
+    box-shadow var(--pc-dur-1, 140ms) var(--pc-ease-suave, cubic-bezier(0.4, 0, 0.2, 1)),
+    opacity var(--pc-dur-1, 140ms) linear;
+}
+
+.botaoAcao:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 40px rgba(2, 171, 21, 0.46);
+}
+
+.botaoAcao:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.botaoAcao:focus-visible {
+  outline: none;
+  box-shadow: var(--pc-foco, 0 0 0 3px rgba(235, 173, 4, 0.28)), var(--pc-brilho-acao, 0 10px 34px rgba(2, 171, 21, 0.38));
+}
+
+.botaoAcao:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+  box-shadow: none;
+}
+
+/* Pulso do envio — sinal de que o pedido está em curso, sem travar nada. */
+.botaoEnviando {
+  animation: pcPulsoEnvio 1200ms var(--pc-ease-suave, cubic-bezier(0.4, 0, 0.2, 1)) infinite;
+}
+
+@keyframes pcPulsoEnvio {
+  0%,
+  100% {
+    opacity: 0.72;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+.botaoVoltar {
+  align-self: center;
+  background: none;
+  border: none;
+  /* 44px de alvo de toque (medido em 32px na revisão de celular, 19/Set/26).
+     É o único caminho de volta do passo 2 para o passo 1 no telefone. */
+  min-height: 44px;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: var(--pc-t-rotulo, 13px);
+  font-weight: var(--pc-peso-forte, 600);
+  color: var(--pc-tinta-2, #4b535e);
+  cursor: pointer;
+  border-radius: var(--pc-r-pill, 999px);
+  transition: color var(--pc-dur-1, 140ms) linear;
+}
+
+.botaoVoltar:hover {
+  color: var(--pc-tinta, #14171c);
+}
+
+.botaoVoltar:focus-visible {
+  outline: none;
+  box-shadow: var(--pc-foco, 0 0 0 3px rgba(235, 173, 4, 0.28));
+}
+
+/* ── MICROCOPY E RODAPÉ DO CARTÃO ─────────────────────────────────────────── */
+
+.microcopy {
+  margin: var(--pc-e-4, 16px) 0 0;
+  text-align: center;
+  font-size: var(--pc-t-micro, 11px);
+  line-height: 16px;
+  color: rgba(30, 30, 30, 0.6);
+}
+
+/* ── NOTA DA SITUAÇÃO PRÉ-PREENCHIDA ──────────────────────────────────────── */
+
+.notaSituacao {
+  margin: 0 0 var(--pc-e-4, 16px);
+  padding: 10px 14px;
+  border-radius: var(--pc-r-2, 10px);
+  background: var(--pc-ouro-lavado, rgba(255, 175, 2, 0.12));
+  border: 1px solid rgba(235, 173, 4, 0.3);
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--pc-ouro-escuro, #8a5d00);
+  font-weight: 500;
+}
+
+/* ── SUCESSO ──────────────────────────────────────────────────────────────── */
+
+.sucesso {
+  margin-top: var(--pc-e-5, 24px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--pc-e-4, 16px);
+  outline: none;
+}
+
+.sucessoSelo {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--pc-r-pill, 999px);
+  background: var(--pc-acao-lavado, rgba(2, 171, 21, 0.15));
+  border: 1.5px solid var(--pc-ok, #02ab15);
+  display: grid;
+  place-items: center;
+  color: var(--pc-ok, #02ab15);
+  animation: pcSeloEntra var(--pc-dur-3, 460ms) var(--pc-ease-saida, cubic-bezier(0.22, 0.61, 0.36, 1)) both;
+}
+
+@keyframes pcSeloEntra {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sucessoRisco {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: pcRiscoDesenha var(--pc-dur-4, 700ms) var(--pc-ease-saida, cubic-bezier(0.22, 0.61, 0.36, 1)) 120ms forwards;
+}
+
+@keyframes pcRiscoDesenha {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.sucessoTitulo {
+  margin: 0;
+  font-size: var(--pc-t-h3, 20px);
+  font-weight: var(--pc-peso-titulo, 800);
+  line-height: var(--pc-lh-curta, 1.12);
+  color: var(--pc-tinta, #14171c);
+}
+
+.sucessoApoio {
+  margin: 0;
+  max-width: 44ch;
+  font-size: var(--pc-t-corpo, 16px);
+  line-height: var(--pc-lh-larga, 1.66);
+  color: var(--pc-tinta-2, #4b535e);
+}
+
+.sucessoNota {
+  margin: 0;
+  font-size: var(--pc-t-micro, 11px);
+  line-height: 16px;
+  color: var(--pc-tinta-3, #7b838f);
+}
+
+/* ── MOVIMENTO REDUZIDO ───────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .passoEntraAdiante,
+  .passoEntraAtras,
+  .botaoEnviando,
+  .sucessoSelo,
+  .sucessoRisco {
+    animation: none;
+  }
+
+  .sucessoRisco {
+    stroke-dashoffset: 0;
+  }
+
+  .botaoAcao,
+  .entrada,
+  .progressoBarra,
+  .botaoVoltar {
+    transition: none;
+  }
+
+  .botaoAcao:hover:not(:disabled) {
+    transform: none;
+  }
+}

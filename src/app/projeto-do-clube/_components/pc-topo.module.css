@@ -1,0 +1,384 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   PROJETO DO CLUBE — estilo do TOPO da página (bloco B4: cabeçalho, herói,
+   barra de confiança, âncoras, seletor e CTA fixo).
+   Dono: B4.
+
+   REGRA DESTE ARQUIVO: só entra aqui o que o vocabulário global de
+   `pc-tokens.css` (B2) NÃO tem — layout, grade e as peças próprias do topo.
+   Botão, título, texto, selo, rótulo, cartão e loop ambiental vêm de lá
+   (`pc-botao--acao`, `pc-titulo--1`, `pc-subtitulo`, `pc-selo`, `pc-flutua`…).
+   Nada aqui SOBRESCREVE classe global: ordem de injeção entre CSS Modules e o
+   arquivo global não é garantida, e override silencioso quebra em produção.
+
+   Proibido: cor nomeada do Tailwind, `rounded-2xl/3xl`, valor de cor cru fora
+   de `rgba()` de sombra.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ============================== CABEÇALHO ============================ */
+
+.cabecalho {
+  position: sticky;
+  top: 0;
+  z-index: var(--pc-z-topo);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pc-e-4);
+  padding: var(--pc-e-3) var(--pc-secao-x);
+  background: color-mix(in srgb, var(--pc-carvao-fundo) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--pc-linha-carvao);
+}
+
+.marca {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--pc-r-1);
+  line-height: 0;
+}
+
+.cabecalhoAcoes {
+  display: flex;
+  align-items: center;
+  gap: var(--pc-e-3);
+}
+
+/* Botão do cabeçalho: mais baixo que o `pc-botao` de página, sem mexer nele. */
+.botaoCompacto {
+  padding-block: var(--pc-e-2);
+  padding-inline: var(--pc-e-4);
+}
+
+/* «Condições» no cabeçalho: uma linha só. No celular ele sai — a mesma porta
+   está no herói, na nota de preço, que é onde a dúvida de investimento nasce. */
+.condicoesCabecalho { white-space: nowrap; }
+
+@media (max-width: 559px) {
+  .condicoesCabecalho { display: none; }
+}
+
+/* ================================ HERÓI ============================== */
+
+.heroi { overflow: hidden; }
+
+/* Clarão de fundo: estático. Nada de blur animado (§4.2). */
+.heroi::before {
+  content: "";
+  position: absolute;
+  inset: -30% 45% 35% -20%;
+  background: radial-gradient(60% 60% at 40% 40%, var(--pc-ouro-lavado), transparent 70%);
+  pointer-events: none;
+}
+
+.heroiGrade {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--pc-e-7);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .heroiGrade {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: var(--pc-e-8);
+  }
+}
+
+/* Identificação da situação: é frase inteira («Para quem já vende planos…»), por
+   isso não usa `pc-selo`/`pc-rotulo`, que são caixa-alta de rótulo curto. */
+.identificacao {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pc-e-2);
+  margin: 0;
+  padding: var(--pc-e-2) var(--pc-e-4);
+  border: 1px solid rgba(255, 175, 2, 0.28);
+  border-radius: var(--pc-r-pill);
+  background: var(--pc-ouro-lavado);
+  color: var(--pc-ouro);
+  font-size: var(--pc-t-rotulo);
+  font-weight: var(--pc-peso-forte);
+  line-height: var(--pc-lh-normal);
+}
+
+.identificacaoPonto {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: var(--pc-r-pill);
+  background: var(--pc-ouro);
+}
+
+.ancorasNoHeroi { margin-top: var(--pc-e-5); }
+
+.heroiTexto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--pc-e-5);
+  max-width: var(--pc-max-texto);
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pc-e-3);
+  width: 100%;
+}
+
+@media (max-width: 559px) {
+  .acoes > * { width: 100%; }
+}
+
+.notaPreco {
+  margin-top: var(--pc-e-5);
+  max-width: 54ch;
+  font-size: var(--pc-t-rotulo);
+  line-height: var(--pc-lh-normal);
+}
+
+/* =================== ARTEFATO E MECANISMO DO CLUBE =================== */
+
+.heroiArtefato {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-3);
+  min-width: 0;
+}
+
+.moldura {
+  margin: 0;
+  overflow: hidden;
+  background: var(--pc-papel-alto);
+  border: 1px solid var(--pc-linha-papel);
+  border-radius: var(--pc-r-4);
+  box-shadow: var(--pc-sombra-3);
+  color: var(--pc-tinta);
+}
+
+.molduraTopo {
+  display: flex;
+  align-items: center;
+  gap: var(--pc-e-2);
+  padding: var(--pc-e-3) var(--pc-e-4);
+  border-bottom: 1px solid var(--pc-linha-papel);
+  background: var(--pc-papel);
+  color: var(--pc-tinta-3);
+  font-size: var(--pc-t-micro);
+  font-weight: var(--pc-peso-forte);
+  letter-spacing: var(--pc-track-micro);
+  text-transform: uppercase;
+}
+
+.molduraPonto {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--pc-r-pill);
+  background: var(--pc-ouro);
+}
+
+.molduraCorpo { padding: var(--pc-e-4); }
+
+/* Os três estados do mecanismo: regra, adesão, cobrança. */
+.mecanismo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-2);
+  margin-top: var(--pc-e-4);
+}
+
+.passo {
+  display: flex;
+  align-items: center;
+  gap: var(--pc-e-3);
+  padding: var(--pc-e-3);
+  border: 1px solid var(--pc-linha-papel);
+  border-radius: var(--pc-r-2);
+  background: var(--pc-papel);
+  color: var(--pc-tinta-2);
+  font-size: var(--pc-t-rotulo);
+  font-weight: var(--pc-peso-forte);
+}
+
+.passoIndice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--pc-r-pill);
+  background: var(--pc-ouro-lavado);
+  color: var(--pc-ouro-escuro);
+  font-size: var(--pc-t-micro);
+  font-weight: var(--pc-peso-titulo);
+  font-variant-numeric: tabular-nums;
+}
+
+.passoSeta {
+  margin-left: auto;
+  color: var(--pc-tinta-3);
+  font-size: var(--pc-t-micro);
+}
+
+.legenda {
+  margin: 0;
+  color: var(--pc-luz-3);
+  font-size: var(--pc-t-micro);
+  line-height: var(--pc-lh-normal);
+  text-align: center;
+}
+
+/* ========================= BARRA DE CONFIANÇA ======================== */
+
+.barra {
+  border-top: 1px solid var(--pc-linha-carvao);
+  border-bottom: 1px solid var(--pc-linha-carvao);
+}
+
+.barraGrade {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--pc-e-5) var(--pc-e-4);
+}
+
+@media (min-width: 760px) {
+  .barraGrade { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.barraItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-1);
+  align-items: flex-start;
+}
+
+@media (min-width: 760px) {
+  .barraItem + .barraItem {
+    padding-left: var(--pc-e-5);
+    border-left: 1px solid var(--pc-linha-carvao);
+  }
+}
+
+.barraValor {
+  display: inline-block;
+  color: var(--pc-ouro);
+  font-size: var(--pc-t-h2);
+  font-weight: var(--pc-peso-titulo);
+  line-height: var(--pc-lh-curta);
+  letter-spacing: var(--pc-track-h1);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.barraRotulo {
+  color: var(--pc-luz-2);
+  font-size: var(--pc-t-rotulo);
+  line-height: var(--pc-lh-normal);
+}
+
+.barraNota {
+  margin: var(--pc-e-5) 0 0;
+  max-width: 78ch;
+  font-size: var(--pc-t-micro);
+  line-height: var(--pc-lh-normal);
+}
+
+/* ============================== ÂNCORAS ============================== */
+
+.ancoras {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pc-e-2) var(--pc-e-5);
+}
+
+.ancora {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pc-e-2);
+  /* 44px de alvo de toque (medido em 25px na revisão de celular, 19/Set/26).
+     São os dois únicos atalhos internos do topo no telefone — errar o toque aqui
+     é a pessoa rolar 1.400px de herói à mão. A altura maior não desloca nada:
+     `.ancoras` é flex e a linha já era a mais baixa do bloco. */
+  min-height: 44px;
+  padding: var(--pc-e-1) 0;
+  color: var(--pc-luz-2);
+  font-size: var(--pc-t-rotulo);
+  font-weight: var(--pc-peso-forte);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color var(--pc-dur-1) var(--pc-ease-suave),
+              border-color var(--pc-dur-1) var(--pc-ease-suave);
+}
+
+.ancora:hover {
+  color: var(--pc-ouro);
+  border-bottom-color: var(--pc-ouro-suave);
+}
+
+.ancoraSeta {
+  color: var(--pc-ouro);
+  transition: transform var(--pc-dur-1) var(--pc-ease-suave);
+}
+
+.ancora:hover .ancoraSeta { transform: translateY(2px); }
+
+.ancorasClaro .ancora { color: var(--pc-tinta-2); }
+.ancorasClaro .ancora:hover { color: var(--pc-ouro-escuro); border-bottom-color: var(--pc-ouro-escuro); }
+.ancorasClaro .ancoraSeta { color: var(--pc-ouro-escuro); }
+
+/* ======================== SELETOR DE SITUAÇÃO ======================== */
+
+.seletor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-4);
+}
+
+.seletorOpcoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pc-e-3);
+}
+
+/* Compacta o `pc-botao` para virar chip, sem redefinir nada dele. */
+.seletorOpcao {
+  padding-block: var(--pc-e-3);
+  padding-inline: var(--pc-e-5);
+}
+
+/* ============================= CTA FIXO ============================== */
+
+.ctaFixo {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--pc-z-sticky);
+  display: flex;
+  justify-content: center;
+  padding: var(--pc-e-3) var(--pc-e-4);
+  padding-bottom: calc(var(--pc-e-3) + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(to top, var(--pc-carvao-fundo) 62%, transparent);
+  transition: opacity var(--pc-dur-2) var(--pc-ease-saida),
+              transform var(--pc-dur-2) var(--pc-ease-saida),
+              visibility var(--pc-dur-2) var(--pc-ease-saida);
+  pointer-events: none;
+}
+
+.ctaFixo > * { pointer-events: auto; }
+
+.ctaFixoOculto {
+  opacity: 0;
+  transform: translateY(100%);
+  visibility: hidden;
+}
+
+.ctaFixoBotao { width: 100%; max-width: 460px; }
+
+/* Cap. 13: o botão persistente é do celular. No desktop ele não existe. */
+@media (min-width: 900px) {
+  .ctaFixo { display: none; }
+}
