@@ -61,7 +61,7 @@ export const comoReduzirFaltas: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "A boa notícia é que esse problema tem solução. Barbearias que implementam as estratégias certas conseguem reduzir a taxa de no-show para menos de 5%. Neste artigo, vamos apresentar 8 estratégias comprovadas, todas baseadas em dados reais de mais de 1.297 barbearias ativas na plataforma BestBarbers.",
+          text: "A boa notícia é que esse problema tem solução. Barbearias que implementam as estratégias certas conseguem reduzir a taxa de no-show para menos de 5%. Neste artigo, vamos apresentar 8 estratégias comprovadas, todas baseadas em dados reais de mais de 1.200 barbearias ativas na plataforma BestBarbers.",
         },
         {
           type: "link-box",
@@ -138,14 +138,14 @@ export const comoReduzirFaltas: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "Na plataforma BestBarbers, mais de 47.793 assinantes ativos comprovam que o modelo funciona. Assinantes criam rotina — mesmo dia, mesmo horário, mesmo barbeiro — e essa previsibilidade beneficia tanto o cliente quanto a operação. O clube de assinaturas é poderoso não apenas para receita recorrente, mas para a saúde operacional da barbearia.",
+          text: "Na plataforma BestBarbers, mais de 51 mil assinantes ativos comprovam que o modelo funciona. Assinantes criam rotina — mesmo dia, mesmo horário, mesmo barbeiro — e essa previsibilidade beneficia tanto o cliente quanto a operação. O clube de assinaturas é poderoso não apenas para receita recorrente, mas para a saúde operacional da barbearia.",
         },
         {
           type: "link-box",
           title: "Clube de Assinaturas para Barbearias",
           href: "/clube-de-assinaturas",
           description:
-            "47.793 assinantes ativos na plataforma. Cobrança automática, controle de inadimplência e relatórios de retenção.",
+            "Mais de 51 mil assinantes ativos na plataforma. Cobrança automática, controle de inadimplência e relatórios de recorrência.",
         },
         {
           type: "paragraph",

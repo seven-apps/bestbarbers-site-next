@@ -53,9 +53,19 @@ export const PORTA_POR_PAGINA = {
   "/blog/quanto-pagar-comissao-barbeiro": { porta: 2, tema: "comissao" },
   "/blog/inadimplencia-barbearia-como-cobrar": { porta: 2, tema: "regua-de-cobranca" },
   // ── Porta 3: roda em outro app (migração · kit "já uso outro")
-  //    Hoje não existe página própria: o sinal da porta 3 é o clique `clube_bt_migrar`
-  //    no /clube (ver CLUBE_FORK). Quando /clube/migrar ou o kit existirem, entram aqui.
-  // ── Porta 4: tentou e parou — sem página no site em 12/Set/2026.
+  //    Além da rota abaixo, o sinal da porta 3 também vem do clique `clube_bt_migrar`
+  //    no /clube (ver CLUBE_FORK).
+  // ── Porta 4: tentou e parou — sem página no site em 19/Set/2026.
+
+  // ── Família /projeto-do-clube (19/Set/2026). Cada entrada DECLARA a situação do
+  //    dono, então cada uma declara a porta. Duas rotas da família ficam de fora de
+  //    propósito: `/projeto-do-clube` (entrada geral — quem chega ali não declarou
+  //    nada) e `/projeto-do-clube/controle` (§1.6: página genérica não recebe porta,
+  //    para não contaminar os públicos por momento). `/condicoes` e `/obrigado`
+  //    também não: não são porta de entrada, são consequência de uma.
+  "/projeto-do-clube/clube-manual": { porta: 2, tema: "clube-manual" },
+  "/projeto-do-clube/migracao": { porta: 3, tema: "clube-migracao" },
+  "/projeto-do-clube/abertura": { porta: 1, tema: "clube-abertura" },
 } as const satisfies Record<string, PaginaPorta>;
 
 export type PaginaComPorta = keyof typeof PORTA_POR_PAGINA;

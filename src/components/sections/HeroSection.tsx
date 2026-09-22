@@ -57,12 +57,15 @@ export function HeroSection({ onCtaClick }: HeroSectionProps) {
 
           {/* Mockup da imagem - Mobile Last */}
           <div className="w-full flex justify-center lg:justify-end -mb-8 md:-mb-12 lg:absolute lg:bottom-0 lg:-right-35 lg:mb-0">
+            {/* A arte do herói é trocável. `h-auto` deriva a altura dos width/height
+                declarados em content/home.ts, então arte com proporção diferente da
+                declarada entrava esticada — `object-contain` impede isso. */}
             <Image
               src={hero.image.src}
               alt={hero.image.alt}
               width={hero.image.width}
               height={hero.image.height}
-              className="w-[550px] md:w-[70%] lg:w-[55vw] max-w-[900px] h-auto"
+              className="w-[550px] md:w-[70%] lg:w-[55vw] max-w-[900px] h-auto object-contain"
               style={{ display: "block" }}
               priority
             />

@@ -1,20 +1,24 @@
 "use client";
 
+// CASO, não depoimento: os números vêm de knowledge/dominio/cases-clube.json (bb#13285,
+// crivel:true, bloqueio:null) e a barbearia é identificada por porte + cidade/UF, nunca por nome.
+// Não é fala de ninguém — por isso o bloco não usa aspas. O arco anterior (Embu/353 assinantes/
+// R$31.690) está declarado MORTO em knowledge/marketing/clube-arsenal.md:31.
 const masterTestimonial = {
-  quote: "Era R$15 mil. Montei o clube. Dobrei em 4 meses. Mesma equipe, mesmo ponto, mesma cidade. A diferença foi ter sistema.",
-  name: "Barbearia em Embu das Artes/SP",
-  detail: "4 cadeiras · 353 assinantes",
-  result: "R$15K → R$31K/mês",
-  initials: "BP",
+  quote:
+    "Começou com 99 assinantes e R$9.249 por mês de receita de clube. Dezenove meses depois, são 277 assinantes e R$30.447 por mês — com as mesmas quatro cadeiras.",
+  name: "Barbearia de 4 cadeiras em Araxá/MG",
+  detail: "277 assinantes ativos · 19 meses de clube",
+  result: "R$9.249 → R$30.447/mês",
+  initials: "MG",
 };
 
+/**
+ * Depoimentos de parceiros com colab consentido no Instagram. Ex-parceiro com uso de
+ * imagem revogado NÃO entra aqui — nem citação, nem handle, nem número dele na soma
+ * do fecho da seção.
+ */
 const otherTestimonials = [
-  {
-    quote: "Hoje eu tenho mais de R$34 mil pra receber em assinatura. Todo mês. Sem precisar cobrar cliente manualmente.",
-    name: "@omilenorocha",
-    detail: "3 unidades · 521 assinantes",
-    result: "R$101K/mês",
-  },
   {
     quote: "Em 32 meses, R$1.222.716 faturados só com clube. Receita previsível mudou meu jogo.",
     name: "@joaoseletto",
@@ -117,7 +121,7 @@ export function TestimonialsV12() {
                 color: "#ffffff",
               }}
             >
-              &ldquo;{masterTestimonial.quote}&rdquo;
+              {masterTestimonial.quote}
             </p>
 
             <div className="flex flex-col items-center gap-6 relative z-10">
@@ -175,7 +179,7 @@ export function TestimonialsV12() {
           <div className="hidden md:block absolute -top-24 -right-24 w-64 h-64 bg-[#ebad04]/5 blur-[100px] rounded-full pointer-events-none" />
           <div className="hidden md:block absolute -bottom-24 -left-24 w-64 h-64 bg-[#ebad04]/5 blur-[100px] rounded-full pointer-events-none" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 relative z-10">
             {otherTestimonials.map((t, idx) => (
               <div
                 key={t.name}
@@ -235,8 +239,8 @@ export function TestimonialsV12() {
           className="text-sm font-medium mt-16 animate-fade-in text-center"
           style={{ color: "#ffffff", fontFamily: "var(--font-montserrat)", animationDelay: "0.5s" }}
         >
-          Cinco barbeiros de referência.{" "}
-          <span style={{ color: "#ebad04", fontWeight: 700 }}>Mais de 2.000 assinantes só entre eles.</span>
+          Quatro operações diferentes. O mesmo sistema por trás de todas.{" "}
+          <span style={{ color: "#ebad04", fontWeight: 700 }}>1.221 assinantes ativos somados nos casos acima.</span>
         </p>
       </div>
     </section>

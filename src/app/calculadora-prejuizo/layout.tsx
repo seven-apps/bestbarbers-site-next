@@ -18,7 +18,7 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Calculadora de Prejuízo da Barbearia — Quanto você perde por mês | BestBarbers",
   description:
-    "Descubra em 1 minuto quanto sua barbearia deixa de faturar por mês sem clube de assinaturas. Calculadora gratuita baseada em dados reais da BestBarbers — 47.793 assinantes ativos em 1.297 barbearias, 48% já com clube.",
+    "Descubra em 1 minuto quanto sua barbearia deixa de faturar por mês sem clube de assinaturas. Calculadora gratuita da BestBarbers — mais de 51.000 assinantes ativos em mais de 1.200 barbearias na plataforma.",
   alternates: {
     canonical: "/calculadora-prejuizo",
   },

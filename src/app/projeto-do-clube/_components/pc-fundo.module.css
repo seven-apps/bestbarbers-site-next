@@ -1,0 +1,414 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   PROJETO DO CLUBE — estilo do FUNDO da página (bloco B8): perguntas
+   frequentes, chamada final e rodapé.
+   Dono: B8. Consome só os tokens de `pc-tokens.css` (escopo `.pc`).
+   Proibido aqui: cor nomeada do Tailwind, `rounded-2xl/3xl`, valor de cor cru.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ======================= PERGUNTAS FREQUENTES ========================= */
+
+.faq {
+  max-width: var(--pc-max);
+  margin-inline: auto;
+  width: 100%;
+}
+
+.faqCabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-2);
+  margin-bottom: var(--pc-e-6);
+}
+
+.faqRotulo {
+  font-size: var(--pc-t-micro);
+  letter-spacing: var(--pc-track-micro);
+  text-transform: uppercase;
+  font-weight: var(--pc-peso-forte);
+  color: var(--pc-ouro);
+}
+
+.faqTitulo {
+  font-size: var(--pc-t-h2);
+  line-height: var(--pc-lh-curta);
+  letter-spacing: var(--pc-track-h1);
+  font-weight: var(--pc-peso-titulo);
+  color: var(--pc-luz);
+  margin: 0;
+  max-width: var(--pc-max-texto);
+}
+
+.faqLista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── O item ───────────────────────────────────────────────────────────── */
+
+.item {
+  border: 1px solid var(--pc-linha-carvao);
+  border-radius: var(--pc-r-3);
+  background: var(--pc-carvao-alto);
+  overflow: hidden;
+  transition: border-color var(--pc-dur-2) var(--pc-ease-suave),
+              background var(--pc-dur-2) var(--pc-ease-suave);
+}
+
+.item:hover { border-color: rgba(255, 175, 2, 0.28); }
+
+.item[open] {
+  border-color: rgba(255, 175, 2, 0.28);
+  background: color-mix(in srgb, var(--pc-carvao-alto) 92%, var(--pc-ouro) 8%);
+}
+
+/* A pergunta que o ANÚNCIO abriu: mesma caixa, fio dourado à esquerda. */
+.itemDestaque {
+  border-left: 3px solid var(--pc-ouro);
+  background: color-mix(in srgb, var(--pc-carvao-alto) 88%, var(--pc-ouro) 12%);
+}
+
+.pergunta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--pc-e-4);
+  width: 100%;
+  padding: var(--pc-e-4) var(--pc-e-5);
+  cursor: pointer;
+  list-style: none;
+  font-size: var(--pc-t-corpo);
+  line-height: var(--pc-lh-normal);
+  font-weight: var(--pc-peso-forte);
+  color: var(--pc-luz);
+  transition: color var(--pc-dur-1) var(--pc-ease-suave);
+}
+
+/* Some o triângulo nativo nos dois motores — a seta é a nossa. */
+.pergunta::-webkit-details-marker { display: none; }
+.pergunta::marker { content: ""; }
+
+.pergunta:hover { color: var(--pc-ouro); }
+
+.pergunta:focus-visible {
+  outline: none;
+  box-shadow: var(--pc-foco);
+  border-radius: var(--pc-r-2);
+}
+
+.seta {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  color: var(--pc-ouro);
+  transition: transform var(--pc-dur-2) var(--pc-ease-saida);
+}
+
+.item[open] .seta { transform: rotate(180deg); }
+
+/* ── O painel da resposta ─────────────────────────────────────────────── */
+
+/* `overflow: hidden` é o que faz a altura animada CORTAR o conteúdo em vez de
+   empurrá-lo. Sem ele, a animação de abertura não tem efeito visível. */
+.painel { overflow: hidden; }
+
+.resposta {
+  margin: 0;
+  padding: 0 var(--pc-e-5) var(--pc-e-5);
+  font-size: var(--pc-t-corpo);
+  line-height: var(--pc-lh-larga);
+  font-weight: var(--pc-peso-corpo);
+  color: var(--pc-luz-2);
+  max-width: var(--pc-max-texto);
+}
+
+/* Entrada do texto: `opacity` + `translateY`, na thread de composição. A altura
+   é animada por WAAPI no `PcFaq` (quando há JS e movimento permitido); sem JS,
+   o `<details>` abre na hora — e a página continua inteira e legível (V6). */
+.item[open] .resposta {
+  animation: pcRespostaEntra var(--pc-dur-2) var(--pc-ease-saida) both;
+}
+
+@keyframes pcRespostaEntra {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── Nota do fim do FAQ ───────────────────────────────────────────────── */
+
+.faqNota {
+  margin: var(--pc-e-6) 0 0;
+  padding-top: var(--pc-e-5);
+  border-top: 1px solid var(--pc-linha-carvao);
+  font-size: var(--pc-t-rotulo);
+  line-height: var(--pc-lh-normal);
+  color: var(--pc-luz-3);
+  max-width: var(--pc-max-texto);
+}
+
+.faqNotaLink {
+  /* Faixa de toque de 44px sem mexer no layout: o link está sozinho num parágrafo,
+     então a faixa invisível não encosta em nenhum vizinho clicável. */
+  position: relative;
+  display: inline-block;
+  color: var(--pc-ouro);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  border-radius: var(--pc-r-1);
+}
+
+.faqNotaLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
+
+.faqNotaLink:focus-visible { outline: none; box-shadow: var(--pc-foco); }
+
+/* ========================== CHAMADA FINAL ============================= */
+
+.chamada {
+  position: relative;
+  max-width: var(--pc-max);
+  margin-inline: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--pc-e-5);
+  isolation: isolate;
+}
+
+/* Brilho de fundo — estático. Loop ambiental só é permitido no artefato central
+   e no CTA fixo (§4.1, M6); aqui seria ruído atrás de texto. */
+.chamada::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  /* Era `-12% -8% auto`. Medido em 19/Set/26 (Playwright, 360/375/390/430): os
+     -8% de cada lado jogavam o brilho 6 a 9px ALÉM da borda direita da tela em
+     todo telefone — `document.body.scrollWidth` 366 numa viewport de 360. Hoje
+     isso não vira barra de rolagem só porque o globals.css:126 esconde o estouro
+     no html+body — e é esse mesmo esconde-estouro que mata o `position: sticky`
+     do cabeçalho (ver pendência). Colar nas bordas apaga a nossa parte do estouro;
+     o alcance do brilho volta pelo raio do gradiente, não pela sangria da caixa. */
+  inset: -12% 0 auto;
+  height: 220px;
+  background: radial-gradient(76% 100% at 50% 0%, var(--pc-ouro-lavado), transparent 72%);
+  pointer-events: none;
+}
+
+.chamadaTitulo {
+  font-size: var(--pc-t-h2);
+  line-height: var(--pc-lh-curta);
+  letter-spacing: var(--pc-track-h1);
+  font-weight: var(--pc-peso-titulo);
+  color: var(--pc-luz);
+  margin: 0;
+  max-width: 20ch;
+}
+
+.chamadaApoio {
+  font-size: var(--pc-t-corpo-g);
+  line-height: var(--pc-lh-larga);
+  color: var(--pc-luz-2);
+  margin: 0;
+  max-width: var(--pc-max-texto);
+}
+
+.chamadaBotao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pc-e-2);
+  padding: var(--pc-e-4) var(--pc-e-7);
+  border-radius: var(--pc-r-pill);
+  background: linear-gradient(135deg, var(--pc-acao-hover), var(--pc-acao));
+  box-shadow: var(--pc-brilho-acao);
+  color: #ffffff;
+  font-size: var(--pc-t-corpo);
+  font-weight: var(--pc-peso-titulo);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform var(--pc-dur-1) var(--pc-ease-saida),
+              box-shadow var(--pc-dur-1) var(--pc-ease-saida),
+              background var(--pc-dur-1) var(--pc-ease-suave);
+}
+
+.chamadaBotao:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, var(--pc-acao), var(--pc-acao-hover));
+  box-shadow: 0 14px 40px rgba(2, 171, 21, 0.44);
+}
+
+.chamadaBotao:active { transform: translateY(0); }
+
+.chamadaBotao:focus-visible { outline: none; box-shadow: var(--pc-foco); }
+
+.chamadaNota {
+  font-size: var(--pc-t-rotulo);
+  line-height: var(--pc-lh-normal);
+  color: var(--pc-luz-3);
+  margin: 0;
+  max-width: var(--pc-max-texto);
+}
+
+.chamadaLink {
+  color: var(--pc-ouro);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  border-radius: var(--pc-r-1);
+}
+
+.chamadaLink:focus-visible { outline: none; box-shadow: var(--pc-foco); }
+
+/* ============================= RODAPÉ ================================= */
+
+.rodape {
+  border-top: 1px solid var(--pc-linha-carvao);
+  background: var(--pc-carvao-fundo);
+  padding: var(--pc-e-8) var(--pc-secao-x) var(--pc-e-7);
+}
+
+/* O CTA FIXO COBRIA O RODAPÉ. Medido em 19/Set/26 nos quatro telefones: no fim da
+   página nem `#pc-inicio` nem `#pc-formulario` estão na tela, então o PcCtaFixo
+   reaparece — e a barra de 76-91px fica POR CIMA do botão «Falar com o time» e
+   dos links de Política/Termos, que o visitante nunca alcança. O CTA só existe
+   abaixo de 900px (pc-topo.module.css), então a folga vive na mesma faixa.
+   100px = 91px da barra mais alta medida + respiro; `env()` cobre a barra do iOS. */
+@media (max-width: 899px) {
+  .rodape {
+    padding-bottom: calc(var(--pc-e-7) + 100px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+.rodapeInterno {
+  max-width: var(--pc-max);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-6);
+}
+
+.rodapeTopo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--pc-e-6);
+}
+
+.rodapeMarca {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-3);
+  max-width: 34ch;
+}
+
+.rodapeLogo {
+  width: 132px;
+  height: auto;
+}
+
+.rodapeContato {
+  font-size: var(--pc-t-rotulo);
+  line-height: var(--pc-lh-normal);
+  color: var(--pc-luz-3);
+  margin: 0;
+}
+
+.rodapeAcoes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--pc-e-4);
+}
+
+.rodapeChamada {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pc-e-2);
+  /* 42px medidos — faltavam 2px para o alvo de toque. */
+  min-height: 44px;
+  padding: var(--pc-e-3) var(--pc-e-5);
+  border-radius: var(--pc-r-pill);
+  border: 1px solid rgba(255, 175, 2, 0.34);
+  background: var(--pc-ouro-lavado);
+  color: var(--pc-ouro);
+  font-size: var(--pc-t-rotulo);
+  font-weight: var(--pc-peso-forte);
+  text-decoration: none;
+  transition: transform var(--pc-dur-1) var(--pc-ease-saida),
+              background var(--pc-dur-1) var(--pc-ease-suave);
+}
+
+.rodapeChamada:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 175, 2, 0.2);
+}
+
+.rodapeChamada:focus-visible { outline: none; box-shadow: var(--pc-foco); }
+
+.rodapeLinks {
+  display: flex;
+  flex-wrap: wrap;
+  /* Sem folga de linha: a altura de toque do link (abaixo) já separa as fileiras.
+     Somar as duas faria a lista crescer sem ninguém ganhar alvo. */
+  gap: 0 var(--pc-e-5);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rodapeLink {
+  /* 16px de altura medidos em 19/Set/26 — um link de 16px no pé da página é toque
+     errado garantido. 10px de folga em cima e embaixo levam a 36px sem sobrepor a
+     fileira vizinha (44px sobreporia, e toque no link errado é pior que alvo curto). */
+  display: inline-block;
+  padding-block: 10px;
+  font-size: var(--pc-t-rotulo);
+  color: var(--pc-luz-2);
+  text-decoration: none;
+  border-radius: var(--pc-r-1);
+  transition: color var(--pc-dur-1) var(--pc-ease-suave);
+}
+
+.rodapeLink:hover { color: var(--pc-ouro); }
+
+.rodapeLink:focus-visible { outline: none; box-shadow: var(--pc-foco); }
+
+.rodapeBase {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pc-e-3);
+  padding-top: var(--pc-e-5);
+  border-top: 1px solid var(--pc-linha-carvao);
+}
+
+.rodapeDireitos {
+  font-size: var(--pc-t-micro);
+  letter-spacing: var(--pc-track-micro);
+  text-transform: uppercase;
+  color: var(--pc-luz-3);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .rodapeTopo { flex-direction: column; }
+  .rodapeAcoes { align-items: stretch; width: 100%; }
+  .rodapeChamada { justify-content: center; }
+  .chamadaBotao { width: 100%; }
+}

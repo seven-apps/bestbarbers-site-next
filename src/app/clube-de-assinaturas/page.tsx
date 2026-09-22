@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   title:
     "Clube de Assinaturas para Barbearia — Receita Recorrente | BestBarbers",
   description:
-    "Crie planos de assinatura na sua barbearia e gere receita previsível. 51.000+ assinantes ativos. De R$15K para R$31K/mês. Sistema completo com cobrança automática.",
+    "Crie planos de assinatura na sua barbearia e gere receita previsível. 51.000+ assinantes ativos na plataforma, cobrança automática e controle de inadimplência no mesmo sistema.",
   alternates: {
     canonical: "/clube-de-assinaturas",
   },
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     title:
       "Clube de Assinaturas para Barbearia — Receita Recorrente | BestBarbers",
     description:
-      "Crie planos de assinatura na sua barbearia e gere receita previsível. 51.000+ assinantes ativos. De R$15K para R$31K/mês.",
+      "Crie planos de assinatura na sua barbearia e gere receita previsível. 51.000+ assinantes ativos na plataforma, com cobrança automática.",
     url: "https://www.bestbarbers.app/clube-de-assinaturas",
     type: "website",
     locale: "pt_BR",
@@ -67,10 +67,12 @@ const faqItems = [
       "O próprio cliente troca de plano direto pelo app, sem precisar falar com ninguém. O sistema calcula o pro-rata automaticamente e ajusta a próxima cobrança.",
   },
   {
+    // "Ilimitado" saiu: o clube do produto é por CRÉDITOS ou por DIAS DE USO — régua
+    // escrita em src/components/clube/FAQClube.tsx ("nunca corte ilimitado").
     question:
-      "Posso ter planos diferentes (limitado e ilimitado) ao mesmo tempo?",
+      "Posso ter planos diferentes ao mesmo tempo?",
     answer:
-      "Sim! Você pode criar quantos planos quiser. Exemplos comuns: plano básico (4 cortes/mês), plano premium (ilimitado), plano VIP (ilimitado + barba). Cada plano com preço e serviços diferentes.",
+      "Sim! Você pode criar quantos planos quiser, por créditos ou por dias de uso. Exemplos comuns: plano básico (4 cortes/mês), plano premium (mais créditos no período), plano VIP (créditos de corte + barba). Cada plano com preço e serviços diferentes.",
   },
   {
     question: "Como funciona a cobrança automática?",
@@ -148,18 +150,20 @@ export default function ClubeDeAssinaturasPage() {
               </p>
 
               <p className="text-sm md:text-base text-gray-400 leading-relaxed mb-8">
-                Com o clube, você sabe no dia 1 do mês quanto vai faturar.
-                Seus clientes pagam automaticamente, voltam com mais
-                frequência e gastam 2.8x mais por ano. Sem planilha, sem
-                cobrar no WhatsApp, sem surpresas.
+                Com o clube, você sabe no dia 1 do mês quanto o clube vai te
+                pagar. Seus clientes pagam automaticamente e voltam porque já
+                pagaram — sem planilha, sem cobrar no WhatsApp, sem surpresas.
               </p>
 
               {/* Stat pills */}
               <div className="flex flex-wrap gap-3 mb-10">
                 {[
-                  { label: "51.000+ assinantes ativos", icon: Users },
-                  { label: "2.8x mais receita/cliente", icon: TrendingUp },
-                  { label: "2.1 visitas/mês (média)", icon: Repeat },
+                  // Só agregados oficiais (knowledge/marketing/instagram-voz-do-time.md §9).
+                  // Saíram "2.8x mais receita/cliente" e "2.1 visitas/mês": ambos proibidos
+                  // por nome — o 2,8× vem do R$540/ano de avulso, cuja conta real é R$360.
+                  { label: "1.200+ barbearias na plataforma", icon: Users },
+                  { label: "51.000+ assinantes ativos", icon: Repeat },
+                  { label: "Cobrança automática todo mês", icon: TrendingUp },
                 ].map(({ label, icon: Icon }) => (
                   <span
                     key={label}
@@ -188,8 +192,8 @@ export default function ClubeDeAssinaturasPage() {
         <section className="bg-white py-16 md:py-24">
           <div className="container-custom">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#121212] mb-4 text-center">
-              Por que Barbearias com Clube Faturam{" "}
-              <span style={{ color: "#ffaf02" }}>2x Mais</span>
+              Por que o clube muda a conta da{" "}
+              <span style={{ color: "#ffaf02" }}>sua barbearia</span>
             </h2>
             <p className="text-gray-500 text-sm md:text-base text-center max-w-2xl mx-auto mb-12 md:mb-16">
               Não é teoria. São números reais de barbearias que usam o
@@ -198,29 +202,35 @@ export default function ClubeDeAssinaturasPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
               {[
+                // Cases anonimizados por porte + cidade/UF, literais de
+                // knowledge/dominio/cases-clube.json (crivel: true, bloqueio: null).
+                // Saíram daqui: o arco "R$15.892 → R$31.690" (morto em
+                // knowledge/marketing/clube-arsenal.md), o "R$1.536/ano vs R$540 avulso"
+                // com o 2,8× (proibidos por nome em instagram-voz-do-time.md §9) e as
+                // "2.1 visitas/mês" (idem). Nenhum tinha fonte que sobrevivesse à checagem.
                 {
                   icon: TrendingUp,
-                  stat: "R$15.892 → R$31.690/mês",
-                  title: "Barbearia de 4 cadeiras",
-                  desc: "Mesmas 4 cadeiras, mesma equipe. A única mudança foi criar o clube de assinaturas. Dobraram o faturamento em 6 meses.",
+                  stat: "R$9.249 → R$30.447/mês",
+                  title: "Barbearia de 4 cadeiras, Araxá/MG",
+                  desc: "De 99 para 277 assinantes em 19 meses. Mesmas 4 cadeiras — o que entrou foi o clube cobrando sozinho todo mês. (bb#13285)",
                 },
                 {
                   icon: DollarSign,
-                  stat: "R$1.536/ano vs R$540 avulso",
-                  title: "Assinante gasta 2.8x mais",
-                  desc: "O cliente avulso vem quando lembra. O assinante vem porque já pagou — e aproveita para fazer barba, sobrancelha, produtos.",
+                  stat: "R$7.682 → R$71.002/mês",
+                  title: "Barbearia de 6 cadeiras, Londrina/PR",
+                  desc: "Começou o clube com 31 assinantes. Dezessete meses depois são 409 pagando por mês, no automático. (bb#12164)",
                 },
                 {
                   icon: Repeat,
-                  stat: "2.1 visitas/mês",
-                  title: "Frequência média do assinante",
-                  desc: "Cliente avulso vem a cada 45 dias. Assinante vem a cada 14 dias. Mais visitas = mais serviços adicionais = mais receita.",
+                  stat: "R$2.264 → R$10.542/mês",
+                  title: "Barbearia de 4 cadeiras, Antônio Carlos/SC",
+                  desc: "De 24 para 90 assinantes em 12 meses. Cidade pequena, clube pequeno — e a receita do mês deixou de depender do movimento. (bb#15550)",
                 },
                 {
                   icon: Users,
                   stat: "51.000+",
                   title: "Assinantes ativos na plataforma",
-                  desc: "Mais de 51 mil clientes já usam o clube de assinaturas no BestBarbers. O modelo funciona — e os números provam.",
+                  desc: "Mais de 51 mil clientes já pagam clube de barbearia pelo BestBarbers. É o tamanho do modelo, não uma projeção.",
                 },
               ].map(({ icon: Icon, stat, title, desc }) => (
                 <div
@@ -346,14 +356,14 @@ export default function ClubeDeAssinaturasPage() {
                   <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm text-gray-600 leading-relaxed">
-                      <strong className="text-[#121212]">Dado real:</strong>{" "}
-                      A média de frequência dos assinantes é de{" "}
-                      <strong className="text-[#121212]">
-                        2.1 visitas por mês
-                      </strong>
-                      . Ninguém vem todo dia. O medo é natural, mas os
-                      números não mentem — em 51.000+ assinantes, a média se
-                      mantém estável.
+                      <strong className="text-[#121212]">Como o sistema resolve:</strong>{" "}
+                      cada plano tem regra — por{" "}
+                      <strong className="text-[#121212]">créditos</strong> (o
+                      assinante usa o número de serviços que contratou) ou por{" "}
+                      <strong className="text-[#121212]">dias de uso</strong>.
+                      O sistema controla sozinho o que já foi consumido no
+                      período, sem conta de cabeça e sem discussão na recepção.
+                      Você define o teto antes de vender o plano.
                     </p>
                   </div>
                 </div>
@@ -406,24 +416,22 @@ export default function ClubeDeAssinaturasPage() {
                   <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-sm text-gray-600 leading-relaxed">
-                      <strong className="text-[#121212]">Dado real:</strong>{" "}
-                      Cliente avulso gasta em média{" "}
+                      <strong className="text-[#121212]">O que muda de fato:</strong>{" "}
+                      o desconto no corte avulso você dá e não recebe nada em
+                      troca. No clube, o desconto é o preço de uma{" "}
                       <strong className="text-[#121212]">
-                        R$360/ano
+                        receita que entra antes do primeiro corte do mês
                       </strong>
-                      . Assinante gasta{" "}
-                      <strong className="text-[#121212]">
-                        R$900/ano
-                      </strong>
-                      . Isso é{" "}
+                      . Uma barbearia de 4 cadeiras em Araxá/MG saiu de
+                      R$9.249 para{" "}
                       <span
                         className="font-extrabold"
                         style={{ color: "#ffaf02" }}
                       >
-                        2.5x MAIS
-                      </span>
-                      . O desconto no unitário é uma ilusão — o LTV (valor
-                      no tempo) é drasticamente maior na assinatura.
+                        R$30.447/mês
+                      </span>{" "}
+                      de clube em 19 meses — sem cadeira nova. O que ela
+                      trocou foi previsibilidade por margem unitária.
                     </p>
                   </div>
                 </div>
@@ -447,38 +455,43 @@ export default function ClubeDeAssinaturasPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
               {[
+                // Três cases do banco (knowledge/dominio/cases-clube.json), anonimizados
+                // por porte + cidade/UF. Saíram: o arco morto dos 353 assinantes, a "rede
+                // de 6 unidades com R$176K/mês" (sem fonte) e "maior clube single-unit do
+                // Brasil" (superlativo sem lastro). O campo `quote` deixou de ser fala
+                // inventada e passou a ser descrição do próprio número.
                 {
-                  name: "Barbearia com 4 cadeiras",
-                  highlight: "R$31.690/mês",
+                  name: "Barbearia de 8 cadeiras · Belo Horizonte/MG",
+                  highlight: "R$72.577/mês",
                   details: [
-                    "4 cadeiras",
-                    "353 assinantes",
-                    "De R$15.892 para R$31.690/mês",
+                    "8 cadeiras",
+                    "De 88 para 600 assinantes",
+                    "R$9.272 → R$72.577/mês de clube em 25 meses",
                   ],
                   quote:
-                    "Dobramos o faturamento com as mesmas 4 cadeiras. O clube mudou tudo.",
+                    "Receita de assinatura cobrada no automático, em uma casa só. (bb#10387)",
                 },
                 {
-                  name: "Rede com 6 unidades",
-                  highlight: "R$176K/mês",
+                  name: "Barbearia de 9 cadeiras · Itaguaí/RJ",
+                  highlight: "525 assinantes",
                   details: [
-                    "6 unidades",
-                    "1.000 assinantes",
-                    "R$176K/mês só no clube",
+                    "9 cadeiras",
+                    "De 103 para 525 assinantes",
+                    "R$8.254 → R$49.519/mês de clube em 20 meses",
                   ],
                   quote:
-                    "O clube de assinaturas é o coração da operação. Receita previsível em 6 lojas.",
+                    "Vinte meses de clube ativo, seis vezes a receita recorrente do início. (bb#12580)",
                 },
                 {
-                  name: "Barbearia single-unit",
-                  highlight: "700+ assinantes",
+                  name: "Barbearia de 2 cadeiras · São Paulo/SP",
+                  highlight: "R$16.152/mês",
                   details: [
-                    "Single-unit",
-                    "700+ assinantes",
-                    "Maior clube single-unit do Brasil",
+                    "2 cadeiras",
+                    "75 assinantes pagando pelo app próprio",
+                    "R$4.844 → R$16.152/mês de clube em 10 meses",
                   ],
                   quote:
-                    "Uma única loja com 700 assinantes. Prova que não precisa de rede para escalar.",
+                    "Duas cadeiras — o clube não depende do tamanho da casa. (bb#16402)",
                 },
               ].map(({ name, highlight, details, quote }) => (
                 <div

@@ -3,18 +3,17 @@
 import { Star, Quote } from "lucide-react";
 import { CountUp } from "@/components/ui/motion";
 
+/**
+ * Só entra aqui quem tem consentimento vivo de uso de imagem e de nome.
+ * Ex-parceiro com uso de imagem revogado NÃO volta: nem nome, nem @, nem os
+ * números da rede dele. Um card saiu em 19/Set/26 por esta regra.
+ */
 const testimonials = [
   {
     quote: "Era R$15 mil. Montei o clube. Dobrei em 4 meses. Mesma equipe, mesmo ponto.",
     name: "Barbearia Pirajussara",
     detail: "Embu das Artes/SP · 4 cadeiras · 353 assinantes",
     result: "R$15K → R$31K/mes",
-  },
-  {
-    quote: "De 1 pra 3 unidades. R$100K por mes. Tudo pelo app e dashboard.",
-    name: "Mileno Rocha",
-    detail: "@omilenorocha · 3 unidades · 521 assinantes",
-    result: "R$918K acumulados",
   },
   {
     quote: "Uma cadeira. Sozinha. R$12K por mes. Sem WhatsApp, sem papel.",
@@ -50,7 +49,7 @@ export function Testimonials() {
         </div>
 
         {/* Testimonial Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto mb-12 md:mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto mb-12 md:mb-16">
           {testimonials.map((t, i) => (
             <div
               key={i}

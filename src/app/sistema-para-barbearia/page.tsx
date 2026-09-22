@@ -315,9 +315,9 @@ export default function SistemaParaBarbearia() {
             <p className="text-gray-300 leading-relaxed max-w-3xl">
               Envie lembretes automáticos de agendamento, avisos de promoção,
               mensagens de aniversário e alertas de vencimento de assinatura
-              direto no celular do cliente. Notificações push têm taxa de
-              abertura 5x maior que email e não dependem de WhatsApp. Você
-              configura uma vez e o sistema dispara sozinho.
+              direto no celular do cliente. A notificação chega na tela do
+              celular, sem depender de o cliente abrir o WhatsApp ou o e-mail.
+              Você configura uma vez e o sistema dispara sozinho.
             </p>
           </div>
 
@@ -362,74 +362,83 @@ export default function SistemaParaBarbearia() {
             usam o BestBarbers no dia a dia.
           </p>
           <div className="mt-10 grid md:grid-cols-3 gap-8">
-            {/* Barbearia 4 cadeiras */}
+            {/*
+              Três cases do banco vivo (knowledge/dominio/cases-clube.json), anonimizados
+              por porte + cidade/UF, todos com `crivel: true` e `bloqueio: null`.
+              Saíram daqui: o arco "353 assinantes · R$15.892 → R$31.690" (declarado morto
+              em knowledge/marketing/clube-arsenal.md — editorial não reconciliado), a
+              "rede de 6 unidades com R$440K/mês" (sem fonte) e o "700+ single-unit"
+              vendido como recorde nacional (superlativo sem lastro).
+              Todo valor abaixo é RECEITA DE CLUBE, nunca faturamento total da barbearia.
+            */}
+            {/* Barbearia 4 cadeiras — bb#13285 */}
             <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
               <h3 className="text-lg font-bold text-[#121212] mb-1">
                 Barbearia com 4 cadeiras
               </h3>
               <p className="text-sm text-gray-500 mb-6">
-                Grande São Paulo/SP
+                Araxá/MG
               </p>
               <div className="space-y-4">
                 <div>
-                  <p className="text-3xl font-bold text-[#ffaf02]">353</p>
-                  <p className="text-sm text-gray-600">assinantes ativos</p>
+                  <p className="text-3xl font-bold text-[#ffaf02]">277</p>
+                  <p className="text-sm text-gray-600">assinantes no clube</p>
                 </div>
                 <div>
                   <p className="text-3xl font-bold text-[#ffaf02]">
-                    R$31.690
+                    R$30.447
                   </p>
-                  <p className="text-sm text-gray-600">faturamento mensal</p>
+                  <p className="text-sm text-gray-600">de clube por mês</p>
                 </div>
                 <p className="text-xs text-gray-400 pt-2 border-t border-gray-200">
-                  Barbearia de 4 cadeiras que saiu de R$15K/mês para mais de
-                  R$31K/mês com clube de assinaturas e app próprio.
+                  Saiu de 99 assinantes e R$9.249/mês para 277 e R$30.447/mês
+                  em 19 meses — mesmas 4 cadeiras, com clube e app próprio.
                 </p>
               </div>
             </div>
 
-            {/* Rede 6 unidades */}
+            {/* Barbearia 8 cadeiras — bb#10387 */}
             <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
               <h3 className="text-lg font-bold text-[#121212] mb-1">
-                Rede com 6 unidades
+                Barbearia com 8 cadeiras
               </h3>
-              <p className="text-sm text-gray-500 mb-6">Minas Gerais</p>
+              <p className="text-sm text-gray-500 mb-6">Belo Horizonte/MG</p>
               <div className="space-y-4">
                 <div>
-                  <p className="text-3xl font-bold text-[#ffaf02]">6</p>
+                  <p className="text-3xl font-bold text-[#ffaf02]">600</p>
                   <p className="text-sm text-gray-600">
-                    unidades gerenciadas no BestBarbers
+                    assinantes no clube
                   </p>
                 </div>
                 <div>
-                  <p className="text-3xl font-bold text-[#ffaf02]">R$440K</p>
-                  <p className="text-sm text-gray-600">faturamento mensal</p>
+                  <p className="text-3xl font-bold text-[#ffaf02]">R$72.577</p>
+                  <p className="text-sm text-gray-600">de clube por mês</p>
                 </div>
                 <p className="text-xs text-gray-400 pt-2 border-t border-gray-200">
-                  Rede que usa multi-unidades, clube de assinaturas e app próprio
-                  para gerenciar todas as lojas de um único painel.
+                  Em 25 meses, de 88 para 600 assinantes — a cobrança roda
+                  sozinha e o painel mostra quem pagou e quem não pagou.
                 </p>
               </div>
             </div>
 
-            {/* Single-unit recordista */}
+            {/* Barbearia 2 cadeiras — bb#16402 */}
             <div className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
               <h3 className="text-lg font-bold text-[#121212] mb-1">
-                Barbearia single-unit
+                Barbearia com 2 cadeiras
               </h3>
               <p className="text-sm text-gray-500 mb-6">São Paulo/SP</p>
               <div className="space-y-4">
                 <div>
-                  <p className="text-3xl font-bold text-[#ffaf02]">700+</p>
-                  <p className="text-sm text-gray-600">assinantes ativos</p>
+                  <p className="text-3xl font-bold text-[#ffaf02]">75</p>
+                  <p className="text-sm text-gray-600">assinantes no clube</p>
                 </div>
                 <div>
-                  <p className="text-3xl font-bold text-[#ffaf02]">1</p>
-                  <p className="text-sm text-gray-600">única unidade</p>
+                  <p className="text-3xl font-bold text-[#ffaf02]">R$16.152</p>
+                  <p className="text-sm text-gray-600">de clube por mês</p>
                 </div>
                 <p className="text-xs text-gray-400 pt-2 border-t border-gray-200">
-                  Mais de 700 assinantes em uma única barbearia. Prova de que
-                  clube funciona em qualquer tamanho de operação.
+                  Duas cadeiras, 75 assinantes pagando pelo app da própria
+                  marca: de R$4.844 para R$16.152/mês em 10 meses.
                 </p>
               </div>
             </div>

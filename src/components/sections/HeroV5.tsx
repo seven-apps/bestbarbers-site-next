@@ -56,14 +56,10 @@ function getHeroContent(utmContent: string | null) {
     };
   }
 
-  // Wave 3 — Influencer-specific headlines (utm_content contains influencer name)
-  if (content.includes("mileno")) {
-    return {
-      headline: "De 1 para 3 unidades. R$101K por mes.",
-      highlight: "521 assinantes.",
-      sub: "Mileno Rocha escalou com BestBarbers. Veja se voce pode fazer o mesmo.",
-    };
-  }
+  // Wave 3 — Headlines por parceiro (utm_content traz o nome do parceiro).
+  // Só parceiros com colab consentido entram aqui. Ex-parceiro com uso de imagem
+  // revogado NÃO volta: sem nome, sem handle, sem número dele somado num agregado.
+  // utm_content de ex-parceiro cai no default abaixo — fallback, nunca erro.
   if (content.includes("joao") || content.includes("seletto")) {
     return {
       headline: "R$1.222.716 faturados. 32 meses.",
@@ -85,13 +81,10 @@ function getHeroContent(utmContent: string | null) {
       sub: "Thais provou: tamanho nao importa. O que importa e gestao.",
     };
   }
-  if (content.includes("expansao")) {
-    return {
-      headline: "3 influenciadores. 3 expansoes.",
-      highlight: "R$2.8M faturados.",
-      sub: "Mileno, Joao e Kaique escalaram com BestBarbers. Sua vez.",
-    };
-  }
+  // O antigo ângulo "expansao" somava três parceiros, um deles ex-parceiro com uso
+  // de imagem revogado. Sem ele o agregado (R$2.8M) deixa de fechar e não há número
+  // novo auditado para substituir — o ângulo sai inteiro em vez de ser remendado.
+  // utm_content=expansao cai no default.
 
   // Default — formula B-2 (unico criativo com vendas reais: 2 won, QS 23)
   return {

@@ -19,11 +19,11 @@ function W({ children }: { children: ReactNode }) {
 const faqCritical: FAQItem[] = [
   {
     question: "Assinante vai vir todo dia e dar prejuízo?",
-    answer: <>Essa é a objeção #1 — e os dados mostram o contrário. Média real de <H>51.000 assinantes ativos</H>: <H>2,1 visitas por mês</H>. Assinante não vem todo dia. Ele paga todo mês. Resultado: <H>R$128/mês</H> por assinante vs <W>R$45/mês</W> do cliente avulso. <H>Quase 3x mais.</H></>,
+    answer: <>Essa é a objeção #1 — e ela se resolve na regra, não na torcida. <H>Você define no sistema o que cada plano inclui</H>: quais serviços, com que frequência e com que limite. O assinante usa dentro da regra que você desenhou, e <H>paga todo mês</H>. A mediana das barbearias com clube ativo aqui é de <H>87 assinantes e R$10.830/mês</H> de receita recorrente.</>,
   },
   {
     question: "Não tenho investimento pra isso agora.",
-    answer: <>Sem taxa de implantação. <H>A partir de R$299/mês</H>. Com apenas <H>3 assinantes</H> no clube, o sistema já se paga. Uma barbearia de 4 cadeiras chegou a <H>353 assinantes — R$31.690/mês</H>. O investimento se paga no primeiro mês.</>,
+    answer: <>Sem taxa de implantação. <H>A partir de R$299/mês</H>. Com apenas <H>3 assinantes</H> no clube, o sistema já se paga. Uma barbearia de <H>4 cadeiras em Araxá/MG</H> saiu de 99 para <H>277 assinantes</H> — de R$9.249 para <H>R$30.447/mês</H> de receita de clube, ao longo de 19 meses.</>,
   },
   {
     question: "Meus clientes não vão usar app.",
@@ -35,18 +35,18 @@ const faqCritical: FAQItem[] = [
   },
   {
     question: "Funciona pra barbearia pequena?",
-    answer: <>Funciona melhor pra pequenas. O caso de <H>4 cadeiras com R$31.690/mês</H> é de uma barbearia pequena. Thaís opera <H>sozinha com 1 cadeira</H> e fatura R$12K/mês. Gestão organizada faz mais diferença quando o time é enxuto — cada hora que você para de agendar pelo WhatsApp vira hora cortando.</>,
+    answer: <>Funciona melhor pra pequenas. Uma barbearia de <H>2 cadeiras em São Paulo/SP</H> chegou a <H>75 assinantes</H> e saiu de R$4.844 para <H>R$16.152/mês</H> de receita de clube em 10 meses. Gestão organizada faz mais diferença quando o time é enxuto — cada hora que você para de agendar pelo WhatsApp vira hora cortando.</>,
   },
 ];
 
 const faqExtra: FAQItem[] = [
   {
     question: "Assinatura é desconto — vou perder margem?",
-    answer: <>Ao contrário. Assinante gasta <H>R$128/mês</H> (ticket médio real). Cliente avulso gasta R$540 por ANO — ou <W>R$45/mês</W>. Assinante vale <H>2,8x mais</H>. O clube não é desconto — é previsibilidade. Você sabe exatamente quanto entra antes de abrir a porta.</>,
+    answer: <>Ao contrário. O clube não é desconto — é <H>previsibilidade</H>. O avulso só volta quando lembra; o assinante paga todo mês, e você sabe quanto entra <H>antes de abrir a porta</H>. É isso que muda o planejamento da equipe, da compra de produto e do seu próprio pró-labore.</>,
   },
   {
     question: "O que está incluso nos R$299/mês?",
-    answer: <>Tudo: <W>app próprio</W> com a sua marca na App Store + Play, <W>clube de assinaturas</W> com cobrança automática, <W>agenda online</W>, <W>dashboard financeiro</W>, controle de comissões, <W>NFS-e integrada</W> e <W>gerente de contas dedicado</W>. Sem taxa de implantação, sem fidelidade.</>,
+    answer: <>Tudo: <W>app próprio</W> com a sua marca na App Store + Play, <W>clube de assinaturas</W> com cobrança automática, <W>agenda online</W>, <W>dashboard financeiro</W>, controle de comissões, <W>NFS-e integrada</W> e <W>gerente de contas dedicado</W>. Sem taxa de implantação. Contrato e condições de cancelamento são apresentados pelo time comercial antes da contratação.</>,
   },
   {
     question: "O que está incluso na oferta de implantação gratuita?",

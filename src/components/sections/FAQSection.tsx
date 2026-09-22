@@ -35,7 +35,10 @@ const faqItems: FAQItem[] = [
   {
     category: "Clube de Assinaturas",
     question: "Posso criar diferentes tipos de planos de assinatura?",
-    answer: "Sim! Você pode criar planos limitados (ex: 4 cortes por mês) ou ilimitados (cortes ilimitados por mês). Também pode incluir diferentes serviços em cada plano e definir preços diferenciados.",
+    // "Cortes ilimitados" saiu: o clube do produto é por CRÉDITOS ou por DIAS DE USO
+    // — a régua está escrita em src/components/clube/FAQClube.tsx ("nunca corte
+    // ilimitado"). A home descrevia o mesmo produto de um jeito que a /clube proíbe.
+    answer: "Sim! Você pode criar planos por créditos (ex: 4 cortes por mês) ou por dias de uso, incluir serviços diferentes em cada plano e definir preços diferenciados. O sistema controla sozinho o que cada assinante já usou no período.",
   },
   {
     category: "Clube de Assinaturas",

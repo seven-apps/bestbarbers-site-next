@@ -2,8 +2,14 @@
 
 import Image from "next/image";
 
+/**
+ * Parceiros com colab consentido no Instagram — só estes podem ser citados.
+ * Ex-parceiro com uso de imagem revogado NÃO volta aqui: nem handle, nem `alt`,
+ * nem arte, nem logo da barbearia dele na esteira abaixo.
+ *
+ * Mesma régua já aplicada em `src/app/v12/_components/TrustHeroV12.tsx`.
+ */
 const influencerHandles = [
-  "@omilenorocha",
   "@joaoseletto",
   "@o_kaique_alves",
   "@thaisdantbarber",
@@ -11,7 +17,6 @@ const influencerHandles = [
 ];
 
 const allLogos = [
-  "/images/Rapha_2.webp",
   "/images/Sr-Barbearia.webp",
   "/images/Premium.webp",
   "/images/Black-House.webp",
@@ -44,34 +49,28 @@ export function TrustHeroV11() {
         {/* CAMADA 1 — Influencers parceiros (autoridade aspiracional) */}
         <div className="text-center animate-fade-in-up">
           <p className="text-[11px] md:text-xs uppercase tracking-[0.2em] font-bold text-[#ffaf02] mb-4">
-            Validado por barbeiros de referência
+            Eles já tinham o melhor da cidade
           </p>
 
-          <div className="relative max-w-2xl mx-auto">
-            <Image
-              src="/images/hero-best-5-influencers.png"
-              alt="Mileno Rocha, João Seletto, Kaique Bagulho, Thaís D'Antunes e Rapha — barbeiros parceiros BestBarbers"
-              width={600}
-              height={244}
-              sizes="(max-width: 768px) 100vw, 600px"
-              className="w-full h-auto object-contain"
-              loading="lazy"
-            />
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 mt-3 md:mt-4">
+          {/*
+            Composição SEM rosto de pessoa. A arte anterior era um PNG único com cinco
+            rostos, dois deles de ex-parceiros com uso de imagem revogado — não dá para
+            recortar sem refazer a peça, então a prova social passa a ser o próprio
+            handle consentido. Não reintroduzir foto aqui sem arte nova aprovada.
+          */}
+          <div className="flex flex-wrap items-center justify-center gap-2.5 md:gap-3 max-w-2xl mx-auto">
             {influencerHandles.map((handle) => (
               <span
                 key={handle}
-                className="text-[10px] md:text-xs font-semibold text-gray-400"
+                className="rounded-full border border-[#ffaf02]/25 bg-white/[0.04] px-4 py-2 md:px-5 md:py-2.5 text-[12px] md:text-sm font-bold text-[#ffaf02]"
               >
                 {handle}
               </span>
             ))}
           </div>
 
-          <p className="text-sm md:text-base text-white font-bold mt-3 md:mt-4">
-            Mais de <span className="text-[#ffaf02]">2.000 assinantes</span> só entre eles. <span className="text-gray-400 font-medium">E você?</span>
+          <p className="text-sm md:text-base text-white font-bold mt-4 md:mt-5">
+            Mais de <span className="text-[#ffaf02]">51 mil assinantes ativos</span> na plataforma. <span className="text-gray-400 font-medium">E você?</span>
           </p>
         </div>
 

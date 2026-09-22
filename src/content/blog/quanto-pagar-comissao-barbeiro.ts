@@ -185,7 +185,7 @@ export const comissaoBarbeiroQuantoPagar: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "47.793",
+          value: "51 mil+",
           label: "assinantes ativos sendo atendidos hoje nas barbearias da plataforma",
         },
         {
@@ -218,7 +218,7 @@ export const comissaoBarbeiroQuantoPagar: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "1.297+",
+          value: "1.200+",
           label: "barbearias apuram comissão de forma automática no BestBarbers",
         },
         {

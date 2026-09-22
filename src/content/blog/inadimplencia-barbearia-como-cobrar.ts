@@ -86,8 +86,8 @@ export const inadimplenciaBarbearia: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "R$128,14",
-          label: "ticket médio por cobrança de assinatura na base BestBarbers — o valor que silenciosamente vaza a cada falha não tratada",
+          value: "51 mil+",
+          label: "assinaturas ativas na plataforma — cada falha de cobrança não tratada vaza uma mensalidade inteira",
         },
         {
           type: "paragraph",
@@ -298,8 +298,8 @@ export const inadimplenciaBarbearia: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "47.793 assinantes",
-          label: "ativos em 622 clubes na base BestBarbers — todos com a régua de cobrança rodando automaticamente, sem o dono virar cobrador",
+          value: "51 mil+ assinantes",
+          label: "ativos nos clubes da base BestBarbers — com a régua de cobrança rodando automaticamente, sem o dono virar cobrador",
         },
         {
           type: "paragraph",

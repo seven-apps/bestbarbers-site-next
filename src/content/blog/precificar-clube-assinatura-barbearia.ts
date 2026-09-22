@@ -44,12 +44,12 @@ export const precificarClubeAssinatura: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "O modelo de assinatura, quando bem precificado, é um dos motores financeiros mais poderosos de uma barbearia. Na base de mais de 1.297 barbearias que usam o BestBarbers, 622 já operam com clube — quase metade (47,96% de adoção) —, somando mais de 47 mil assinantes ativos. O ticket médio por cobrança de assinatura é de R$128,14, e o assinante permanece, em média, 12,1 meses no clube. Esses números mostram o tamanho do ativo quando o preço é calculado com cabeça — e o tamanho do buraco quando não é.",
+          text: "O modelo de assinatura, quando bem precificado, é um dos motores financeiros mais poderosos de uma barbearia. Na base de mais de 1.200 barbearias que usam o BestBarbers, os clubes somam mais de 51 mil assinantes ativos. Esse é o tamanho do ativo quando o preço é calculado com cabeça — e o tamanho do buraco quando não é.",
         },
         {
           type: "highlight",
-          value: "R$128,14",
-          label: "ticket médio por cobrança de assinatura na base BestBarbers",
+          value: "51 mil+",
+          label: "assinantes ativos nos clubes da base BestBarbers",
         },
         {
           type: "callout",
@@ -165,7 +165,7 @@ export const precificarClubeAssinatura: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "O ponto de equilíbrio baixo tem um efeito psicológico que vai além da planilha. Quando você sabe que três assinantes já cobrem o custo da ferramenta, o medo de \"investir e não dar certo\" desaparece. Esse é o mesmo motivo pelo qual o assinante permanece, em média, 12,1 meses na base: a receita recorrente cria estabilidade dos dois lados. O dono planeja com segurança; o cliente cria rotina. E é dessa estabilidade que nasce o crescimento — não da promoção agressiva de preço baixo.",
+          text: "O ponto de equilíbrio baixo tem um efeito psicológico que vai além da planilha. Quando você sabe que três assinantes já cobrem o custo da ferramenta, o medo de \"investir e não dar certo\" desaparece. A receita recorrente cria estabilidade dos dois lados: O dono planeja com segurança; o cliente cria rotina. E é dessa estabilidade que nasce o crescimento — não da promoção agressiva de preço baixo.",
         },
       ],
     },

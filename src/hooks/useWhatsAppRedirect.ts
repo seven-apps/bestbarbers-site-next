@@ -2,7 +2,12 @@ import { useCallback } from "react";
 import { useUtmParams } from "./useUtmParams";
 
 /**
- * Hook para gerenciar redirecionamento para WhatsApp
+ * Hook para gerenciar redirecionamento para WhatsApp.
+ *
+ * REGRA: nenhuma mensagem daqui pode citar ex-parceiro com relação encerrada — o texto
+ * vai para a conversa do lead, é conteúdo público. Links antigos desses parceiros ainda
+ * em circulação continuam funcionando e continuam sendo atribuídos: o `originId` mora em
+ * `useUtmParams.ts` (mapa intocado) — só a mensagem pré-preenchida vira a genérica.
  */
 export const useWhatsAppRedirect = () => {
   const { getUtmParams } = useUtmParams();
@@ -32,10 +37,6 @@ export const useWhatsAppRedirect = () => {
         rayslander:
           baseLink +
           "%0AConheci%20através%20do%20Rayslander%20(Baixinho%20Hair)",
-        "Rapha-BF": baseLink + "%0AConheci%20através%20do%20Rapha%20(BF)",
-        FDO:
-          baseLink +
-          "%0AConheci%20através%20do%20curso%20Fora%20de%20Operação%20do%20Rapha",
         "matheus-dezembro":
           baseLink + "%0AConheci%20através%20do%20Matheus%20Contador",
         james: baseLink + "%0AConheci%20através%20do%20James",
@@ -47,11 +48,9 @@ export const useWhatsAppRedirect = () => {
           baseLink + "%0AConheci%20através%20do%20Clube%20do%20Sam",
         "joao-contador":
           baseLink + "%0AConheci%20através%20do%20João%20Contador",
-        rapha: baseLink + "%0AConheci%20através%20do%20Rapha",
         santiago: baseLink + "%0AConheci%20através%20do%20Santiago",
         "gabriel-gordovisk":
           baseLink + "%0AConheci%20através%20do%20Gabriel%20Gordovisk",
-        mileno: baseLink + "%0AConheci%20através%20do%20Mileno",
         "henrique-daniels":
           baseLink + "%0AConheci%20através%20do%20Henrique%20Daniels",
         "maurilio-sr-bigode":
@@ -97,11 +96,6 @@ export const useWhatsAppRedirect = () => {
       };
 
       // Verifica UTM inf primeiro (tem prioridade)
-      if (utm_inf === "Rapha") {
-        window.location.href =
-          baseLink + "%0AConheci%20através%20do%20anúncio%20do%20Rapha";
-        return;
-      }
       if (utm_inf === "Andre") {
         window.location.href =
           baseLink + "%0AConheci%20através%20do%20anúncio%20do%20Andre";
@@ -136,10 +130,6 @@ export const useWhatsAppRedirect = () => {
         rayslander:
           baseLink +
           "%0AConheci%20através%20do%20Rayslander%20(Baixinho%20Hair)",
-        "Rapha-BF": baseLink + "%0AConheci%20através%20do%20Rapha%20(BF)",
-        FDO:
-          baseLink +
-          "%0AConheci%20através%20do%20curso%20Fora%20de%20Operação%20do%20Rapha",
         "matheus-dezembro":
           baseLink + "%0AConheci%20através%20do%20Matheus%20Contador",
         james: baseLink + "%0AConheci%20através%20do%20James",
@@ -151,14 +141,12 @@ export const useWhatsAppRedirect = () => {
           baseLink + "%0AConheci%20através%20do%20Clube%20do%20Sam",
         "joao-contador":
           baseLink + "%0AConheci%20através%20do%20João%20Contador",
-        rapha: baseLink + "%0AConheci%20através%20do%20Rapha",
         santiago: baseLink + "%0AConheci%20através%20do%20Santiago",
         "maurilio-sr-bigode":
           baseLink + "%0AConheci%20através%20do%20Maurilio%20Sr.%20Bigode",
         "edson-lapa": baseLink + "%0AConheci%20através%20do%20Edson%20Lapa",
         "gabriel-gordovisk":
           baseLink + "%0AConheci%20através%20do%20Gabriel%20Gordovisk",
-        mileno: baseLink + "%0AConheci%20através%20do%20Mileno",
         "henrique-daniels":
           baseLink + "%0AConheci%20através%20do%20Henrique%20Daniels",
         kaleo: baseLink + "%0AConheci%20através%20do%20Kaleo",
@@ -201,9 +189,6 @@ export const useWhatsAppRedirect = () => {
       };
 
       // Verifica UTM inf primeiro
-      if (utm_inf === "Rapha") {
-        return baseLink + "%0AConheci%20através%20do%20anúncio%20do%20Rapha";
-      }
       if (utm_inf === "Andre") {
         return baseLink + "%0AConheci%20através%20do%20anúncio%20do%20Andre";
       }

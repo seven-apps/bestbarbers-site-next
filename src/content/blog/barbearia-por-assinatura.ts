@@ -44,11 +44,11 @@ export const barbeariaPorAssinatura: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "Os dados confirmam essa tendência. Na base de mais de 1.297 barbearias que utilizam o BestBarbers, o número de assinantes ativos superou 47 mil, movimentando mais de 6 milhões de agendamentos. Esses números mostram que o modelo deixou de ser uma experiência pontual e se tornou uma estratégia consolidada de crescimento para barbearias de todos os portes — desde o barbeiro solo até redes com dezenas de unidades.",
+          text: "Os dados confirmam essa tendência. Na base de mais de 1.200 barbearias que utilizam o BestBarbers, o número de assinantes ativos passou de 51 mil, com mais de 6 milhões de agendamentos por mês. Esses números mostram que o modelo deixou de ser uma experiência pontual e se tornou uma estratégia consolidada de crescimento para barbearias de todos os portes — desde o barbeiro solo até redes com dezenas de unidades.",
         },
         {
           type: "highlight",
-          value: "47.793+",
+          value: "51 mil+",
           label: "assinantes ativos na base BestBarbers",
         },
         {
@@ -211,7 +211,7 @@ export const barbeariaPorAssinatura: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "1.297+",
+          value: "1.200+",
           label: "barbearias usando o sistema BestBarbers",
         },
       ],
@@ -277,7 +277,7 @@ export const barbeariaPorAssinatura: BlogArticle = {
       blocks: [
         {
           type: "paragraph",
-          text: "Implementar um clube de assinaturas não é difícil, mas existem armadilhas que podem comprometer o resultado. Esses erros são baseados em padrões observados nas mais de 1.297 barbearias que usam o BestBarbers — ou seja, não são suposições teóricas, são problemas reais que acontecem repetidamente.",
+          text: "Implementar um clube de assinaturas não é difícil, mas existem armadilhas que podem comprometer o resultado. Esses erros são baseados em padrões observados nas mais de 1.200 barbearias que usam o BestBarbers — ou seja, não são suposições teóricas, são problemas reais que acontecem repetidamente.",
         },
         {
           type: "subheading",

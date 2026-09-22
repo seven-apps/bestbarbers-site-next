@@ -14,7 +14,6 @@ import {
   brl,
   type CalcInputs,
 } from "./calc";
-import { REAIS } from "./benchmarks";
 
 interface CalculadoraSectionProps {
   onCtaClick?: () => void;
@@ -333,14 +332,11 @@ export function CalculadoraSection({ onCtaClick }: CalculadoraSectionProps) {
               style={{ color: "#fafafa", opacity: 0.65, fontFamily: "var(--font-montserrat)" }}
             >
               <strong style={{ color: "#fafafa", opacity: 0.85 }}>Como calculamos:</strong>{" "}
-              esta é uma <strong>projeção</strong>, não um dado ao vivo da sua base. Combina os números
-              que você informou acima (premissas ajustáveis) com um <strong>dado real</strong> da base
-              BestBarbers: o ticket médio de assinante é de{" "}
-              <strong>{brl(PROVA.ticketAssinante)}/mês</strong> (R$128,14, verificado em jun/2026).{" "}
-              Hoje são <strong>{PROVA.assinantesAtivos.toLocaleString("pt-BR")} assinantes ativos</strong> em{" "}
-              <strong>{PROVA.barbearias.toLocaleString("pt-BR")} barbearias</strong> ({REAIS.percentualComClube}% já
-              com clube). As porcentagens de recorrência e de conversão para o clube são premissas suas —
-              ajuste os sliders para refletir o seu cenário.
+              esta é uma <strong>projeção</strong>, não um dado ao vivo da sua base. Ela combina os
+              números que você informou acima com uma <strong>premissa nossa</strong>: um plano de
+              clube de <strong>{brl(PROVA.ticketAssinante)}/mês</strong>. Se o seu plano tiver outro
+              preço, o resultado muda na mesma proporção. As porcentagens de recorrência e de conversão
+              para o clube também são premissas suas — ajuste os sliders para refletir o seu cenário.
             </p>
           </div>
         </div>

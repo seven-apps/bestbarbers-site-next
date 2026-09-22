@@ -1,0 +1,73 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   «Como funciona» — versão curta, três passos.
+   Só layout e o que os utilitários de `pc-tokens.css` não cobrem.
+   Cor, raio, sombra, tipografia e duração SEMPRE por token --pc-*.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-3);
+  margin-bottom: var(--pc-e-7);
+}
+
+.passos {
+  display: grid;
+  gap: var(--pc-e-4);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  counter-reset: none;
+}
+
+.passo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-3);
+  position: relative;
+  padding-top: var(--pc-e-6);
+}
+
+/* O número é sinal de ordem, não conteúdo: fica grande, dourado e discreto. */
+.ordinal {
+  position: absolute;
+  top: var(--pc-e-4);
+  right: var(--pc-e-5);
+  font-size: var(--pc-t-h2);
+  font-weight: var(--pc-peso-titulo);
+  line-height: 1;
+  letter-spacing: var(--pc-track-h1);
+  color: var(--pc-ouro);
+  opacity: 0.28;
+}
+
+.passoTitulo {
+  margin: 0;
+  padding-right: var(--pc-e-8);
+  color: var(--pc-luz);
+}
+
+.rodape {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--pc-e-6);
+}
+
+/* ── Telefone: uma coluna, número ao lado do título para não roubar altura ── */
+@media (max-width: 860px) {
+  .passos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .passo {
+    padding-top: var(--pc-e-5);
+  }
+  .ordinal {
+    top: var(--pc-e-3);
+    right: var(--pc-e-4);
+    font-size: var(--pc-t-h3);
+  }
+  .passoTitulo {
+    padding-right: var(--pc-e-7);
+  }
+}

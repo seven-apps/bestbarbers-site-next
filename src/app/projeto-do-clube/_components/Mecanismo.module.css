@@ -1,0 +1,557 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   O MECANISMO — escada de seis passos, cada um com sua figura.
+
+   REGRA DE OURO DO ARQUIVO (V6): a figura nasce no ESTADO FINAL. Tudo que
+   desloca, some ou encolhe mora SOMENTE dentro de
+   `[data-pc-figura][data-estado="pronto"]`. Qualquer outro estado — inclusive
+   nenhum, que é o que sai do servidor — é o desenho completo e legível.
+
+   Nada de `width`/`height`/`top`/`left` animados (§4.2): só transform e opacity,
+   mais `stroke-dashoffset` no SVG da nota.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-3);
+  margin-bottom: var(--pc-e-8);
+}
+
+.escada {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-7);
+}
+
+/* Cada passo: texto à esquerda, figura à direita. A linha vertical costura a
+   escada e dá a leitura de «uma coisa leva à outra». */
+.passo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+  gap: var(--pc-e-6);
+  align-items: center;
+  position: relative;
+  padding-left: var(--pc-e-5);
+}
+
+.passo::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 2px;
+  border-radius: var(--pc-r-pill);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--pc-ouro-lavado) 18%,
+    var(--pc-ouro-lavado) 82%,
+    transparent
+  );
+}
+
+/* Alterna o lado da figura: a escada deixa de ser uma lista e vira percurso. */
+.passo:nth-child(even) > .passoTexto {
+  order: 2;
+}
+
+.passoTexto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-3);
+  min-width: 0;
+}
+
+.passoRotulo {
+  display: flex;
+  align-items: center;
+  gap: var(--pc-e-3);
+  margin: 0;
+}
+
+.passoNumero {
+  font-size: var(--pc-t-micro);
+  font-weight: var(--pc-peso-titulo);
+  letter-spacing: var(--pc-track-micro);
+  color: var(--pc-luz-3);
+}
+
+.passoFigura {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-3);
+  min-width: 0;
+}
+
+.figuraLegenda {
+  font-size: var(--pc-t-rotulo);
+  line-height: var(--pc-lh-normal);
+  color: var(--pc-luz-3);
+}
+
+.rodape {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pc-e-4);
+  margin-top: var(--pc-e-8);
+  padding-top: var(--pc-e-5);
+  border-top: 1px solid var(--pc-linha-carvao);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   O CARTÃO DA FIGURA — papel sobre carvão: o artefato do produto é o documento
+   que o dono confere.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.cartaoFigura {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-4);
+  padding: var(--pc-e-5);
+  border-radius: var(--pc-r-4);
+  background: var(--pc-papel-alto);
+  border: 1px solid var(--pc-linha-papel);
+  box-shadow: var(--pc-sombra-3);
+  color: var(--pc-tinta);
+}
+
+.figuraTopo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--pc-e-3);
+  padding-bottom: var(--pc-e-3);
+  border-bottom: 1px solid var(--pc-linha-papel);
+}
+
+.figuraRotulo {
+  font-size: var(--pc-t-micro);
+  font-weight: var(--pc-peso-forte);
+  letter-spacing: var(--pc-track-micro);
+  text-transform: uppercase;
+  color: var(--pc-tinta-3);
+}
+
+.figuraValor {
+  font-size: var(--pc-t-h3);
+  font-weight: var(--pc-peso-titulo);
+  color: var(--pc-tinta);
+}
+
+.figuraContador {
+  font-size: var(--pc-t-rotulo);
+  font-weight: var(--pc-peso-forte);
+  color: var(--pc-ouro-escuro);
+}
+
+.figuraNota {
+  margin: 0;
+  font-size: var(--pc-t-rotulo);
+  line-height: var(--pc-lh-normal);
+  color: var(--pc-tinta-3);
+}
+
+/* ── Figura 1 · o plano ──────────────────────────────────────────────────── */
+
+.campos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-3);
+}
+
+.campo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pc-e-4);
+}
+
+.campoNome {
+  font-size: var(--pc-t-rotulo);
+  color: var(--pc-tinta-2);
+  white-space: nowrap;
+}
+
+/* O traço "preenchido" é um retângulo que cresce por scaleX, com origem à
+   esquerda — o gesto de um campo sendo digitado. */
+.campoTraco {
+  flex: 1 1 auto;
+  height: 8px;
+  max-width: 140px;
+  border-radius: var(--pc-r-pill);
+  background: var(--pc-papel-fundo);
+  position: relative;
+  overflow: hidden;
+}
+
+.campoTraco::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--pc-ouro-suave);
+  transform-origin: left center;
+  transform: scaleX(1);
+  transition: transform var(--pc-dur-4) var(--pc-ease-saida);
+}
+
+.campoChip {
+  padding: 4px var(--pc-e-3);
+  border-radius: var(--pc-r-pill);
+  background: var(--pc-ouro-lavado);
+  color: var(--pc-ouro-escuro);
+  font-size: var(--pc-t-rotulo);
+  font-weight: var(--pc-peso-forte);
+  transition: opacity var(--pc-dur-4) var(--pc-ease-saida),
+              transform var(--pc-dur-4) var(--pc-ease-saida);
+}
+
+/* ── Figura 2 · a regra de uso ───────────────────────────────────────────── */
+
+.dias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pc-e-2);
+}
+
+.dia {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--pc-r-pill);
+  border: 1px solid var(--pc-linha-papel);
+  background: transparent;
+  color: var(--pc-tinta-3);
+  font-size: var(--pc-t-rotulo);
+  font-weight: var(--pc-peso-forte);
+  transition: background-color var(--pc-dur-4) var(--pc-ease-saida),
+              color var(--pc-dur-4) var(--pc-ease-saida),
+              border-color var(--pc-dur-4) var(--pc-ease-saida),
+              transform var(--pc-dur-4) var(--pc-ease-saida);
+}
+
+.dia[data-ligado="sim"] {
+  background: var(--pc-ouro);
+  border-color: var(--pc-ouro);
+  color: var(--pc-carvao);
+}
+
+/* ── Figuras 3 e 4 · troca de estado por empilhamento ─────────────────────
+   Os dois selos ocupam a MESMA célula. O de cima (`chipSai`) nasce invisível;
+   no estado `pronto` ele aparece e o de baixo some — é a pose «antes». */
+
+.pilhaChip {
+  display: grid;
+  justify-items: start;
+}
+
+.pilhaChip > * {
+  grid-area: 1 / 1;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px var(--pc-e-4);
+  border-radius: var(--pc-r-pill);
+  font-size: var(--pc-t-rotulo);
+  font-weight: var(--pc-peso-forte);
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  transition: opacity var(--pc-dur-4) var(--pc-ease-saida),
+              transform var(--pc-dur-4) var(--pc-ease-saida);
+}
+
+.chipOk {
+  background: var(--pc-acao-lavado);
+  color: var(--pc-acao);
+  border-color: rgba(2, 171, 21, 0.32);
+}
+
+.chipAlerta {
+  background: var(--pc-ouro-lavado);
+  color: var(--pc-ouro-escuro);
+  border-color: rgba(138, 93, 0, 0.28);
+}
+
+.chipSai {
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+}
+
+.chipEntra {
+  opacity: 1;
+  transform: none;
+}
+
+.filaVencidos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-2);
+}
+
+.linhaFila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pc-e-3);
+  padding: var(--pc-e-2) var(--pc-e-3);
+  border-radius: var(--pc-r-2);
+  background: var(--pc-papel-fundo);
+  transition: opacity var(--pc-dur-4) var(--pc-ease-saida),
+              transform var(--pc-dur-4) var(--pc-ease-saida);
+}
+
+.linhaFila[data-destaque] {
+  background: var(--pc-ouro-lavado);
+  box-shadow: inset 2px 0 0 var(--pc-ouro-suave);
+}
+
+.filaNome {
+  font-size: var(--pc-t-rotulo);
+  font-weight: var(--pc-peso-forte);
+  color: var(--pc-tinta);
+}
+
+.filaData {
+  font-size: var(--pc-t-micro);
+  color: var(--pc-tinta-3);
+}
+
+/* ── Figura 5 · a comissão ───────────────────────────────────────────────── */
+
+.barras {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-4);
+}
+
+.barraLinha {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--pc-e-3);
+}
+
+.barraNome {
+  font-size: var(--pc-t-rotulo);
+  color: var(--pc-tinta-2);
+}
+
+.barraLinha[data-destaque] .barraNome,
+.barraLinha[data-destaque] .barraValor {
+  color: var(--pc-tinta);
+  font-weight: var(--pc-peso-forte);
+}
+
+.barraTrilho {
+  height: 10px;
+  border-radius: var(--pc-r-pill);
+  background: var(--pc-papel-fundo);
+  overflow: hidden;
+}
+
+.barraPreenche {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transform-origin: left center;
+  transform: scaleX(1);
+  transition: transform var(--pc-dur-4) var(--pc-ease-saida);
+}
+
+/* A largura é estática (é o dado); o que anima é a escala. */
+.barraPreenche[data-largura="servicos"] {
+  width: 72%;
+  background: var(--pc-tinta-3);
+}
+
+.barraPreenche[data-largura="assinatura"] {
+  width: 46%;
+  background: linear-gradient(90deg, var(--pc-ouro-suave), var(--pc-ouro));
+}
+
+.barraValor {
+  font-size: var(--pc-t-rotulo);
+  color: var(--pc-tinta-2);
+  white-space: nowrap;
+}
+
+/* ── Figura 6 · a nota fiscal ────────────────────────────────────────────── */
+
+.docEnvolve {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--pc-e-4);
+}
+
+.doc {
+  width: 96px;
+  height: auto;
+  max-width: 100%;
+  color: var(--pc-tinta-3);
+  flex: 0 0 auto;
+}
+
+.docContorno,
+.docDobra,
+.docLinha {
+  stroke-dasharray: 340;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset var(--pc-dur-4) var(--pc-ease-saida);
+}
+
+.docLinha {
+  color: var(--pc-tinta-3);
+}
+
+.selo {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px var(--pc-e-4);
+  border-radius: var(--pc-r-2);
+  border: 2px solid var(--pc-acao);
+  color: var(--pc-acao);
+  font-size: var(--pc-t-rotulo);
+  font-weight: var(--pc-peso-titulo);
+  letter-spacing: var(--pc-track-micro);
+  text-transform: uppercase;
+  transform: rotate(-6deg);
+  opacity: 1;
+  transition: opacity var(--pc-dur-4) var(--pc-ease-saida),
+              transform var(--pc-dur-4) var(--pc-ease-saida);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   O ESTADO «PRONTO» — a pose ANTES do movimento.
+
+   Só existe depois que o JS marca o atributo. Sem JS, nada abaixo aplica e a
+   figura permanece completa. É este bloco inteiro, e só ele, que anima.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+[data-pc-figura][data-estado="pronto"] .campoTraco::after {
+  transform: scaleX(0);
+}
+
+[data-pc-figura][data-estado="pronto"] .campoChip {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+[data-pc-figura][data-estado="pronto"] .dia[data-ligado="sim"] {
+  background: transparent;
+  border-color: var(--pc-linha-papel);
+  color: var(--pc-tinta-3);
+  transform: scale(0.88);
+}
+
+[data-pc-figura][data-estado="pronto"] .chipSai {
+  opacity: 1;
+  transform: none;
+}
+
+[data-pc-figura][data-estado="pronto"] .chipEntra {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+[data-pc-figura][data-estado="pronto"] .linhaFila[data-destaque] {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+[data-pc-figura][data-estado="pronto"] .barraPreenche[data-largura="assinatura"] {
+  transform: scaleX(0.12);
+}
+
+[data-pc-figura][data-estado="pronto"] .docContorno,
+[data-pc-figura][data-estado="pronto"] .docDobra,
+[data-pc-figura][data-estado="pronto"] .docLinha {
+  stroke-dashoffset: 340;
+}
+
+[data-pc-figura][data-estado="pronto"] .selo {
+  opacity: 0;
+  transform: rotate(-6deg) scale(0.86);
+}
+
+/* Escalonamento dentro da figura: os traços do plano e os dias da semana
+   entram um atrás do outro, no ritmo do token de stagger. */
+[data-pc-figura] .campo:nth-child(2) .campoTraco::after { transition-delay: 90ms; }
+[data-pc-figura] .campo:nth-child(3) .campoChip          { transition-delay: 180ms; }
+[data-pc-figura] .dia:nth-child(5)                       { transition-delay: 90ms; }
+[data-pc-figura] .dia:nth-child(7)                       { transition-delay: 180ms; }
+[data-pc-figura] .chipEntra                              { transition-delay: 220ms; }
+[data-pc-figura] .docDobra                               { transition-delay: 120ms; }
+[data-pc-figura] .docLinha                               { transition-delay: 240ms; }
+[data-pc-figura] .selo                                   { transition-delay: 420ms; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVO — a escada vira coluna única; a figura vai para baixo do texto.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 880px) {
+  .passo {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--pc-e-5);
+    align-items: start;
+  }
+  .passo:nth-child(even) > .passoTexto {
+    order: 0;
+  }
+  .escada {
+    gap: var(--pc-e-6);
+  }
+}
+
+@media (max-width: 480px) {
+  .cartaoFigura {
+    padding: var(--pc-e-4);
+  }
+  .campoNome {
+    white-space: normal;
+  }
+  .campoTraco {
+    max-width: 96px;
+  }
+  .barraLinha {
+    grid-template-columns: 72px minmax(0, 1fr);
+    row-gap: var(--pc-e-2);
+  }
+  .barraValor {
+    grid-column: 2;
+    justify-self: end;
+  }
+  .doc {
+    width: 76px;
+  }
+}
+
+/* Movimento reduzido: o token já colapsa a duração, mas a pose inicial não
+   pode nem existir. Este bloco garante o estado final mesmo se o JS marcar
+   `pronto` por engano (preferência trocada com a página aberta). */
+@media (prefers-reduced-motion: reduce) {
+  [data-pc-figura][data-estado="pronto"] .campoTraco::after { transform: scaleX(1); }
+  [data-pc-figura][data-estado="pronto"] .campoChip { opacity: 1; transform: none; }
+  [data-pc-figura][data-estado="pronto"] .dia[data-ligado="sim"] {
+    background: var(--pc-ouro);
+    border-color: var(--pc-ouro);
+    color: var(--pc-carvao);
+    transform: none;
+  }
+  [data-pc-figura][data-estado="pronto"] .chipSai { opacity: 0; }
+  [data-pc-figura][data-estado="pronto"] .chipEntra { opacity: 1; transform: none; }
+  [data-pc-figura][data-estado="pronto"] .linhaFila[data-destaque] { opacity: 1; transform: none; }
+  [data-pc-figura][data-estado="pronto"] .barraPreenche[data-largura="assinatura"] { transform: scaleX(1); }
+  [data-pc-figura][data-estado="pronto"] .docContorno,
+  [data-pc-figura][data-estado="pronto"] .docDobra,
+  [data-pc-figura][data-estado="pronto"] .docLinha { stroke-dashoffset: 0; }
+  [data-pc-figura][data-estado="pronto"] .selo { opacity: 1; transform: rotate(-6deg); }
+}

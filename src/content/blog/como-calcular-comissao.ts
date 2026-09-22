@@ -313,7 +313,7 @@ export const comoCalcularComissao: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "1.297+",
+          value: "1.200+",
           label: "Barbearias calculam comissões automaticamente na plataforma BestBarbers",
         },
         {

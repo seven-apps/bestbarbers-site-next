@@ -124,11 +124,11 @@ export const nfse2026: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "Muitas barbearias crescem e ultrapassam o limite do MEI (verifique o limite vigente com seu contador) sem perceber. Com o clube de assinatura, por exemplo, a receita recorrente pode escalar rapidamente. Na plataforma BestBarbers, já são mais de 47 mil assinantes ativos distribuídos por 1.297 barbearias. Se o seu faturamento cresceu, é fundamental que o enquadramento tributário e a emissão de notas acompanhem esse crescimento.",
+          text: "Muitas barbearias crescem e ultrapassam o limite do MEI (verifique o limite vigente com seu contador) sem perceber. Com o clube de assinatura, por exemplo, a receita recorrente pode escalar rapidamente. Na plataforma BestBarbers, já são mais de 51 mil assinantes ativos distribuídos por mais de 1.200 barbearias. Se o seu faturamento cresceu, é fundamental que o enquadramento tributário e a emissão de notas acompanhem esse crescimento.",
         },
         {
           type: "highlight",
-          value: "47 mil+",
+          value: "51 mil+",
           label: "assinantes ativos gerenciados na plataforma BestBarbers",
         },
         {
@@ -271,7 +271,7 @@ export const nfse2026: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "1.297+",
+          value: "1.200+",
           label: "barbearias já utilizam a plataforma BestBarbers para gestão completa",
         },
         {

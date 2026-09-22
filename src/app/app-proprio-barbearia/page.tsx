@@ -21,15 +21,17 @@ import {
 
 export const metadata: Metadata = {
   title: "App Próprio para Barbearia na App Store e Play Store | BestBarbers",
+  // "Único sistema que..." saiu: superlativo de exclusividade sem lastro — não há
+  // levantamento que sustente que nenhum concorrente publica app com a marca do cliente.
   description:
-    "Único sistema que cria um app exclusivo da sua barbearia, com sua marca, publicado na App Store e Play Store. Seus clientes só veem sua barbearia, sem concorrentes.",
+    "Um app exclusivo da sua barbearia, com a sua marca, publicado na App Store e na Play Store. Seus clientes só veem a sua barbearia, sem concorrentes na tela.",
   alternates: {
     canonical: "/app-proprio-barbearia",
   },
   openGraph: {
     title: "App Próprio para Barbearia na App Store e Play Store | BestBarbers",
     description:
-      "Único sistema que cria um app exclusivo da sua barbearia, com sua marca, publicado na App Store e Play Store. Seus clientes só veem sua barbearia, sem concorrentes.",
+      "Um app exclusivo da sua barbearia, com a sua marca, publicado na App Store e na Play Store. Seus clientes só veem a sua barbearia, sem concorrentes na tela.",
     url: "https://www.bestbarbers.app/app-proprio-barbearia",
     type: "website",
     locale: "pt_BR",

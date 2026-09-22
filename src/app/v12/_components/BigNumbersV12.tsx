@@ -87,7 +87,7 @@ export function BigNumbersV12() {
             className="text-xs md:text-sm font-semibold uppercase tracking-[0.2em]"
             style={{ color: "#ffffff", fontFamily: "var(--font-montserrat)", opacity: 0.6 }}
           >
-            tratados com sistema BestBarbers · A maior plataforma de barbearia do Brasil
+            tratados com sistema BestBarbers · Mais de 1.200 barbearias na plataforma
           </p>
         </div>
       </div>

@@ -155,7 +155,7 @@ export function OfferComparisonV12({ onCtaClick }: OfferComparisonV12Props) {
             className="text-xs md:text-sm mt-4 font-medium"
             style={{ color: "#ffffff", fontFamily: "var(--font-montserrat)" }}
           >
-            Sem taxa de implantação · Cancele quando quiser
+            Sem taxa de implantação · Condições apresentadas antes do agendamento
           </p>
         </div>
       </div>

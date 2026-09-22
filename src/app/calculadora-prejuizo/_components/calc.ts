@@ -1,27 +1,28 @@
 /**
  * Calculadora de Prejuízo — motor de cálculo
  *
- * REGRA DE VERACIDADE (projeto): os números de prova social vêm de benchmarks.ts
- * — DADOS REAIS da base de produção BestBarbers (jun/2026), o case Pirajussara
- * (case real) e afirmações de mercado, cada um com sua rotulagem. As PREMISSAS
- * abaixo são exibidas na UI e (as principais) ajustáveis por slider. O resultado
- * é uma PROJEÇÃO transparente, nunca uma afirmação sobre a operação real do lead.
+ * REGRA DE VERACIDADE (projeto, revista em 19/Set/26): a prova social vem de
+ * benchmarks.ts e é SÓ o agregado oficial de divulgação (1.200+ barbearias ·
+ * 51.000+ assinantes) mais um case do banco vivo. O valor do plano de clube é
+ * PREMISSA declarada da conta, não dado publicável da base. As premissas são
+ * exibidas na UI e (as principais) ajustáveis por slider. O resultado é uma
+ * PROJEÇÃO transparente, nunca uma afirmação sobre a operação real do lead.
  */
 
-import { REAIS, CASE } from "./benchmarks";
+import { PUBLICOS, PREMISSAS, CASE } from "./benchmarks";
 
 /**
- * Prova social usada nos cálculos/UI. Espelha benchmarks.ts (dados reais +
- * case) para manter o motor de cálculo desacoplado da fonte.
+ * Prova social usada nos cálculos/UI. Espelha benchmarks.ts para manter o motor
+ * de cálculo desacoplado da fonte.
  */
 export const PROVA = {
-  /** Assinantes ativos na base BestBarbers (REAL — jun/2026). */
-  assinantesAtivos: REAIS.assinantesAtivos,
-  /** Barbearias ativas na plataforma (REAL — jun/2026). */
-  barbearias: REAIS.barbeariasAtivas,
-  /** Ticket médio mensal do assinante (REAL — R$128,14). Base da projeção. */
-  ticketAssinante: REAIS.ticketAssinatura,
-  /** Case Pirajussara (4 cadeiras): faturamento antes → depois (≈2x). */
+  /** Assinantes ativos na plataforma (agregado oficial de divulgação). */
+  assinantesAtivos: PUBLICOS.assinantesAtivos,
+  /** Barbearias ativas na plataforma (agregado oficial de divulgação). */
+  barbearias: PUBLICOS.barbeariasAtivas,
+  /** Valor do plano de clube usado na projeção — PREMISSA, não dado da base. */
+  ticketAssinante: PREMISSAS.planoClubeMes,
+  /** Case bb#13285 (4 cadeiras, Araxá/MG): receita de clube antes → depois. */
   caseAntes: CASE.antes,
   caseDepois: CASE.depois,
 } as const;

@@ -32,16 +32,23 @@ export const homeContent = {
       subtitle: "com a cara da sua Barbearia",
     },
     description:
-      "Impulsione o seu negócio com um App Próprio + o melhor sistema de gerenciamento para barbearias!",
+      "Impulsione o seu negócio com um App Próprio na marca da sua barbearia — agenda, clube de assinaturas, comissões e financeiro no mesmo sistema.",
     cta: {
       text: "QUERO UM APP PRÓPRIO\nPARA MINHA BARBEARIA",
-      href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Rapha",
+      href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Hero",
     },
+    // DEPENDÊNCIA RESOLVIDA (19/Set/26, 19h41): a arte chegou e foi conferida no pixel —
+    // `public/images/hero-app-proprio-sem-rosto.png`, 1080×434, exatamente o contrato.
+    // O que falta NÃO é arte: o arquivo está UNTRACKED no git. Um commit que pegue só
+    // arquivos modificados sobe esta linha sem a imagem. Precisa de `git add` explícito
+    // do caminho acima (ação do @devops, junto com as outras artes novas).
+    // Contrato cumprido: sem rosto de pessoa, sem logo de barbearia de terceiro.
+    // Saiu daqui: `hero-best-5-influencers.png` (5 rostos, 2 de ex-parceiros banidos).
     image: {
-      src: "/images/hero-best-5-influencers.png",
-      alt: "App próprio para barbearia — BestBarbers na App Store e Play Store",
-      width: 1712,
-      height: 450,
+      src: "/images/hero-app-proprio-sem-rosto.png",
+      alt: "App próprio de barbearia rodando no celular, com a marca da própria barbearia",
+      width: 1080,
+      height: 434,
     },
   },
 
@@ -227,18 +234,33 @@ export const homeContent = {
       text: "QUERO UM APP PRÓPRIO",
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Notificacoes",
     },
+    // DEPENDÊNCIA RESOLVIDA (19/Set/26, 19h41): a arte chegou e foi conferida no pixel —
+    // `public/images/notifications-app-proprio.webp`, 1640×857, exatamente o contrato,
+    // com os mesmos três cards, a mesma copy e o ícone do app NEUTRO ("SUA LOGO").
+    // O que falta NÃO é arte: o arquivo está UNTRACKED no git — precisa de `git add`
+    // explícito do caminho acima (ação do @devops), senão o commit sobe esta linha
+    // apontando para um arquivo que não existe no repositório.
+    // Saiu daqui: `notifications.webp`. O nome do arquivo não denuncia nada, e por isso
+    // nenhuma varredura por nome achou: o ícone do app dentro dos três cards é a marca
+    // do ex-parceiro banido, legível no card grande. Medido abrindo o pixel em 19/Set/26.
+    // `src/content/clube.ts:224` aponta para o MESMO arquivo e a /clube é o destino do
+    // tráfego pago que começa 22/Set. NÃO mexer ali: o coordenador assumiu aquela linha
+    // e aponta quando a arte existir (combinado em 19/Set) — editar aqui gera colisão.
     image: {
-      src: "/images/notifications.webp",
-      alt: "Notificações push personalizadas para clientes da barbearia",
+      src: "/images/notifications-app-proprio.webp",
+      alt: "Notificações push personalizadas enviadas pelo app próprio da barbearia",
       width: 1640,
-      height: 800,
+      height: 857,
     },
   },
 
   // ===== CLIENTES =====
   clients: {
     title: {
-      highlight: "Mais de 1.000",
+      // 1.200+ é o agregado oficial de divulgação (knowledge/marketing/instagram-voz-do-time.md §9:
+      // 1.200+ barbearias · 51.000+ assinantes · R$5M+/mês · 6M+ agendamentos/mês).
+      // O "1.000" daqui não tinha fonte e contradizia o 1.200+ já renderizado na ClientsSection.
+      highlight: "Mais de 1.200",
       main: " barbearias\nativaram o modo Best!",
     },
     cta: {
@@ -249,7 +271,6 @@ export const homeContent = {
       "/images/Barber-Style.webp",
       "/images/Sr-Barbearia.webp",
       "/images/Premium.webp",
-      "/images/Rapha_2.webp",
       "/images/Black-House.webp",
       "/images/James.webp",
       "/images/Ferrari.webp",

@@ -1,0 +1,489 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   A DEMONSTRAÇÃO — mock da tela do clube, em CSS.
+
+   REGRA DE OURO DO ARQUIVO (V6): tudo aqui nasce no ESTADO FINAL. Os dois
+   elementos que somem na animação (`statusSobreposto` e `valorSobreposto`)
+   já saem do servidor com `opacity: 0` — eles só existem para a Web Animations
+   API ter de onde partir. Sem JS a tela está completa e correta.
+
+   Nada de cor nomeada do Tailwind, nada de rounded-2xl/3xl: só tokens --pc-*.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--pc-e-4);
+  margin-bottom: var(--pc-e-7);
+}
+
+.palco {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: var(--pc-e-6);
+  align-items: start;
+}
+
+.moldura {
+  padding: var(--pc-e-4);
+  min-width: 0;
+}
+
+.lateral {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-5);
+  position: sticky;
+  top: var(--pc-e-7);
+}
+
+/* ── Legendas: a narração do que a tela está mostrando ───────────────────── */
+
+.legendas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-3);
+}
+
+.legenda {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--pc-e-3);
+  padding: var(--pc-e-3);
+  border-radius: var(--pc-r-2);
+  border: 1px solid transparent;
+  transition: background-color var(--pc-dur-2) var(--pc-ease-saida),
+              border-color var(--pc-dur-2) var(--pc-ease-saida),
+              transform var(--pc-dur-2) var(--pc-ease-saida);
+}
+
+.legenda[data-ativa="sim"] {
+  background: var(--pc-papel-alto);
+  border-color: var(--pc-linha-papel);
+  transform: translateX(4px);
+  box-shadow: var(--pc-sombra-1);
+}
+
+.legendaNumero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--pc-r-pill);
+  border: 1px solid var(--pc-linha-papel);
+  font-size: var(--pc-t-micro);
+  font-weight: var(--pc-peso-titulo);
+  color: var(--pc-tinta-3);
+  transition: background-color var(--pc-dur-2) var(--pc-ease-saida),
+              color var(--pc-dur-2) var(--pc-ease-saida),
+              border-color var(--pc-dur-2) var(--pc-ease-saida);
+}
+
+.legenda[data-ativa="sim"] .legendaNumero {
+  background: var(--pc-ouro);
+  border-color: var(--pc-ouro);
+  color: var(--pc-carvao);
+}
+
+.legendaTexto {
+  font-size: var(--pc-t-rotulo);
+  line-height: var(--pc-lh-normal);
+  color: var(--pc-tinta-2);
+}
+
+.legenda[data-ativa="sim"] .legendaTexto {
+  color: var(--pc-tinta);
+}
+
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pc-e-3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   O MOCK
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.mock {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-4);
+  min-width: 0;
+}
+
+.mockTopo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pc-e-3);
+  padding-bottom: var(--pc-e-3);
+  border-bottom: 1px solid var(--pc-linha-papel);
+}
+
+.mockMarca {
+  font-size: var(--pc-t-rotulo);
+  font-weight: var(--pc-peso-titulo);
+  color: var(--pc-tinta);
+}
+
+.mockCaminho {
+  font-size: var(--pc-t-micro);
+  letter-spacing: var(--pc-track-micro);
+  text-transform: uppercase;
+  color: var(--pc-tinta-3);
+}
+
+.mockSelo {
+  margin-left: auto;
+}
+
+.mockCorpo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--pc-e-4);
+}
+
+.painel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-4);
+  padding: var(--pc-e-4);
+  border-radius: var(--pc-r-3);
+  border: 1px solid var(--pc-linha-papel);
+  background: var(--pc-papel);
+  min-width: 0;
+}
+
+.painelTopo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pc-e-3);
+}
+
+.painelTitulo {
+  margin: 0;
+  font-size: var(--pc-t-micro);
+  font-weight: var(--pc-peso-forte);
+  letter-spacing: var(--pc-track-micro);
+  text-transform: uppercase;
+  color: var(--pc-tinta-3);
+}
+
+.painelRodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--pc-e-3);
+  padding-top: var(--pc-e-3);
+  border-top: 1px solid var(--pc-linha-papel);
+}
+
+.rodapeRotulo {
+  font-size: var(--pc-t-micro);
+  letter-spacing: var(--pc-track-micro);
+  text-transform: uppercase;
+  color: var(--pc-tinta-3);
+}
+
+.rodapeValor {
+  font-size: var(--pc-t-h3);
+  font-weight: var(--pc-peso-titulo);
+  color: var(--pc-tinta);
+  white-space: nowrap;
+}
+
+/* ── Plano e regra ───────────────────────────────────────────────────────── */
+
+.planoLinha {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--pc-e-3);
+}
+
+.planoNome {
+  font-size: var(--pc-t-corpo);
+  font-weight: var(--pc-peso-forte);
+  color: var(--pc-tinta);
+}
+
+.planoValor {
+  font-size: var(--pc-t-corpo);
+  font-weight: var(--pc-peso-forte);
+  color: var(--pc-ouro-escuro);
+  white-space: nowrap;
+}
+
+.regraChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pc-e-2);
+}
+
+.regraChip {
+  padding: 4px var(--pc-e-3);
+  border-radius: var(--pc-r-pill);
+  background: var(--pc-ouro-lavado);
+  border: 1px solid rgba(138, 93, 0, 0.2);
+  color: var(--pc-ouro-escuro);
+  font-size: var(--pc-t-micro);
+  font-weight: var(--pc-peso-forte);
+  white-space: nowrap;
+}
+
+/* ── Faturas ─────────────────────────────────────────────────────────────── */
+
+.faturas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-2);
+}
+
+.fatura {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--pc-e-3);
+  padding: var(--pc-e-3);
+  border-radius: var(--pc-r-2);
+  background: var(--pc-papel-alto);
+  border: 1px solid var(--pc-linha-papel);
+}
+
+.fatura[data-novo] {
+  border-color: rgba(138, 93, 0, 0.28);
+  box-shadow: inset 2px 0 0 var(--pc-ouro-suave);
+}
+
+.faturaNome {
+  font-size: var(--pc-t-rotulo);
+  color: var(--pc-tinta);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.faturaValor {
+  font-size: var(--pc-t-rotulo);
+  color: var(--pc-tinta-2);
+  white-space: nowrap;
+}
+
+/* ── Selos de status ─────────────────────────────────────────────────────── */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px var(--pc-e-3);
+  border-radius: var(--pc-r-pill);
+  border: 1px solid transparent;
+  font-size: var(--pc-t-micro);
+  font-weight: var(--pc-peso-forte);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.statusOk {
+  background: var(--pc-acao-lavado);
+  color: var(--pc-acao);
+  border-color: rgba(2, 171, 21, 0.32);
+}
+
+.statusAlerta {
+  background: var(--pc-ouro-lavado);
+  color: var(--pc-ouro-escuro);
+  border-color: rgba(138, 93, 0, 0.28);
+}
+
+.statusEspera {
+  background: transparent;
+  color: var(--pc-tinta-3);
+  border-color: var(--pc-linha-papel);
+}
+
+/* Os dois selos dividem a mesma célula: o de cima nasce invisível e só
+   aparece durante a animação, que o apaga de novo revelando o de baixo. */
+.statusPilha,
+.pilhaValor {
+  display: grid;
+  justify-items: end;
+}
+
+.statusPilha > *,
+.pilhaValor > * {
+  grid-area: 1 / 1;
+}
+
+.statusSobreposto,
+.valorSobreposto {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Comissão por profissional ───────────────────────────────────────────── */
+
+.profissionais {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pc-e-4);
+}
+
+.profissional {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) auto;
+  align-items: center;
+  gap: var(--pc-e-3);
+}
+
+.profNome {
+  font-size: var(--pc-t-rotulo);
+  color: var(--pc-tinta-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profissional[data-destaque] .profNome,
+.profissional[data-destaque] .profValor {
+  color: var(--pc-tinta);
+  font-weight: var(--pc-peso-forte);
+}
+
+.profTrilho {
+  height: 10px;
+  border-radius: var(--pc-r-pill);
+  background: var(--pc-papel-fundo);
+  overflow: hidden;
+}
+
+/* A largura é o dado; o que anima é a escala (nunca `width`). */
+.profBarra {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transform-origin: left center;
+  transform: scaleX(1);
+  background: var(--pc-tinta-3);
+}
+
+.profBarra[data-peso="alto"] {
+  width: 84%;
+}
+
+.profBarra[data-peso="medio"] {
+  width: 62%;
+  background: linear-gradient(90deg, var(--pc-ouro-suave), var(--pc-ouro));
+}
+
+.profBarra[data-peso="baixo"] {
+  width: 42%;
+}
+
+.profValor {
+  font-size: var(--pc-t-rotulo);
+  color: var(--pc-tinta-2);
+  white-space: nowrap;
+}
+
+.quitacao {
+  display: inline-flex;
+  gap: var(--pc-e-2);
+}
+
+/* ── O aviso de placeholder: explícito, nunca escondido ──────────────────── */
+
+.mockAviso {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pc-e-3);
+  margin: 0;
+  padding: var(--pc-e-3) var(--pc-e-4);
+  border-radius: var(--pc-r-2);
+  border: 1px dashed var(--pc-linha-papel);
+  background: var(--pc-papel-fundo);
+  font-size: var(--pc-t-micro);
+  line-height: var(--pc-lh-normal);
+  color: var(--pc-tinta-3);
+}
+
+.mockAvisoSelo {
+  padding: 3px var(--pc-e-3);
+  border-radius: var(--pc-r-pill);
+  border: 1px solid var(--pc-tinta-3);
+  font-weight: var(--pc-peso-forte);
+  letter-spacing: var(--pc-track-micro);
+  text-transform: uppercase;
+  color: var(--pc-tinta-2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVO
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1040px) {
+  .palco {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lateral {
+    position: static;
+  }
+  .legendas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .mockCorpo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .legendas {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .moldura {
+    padding: var(--pc-e-3);
+  }
+  .painel {
+    padding: var(--pc-e-3);
+  }
+  .fatura {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: var(--pc-e-2);
+  }
+  .faturaValor {
+    justify-self: end;
+  }
+  .statusPilha {
+    grid-column: 1 / -1;
+    justify-items: start;
+  }
+  .profissional {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: var(--pc-e-2);
+  }
+  .profTrilho {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .controles {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* Movimento reduzido: as sobreposições continuam invisíveis (é o estado final)
+   e a legenda ativa não desloca. */
+@media (prefers-reduced-motion: reduce) {
+  .legenda[data-ativa="sim"] {
+    transform: none;
+  }
+}

@@ -80,12 +80,33 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   //   "parceiros" (o que o André pediu — saber a isca/LP de origem, não o genérico "LP").
   // - Raiz do site → "home".
   // Antes: tudo que não fosse /vNN caía em "LP" e o Ploomes não distinguia as iscas.
+  // - Família /projeto-do-clube → SLUG COMPLETO com "-" ("projeto-do-clube-migracao").
+  //   Exceção deliberada e ESTREITA (19/Set/26, integrador da família). Sem ela as
+  //   quatro entradas pagas e o controle gravam todas `bb_lp_version =
+  //   "projeto-do-clube"` e colapsam no CRM: a leitura por entrada passaria a depender
+  //   100% da disciplina de quem digita o nome do anúncio.
+  //   Por que ESTREITA e não regra geral: `lpVersion` é o 1º segmento do originDesc de
+  //   8 campos, e 11 leitores de tráfego parseiam essa string por índice. Trocar o
+  //   comportamento de TODA rota multi-segmento mudaria, sem aviso, o `bb_lp_version`
+  //   de /blog/[slug], /conteudo/[slug], /sistema-para-barbearia/[cidade] e
+  //   /dezembro-lotado/materiais, que já estão no ar e já têm série histórica.
+  //   Esta família nasce hoje: não há série para quebrar.
   const seg = pathname.replace(/^\/+|\/+$/g, "");
-  const lpVersion = seg.match(/^v\d+/i)?.[0]?.toUpperCase() || seg.split("/")[0] || "home";
+  const lpVersion =
+    seg.match(/^v\d+/i)?.[0]?.toUpperCase() ||
+    (seg.startsWith("projeto-do-clube") ? seg.replace(/\//g, "-") : seg.split("/")[0]) ||
+    "home";
 
   const fase = param("fase");
   const campanha = param("campanha");
-  const publico = param("publico") || param("adset");
+  // CONJUNTO — duas fontes, nesta ordem. A URL viva manda; o `publicoSessao` (snapshot da
+  // sessão, ver useUtmParams.restaurarSnapshot) cobre quem clicou no ad, navegou para dentro
+  // do site e só então preencheu o formulário: até 19/Set/26 esse lead chegava ao Ploomes com
+  // bb_adset_id VAZIO e `n/d` na Descrição da Campanha, e um lead sem conjunto não entra na
+  // leitura do A/B pelo CRM. O fallback é só de ESCRITA — o gate de score do useLeadForm
+  // continua lendo exclusivamente a URL viva, e é por isso que o campo é separado.
+  const publicoUrl = param("publico") || param("adset");
+  const publico = publicoUrl || semMacro(utmParams.publicoSessao);
   const adName = param("ad") || param("adname");
   // Id NUMÉRICO do anúncio (url_tags `ad_id={{ad.id}}`) — chave 1:1 com a Meta. O nome já
   // vive em bb_utm_content; a Descrição da Campanha (250 chars) trunca nomes longos.
@@ -96,8 +117,10 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   const audiencia = param("audiencia") || publico;
 
   // Sinal do Meta url_tags Wave 4+ → formato 8-segments. Usa param('creative') direto
-  // (não o fallback utm_content) para não acionar 8-segs em LPs legacy.
-  const has8Segs = fase || campanha || publico || adName || param("creative") || angulo;
+  // (não o fallback utm_content) para não acionar 8-segs em LPs legacy — e, pela mesma
+  // razão, `publicoUrl` e não `publico`: o conjunto herdado da sessão PREENCHE o campo,
+  // mas não decide sozinho o formato da descrição que os leitores de tráfego parseiam.
+  const has8Segs = fase || campanha || publicoUrl || adName || param("creative") || angulo;
 
   let originDesc: string | null;
   if (has8Segs) {

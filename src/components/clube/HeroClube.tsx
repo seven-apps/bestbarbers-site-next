@@ -8,8 +8,11 @@ interface HeroClubeProps {
 
 /**
  * Clone do HeroSection da homepage para a página /clube.
- * Mesma moldura (fundo #ffaf02, foto dos 5 influenciadores),
+ * Mesma moldura (fundo #ffaf02, arte ancorada no canto inferior direito),
  * narrativa clube-first. originDesc: [Site-Clube]BT-Hero.
+ * A arte é de PRODUTO (aparelhos com o app), nunca de pessoas: a foto dos cinco
+ * rostos saiu em 19/Set/26 porque dois deles são ex-parceiros com uso de imagem
+ * revogado. O porquê e a régua estão em `src/content/clube.ts` (bloco `hero.image`).
  */
 export function HeroClube({ onCtaClick }: HeroClubeProps) {
   const { hero } = clubeContent;

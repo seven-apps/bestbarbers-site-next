@@ -130,12 +130,10 @@ const organizationSchema = {
     contactType: "sales",
     availableLanguage: "Portuguese",
   },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.8",
-    reviewCount: "1200",
-    bestRating: "5",
-  },
+  // `aggregateRating` removido em 19/Set/26: eram 4,8 estrelas com 1.200 avaliações, e o
+  // 1.200 é o número de BARBEARIAS na plataforma, reaproveitado como número de avaliações.
+  // Não existe uma avaliação real por trás. Rich snippet de avaliação fabricada é motivo de
+  // penalização manual no Google. Só volta com avaliação real, auditável e com a fonte citada.
 };
 
 const softwareSchema = {
@@ -153,11 +151,10 @@ const softwareSchema = {
     priceCurrency: "BRL",
     offerCount: "2",
   },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.8",
-    reviewCount: "1200",
-  },
+  // `aggregateRating` removido em 19/Set/26: eram 4,8 estrelas com 1.200 avaliações, e o
+  // 1.200 é o número de BARBEARIAS na plataforma, reaproveitado como número de avaliações.
+  // Não existe uma avaliação real por trás. Rich snippet de avaliação fabricada é motivo de
+  // penalização manual no Google. Só volta com avaliação real, auditável e com a fonte citada.
   featureList: [
     "App próprio personalizado na App Store e Play Store",
     "Clube de assinaturas com cobrança automática",
@@ -209,28 +206,13 @@ const productSchema = {
   name: "BestBarbers - Sistema para Barbearia",
   description: "Plataforma all-in-one para barbearias com app próprio, clube de assinaturas, agendamento online e gestão financeira completa",
   brand: { "@type": "Brand", name: "BestBarbers" },
-  review: [
-    {
-      "@type": "Review",
-      author: { "@type": "Person", name: "Dono de Rede com 6 Unidades" },
-      reviewBody:
-        "6 unidades, 1.000 assinantes, R$440K/mês. O BestBarbers transformou nossa operação.",
-      reviewRating: { "@type": "Rating", ratingValue: "5" },
-    },
-    {
-      "@type": "Review",
-      author: { "@type": "Person", name: "Dono de Barbearia em SP" },
-      reviewBody:
-        "4 cadeiras, 353 assinantes, de R$15K para R$31.690/mês. Dobramos o faturamento.",
-      reviewRating: { "@type": "Rating", ratingValue: "5" },
-    },
-  ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.8",
-    reviewCount: "1200",
-    bestRating: "5",
-  },
+  // `review` e `aggregateRating` saíram daqui (19/Set/26). Eram dado estruturado
+  // que vai para o Google: duas avaliações 5 estrelas atribuídas a pessoas que não
+  // existem (uma delas citando o arco "353 assinantes · R$15.892 → R$31.690", morto
+  // em knowledge/marketing/clube-arsenal.md) e uma nota 4,8 com 1.200 avaliações sem
+  // nenhuma avaliação real por trás. Rich snippet de review fabricado é risco de
+  // penalização no Google além de violar a regra "só dado verificável".
+  // Só volta com avaliações reais, coletadas e auditáveis.
 };
 
 export function JsonLd() {
