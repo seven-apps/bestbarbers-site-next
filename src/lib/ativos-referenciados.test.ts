@@ -50,7 +50,10 @@ function arquivosDeCodigo(dir: string, saida: string[] = []): string[] {
     if (IGNORAR.some((i) => entrada === i)) continue;
     const caminho = join(dir, entrada);
     if (statSync(caminho).isDirectory()) arquivosDeCodigo(caminho, saida);
-    else if (/\.(ts|tsx|js|jsx|mjs)$/.test(entrada)) saida.push(caminho);
+    // Arquivos de teste ficam de fora: não são superfície pública, e um exemplo citado em
+    // comentário (como o "/images/x.png" da documentação deste próprio gate) viraria falso
+    // positivo — o gate acusaria a si mesmo.
+    else if (/\.(ts|tsx|js|jsx|mjs)$/.test(entrada) && !/\.test\.(ts|tsx|js|jsx|mjs)$/.test(entrada)) saida.push(caminho);
   }
   return saida;
 }
@@ -93,9 +96,37 @@ function referencias(): Map<string, string[]> {
   return mapa;
 }
 
+/**
+ * Placeholders declarados na família /projeto-do-clube.
+ *
+ * `pc-artefatos.ts` registra cada arte com `status: "placeholder" | "real"`, e o componente
+ * `PcArtefato` NÃO emite `<img>` enquanto o status for placeholder — desenha uma moldura
+ * tracejada que ocupa o lugar exato. Ou seja: arquivo ausante ali é dívida declarada, não
+ * página quebrada, e acusá-la tornaria este gate ruído permanente.
+ *
+ * O que o gate continua pegando, que é o momento perigoso: alguém troca o status para "real"
+ * (porque a arte "chegou") e esquece de pôr o arquivo no disco. Aí a moldura vira `<img>`
+ * apontando para o nada, e a página quebra de verdade.
+ */
+function placeholdersDeclarados(): Set<string> {
+  const arquivo = join(SRC, "app/projeto-do-clube/_components/pc-artefatos.ts");
+  if (!existsSync(arquivo)) return new Set();
+  const conteudo = readFileSync(arquivo, "utf8");
+  const ignorar = new Set<string>();
+  // Cada registro declara `arquivoFinal` e, logo abaixo, o `status` do MESMO artefato.
+  // Casar os dois em um só padrão evita associar o caminho ao status do registro vizinho.
+  const registro = /arquivoFinal:\s*["'`](\/images\/[^"'`]+)["'`][\s\S]{0,400}?status:\s*["'`](\w+)["'`]/g;
+  for (const achado of conteudo.matchAll(registro)) {
+    if (achado[2] === "placeholder") ignorar.add(achado[1]);
+  }
+  return ignorar;
+}
+
 test("todo ativo referenciado pelo código existe no disco", () => {
+  const placeholders = placeholdersDeclarados();
   const faltando: string[] = [];
   for (const [ativo, onde] of referencias()) {
+    if (placeholders.has(ativo)) continue;
     if (!existsSync(join(PUBLIC, ativo))) faltando.push(`  ${ativo}\n    referenciado em: ${onde.join(", ")}`);
   }
   assert.equal(

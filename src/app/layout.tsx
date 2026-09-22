@@ -88,6 +88,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const localPreview = process.env.NODE_ENV === "development" && process.env.BB_FUNIL_PREVIEW === "1";
   return (
     /* `scroll-pt-*`: a navbar é `fixed` e não ocupa espaço no fluxo, então tudo
        que rola para o topo — âncora com #hash, foco de teclado, scrollIntoView —
@@ -101,6 +102,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        {!localPreview && <>
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
@@ -141,10 +143,12 @@ export default function RootLayout({
             alt=""
           />
         </noscript>
+        </>}
       </head>
       <body
         className={`${montserrat.variable} font-primary antialiased overflow-x-hidden max-w-[100vw]`}
       >
+        {!localPreview && <>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe
@@ -155,10 +159,11 @@ export default function RootLayout({
           />
         </noscript>
         {/* End Google Tag Manager (noscript) */}
+        </>}
 
         {children}
         {/* "Você é dono de barbearia?" — só para o tráfego do TOPO (lib/pergunta-dono.ts); inerte no resto */}
-        <PerguntaDono />
+        {!localPreview && <PerguntaDono />}
       </body>
     </html>
   );

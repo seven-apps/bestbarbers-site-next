@@ -159,8 +159,21 @@
   }
 }
 
+/**
+ * COLISÃO DE TOKEN, medida em 19/Set/26 — por isso este gradiente NÃO usa `var(--primary)`.
+ *
+ * Este arquivo define `--primary: #ffaf02` (o dourado da marca), mas `globals.css` o importa no
+ * topo e, mais abaixo, redefine `--primary` com o neutro quase-preto do shadcn
+ * (`oklch(0.205 0 0)`, globals.css:60). A redefinição vence, e o gradiente saía de PRETO para
+ * amarelo — o H1 da /clube-de-assinaturas começava ilegível.
+ *
+ * Trocar o valor em globals.css consertaria este gradiente e repintaria junto os 28 usos de
+ * `bg-primary`/`text-primary` do shadcn em componentes vivos, que esperam o neutro. Então a
+ * correção fica aqui: o gradiente passa a nomear os tokens de MARCA explicitamente, que não
+ * estão em disputa com ninguém.
+ */
 .text-gradient-primary {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-gradient-2) 100%);
+  background: linear-gradient(135deg, var(--primary-gradient) 0%, var(--primary-gradient-2) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
