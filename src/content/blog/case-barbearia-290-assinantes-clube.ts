@@ -228,12 +228,12 @@ export const case290Assinantes: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "Pode parecer um resultado isolado, mas ele está dentro de um padrão observável em escala. Na base do BestBarbers há mais de 1.297 barbearias, das quais 622 já operam com clube de assinaturas, somando mais de 47 mil assinantes ativos e mais de 6 milhões de agendamentos. O tempo médio de clube ativo na base é de 12,1 meses — ou seja, clube de assinatura não é moda passageira; é uma estrutura que as barbearias mantêm porque funciona.",
+          text: "Pode parecer um resultado isolado, mas ele está dentro de um padrão observável em escala. Na base do BestBarbers há mais de 1.200 barbearias, com mais de 51 mil assinantes ativos nos clubes e mais de 6 milhões de agendamentos por mês. Clube de assinatura não é moda passageira: é uma estrutura que as barbearias montam e mantêm porque funciona.",
         },
         {
           type: "highlight",
-          value: "47.793",
-          label: "assinantes ativos na base BestBarbers (622 barbearias com clube)",
+          value: "51 mil+",
+          label: "assinantes ativos nos clubes da base BestBarbers",
         },
         {
           type: "paragraph",
@@ -325,7 +325,7 @@ export const case290Assinantes: BlogArticle = {
     {
       question: "Quanto tempo leva para chegar em um resultado parecido?",
       answer:
-        "Nesse case, o crescimento de cerca de 3 vezes (de R$9.249 para R$27.586/mês) levou 18 meses. As primeiras adesões aparecem nos primeiros meses, mas a base sólida se constrói ao longo do tempo, com consistência. Na média da base BestBarbers, o tempo de clube ativo é de 12,1 meses, o que mostra que o modelo é de maturação gradual, não de explosão imediata.",
+        "Nesse case, o crescimento de cerca de 3 vezes (de R$9.249 para R$27.586/mês) levou 18 meses. As primeiras adesões aparecem nos primeiros meses, mas a base sólida se constrói ao longo do tempo, com consistência. O modelo é de maturação gradual, não de explosão imediata — quem espera dobrar em um mês desiste antes de o clube virar o que ele pode virar.",
     },
     {
       question: "Clube de assinatura funciona para barbearia pequena, de poucas cadeiras?",

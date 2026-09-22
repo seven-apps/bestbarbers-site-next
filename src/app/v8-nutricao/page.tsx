@@ -48,7 +48,7 @@ export default function V8NutricaoPage() {
           </p>
           <p className="text-gray-300 text-sm leading-relaxed">
             Em vez de te mandar uma proposta agora, queremos te ajudar a chegar lá.
-            <strong className="text-white"> Te enviaremos por WhatsApp 3 conteúdos que dobraram o faturamento de barbeiros como você</strong>:
+            <strong className="text-white"> Te enviaremos por WhatsApp 3 conteúdos sobre como organizar a receita da barbearia</strong>:
           </p>
         </div>
 
@@ -56,9 +56,9 @@ export default function V8NutricaoPage() {
           <li className="bg-[#0f1015] border border-[#2a2d35] rounded-xl p-4 flex gap-3 items-start">
             <span className="text-[#FFAF02] font-bold text-lg shrink-0">1</span>
             <div>
-              <p className="text-white font-semibold mb-1">Como sair de R$3K para R$8K em 90 dias</p>
+              <p className="text-white font-semibold mb-1">Como montar a primeira grade de preços que fecha a conta</p>
               <p className="text-gray-400 text-xs">
-                Case real: barbeiro autônomo virou pequeno empresário sem equipe nova
+                O que entra no cálculo do corte antes de pensar em vender mais
               </p>
             </div>
           </li>
@@ -67,16 +67,16 @@ export default function V8NutricaoPage() {
             <div>
               <p className="text-white font-semibold mb-1">A matemática da assinatura</p>
               <p className="text-gray-400 text-xs">
-                Por que cliente pagando R$128/mês vale 2,8x mais que cliente avulso
+                Como calcular o preço do plano de clube a partir do seu próprio ticket
               </p>
             </div>
           </li>
           <li className="bg-[#0f1015] border border-[#2a2d35] rounded-xl p-4 flex gap-3 items-start">
             <span className="text-[#FFAF02] font-bold text-lg shrink-0">3</span>
             <div>
-              <p className="text-white font-semibold mb-1">Os 5 erros que mantém barbearia em R$3K</p>
+              <p className="text-white font-semibold mb-1">Os 5 erros que travam a barbearia pequena</p>
               <p className="text-gray-400 text-xs">
-                Análise de 1.200+ barbearias mostrou os padrões — e como fugir deles
+                Padrões que aparecem nas barbearias da plataforma — e como fugir deles
               </p>
             </div>
           </li>
@@ -91,11 +91,17 @@ export default function V8NutricaoPage() {
           </p>
         </div>
 
+        {/*
+          Apontava para `/v8` até 19/Set/26, e `/v8` é `_page.tsx` — o Next não serve. Quem
+          clicava caía no 404 padrão, em inglês. A LP de origem foi despublicada e o link ficou
+          para trás; agora leva à página do clube, que existe e é o próximo passo natural de
+          quem está lendo isto.
+        */}
         <Link
-          href="/v8"
+          href="/clube"
           className="block w-full py-3 text-center text-gray-500 text-sm hover:text-gray-300 transition-colors"
         >
-          ← Voltar
+          Conhecer o clube de assinaturas
         </Link>
       </div>
     </main>

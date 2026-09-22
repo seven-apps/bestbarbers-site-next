@@ -2,7 +2,10 @@
 
 import { useState, type ReactNode } from "react";
 import { ChevronDownCircle } from "lucide-react";
-import { REAIS, CASE, MERCADO } from "./benchmarks";
+import { PUBLICOS, PREMISSAS, CASE } from "./benchmarks";
+
+/** Premissa da projeção — valor do plano de clube. Nunca apresentar como dado da base. */
+const PREMISSA_PLANO = PREMISSAS.planoClubeMes;
 import { brl } from "./calc";
 
 interface FAQItem {
@@ -20,32 +23,35 @@ const faqItems: FAQItem[] = [
     answer: (
       <>
         Não — é uma <H>projeção transparente</H>. Ela combina os números que você informou nos
-        sliders com um <H>dado real</H> da base BestBarbers: o ticket médio de assinante de{" "}
-        <H>{brl(REAIS.ticketAssinatura)}/mês</H> (R$128,14, jun/2026). Não temos acesso à sua base;
-        ajuste os controles para refletir o seu cenário e veja como o resultado muda.
+        sliders com uma <H>premissa nossa</H>: um plano de clube de{" "}
+        <H>{brl(PREMISSA_PLANO)}/mês</H>. Não temos acesso à sua base; ajuste os controles para
+        refletir o seu cenário e veja como o resultado muda.
       </>
     ),
   },
   {
-    question: "De onde vem o ticket de R$128/mês por assinante?",
+    question: "De onde vem o valor de plano usado na conta?",
     answer: (
       <>
-        É um <H>dado real</H> da base BestBarbers, verificado em jun/2026: R$128,14 de ticket médio
-        mensal por assinante. Hoje são <H>{REAIS.assinantesAtivos.toLocaleString("pt-BR")} assinantes
-        ativos</H> em <H>{REAIS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias</H> ({REAIS.percentualComClube}%
-        já com clube). As barbearias com clube têm em média <H>~{REAIS.assinantesMediaPorClube} assinantes
-        ativos</H> — já são mais de <H>{brl(REAIS.movimentadoClube)}</H> movimentados em assinaturas na plataforma.
+        É uma <H>premissa</H>, não um dado da sua barbearia: a conta usa um plano de clube de{" "}
+        <H>{brl(PREMISSA_PLANO)}/mês</H>, que é uma faixa comum de mensalidade em barbearia.
+        Se o seu plano custar mais ou menos que isso, o resultado sobe ou desce na mesma
+        proporção. A escala por trás da plataforma é de mais de{" "}
+        <H>{PUBLICOS.assinantesAtivos.toLocaleString("pt-BR")} assinantes ativos</H> em mais de{" "}
+        <H>{PUBLICOS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias</H>.
       </>
     ),
   },
   {
-    question: "Faturamento dobrar é real ou promessa de marketing?",
+    question: "Esse tamanho de resultado é real ou promessa de marketing?",
     answer: (
       <>
-        É um <H>case real anonimizado</H> (Pirajussara): uma barbearia de 4 cadeiras saiu de{" "}
-        <H>{brl(CASE.antes)}/mês para {brl(CASE.depois)}/mês</H> (cerca de 2x) ao estruturar o clube
-        de assinaturas. É um exemplo validado, não uma garantia — o seu resultado depende do seu
-        cenário, por isso a calculadora deixa tudo ajustável.
+        É um <H>case real anonimizado</H> do banco da plataforma: uma barbearia de {CASE.cadeiras}{" "}
+        cadeiras em {CASE.cidade} saiu de {CASE.assinantesAntes} para {CASE.assinantesDepois}{" "}
+        assinantes em {CASE.janelaMeses} meses, e a receita de clube dela foi de{" "}
+        <H>{brl(CASE.antes)}/mês para {brl(CASE.depois)}/mês</H>. É um caso medido, não uma
+        garantia — o seu resultado depende do seu cenário, por isso a calculadora deixa tudo
+        ajustável.
       </>
     ),
   },
@@ -55,17 +61,9 @@ const faqItems: FAQItem[] = [
       <>
         É um <H>custo de oportunidade</H>: o cliente que corta e some não volta de forma previsível,
         então a receita recorrente que ele geraria como assinante simplesmente não existe. Não some
-        do caixa — mas nunca entra. Como afirmação de mercado, estima-se que cada corte sem recorrência
-        deixa cerca de{" "}
-        <H>
-          {MERCADO.prejuizoPorCorte.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-            minimumFractionDigits: 2,
-          })}{" "}
-          na mesa
-        </H>
-        . Quanto menor a sua recorrência, maior esse valor acumulado.
+        do caixa — mas nunca entra. A conta acima é justamente essa diferença:{" "}
+        <H>o que os seus clientes sem recorrência pagariam se fossem assinantes</H>, menos o que
+        eles pagam hoje. Quanto menor a sua recorrência, maior esse valor acumulado.
       </>
     ),
   },
@@ -73,10 +71,11 @@ const faqItems: FAQItem[] = [
     question: "O assinante não vai vir todo dia e dar prejuízo?",
     answer: (
       <>
-        Essa é a objeção nº1 — e os números reais mostram o contrário. Na base BestBarbers, o
-        assinante permanece em média <H>~{REAIS.retencaoMeses} meses</H> pagando{" "}
-        <H>{brl(REAIS.ticketAssinatura)}/mês</H>. O valor do clube não está em ele vir mais — está na
-        previsibilidade: você sabe quanto entra antes de abrir a porta.
+        Quem define o teto é você, antes de vender o plano. Cada plano tem regra — por{" "}
+        <H>créditos</H> (o assinante usa o número de serviços que contratou) ou por{" "}
+        <H>dias de uso</H> — e o sistema controla sozinho o que já foi consumido no período. O valor
+        do clube não está em ele vir mais: está na previsibilidade de saber quanto entra antes de
+        abrir a porta.
       </>
     ),
   },

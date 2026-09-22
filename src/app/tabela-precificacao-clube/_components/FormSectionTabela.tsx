@@ -197,7 +197,7 @@ export function FormSectionTabela() {
             <div className="flex items-center gap-1.5">
               <Users2 className="w-4 h-4" style={{ color: "#ebad04" }} fill="currentColor" />
               <span className="text-xs font-medium" style={{ color: "#1e1e1e", opacity: 0.7, fontFamily: "var(--font-montserrat)" }}>
-                {REAIS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias
+                +{REAIS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias
               </span>
             </div>
           </div>

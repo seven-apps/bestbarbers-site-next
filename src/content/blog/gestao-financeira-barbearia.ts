@@ -241,21 +241,21 @@ export const gestaoFinanceira: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "Os dados da base BestBarbers mostram o tamanho dessa virada. Entre as mais de 1.297 barbearias ativas na plataforma, 622 já operam com clube de assinaturas — quase metade (47,96%) da base —, somando 47.793 assinantes ativos. O ticket médio por cobrança de assinatura é de R$128,14, e a receita líquida média por assinante-mês fica em torno de R$128. Não é uma tendência de nicho: é metade das barbearias da plataforma construindo um piso de caixa que o avulso nunca dá.",
+          text: "Os dados da base BestBarbers mostram o tamanho dessa virada. Entre as mais de 1.200 barbearias ativas na plataforma, os clubes de assinatura somam mais de 51 mil assinantes ativos. Não é uma tendência de nicho: é um número grande de barbearias construindo um piso de caixa que o avulso nunca dá.",
         },
         {
           type: "highlight",
-          value: "47,96%",
-          label: "das barbearias na base BestBarbers já têm clube de assinaturas (622 de 1.297)",
+          value: "51 mil+",
+          label: "assinantes ativos nos clubes de assinatura da base BestBarbers",
         },
         {
           type: "paragraph",
-          text: "Tem outro número que merece atenção: a média de permanência no clube é de 12,1 meses. Isso significa que o assinante médio não some no segundo mês — ele fica pouco mais de um ano. Pense no que isso faz pelo caixa: cada novo assinante não vale uma cobrança, vale, em média, mais de doze. É o oposto da lógica do avulso, em que cada cliente vale exatamente um corte de cada vez. A recorrência não soma; ela compõe.",
+          text: "Tem outra coisa que merece atenção: o assinante não vale uma cobrança, vale a sequência de cobranças que ele fizer enquanto estiver no clube. É o oposto da lógica do avulso, em que cada cliente vale exatamente um corte de cada vez. A recorrência não soma; ela compõe — e é isso que muda a conversa com o banco, com o contador e com o barbeiro que você quer contratar.",
         },
         {
           type: "highlight",
-          value: "12,1 meses",
-          label: "tempo médio de clube ativo por assinante na base BestBarbers — cada adesão vale muito mais que uma cobrança",
+          value: "1.200+",
+          label: "barbearias usam o BestBarbers para cobrar o clube no automático — cada adesão vale muito mais que uma cobrança",
         },
         {
           type: "subheading",
@@ -412,7 +412,7 @@ export const gestaoFinanceira: BlogArticle = {
     {
       question: "Como o clube de assinaturas melhora o caixa da barbearia?",
       answer:
-        "A recorrência transforma cada cliente, que antes era uma aposta a cada visita, em uma linha previsível de caixa que entra todo mês independentemente do movimento. Na base BestBarbers, o tempo médio de clube ativo é de 12,1 meses, então cada novo assinante vale, em média, mais de doze cobranças. Esse piso garantido permite negociar, contratar e planejar com segurança que o avulso nunca oferece.",
+        "A recorrência transforma cada cliente, que antes era uma aposta a cada visita, em uma linha previsível de caixa que entra todo mês independentemente do movimento. Cada novo assinante não vale uma venda: vale a sequência de cobranças que ele fizer enquanto estiver no clube. Esse piso permite negociar, contratar e planejar com uma segurança que o avulso nunca oferece.",
     },
     {
       question: "O que é inadimplência na barbearia e como ela afeta o lucro?",

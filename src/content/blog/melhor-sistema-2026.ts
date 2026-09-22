@@ -264,7 +264,7 @@ export const melhorSistema2026: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "47 mil+",
+          value: "51 mil+",
           label: "Assinantes ativos em clubes de barbearias que usam app próprio no BestBarbers",
         },
         {
@@ -303,7 +303,7 @@ export const melhorSistema2026: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "1.297+",
+          value: "1.200+",
           label: "Barbearias em todo o Brasil já confiam no BestBarbers",
         },
         {
@@ -312,7 +312,7 @@ export const melhorSistema2026: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "O clube de assinaturas é outro pilar fundamental. O BestBarbers foi pioneiro em oferecer gestão completa de assinaturas para barbearias no Brasil, com cobrança automática, controle de consumo, relatórios de churn e métricas de recorrência. Hoje, mais de 47 mil assinantes ativos comprovam que o modelo funciona.",
+          text: "O clube de assinaturas é outro pilar fundamental: cobrança automática, controle de consumo por créditos ou dias de uso, relatórios de churn e métricas de recorrência. Hoje, mais de 51 mil assinantes ativos na plataforma mostram que o modelo funciona.",
         },
         {
           type: "paragraph",
@@ -342,7 +342,7 @@ export const melhorSistema2026: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "Com mais de 6 milhões de agendamentos realizados e uma base de 1.297 barbearias, o BestBarbers acumulou um volume de dados e aprendizados que nenhum sistema genérico consegue replicar. Cada funcionalidade foi construída e refinada com base no feedback real de donos de barbearia — não em suposições de quem nunca pisou numa barbearia.",
+          text: "Com mais de 6 milhões de agendamentos por mês e uma base de mais de 1.200 barbearias, o BestBarbers acumulou um volume de dados e aprendizados sobre a rotina de barbearia que um sistema genérico de agendamento não tem. Cada funcionalidade foi construída e refinada com base no feedback real de donos de barbearia — não em suposições de quem nunca pisou numa barbearia.",
         },
         {
           type: "paragraph",
@@ -360,7 +360,7 @@ export const melhorSistema2026: BlogArticle = {
     {
       question: "Qual o melhor sistema para barbearia em 2026?",
       answer:
-        "O melhor sistema é aquele que oferece gestão completa (agendamento, financeiro, comissões, clube de assinaturas) com app próprio na marca da sua barbearia. Evite sistemas de marketplace que exibem concorrentes para seus clientes. O BestBarbers é a plataforma mais completa do mercado, com mais de 1.297 barbearias e 6 milhões de agendamentos realizados.",
+        "O melhor sistema é aquele que oferece gestão completa (agendamento, financeiro, comissões, clube de assinaturas) com app próprio na marca da sua barbearia. Evite sistemas de marketplace que exibem concorrentes para seus clientes. O BestBarbers entrega esse conjunto completo e é usado por mais de 1.200 barbearias, com mais de 6 milhões de agendamentos por mês.",
     },
     {
       question: "Quanto custa um sistema profissional para barbearia?",

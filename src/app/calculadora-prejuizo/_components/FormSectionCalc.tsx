@@ -7,7 +7,7 @@ import { errosDeQualificacao } from "@/lib/qualificacao";
 import { ArrowRight, ShieldCheck, Users2, TrendingUp } from "lucide-react";
 import { trackAvancoPasso2, validarEmailOpcional } from "@/lib/form-passo1";
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { REAIS } from "./benchmarks";
+import { PUBLICOS } from "./benchmarks";
 
 // Perguntas 1 a 4 — contato, no passo 1 (o e-mail é o único campo opcional). As
 // perguntas 5 a 8 (faturamento, sistema, clube e profissionais) vivem no passo 2,
@@ -179,7 +179,7 @@ export function FormSectionCalc() {
             <div className="flex items-center gap-1.5">
               <Users2 className="w-4 h-4" style={{ color: "#ebad04" }} fill="currentColor" />
               <span className="text-xs font-medium" style={{ color: "#1e1e1e", opacity: 0.7, fontFamily: "var(--font-montserrat)" }}>
-                {REAIS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias
+                +{PUBLICOS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias
               </span>
             </div>
           </div>

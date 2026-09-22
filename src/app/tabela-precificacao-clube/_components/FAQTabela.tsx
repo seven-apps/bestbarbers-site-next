@@ -3,7 +3,6 @@
 import { useState, type ReactNode } from "react";
 import { ChevronDownCircle } from "lucide-react";
 import { METODO, REAIS } from "./benchmarks";
-import { brl } from "./calc";
 
 interface FAQItem {
   question: string;
@@ -79,10 +78,9 @@ const faqItems: FAQItem[] = [
         O cálculo usa <H>só os números que você informou</H> nos controles — não temos acesso à sua
         base. As referências de frequência e de carteira por barbeiro são de mercado, do método
         aplicado por barbearias por assinatura há anos, e estão rotuladas na página. A prova de que
-        o modelo funciona é real e verificada: <H>{REAIS.assinantesAtivos.toLocaleString("pt-BR")} assinantes
-        ativos</H> em <H>{REAIS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias</H> na plataforma
-        ({REAIS.percentualComClube}% já com clube), com mais de <H>{brl(REAIS.movimentadoClube)}</H>{" "}
-        movimentados em assinaturas.
+        o modelo funciona é real: mais de <H>{REAIS.assinantesAtivos.toLocaleString("pt-BR")} assinantes
+        ativos</H> em mais de <H>{REAIS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias</H> na
+        plataforma, cobrando assinatura no automático todo mês.
       </>
     ),
   },

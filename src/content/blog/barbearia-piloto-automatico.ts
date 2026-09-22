@@ -148,12 +148,12 @@ export const barbeariaPilotoAutomatico: BlogArticle = {
         },
         {
           type: "highlight",
-          value: "47.793+",
+          value: "51 mil+",
           label: "assinantes ativos pagando recorrência na base BestBarbers",
         },
         {
           type: "paragraph",
-          text: "E isso não é teoria. Na base de mais de 1.297 barbearias que usam o BestBarbers, mais de 622 já operam com clube de assinaturas — quase metade, 47,96% de adoção. Juntas, elas têm mais de 47 mil assinantes ativos pagando recorrência, com ticket médio de R$128,14 por cobrança e tempo médio de 12,1 meses de clube ativo. Não é um experimento de nicho: é o jeito que as barbearias mais organizadas do país escolheram para tirar o negócio do piloto automático.",
+          text: "E isso não é teoria. Na base de mais de 1.200 barbearias que usam o BestBarbers, os clubes de assinatura somam mais de 51 mil assinantes ativos pagando recorrência todo mês. Não é um experimento de nicho: é o jeito que as barbearias mais organizadas do país escolheram para tirar o negócio do piloto automático.",
         },
         {
           type: "paragraph",

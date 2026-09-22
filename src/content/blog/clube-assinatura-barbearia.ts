@@ -44,12 +44,12 @@ export const clubeAssinaturaBarbearia: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "O clube de assinatura inverte essa lógica. Em vez de torcer para o cliente voltar, você combina com ele que ele volta — e que paga todo dia 5, chova ou faça sol. No BestBarbers, mais de 1.297 barbearias usam a plataforma e 622 delas já operam com clube ativo (quase metade da base, 47,96%), somando mais de 47 mil assinantes ativos. Não é tendência de nicho: é a forma como as barbearias que querem sair do sufoco estão reorganizando a própria receita.",
+          text: "O clube de assinatura inverte essa lógica. Em vez de torcer para o cliente voltar, você combina com ele que ele volta — e que paga todo dia 5, chova ou faça sol. No BestBarbers, mais de 1.200 barbearias usam a plataforma e os clubes somam mais de 51 mil assinantes ativos. Não é tendência de nicho: é a forma como as barbearias que querem sair do sufoco estão reorganizando a própria receita.",
         },
         {
           type: "highlight",
-          value: "622 de 1.297",
-          label: "barbearias da base BestBarbers já operam com clube de assinatura (47,96% de adoção)",
+          value: "51 mil+",
+          label: "assinantes ativos nos clubes de assinatura da base BestBarbers",
         },
         {
           type: "paragraph",
@@ -89,12 +89,12 @@ export const clubeAssinaturaBarbearia: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "A terceira mudança — a mais subestimada — é no comportamento do cliente. Quem já pagou pelo corte volta mais, porque deixar de usar dá a sensação de desperdiçar o que pagou. E quem volta mais consome mais barba, sobrancelha, produto. O assinante não é só uma receita garantida; é um cliente que frequenta com mais constância e gasta mais por visita. Na base BestBarbers, o ticket médio por cobrança de assinatura é de R$128,14, e a barbearia média mantém o clube ativo por 12,1 meses — uma relação que dura, não uma promoção de um mês.",
+          text: "A terceira mudança — a mais subestimada — é no comportamento do cliente. Quem já pagou pelo corte volta mais, porque deixar de usar dá a sensação de desperdiçar o que pagou. E quem volta mais consome mais barba, sobrancelha, produto. O assinante não é só uma receita garantida; é um cliente que frequenta com mais constância e gasta mais por visita. É uma relação que dura, não uma promoção de um mês — e é por isso que o plano bem desenhado vale mais do que o desconto agressivo.",
         },
         {
           type: "highlight",
-          value: "R$128,14",
-          label: "ticket médio por cobrança de assinatura na base BestBarbers",
+          value: "1.200+",
+          label: "barbearias usam o BestBarbers para cobrar e controlar o clube",
         },
         {
           type: "paragraph",
@@ -215,7 +215,7 @@ export const clubeAssinaturaBarbearia: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "E não pense só em corte na hora de precificar: o ticket médio por cobrança de assinatura na base BestBarbers é de R$128,14, bem acima de um corte avulso. Isso acontece porque os planos que melhor retêm não vendem só corte — vendem conveniência, prioridade e a sensação de pertencer ao clube. Margem boa nasce da combinação de preço certo com valor percebido alto, não de plano barato.",
+          text: "E não pense só em corte na hora de precificar: os planos que sustentam um clube saudável ficam bem acima do preço de um corte avulso. Isso acontece porque os planos que melhor retêm não vendem só corte — vendem conveniência, prioridade e a sensação de pertencer ao clube. Margem boa nasce da combinação de preço certo com valor percebido alto, não de plano barato.",
         },
         {
           type: "link-box",
@@ -476,7 +476,7 @@ export const clubeAssinaturaBarbearia: BlogArticle = {
     {
       question: "Em quanto tempo o clube de assinatura dá resultado?",
       answer:
-        "Com o plano de 30 dias, o clube entra no ar e ganha base inicial dentro do primeiro mês. A maturidade — base estável e ritmo previsível de adesões e renovações — costuma chegar nos meses seguintes, conforme o ritual mensal de retenção faz efeito. Na base BestBarbers, a barbearia média mantém o clube ativo por 12,1 meses.",
+        "Com o plano de 30 dias, o clube entra no ar e ganha base inicial dentro do primeiro mês. A maturidade — base estável e ritmo previsível de adesões e renovações — costuma chegar nos meses seguintes, conforme o ritual mensal de retenção faz efeito.",
     },
   ],
 

@@ -52,12 +52,12 @@ export const onboardingAssinante: BlogArticle = {
         },
         {
           type: "paragraph",
-          text: "Na base de mais de 1.297 barbearias que usam o BestBarbers, 622 já operam clube de assinaturas e somam 47.793 assinantes ativos. A permanência média do clube por barbearia é de 12,1 meses — ou seja, quando o modelo é bem operado, ele segura o cliente por mais de um ano. A diferença entre o assinante que fica 12 meses e o que cancela no mês 2 quase nunca está no plano. Está no que aconteceu — ou deixou de acontecer — logo depois da venda.",
+          text: "Na base de mais de 1.200 barbearias que usam o BestBarbers, os clubes somam mais de 51 mil assinantes ativos. Quando o modelo é bem operado, ele segura o cliente por mais de um ano. A diferença entre o assinante que fica e o que cancela no mês 2 quase nunca está no plano. Está no que aconteceu — ou deixou de acontecer — logo depois da venda.",
         },
         {
           type: "highlight",
-          value: "12,1 meses",
-          label: "permanência média do clube por barbearia na base BestBarbers",
+          value: "51 mil+",
+          label: "assinantes ativos nos clubes da base BestBarbers",
         },
       ],
     },

@@ -101,8 +101,9 @@ export function HeroTabela({ onCtaClick }: HeroTabelaProps) {
             }}
           >
             <BadgeCheck className="w-4 h-4" style={{ color: "#ebad04" }} />
-            Método aplicado na base BestBarbers — {REAIS.assinantesAtivos.toLocaleString("pt-BR")}{" "}
-            assinantes ativos em {REAIS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias
+            Método aplicado na base BestBarbers — mais de{" "}
+            {REAIS.assinantesAtivos.toLocaleString("pt-BR")} assinantes ativos em mais de{" "}
+            {REAIS.barbeariasAtivas.toLocaleString("pt-BR")} barbearias
           </p>
 
           {/* CTA — desce até a tabela */}
