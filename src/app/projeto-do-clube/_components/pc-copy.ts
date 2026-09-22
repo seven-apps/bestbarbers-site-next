@@ -56,13 +56,20 @@ export const PC_ABERTURAS: Record<PcSituacao, PcAbertura> = {
   },
   migracao: {
     identificacao: "Para quem tem clube e está avaliando trocar de sistema.",
-    titulo: "Antes de trocar o sistema do clube, desenhe a transição.",
+    titulo: "Troque o sistema do clube sem perder seus assinantes.",
     apoio:
-      "Vamos olhar regras, vencimentos, comissão e recebimento para avaliar a mudança. Você entende o que pode ser migrado, o que precisa ser refeito e quais cuidados entram na implantação.",
+      "A BestBarbers importa os planos e as datas de vencimento que seus clientes já têm. Você vê o que continua igual, o que muda e o que precisa ser decidido antes da troca.",
     botao: "Avaliar a migração do meu clube.",
     linkSecundario: "Entender como funciona.",
+    // O texto anterior negava três vezes numa frase só o que a casa de fato entrega
+    // ("não prometemos transferir cartões, manter todos os assinantes nem concluir
+    // uma migração"). O André confirmou o processo real em 22/Set/26: «a migração
+    // não perde nenhum cliente; a gente importa a planilha com os vencimentos que
+    // eles já tinham e aí eles passam o cartão para continuar no aplicativo».
+    // O cartão não se transfere sozinho — isso é FATO do processo, e entra como
+    // passo descrito, nunca como ressalva defensiva.
     exemplo:
-      "Trocar o sistema exige mais do que importar uma lista. Precisamos conferir a situação das cobranças, as regras dos planos e as limitações técnicas. Não prometemos transferir cartões, manter todos os assinantes nem concluir uma migração antes dessa avaliação.",
+      "Seus assinantes não recomeçam do zero. A BestBarbers importa os planos e as datas de vencimento que você já tem, e cada cliente autoriza a assinatura uma vez no aplicativo, seguindo no mesmo plano e no mesmo dia de cobrança. A avaliação existe para definir o que muda nas regras do seu clube antes da troca.",
   },
   abertura: {
     identificacao: "Para quem está preparando uma barbearia com equipe.",
@@ -317,7 +324,7 @@ export const PC_FAQ_GERAL: readonly PcFaqItem[] = [
   {
     pergunta: "Posso migrar do meu sistema atual?",
     resposta:
-      "Vamos avaliar as possibilidades e limitações da sua operação. Não prometemos transferência automática de cartões, assinantes ou histórico sem essa análise.",
+      "Sim. A BestBarbers importa os planos e as datas de vencimento dos seus assinantes, e cada cliente autoriza a assinatura uma vez no aplicativo para continuar no mesmo plano. Na avaliação a gente confere as regras do seu clube e o que precisa ser ajustado.",
     // Fora de `migracao` porque lá a página inteira responde isso — repetir no
     // FAQ faz a página parecer genérica justamente para quem ela foi escrita.
     // Fora de `abertura` porque não há sistema anterior de onde migrar.

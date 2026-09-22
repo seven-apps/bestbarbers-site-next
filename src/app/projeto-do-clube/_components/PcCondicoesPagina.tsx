@@ -97,7 +97,7 @@ const PC_TOPICOS: PcTopicoCondicao[] = [
     corpo: [
       "A regra do seu clube é sua: quais planos existem, quanto custam, o que incluem e quantos usos cada um dá por mês. O sistema executa a regra que você cadastrar — ele não decide a sua política de uso.",
       "A assinatura e suas condições precisam ser compreendidas e autorizadas pelo cliente.",
-      "Se já existe um clube rodando em outro sistema, identificamos os acordos importantes e os pontos que precisam de mudança. O plano de passagem tem pendências explícitas, em vez de uma promessa genérica de facilidade — e não prometemos transferência automática de cartões, assinantes ou histórico sem essa análise.",
+      "Se já existe um clube rodando em outro sistema, a BestBarbers importa os planos e as datas de vencimento dos seus assinantes, e cada cliente autoriza a assinatura uma vez no aplicativo para seguir no mesmo plano. A avaliação identifica os acordos que precisam de mudança e as pendências da passagem, em vez de uma promessa genérica de facilidade.",
     ],
   },
   {
