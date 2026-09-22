@@ -14,6 +14,21 @@ export interface UtmParams {
   // parâmetro numérico é editável por quem visita e viaja em link compartilhado; o nome do
   // conjunto é só uma etiqueta, e a régua que ela destrava mora no código.
   publico: string | null;
+  // MESMO conjunto, outra pergunta: `publico` responde "qual célula está falando AGORA?"
+  // (só a URL viva, para o gate de score — ver a razão em `restaurarSnapshot`);
+  // `publicoSessao` responde "de qual conjunto esta pessoa veio nesta sessão?" e SOBREVIVE
+  // ao snapshot. Existe porque a ATRIBUIÇÃO tem o problema oposto ao do gate: quem clica no
+  // ad, navega para dentro do site e só então preenche o formulário chegava ao Ploomes sem
+  // conjunto nenhum (bb_adset_id vazio, `n/d` na Descrição da Campanha), e sem conjunto no
+  // card não há como ler o A/B pelo CRM — só pelo Ads Manager. Campo separado, e não
+  // restauração do `publico`, justamente para o gate continuar cego ao snapshot.
+  //
+  // OPCIONAL por uma razão datada, não por design: `PodcastAttribution.tsx` também MONTA um
+  // UtmParams e grava o snapshot (SS_KEY), e ele é de outro dono — torná-lo obrigatório
+  // quebraria a compilação de lá. Nada se perde: `restaurarSnapshot` lê `publico` do
+  // snapshot como fallback, então o conjunto de quem chega pelo podcast continua chegando
+  // ao card. Vira obrigatório no dia em que aquele arquivo passar a preencher os dois.
+  publicoSessao?: string | null;
   // Atribuição EXPLÍCITA por originId do Ploomes na própria URL (?origin=120003825).
   // Emitida pelo gerador de links do dashboard (OS), que lê as origens do Ploomes AO VIVO
   // — então origem nova no CRM já atribui sem depender de uma entrada no originMap abaixo
@@ -58,6 +73,51 @@ const gclidFromCookie = (): string | null => {
 export interface OriginMapping {
   originId: number | null;
   originDesc: string | null;
+}
+
+/**
+ * Restaura o snapshot de UTM sobre a URL viva. PURA e exportada porque é aqui que moram as
+ * duas exceções do arquivo (`publico` e `publicoSessao`), e exceção que só existe em
+ * comentário volta como regressão silenciosa — com teste, ela volta como teste vermelho.
+ *
+ * Regra geral: o que a URL desta visita traz GANHA; o snapshot só preenche o que falta.
+ */
+export function restaurarSnapshot(vivo: UtmParams, guardado: Partial<UtmParams>): UtmParams {
+  return {
+    utm_source: vivo.utm_source ?? guardado.utm_source ?? null,
+    utm_desc: vivo.utm_desc ?? guardado.utm_desc ?? null,
+    utm_inf: vivo.utm_inf ?? guardado.utm_inf ?? null,
+    utm_medium: vivo.utm_medium ?? guardado.utm_medium ?? null,
+    utm_campaign: vivo.utm_campaign ?? guardado.utm_campaign ?? null,
+    utm_content: vivo.utm_content ?? guardado.utm_content ?? null,
+    utm_term: vivo.utm_term ?? guardado.utm_term ?? null,
+    // `publico` NÃO é restaurado do snapshot — de propósito, e é a única exceção aqui.
+    // O snapshot é first-touch: quem clica no ad da célula com corte e depois no ad do
+    // CONTROLE (mesma arte, mesmo broad — a frequência cruzada entre os dois é esperada,
+    // não hipotética) navegaria com o `publico` da PRIMEIRA célula preso na sessão. O
+    // gate de score seria aplicado à célula errada, suprimindo 'Lead' do controle e
+    // roubando sinal de conversão de quem serve de régua para a experiência.
+    // Sem restore, o gate só age com o conjunto vindo da URL ao vivo: erra para o lado
+    // seguro (Lead cru, como sempre foi) e nunca para o lado que contamina o controle.
+    // (19/Set/26: a linha que dizia "bônus: lê da mesma fonte que buildLeadAttribution" saiu
+    // porque deixou de ser verdade — a atribuição passou a ter o fallback de `publicoSessao`
+    // logo abaixo. O gate continua lendo só a URL viva; era só o bônus que mudou.)
+    publico: vivo.publico,
+    // `publicoSessao` É restaurado — é o campo que existe para isso. Ele não alimenta gate
+    // nenhum: só ATRIBUIÇÃO (bb_adset_id no card), onde saber de qual conjunto a pessoa veio
+    // vale mais do que o risco de first-touch, porque nada é suprimido a partir dele.
+    // O `?? guardado.publico` no fim NÃO é só retrocompatibilidade: cobre dois produtores
+    // vivos de snapshot que gravam só o nome antigo — a sessão de quem já estava navegando
+    // na hora do deploy, e o `PodcastAttribution.tsx` (que monta o snapshot da entrada paga
+    // do /podcast e é de outro dono). Mesmo valor, nome antigo; sem esta linha, o conjunto
+    // desses dois caminhos morreria no meio do A/B sem ninguém perceber.
+    publicoSessao: vivo.publicoSessao ?? guardado.publicoSessao ?? guardado.publico ?? null,
+    origin: vivo.origin ?? guardado.origin ?? null,
+    odesc: vivo.odesc ?? guardado.odesc ?? null,
+    fbclid: vivo.fbclid ?? guardado.fbclid ?? null,
+    fbclidFresh: vivo.fbclidFresh ?? guardado.fbclidFresh ?? null,
+    gclid: vivo.gclid ?? guardado.gclid ?? null,
+  };
 }
 
 /**
@@ -181,6 +241,7 @@ export const useUtmParams = () => {
         utm_content: null,
         utm_term: null,
         publico: null,
+        publicoSessao: null,
         origin: null,
         odesc: null,
         fbclid: null,
@@ -225,6 +286,9 @@ export const useUtmParams = () => {
       utm_content: utmContent,
       utm_term: utmTerm,
       publico: publicoParam,
+      // Nasce igual ao `publico` — a URL viva é a mesma fonte. Os dois só divergem depois,
+      // na restauração do snapshot (ver `restaurarSnapshot`).
+      publicoSessao: publicoParam,
       origin: originParam,
       odesc: odescParam,
       fbclid,
@@ -245,33 +309,9 @@ export const useUtmParams = () => {
       if (hasSignal && !stored) {
         sessionStorage.setItem(SS_KEY, JSON.stringify(params));
       } else if (!hasSignal && stored) {
-        // URL "limpa" + snapshot existente → restaurar
-        const restored = JSON.parse(stored) as Partial<UtmParams>;
-        return {
-          utm_source: params.utm_source ?? restored.utm_source ?? null,
-          utm_desc: params.utm_desc ?? restored.utm_desc ?? null,
-          utm_inf: params.utm_inf ?? restored.utm_inf ?? null,
-          utm_medium: params.utm_medium ?? restored.utm_medium ?? null,
-          utm_campaign: params.utm_campaign ?? restored.utm_campaign ?? null,
-          utm_content: params.utm_content ?? restored.utm_content ?? null,
-          utm_term: params.utm_term ?? restored.utm_term ?? null,
-          // `publico` NÃO é restaurado do snapshot — de propósito, e é a única exceção aqui.
-          // O snapshot é first-touch: quem clica no ad da célula com corte e depois no ad do
-          // CONTROLE (mesma arte, mesmo broad — a frequência cruzada entre os dois é esperada,
-          // não hipotética) navegaria com o `publico` da PRIMEIRA célula preso na sessão. O
-          // gate de score seria aplicado à célula errada, suprimindo 'Lead' do controle e
-          // roubando sinal de conversão de quem serve de régua para a experiência.
-          // Sem restore, o gate só age com o conjunto vindo da URL ao vivo: erra para o lado
-          // seguro (Lead cru, como sempre foi) e nunca para o lado que contamina o controle.
-          // Bônus: passa a ler da MESMA fonte que `buildLeadAttribution`, que também lê a URL
-          // viva — pixel e CRM contam a mesma história sobre qual célula gerou o lead.
-          publico: params.publico,
-          origin: params.origin ?? restored.origin ?? null,
-          odesc: params.odesc ?? restored.odesc ?? null,
-          fbclid: params.fbclid ?? restored.fbclid ?? null,
-          fbclidFresh: params.fbclidFresh ?? restored.fbclidFresh ?? null,
-          gclid: params.gclid ?? restored.gclid ?? null,
-        };
+        // URL "limpa" + snapshot existente → restaurar. A regra (e as duas exceções de
+        // conjunto) mora em `restaurarSnapshot`, pura e testada.
+        return restaurarSnapshot(params, JSON.parse(stored) as Partial<UtmParams>);
       }
     } catch {
       // sessionStorage indisponível (privacy mode etc) — segue sem persistir

@@ -48,3 +48,84 @@ test("macro da Meta não substituída vira ausência: campos vazios, descrição
   assert.equal(r.originDesc, "clube | LAB-AGO26 | n/d | n/d | n/d | n/d | n/d | n/d");
   assert.doesNotMatch(r.originDesc ?? "", /\{\{/);
 });
+
+// ————— CONJUNTO ATÉ O CARD: o fallback de `publicoSessao` (A/B de set/26) —————
+
+test("volta pela segunda vez (URL limpa): o conjunto da sessão preenche bb_adset_id", () => {
+  // Cenário real: clicou no ad, caiu na /clube com url_tags completo, navegou para dentro
+  // do site e só então preencheu o formulário. Até 19/Set/26 esse lead chegava ao Ploomes
+  // sem conjunto nenhum, e lead sem conjunto não entra na leitura do A/B pelo CRM.
+  const r = comUrl("", { publicoSessao: "AMPLO-P1-M2-ADVANTAGE-SINAL-EQUIPE" });
+  assert.equal(r.fields.bb_adset_id, "AMPLO-P1-M2-ADVANTAGE-SINAL-EQUIPE");
+  assert.equal(r.fields.bb_audience_type, "AMPLO-P1-M2-ADVANTAGE-SINAL-EQUIPE");
+});
+
+test("o conjunto herdado da sessão NÃO muda o formato da descrição", () => {
+  // `has8Segs` continua decidido só pela URL viva: sem sinal Wave 4 na URL, a descrição
+  // segue no ramo legacy. O fallback é de ESCRITA de campo, não de formato — os leitores
+  // de tráfego que parseiam split('|') não podem receber um formato novo por causa dele.
+  const r = comUrl("", { publicoSessao: "AMPLO-P1-M2-ADVANTAGE-SINAL-EQUIPE" });
+  assert.equal(r.originDesc, null);
+});
+
+test("URL viva GANHA do conjunto da sessão (last-touch decide o conjunto do card)", () => {
+  const r = comUrl("?fase=MEIO&publico=AMPLO-P1-M2-ADVANTAGE-SINAL-LEAD", {
+    publicoSessao: "AMPLO-P1-M2-ADVANTAGE-SINAL-EQUIPE",
+  });
+  assert.equal(r.fields.bb_adset_id, "AMPLO-P1-M2-ADVANTAGE-SINAL-LEAD");
+  assert.match(r.originDesc ?? "", /\| AMPLO-P1-M2-ADVANTAGE-SINAL-LEAD \|/);
+});
+
+test("macro não substituída no publicoSessao vira ausência, como na URL", () => {
+  assert.equal(comUrl("", { publicoSessao: "{{adset.name}}" }).fields.bb_adset_id, undefined);
+});
+
+/* ───────────────────────────────────────────────────────────────────────────
+   bb_lp_version — a chave que separa as entradas no CRM (19/Set/26).
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/** Mesmo builder, com o pathname escolhido pelo teste. */
+const comRota = (pathname: string, search = "") => {
+  const global = globalThis as unknown as JanelaDeTeste;
+  global.window = { location: { search, pathname } };
+  const r = buildLeadAttribution({
+    utmParams: {} as unknown as Parameters<typeof buildLeadAttribution>[0]["utmParams"],
+    originId: 1,
+    originDesc: null,
+  });
+  delete global.window;
+  return r;
+};
+
+test("projeto-do-clube: cada entrada grava o SLUG COMPLETO, não o primeiro segmento", () => {
+  assert.equal(comRota("/projeto-do-clube").fields.bb_lp_version, "projeto-do-clube");
+  assert.equal(
+    comRota("/projeto-do-clube/clube-manual").fields.bb_lp_version,
+    "projeto-do-clube-clube-manual",
+  );
+  assert.equal(
+    comRota("/projeto-do-clube/migracao").fields.bb_lp_version,
+    "projeto-do-clube-migracao",
+  );
+  assert.equal(
+    comRota("/projeto-do-clube/abertura").fields.bb_lp_version,
+    "projeto-do-clube-abertura",
+  );
+  // O controle é o braço B: se ele colapsasse na entrada geral, o teste não existiria.
+  assert.equal(
+    comRota("/projeto-do-clube/controle").fields.bb_lp_version,
+    "projeto-do-clube-controle",
+  );
+});
+
+test("a exceção NÃO vaza: rota multi-segmento de fora da família segue no 1º segmento", () => {
+  // Série histórica destas rotas não pode mudar de nome sem aviso.
+  assert.equal(comRota("/blog/precificar-clube-assinatura-barbearia").fields.bb_lp_version, "blog");
+  assert.equal(comRota("/sistema-para-barbearia/belo-horizonte").fields.bb_lp_version, "sistema-para-barbearia");
+  assert.equal(comRota("/dezembro-lotado/materiais").fields.bb_lp_version, "dezembro-lotado");
+  assert.equal(comRota("/conteudo/algum-post").fields.bb_lp_version, "conteudo");
+  // E as duas regras antigas continuam de pé.
+  assert.equal(comRota("/v12").fields.bb_lp_version, "V12");
+  assert.equal(comRota("/").fields.bb_lp_version, "home");
+  assert.equal(comRota("/cadeira-cheia").fields.bb_lp_version, "cadeira-cheia");
+});
