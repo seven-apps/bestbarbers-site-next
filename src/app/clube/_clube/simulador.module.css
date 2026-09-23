@@ -1,0 +1,33 @@
+/* Simulador do app com a marca (página app-proprio). Áreas de toque ≥ 44 px. */
+.simulador { display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; }
+.palco { display: flex; justify-content: center; width: 100%; }
+.controles { width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 10px; }
+.rotulo { margin: 0; font-size: 13px; font-weight: 700; color: #dfe3e8; text-align: center; }
+.cores { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.cor {
+  width: 44px; height: 44px; border-radius: 50%; cursor: pointer; padding: 0;
+  border: 3px solid transparent; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22);
+}
+.cor[aria-checked="true"] { border-color: #fff; }
+.corLivre {
+  position: relative; overflow: hidden;
+  background: conic-gradient(#ff5a5a, #ffcf40, #54d27a, #45bbd7, #7a6cff, #ff5ad0, #ff5a5a);
+}
+.corLivre input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.linha { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 4px; }
+.botao {
+  min-height: 44px; padding: 0 18px; border-radius: 999px; cursor: pointer;
+  background: transparent; color: var(--pc-ouro); border: 1.5px solid rgba(255, 175, 2, 0.55);
+  font: inherit; font-size: 13px; font-weight: 800;
+}
+.link { min-height: 44px; padding: 0 8px; background: none; border: 0; color: #aeb4bd; font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; }
+.nota { margin: 0; font-size: 11px; color: rgba(243, 244, 246, 0.5); text-align: center; }
+.alternar {
+  display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px;
+  font-size: 13px; color: #dfe3e8; cursor: pointer;
+}
+.alternar input { width: 20px; height: 20px; accent-color: var(--pc-ouro); }
+.aviso {
+  margin: 0; padding: 10px 12px; border-radius: 12px; font-size: 12px; line-height: 1.4; text-align: center;
+  color: #f3f4f6; background: rgba(255, 175, 2, 0.1); border: 1px solid rgba(255, 175, 2, 0.35);
+}

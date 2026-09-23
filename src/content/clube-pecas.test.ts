@@ -43,7 +43,11 @@ const ESPERADOS = [
 /** Todo texto que chega à tela de cada página, já com os números resolvidos. */
 function textosVisiveis(slug: (typeof SLUGS_CLUBE)[number]): string[] {
   const p = pecaDoClube(slug);
-  return [p.titulo, p.apoio, p.botaoPrincipal, CONTEUDO_CLUBE[slug].anuncio.kicker ?? "", p.exemploTitulo, p.exemploTexto, p.faqPergunta, p.faqResposta];
+  const c = CONTEUDO_CLUBE[slug];
+  return [
+    p.titulo, p.apoio, p.botaoPrincipal, c.anuncio.kicker ?? "", p.exemploTitulo, p.exemploTexto, p.faqPergunta, p.faqResposta,
+    ...c.passos, ...c.antesDepois.flatMap((par) => [par.hoje, par.com]),
+  ];
 }
 
 /** Texto CRU da configuração (antes do token virar número). */
@@ -130,7 +134,9 @@ test("ZERO nome de cliente, parceiro ou concorrente no texto das páginas", () =
 
 test("só afirmação liberada: sem promessa de resultado, sem prazo/tentativas da retentativa", () => {
   const proibido =
-    /100\s?%|zero inadimpl|nunca mais|garantid|sem risco|tentativas|\d+\s?(vezes|dias|horas)|dobr(a|ar)|triplic|ilimitad/i;
+    // «100% automática» é a exceção: decisão do André, 23/Set/26 («não precisa trocar, vamos
+    // manter assim»), igual às artes t2 e m1. Qualquer outro «100%» continua barrado.
+    /100\s?%(?! (de forma )?automática)|zero inadimpl|nunca mais|garantid|sem risco|tentativas|\d+\s?(vezes|dias|horas)|dobr(a|ar)|triplic|ilimitad/i;
   for (const slug of SLUGS_CLUBE) {
     for (const t of textosVisiveis(slug)) assert.doesNotMatch(t, proibido, `${slug}: ${t}`);
   }
@@ -147,18 +153,20 @@ test("PT-BR com acentuação completa (as palavras que mais escapam)", () => {
   }
 });
 
-test("NOINDEX na casca, sem sobrescrita nas páginas; slug fora da lista = 404", () => {
-  const casca = ler("app/clube/[peca]/layout.tsx");
-  assert.match(casca, /robots:\s*\{\s*index:\s*false,\s*follow:\s*false/);
-  const pagina = ler("app/clube/[peca]/page.tsx");
-  assert.doesNotMatch(pagina, /robots\s*:/, "a página não pode redeclarar robots");
-  assert.match(pagina, /export const dynamicParams = false;/);
+test("NOINDEX na casca, sem sobrescrita nas páginas; slug fora da lista = 404 (nos dois braços do A/B)", () => {
+  for (const rota of ["clube/[peca]", "clube-cena/[peca]"]) {
+    const casca = ler(`app/${rota}/layout.tsx`);
+    assert.match(casca, /robots:\s*\{\s*index:\s*false,\s*follow:\s*false/, rota);
+    const pagina = ler(`app/${rota}/page.tsx`);
+    assert.doesNotMatch(pagina, /robots\s*:/, `${rota}: a página não pode redeclarar robots`);
+    assert.match(pagina, /export const dynamicParams = false;/, rota);
+  }
   // E nenhuma delas entra no sitemap.
   assert.doesNotMatch(ler("app/sitemap.ts"), /["'`/]clube\//);
 });
 
 test("originId NUNCA hardcoded: a origem do Ploomes é do useUtmParams, no formulário", () => {
-  for (const rel of ["app/clube/[peca]/page.tsx", "content/clube-pecas.ts", "lib/tracking/portas-clube.ts"]) {
+  for (const rel of ["app/clube/[peca]/page.tsx", "app/clube-cena/[peca]/page.tsx", "app/clube/_clube/ClubePecaPagina.tsx", "app/clube/_clube/Ilhas.tsx", "content/clube-pecas.ts", "lib/tracking/portas-clube.ts"]) {
     const codigo = ler(rel);
     assert.doesNotMatch(codigo, /originId\s*[:=]|OriginId|[?&]origin=|\b4021\d{4}\b|\b12000\d{4}\b/, rel);
   }
@@ -199,7 +207,7 @@ test("ESTÁTICOS: selo e botão do herói são o kicker e o CTA literais da arte
       assert.equal(cfg.identificacao, anuncio.kicker, slug);
       assert.equal(cfg.peca.botaoPrincipal, anuncio.cta, slug);
       // Selo e botão também passam pelas travas de texto (acento, nomes, promessa).
-      assert.doesNotMatch(`${anuncio.kicker} ${anuncio.cta}`, /\b(nao|voce|cobranca|ja)\b|100\s?%|garantid/i, slug);
+      assert.doesNotMatch(`${anuncio.kicker} ${anuncio.cta}`, /\b(nao|voce|cobranca|ja)\b|garantid/i, slug);
     } else {
       assert.ok(cfg.peca.botaoPrincipal.trim().length > 5, `${slug}: vídeo sem botão principal`);
     }
@@ -212,4 +220,37 @@ test("DESTAQUE dourado: todo trecho existe, literal, no título (senão some em 
       assert.ok(pecaDoClube(slug).titulo.includes(trecho), `${slug}: «${trecho}» não está no título`);
     }
   }
+});
+
+test("PROVA: toda página tem tela animada existente, 3 passos, 3 pares hoje × com e atmosfera", () => {
+  const telas = ler("app/clube/_clube/telas.tsx");
+  for (const slug of SLUGS_CLUBE) {
+    const c = CONTEUDO_CLUBE[slug];
+    assert.ok(new RegExp(`["\\s]${c.telaProva}"?:\\s*\\(\\)\\s*=>`).test(telas), `${slug}: tela «${c.telaProva}» não existe em telas.tsx`);
+    assert.equal(c.passos.length, 3, slug);
+    assert.equal(c.antesDepois.length, 3, slug);
+    assert.match(c.atmosfera, /^#[0-9a-f]{6}$/i, slug);
+  }
+});
+
+test("A/B do herói: sorteio, cookie, rota e cenas exportadas", async () => {
+  const ab = (await import("../lib/ab-clube.ts")) as typeof import("../lib/ab-clube");
+  assert.equal(ab.bracoDoVisitante("cena", 0.1), "cena", "cookie válido vence o sorteio");
+  assert.equal(ab.bracoDoVisitante("lixo", 0.1), "base");
+  assert.equal(ab.bracoDoVisitante(undefined, 0.9), "cena");
+  assert.equal(ab.rotaDoBraco("retentativa", "cena"), "/clube-cena/retentativa");
+  assert.equal(ab.rotaDoBraco("retentativa", "base"), null);
+  assert.equal(ab.rotaDoBraco("parceiro-guapo", "cena"), null, "página de vídeo não tem cena: fica em base");
+  for (const slug of ab.SLUGS_COM_CENA) {
+    assert.ok(SLUGS_CLUBE.includes(slug), slug);
+    assert.equal(PORTAS_CLUBE[slug].formato, "estatico", `${slug}: só estático tem a foto da arte`);
+    for (const f of ["faixa.avif", "faixa.webp", "retrato.avif", "retrato.webp"]) {
+      assert.ok(existsSync(join(RAIZ_SRC, "..", "public", "images", "clube", "cena", `${slug}-${f}`)), `${slug}-${f}`);
+    }
+  }
+  // O middleware usa a regra pura e faz REWRITE, nunca redirect (a URL é o predicado da Meta).
+  const mw = ler("middleware.ts");
+  assert.match(mw, /NextResponse\.rewrite/);
+  assert.doesNotMatch(mw, /NextResponse\.redirect/);
+  assert.match(mw, /matcher:\s*"\/clube\/:peca"/);
 });

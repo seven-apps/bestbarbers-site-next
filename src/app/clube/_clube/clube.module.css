@@ -1,0 +1,165 @@
+/* /clube/[peca] — página curta por anúncio. Tokens da família (`pc-tokens.css`) sob `.pc`. */
+
+.pagina {
+  /* Ouro é a ÚNICA cor de ação nestas páginas: o verde fica para o «Pago» das telas, que é o
+     que a pessoa viu no anúncio. Override por token, só aqui — /projeto-do-clube não muda. */
+  --pc-acao: #ffaf02;
+  --pc-acao-hover: #ffc53d;
+  --pc-acao-lavado: rgba(255, 175, 2, 0.15);
+  --pc-brilho-acao: 0 10px 34px rgba(255, 175, 2, 0.32);
+  --pc-acao-texto: #14171c; /* texto escuro sobre o ouro (contraste AA) */
+  background: var(--pc-carvao);
+  min-height: 100vh;
+}
+.pagina :global(.pc-botao--acao:hover:not(:disabled)) { box-shadow: 0 14px 40px rgba(255, 175, 2, 0.42); }
+
+.ouro { color: var(--pc-ouro); }
+
+.cabecalho {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  padding-inline: var(--pc-secao-x);
+  max-width: calc(var(--pc-max) + 2 * var(--pc-secao-x));
+  margin-inline: auto;
+}
+
+/* ─────────────── herói ─────────────── */
+.heroi {
+  position: relative;
+  padding: 8px var(--pc-secao-x) 40px;
+  max-width: calc(var(--pc-max) + 2 * var(--pc-secao-x));
+  margin-inline: auto;
+}
+.heroi::before {
+  /* A luz da cena da arte, a ~12%, atrás do texto. */
+  content: "";
+  position: absolute;
+  inset: -56px 0 0;
+  background: radial-gradient(90% 60% at 30% 0%, color-mix(in srgb, var(--atmosfera) 55%, transparent), transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+.heroiTexto { max-width: 640px; }
+
+.cena { margin: 0 0 18px; }
+.cena picture, .cena img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 20px;
+}
+.cena img { box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.8); }
+.cena figcaption, .legenda {
+  font-size: 11px;
+  color: rgba(243, 244, 246, 0.5);
+  margin-top: 6px;
+  text-align: right;
+}
+
+.selo {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pc-ouro);
+  border: 1.5px solid rgba(255, 175, 2, 0.55);
+  border-radius: 999px;
+  padding: 6px 14px;
+  margin: 0 0 14px;
+}
+.manchete {
+  font-weight: 800;
+  font-size: clamp(28px, 4.2vw + 14px, 50px);
+  line-height: 1.12;
+  margin: 0 0 20px;
+  text-wrap: balance;
+}
+.apoio {
+  margin: 18px 0 0;
+  color: #c4cad3;
+  font-size: 17px;
+  line-height: 1.5;
+}
+.confianca {
+  margin: 18px 0 0;
+  font-size: 13px;
+  color: #c4cad3;
+}
+.confianca b { color: #fff; font-weight: 800; }
+.preco { margin: 6px 0 0; font-size: 13px; color: rgba(243, 244, 246, 0.55); }
+.preco a { color: var(--pc-ouro); text-decoration: underline; text-underline-offset: 3px; }
+/* Link de texto com área de toque de 44 px sem mexer no desenho da linha. */
+.linkToque { display: inline-block; padding: 12px 6px; margin: -12px -6px; }
+/* Botões com texto longo: quebra equilibrada (a seta já vai colada na última palavra). */
+.heroiTexto :global(.pc-botao), .provaCta { text-wrap: balance; text-align: center; line-height: 1.35; }
+
+@media (min-width: 900px) {
+  .heroiCena {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 56px;
+    align-items: center;
+    padding-top: 24px;
+  }
+  .heroiCena .cena { order: 2; margin: 0; }
+  .heroiCena .cena picture, .heroiCena .cena img { aspect-ratio: 4 / 5; }
+  .heroi:not(.heroiCena) .heroiTexto { padding-block: 40px 24px; }
+  .heroiTexto :global(.pc-botao--bloco) { width: auto; display: inline-flex; }
+}
+
+/* ─────────────── prova ─────────────── */
+.prova { padding-block: 48px; }
+.provaGrade { display: grid; gap: 28px; }
+.provaTela { display: flex; flex-direction: column; align-items: center; }
+.provaTitulo { margin: 8px 0 18px; }
+.passos { list-style: none; margin: 0 0 22px; padding: 0; display: grid; gap: 12px; }
+.passos li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #dfe3e8;
+}
+.passos li span {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 13px;
+  color: #14171c;
+  background: var(--pc-ouro);
+}
+.provaCta { margin-top: 4px; }
+@media (min-width: 900px) {
+  .provaGrade { grid-template-columns: 340px 1fr; gap: 64px; align-items: center; }
+  .provaCta { width: auto; display: inline-flex; }
+}
+
+/* ─────────────── antes × depois ─────────────── */
+.antesDepois { padding-block: 48px; }
+.pares { display: grid; gap: 12px; margin-top: 20px; }
+.par { display: grid; grid-template-columns: 1fr 1fr; border-radius: 16px; overflow: hidden; border: 1px solid var(--pc-linha-carvao); }
+.par p { margin: 0; padding: 14px; font-size: 14px; line-height: 1.4; }
+.par small { display: block; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 800; margin-bottom: 6px; }
+.hoje { background: rgba(255, 255, 255, 0.03); color: #aeb4bd; }
+.hoje small { color: #8a9099; }
+.com { background: rgba(255, 175, 2, 0.08); color: #fff; font-weight: 600; }
+.com small { color: var(--pc-ouro); }
+
+/* Links de texto dos blocos da família (condições no FAQ, privacidade no formulário): área de
+   toque de ~44 px sem mudar o desenho — medidos com 14–20 px de altura na revisão de 23/Set. */
+.pagina :global(#pc-perguntas) a:not(:global(.pc-botao)),
+.pagina :global(#pc-formulario) a:not(:global(.pc-botao)) {
+  display: inline-block;
+  padding: 12px 4px;
+  margin: -12px -4px;
+}

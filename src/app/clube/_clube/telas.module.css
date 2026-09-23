@@ -1,0 +1,202 @@
+/* Telas do sistema (HTML) das páginas /clube/[peca] — visual do app real, dados fictícios. */
+
+.aparelho {
+  --t-ouro: #f5b72a;
+  --t-ok: #2fbf71;
+  --t-alerta: #ff7a1a; /* laranja-avermelhado: não pode ser lido como o ouro da marca */
+  --t-erro: #e5484d;
+  --t-info: #5b9bf5;
+  --t-fundo: #1c1d21;
+  --t-cartao: #26282d;
+  --t-apoio: #9aa0ac;
+  --marca: var(--marca-app, var(--t-ouro));
+  width: min(300px, 100%);
+  /* 9:16 e não o 9:19,5 de um celular real: as telas têm 4 a 6 linhas, e o aparelho alto deixava
+     um vazio escuro embaixo — parecia tela inacabada (revisão mobile de 23/Set). */
+  aspect-ratio: 9 / 16;
+  border-radius: 40px;
+  padding: 9px;
+  background: linear-gradient(160deg, #2a2c31, #0a0b0d 40%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 30px 60px -20px rgba(0, 0, 0, 0.7),
+    0 0 80px -30px var(--atmosfera, rgba(255, 175, 2, 0.35));
+  flex: none;
+  position: relative;
+}
+/* Dynamic Island, como na moldura do mockup do whitelabel. */
+.ilha {
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%); z-index: 2;
+  width: 84px; height: 25px; border-radius: 14px; background: #000;
+}
+
+.tela {
+  height: 100%;
+  border-radius: 32px;
+  overflow: hidden;
+  background: var(--t-fundo);
+  color: #edeef0;
+  font-family: var(--font-montserrat), Montserrat, system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.status { display: flex; justify-content: space-between; padding: 12px 22px 4px; font-weight: 700; font-size: 12px; }
+.cab { display: flex; align-items: center; gap: 10px; padding: 10px 16px 8px; }
+.cab b { display: block; font-size: 16px; font-weight: 800; }
+.cab small { display: block; font-size: 11px; color: var(--t-apoio); font-weight: 600; margin-top: 2px; }
+.icone {
+  width: 34px; height: 34px; border-radius: 10px; flex: none;
+  display: grid; place-items: center; font-weight: 900; font-size: 13px;
+  background: #0e0f12; color: var(--t-ouro); border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.secao { padding: 10px 16px 6px; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--t-apoio); font-weight: 700; }
+.corpo { display: flex; flex-direction: column; gap: 8px; padding: 6px 14px; }
+.lista { display: flex; flex-direction: column; gap: 7px; padding: 4px 12px; }
+.linha { display: flex; align-items: center; gap: 8px; background: var(--t-cartao); border-radius: 14px; padding: 10px 12px; }
+.nome { flex: 1; min-width: 0; }
+.nome b { display: block; font-size: 13.5px; font-weight: 800; color: #fff; }
+.nome span { display: block; font-size: 11px; color: var(--t-apoio); font-weight: 600; margin-top: 1px; }
+
+.pilula {
+  display: inline-flex; align-items: center; gap: 5px; white-space: nowrap;
+  font-weight: 800; font-size: 11px; border: 1.5px solid; border-radius: 999px; padding: 3px 9px;
+}
+.pilula i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.p_ok { color: var(--t-ok); background: rgba(47, 191, 113, 0.13); }
+.p_alerta { color: var(--t-alerta); background: rgba(255, 122, 26, 0.13); }
+.p_erro { color: var(--t-erro); background: rgba(229, 72, 77, 0.13); }
+.p_info { color: var(--t-info); background: rgba(91, 155, 245, 0.13); }
+.p_marca { color: var(--t-ouro); background: rgba(245, 183, 42, 0.13); }
+
+/* Troca: o SSR mostra o «depois»; o «antes» fica por cima, invisível, até a animação. */
+.troca { display: inline-grid; }
+.troca > * { grid-area: 1 / 1; justify-self: end; }
+.troca > [data-antes] { opacity: 0; }
+
+.rodapeTela {
+  margin: auto 12px 14px; padding: 10px 12px; border-radius: 12px; font-size: 11px; font-weight: 700;
+  color: var(--t-ouro); background: rgba(245, 183, 42, 0.1); border: 1px solid rgba(245, 183, 42, 0.3); text-align: center;
+}
+.ouro { color: var(--t-ouro); }
+.verde { color: var(--t-ok); }
+.laranja { color: var(--t-alerta); }
+.azul { color: var(--t-info); }
+
+/* plano-regra */
+.campo { background: #151619; border: 1px solid #30333a; border-radius: 10px; padding: 7px 10px; font-size: 13px; font-weight: 600; }
+.campo small { display: block; font-size: 10px; color: var(--t-apoio); margin-bottom: 2px; }
+.duas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opcao { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--t-cartao); border-radius: 12px; padding: 9px 11px; font-weight: 700; font-size: 12.5px; }
+.opcao small { display: block; font-weight: 600; font-size: 10.5px; color: var(--t-apoio); }
+.interruptor { width: 38px; height: 22px; border-radius: 999px; background: var(--t-ouro); position: relative; flex: none; }
+.interruptor i { position: absolute; right: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; }
+.dias { display: flex; gap: 5px; }
+.dias span { flex: 1; height: 32px; border-radius: 8px; display: grid; place-items: center; font-weight: 700; border: 1.5px solid #454850; color: #cfd2d8; }
+.dias .diaOn { border-color: var(--t-ouro); color: var(--t-ouro); background: rgba(245, 183, 42, 0.12); }
+.aviso { font-size: 11.5px; font-weight: 700; color: var(--t-apoio); text-align: center; padding: 6px; border: 1px dashed #454850; border-radius: 10px; }
+
+/* calendário */
+.mes { display: flex; justify-content: space-between; align-items: center; padding: 4px 22px 8px; color: var(--t-ouro); font-size: 15px; }
+.grade { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px 2px; text-align: center; padding: 0 12px; }
+.grade em { font-style: normal; font-size: 10px; color: var(--t-apoio); font-weight: 700; padding-bottom: 2px; }
+.grade span { height: 26px; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #cfd2d8; }
+.grade .dia1 { width: 26px; margin: auto; border-radius: 50%; background: var(--t-ouro); color: #171206; font-weight: 900; box-shadow: 0 0 18px rgba(245, 183, 42, 0.6); }
+.cartaoOuro { display: flex; gap: 10px; align-items: center; margin: 10px 12px 0; padding: 10px; border-radius: 14px; border: 1.5px solid var(--t-ouro); background: rgba(245, 183, 42, 0.1); }
+.cartaoOuro b { display: block; font-size: 13px; font-weight: 800; }
+.cartaoOuro small { font-size: 11px; color: #c9ccd2; }
+.grande { width: 38px; height: 38px; border-radius: 10px; background: var(--t-ouro); color: #171206; font-weight: 900; font-size: 20px; display: grid; place-items: center; flex: none; }
+
+/* trilha / jornada */
+.trilha, .jornada { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 22px; padding: 10px 18px 22px; }
+.trilha > div, .jornada > div { display: flex; align-items: center; gap: 12px; }
+.trilha p b, .jornada p b { display: block; font-size: 14px; font-weight: 800; color: #fff; }
+.trilha p small, .jornada p small { font-size: 11.5px; color: #aeb2ba; font-weight: 600; }
+.marco { width: 38px; height: 38px; flex: none; border-radius: 50%; border: 2.5px solid; display: grid; place-items: center; font-size: 16px; font-weight: 900; background: var(--t-fundo); }
+.m_erro { color: var(--t-erro); border-color: var(--t-erro); }
+.m_alerta { color: var(--t-alerta); border-color: var(--t-alerta); }
+.m_ok { color: var(--t-ok); border-color: var(--t-ok); font-size: 12px; }
+.m_marca { background: var(--t-ouro); border-color: var(--t-ouro); color: #171206; }
+
+/* comissão */
+.cabTabela { display: grid; grid-template-columns: 1fr 64px 76px; gap: 4px; padding: 8px 24px 2px; font-size: 9.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--t-apoio); font-weight: 700; }
+.tabela { display: grid; grid-template-columns: 1fr 64px 76px; grid-template-rows: auto auto; gap: 4px 4px; align-items: center; background: var(--t-cartao); border-radius: 14px; padding: 10px 12px; font-size: 12px; font-weight: 700; }
+.tabela > .pilula { grid-column: 1 / -1; justify-self: start; }
+
+/* app do cliente com a marca (fiel ao AppMockup do whitelabel; tamanhos ×1,25 para legibilidade) */
+/* Sem declarar as variáveis --app-(cor), --app-foto e --app-logo aqui (ver o comentário de `Tela` em telas.tsx):
+   os padrões ficam no fallback de cada var(), iguais a `CORES_PADRAO_APP`. */
+.appCliente {
+  position: relative; height: 100%; background: var(--app-background, #000000); color: var(--app-white, #EBE9E1);
+}
+.appFoto {
+  position: absolute; inset: 0; background: var(--app-foto, url("/images/clube/app/fundo-home.webp")) center top / 100% auto no-repeat;
+}
+.appFoto::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, #00000000 0%, #000000cc 30%, var(--app-background, #000000) 50%);
+}
+.appConteudo { position: relative; height: 100%; display: flex; flex-direction: column; }
+.appStatus { display: flex; justify-content: space-between; align-items: center; padding: 13px 24px 4px; font-size: 12px; font-weight: 700; }
+.appStatus i { width: 18px; height: 10px; border-radius: 2px; background: var(--app-white, #EBE9E1); opacity: 0.8; }
+.appTopo { display: flex; flex-direction: column; align-items: center; padding: 10px 12px 12px; }
+.appLogo {
+  width: 58px; height: 58px; border-radius: 12px; margin-bottom: 8px; display: grid; place-items: center;
+  background: var(--app-primary, #45BBD7); color: var(--app-secondary, #111111); font-size: 24px;
+}
+:global([data-com-logo]) .appLogo {
+  width: 100px; height: 64px; border-radius: 0;
+  background: var(--app-logo) center / contain no-repeat;
+}
+:global([data-com-logo]) .appLogo b { display: none; }
+.appTitulo { margin: 0; font-size: 19px; font-weight: 800; text-align: center; }
+.appTitulo span { color: var(--app-primary, #45BBD7); }
+.appSub { margin: 4px 0 0; font-size: 11.5px; opacity: 0.55; }
+.appCards { display: flex; flex-direction: column; gap: 8px; padding: 0 14px 12px; }
+.appCard {
+  display: flex; align-items: center; gap: 10px; padding: 13px 12px; border-radius: 12px;
+  background: var(--app-component, #1F1F1F); font-size: 13px; font-weight: 600;
+}
+.appCard svg { color: var(--app-primary, #45BBD7); flex: none; }
+.appCard span { flex: 1; }
+.appAgendar {
+  margin-top: 2px; padding: 13px; border-radius: 12px; text-align: center; font-size: 15px; font-weight: 800;
+  background: var(--app-primary, #45BBD7); color: var(--app-secondary, #111111);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--app-primary, #45BBD7) 30%, transparent);
+}
+.appNav {
+  margin-top: auto; display: flex; justify-content: space-around; flex-wrap: wrap; padding: 9px 8px 8px;
+  background: var(--app-backgroundBottomBar, #1F1F1F); font-size: 10px; font-weight: 600;
+}
+.appNav span { display: flex; flex-direction: column; align-items: center; gap: 3px; opacity: 0.4; position: relative; }
+.appNav .appNavAtivo { opacity: 1; color: var(--app-primary, #45BBD7); }
+.appNav .appNavAtivo::after { content: ""; position: absolute; bottom: -6px; width: 26px; height: 2px; border-radius: 1px; background: var(--app-primary, #45BBD7); }
+.appHome { flex-basis: 100%; height: 0; }
+.appHome::after { content: ""; display: block; width: 110px; height: 4px; margin: 12px auto 0; border-radius: 2px; background: var(--app-white, #EBE9E1); opacity: 0.2; }
+
+/* resumo */
+.chips { display: flex; gap: 6px; padding: 2px 14px 8px; }
+.chips > span, .chipOff, .chipOn { font-size: 11px; font-weight: 700; padding: 5px 11px; border-radius: 999px; background: var(--t-cartao); color: #c9ccd2; }
+.chipOn { background: var(--t-ouro) !important; color: #171206 !important; }
+.lista [data-anim="apaga"] { opacity: 0.35; }
+
+/* dois sistemas */
+.agendaLinha { display: flex; align-items: center; gap: 9px; background: var(--t-cartao); border-radius: 14px; padding: 10px 11px; }
+.agendaLinha > b { font-size: 13px; width: 40px; }
+.colDir { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.colDir small { font-size: 9.5px; color: var(--t-apoio); font-weight: 700; }
+
+/* agenda com bloqueio (app do cliente) */
+.horarios { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; padding: 4px 14px; }
+.horarios span { text-align: center; padding: 9px 0; border-radius: 10px; background: var(--t-cartao); font-weight: 700; font-size: 12.5px; opacity: 0.35; }
+.bloqueio { display: flex; gap: 11px; align-items: center; margin: 14px 12px; padding: 12px; border-radius: 14px; border: 1.5px solid var(--t-erro); background: rgba(229, 72, 77, 0.1); }
+.bloqueio b { display: block; font-size: 13.5px; color: #fff; }
+.bloqueio small { font-size: 11px; color: #d8d9dc; font-weight: 600; }
+
+/* previsão */
+.caixas { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 4px 12px 8px; }
+.caixas > div { display: flex; justify-content: space-between; align-items: baseline; background: var(--t-cartao); border-radius: 12px; padding: 9px 12px; }
+.caixas b { font-size: 16px; font-weight: 800; }
+.caixas small { font-size: 11px; color: var(--t-apoio); font-weight: 700; }

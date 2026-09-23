@@ -104,6 +104,19 @@ export interface PcFormularioProps {
   situacao?: PcSituacao;
   /** `curto` só muda a densidade do cartão; campos e validação são idênticos. */
   variante?: PcFormVariante;
+  /**
+   * Esconde da TELA o título do passo 1 («Como está seu clube hoje?») — ele continua para leitor
+   * de tela e como alvo do foco na troca de passo. Usado em `/clube/[peca]`, onde o título da
+   * seção já diz o que o passo pede.
+   */
+  ocultarTituloPasso1?: boolean;
+  /**
+   * Espaçamentos enxutos (seção, cartão, barra de passo, perguntas, botão). Os campos mantêm
+   * 44 px de área de toque. Usado em `/clube/[peca]`, a pedido do André (23/Set).
+   */
+  compacto?: boolean;
+  /** Rótulo do botão do passo 1. Ausente = o padrão do `PcPassoContexto` («Continuar para pedir contato»). */
+  rotuloContinuar?: string;
   /** Só o bloco principal usa `pc-formulario`. Uma variante no topo pede outro id. */
   id?: string;
   className?: string;
@@ -116,6 +129,9 @@ export function PcFormulario({
   clubStatusInicial,
   situacao = "geral",
   variante = "padrao",
+  ocultarTituloPasso1 = false,
+  compacto = false,
+  rotuloContinuar,
   id = PC_FORMULARIO_ID,
   className = "",
 }: PcFormularioProps) {
@@ -325,7 +341,7 @@ export function PcFormulario({
   return (
     <section
       id={id}
-      className={`pc-papel ${estilos.secao} ${className}`}
+      className={`pc-papel ${estilos.secao} ${compacto ? estilos.compacto : ""} ${className}`}
       aria-labelledby={tituloSecaoId}
     >
       <div className={`${estilos.cartao} ${curto ? estilos.cartaoCurto : ""}`}>
@@ -335,7 +351,7 @@ export function PcFormulario({
           <h2 id={tituloSecaoId} className={estilos.titulo}>
             {tituloSecao}
           </h2>
-          <p className={estilos.apoio}>{apoioSecao}</p>
+          {apoioSecao ? <p className={estilos.apoio}>{apoioSecao}</p> : null}
 
           {submitted ? (
             <PcSucesso />
@@ -373,6 +389,8 @@ export function PcFormulario({
                     aoContinuar={continuar}
                     tituloId={tituloPassoId}
                     titulo={PC_ROTULO_CONTEXTO[situacao]}
+                    tituloOculto={ocultarTituloPasso1}
+                    {...(rotuloContinuar ? { rotuloBotao: rotuloContinuar } : {})}
                     erroGeral={submitError}
                     animar={animar}
                   />

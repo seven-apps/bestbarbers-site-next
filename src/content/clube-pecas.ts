@@ -52,6 +52,20 @@ import type { Porta } from "../lib/tracking/porta.ts";
 import { PORTAS_CLUBE, type SlugClube } from "../lib/tracking/portas-clube.ts";
 import { comNumerosOficiais } from "../lib/numeros-oficiais.ts";
 
+/** Ids das telas animadas de `src/app/clube/_clube/telas.tsx` (o teste confere que existem). */
+export type TelaClubeId =
+  | "plano-regra"
+  | "cobrancas-hoje"
+  | "calendario-dia1"
+  | "trilha-recusa"
+  | "comissao"
+  | "app-marca"
+  | "resumo-assinantes"
+  | "dois-sistemas"
+  | "agenda-bloqueio"
+  | "previsao-mes"
+  | "jornada-assinante";
+
 export interface ConteudoPecaClube {
   /** Nome curto do conceito, para quem lê o código e o Events Manager. */
   conceito: string;
@@ -82,6 +96,17 @@ export interface ConteudoPecaClube {
    * dados fictícios — a captura real traz cliente, faturamento e taxas.
    */
   tela?: PcArtefatoId;
+  /**
+   * Cor de atmosfera do herói: a média da cena da arte (`exportar-web.ts` imprime), usada a
+   * ~10% atrás do texto. A marca fica fixa; só a luz de fundo muda por página.
+   */
+  atmosfera: string;
+  /** A tela do sistema, em HTML animado, que prova a promessa (`_clube/telas.tsx`). */
+  telaProva: TelaClubeId;
+  /** Os 3 passos do mecanismo, empilhados ao lado da tela. Uma frase cada. */
+  passos: readonly [string, string, string];
+  /** Três pares «hoje × com a BestBarbers», escolhidos para ESTA promessa. */
+  antesDepois: readonly { hoje: string; com: string }[];
   /** Pendência antes de o anúncio apontar para cá. Ausente = pronta. */
   conferir?: string;
 }
@@ -93,6 +118,18 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
   // ─────────────────────────────── TOPO ───────────────────────────────
   "plano-com-regra": {
     conceito: "Medo do ilimitado",
+    atmosfera: "#3f2910",
+    telaProva: "plano-regra",
+    passos: [
+      "Você cadastra o plano com os dias em que ele vale — de segunda a quarta, por exemplo.",
+      "Liga o limite de utilização: quantas vezes o assinante usa no mês.",
+      "O assinante agenda pelo app dentro dessa regra; quem atrasou fica bloqueado.",
+    ],
+    antesDepois: [
+      { hoje: "Plano sem regra: o assinante corta toda semana e ocupa a sexta.", com: "Plano de segunda a quarta: a sexta fica livre para o avulso." },
+      { hoje: "Você explica a regra no balcão, cliente por cliente.", com: "A regra está no plano, e o app só agenda dentro dela." },
+      { hoje: "Quem atrasou continua marcando horário.", com: "Quem atrasou fica bloqueado para agendar." },
+    ],
     tela: "clube-plano-regra",
     anuncio: {
       fonte: "06 · t1 · COPY 3 do André (MEDO DO ILIMITADO)",
@@ -120,6 +157,18 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
 
   "cobranca-automatica": {
     conceito: "Cobrança e inadimplência",
+    atmosfera: "#322210",
+    telaProva: "cobrancas-hoje",
+    passos: [
+      "Na adesão, o assinante cadastra o cartão uma vez.",
+      "Todo mês, a mensalidade é cobrada no cartão, sozinha.",
+      "Você vê na hora quem está em dia; quem atrasou fica bloqueado.",
+    ],
+    antesDepois: [
+      { hoje: "Mensagem de cobrança para cada assinante, todo mês.", com: "Cobrança no cartão, sem mensagem." },
+      { hoje: "Comprovante de Pix para conferir um por um.", com: "A lista mostra quem pagou." },
+      { hoje: "Barrar no balcão quem não pagou.", com: "Quem atrasou fica bloqueado no app." },
+    ],
     tela: "clube-cobranca",
     anuncio: {
       fonte: "06 · t2 · Anúncio 5 do André (Cobrança e Inadimplência)",
@@ -130,7 +179,8 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
     },
     titulo: "Você não precisa mais se preocupar em cobrar a assinatura do seu cliente.",
     apoio:
-      "A BestBarbers cuida das cobranças das assinaturas da sua barbearia para você, de forma automática: a mensalidade é cobrada no cartão todo mês, quem está em dia agenda pelo app e quem atrasou fica bloqueado.",
+      // «100%» como na arte t2 — decisão do André, 23/Set/26 («não precisa trocar, vamos manter assim»).
+      "A BestBarbers cuida das cobranças das assinaturas da sua barbearia para você, tudo 100% de forma automática.",
     prova: {
       titulo: "O cliente passa o cartão uma vez",
       texto:
@@ -145,6 +195,18 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
 
   "mes-que-comeca-pago": {
     conceito: "O dia 1",
+    atmosfera: "#182421",
+    telaProva: "calendario-dia1",
+    passos: [
+      "Cada assinante tem a data de cobrança dele, definida na adesão.",
+      "Nessa data, a mensalidade é cobrada no cartão, sem mensagem.",
+      "Você abre o mês vendo no extrato quem já pagou.",
+    ],
+    antesDepois: [
+      { hoje: "Virou o mês: começar a cobrar um por um.", com: "Virou o mês: as mensalidades cobradas no cartão." },
+      { hoje: "Assinatura que depende de você lembrar.", com: "Recorrência que acontece na data." },
+      { hoje: "Descobrir no fechamento quem não pagou.", com: "Ver no extrato quem já pagou." },
+    ],
     tela: "clube-cobranca",
     anuncio: {
       fonte: "06 · t3 · O dia 1 (reescrita 23/Set, arte l8-cena-r2)",
@@ -172,6 +234,18 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
 
   retentativa: {
     conceito: "O cartão que recusou",
+    atmosfera: "#4a371e",
+    telaProva: "trilha-recusa",
+    passos: [
+      "O cartão do assinante recusa: cancelado, sem limite, banco fora do ar.",
+      "O sistema tenta a cobrança de novo, sozinho.",
+      "Enquanto não paga, o assinante fica bloqueado para agendar pelo app.",
+    ],
+    antesDepois: [
+      { hoje: "Você cobra de novo — quando lembra.", com: "O sistema tenta de novo, sozinho." },
+      { hoje: "O cliente com cartão recusado continua cortando.", com: "Quem está em atraso fica bloqueado para agendar." },
+      { hoje: "A mensalidade parada no cartão some da conta.", com: "A assinatura aparece como vencida no painel." },
+    ],
     tela: "clube-assinatura-vencida",
     anuncio: {
       fonte: "06 · t4 · O cartão que recusou",
@@ -197,6 +271,18 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
 
   "parceiro-astro": {
     conceito: "Vídeo de parceiro · a cobrança que era chata",
+    atmosfera: "#322210",
+    telaProva: "comissao",
+    passos: [
+      "A mensalidade é cobrada no cartão todo mês, sozinha.",
+      "Quem está em dia agenda pelo app; quem atrasou fica bloqueado.",
+      "A comissão das assinaturas sai separada por profissional.",
+    ],
+    antesDepois: [
+      { hoje: "Ficar cobrando cliente todo mês.", com: "Cobrança automática no cartão." },
+      { hoje: "Assinatura como mais uma coisa para controlar.", com: "Assinatura como ferramenta de gestão." },
+      { hoje: "Comissão do assinante calculada na mão.", com: "Comissão da assinatura calculada por profissional." },
+    ],
     tela: "clube-cobranca",
     anuncio: {
       fonte: "transcricoes/du-duastro-assinatura-divisor-de-aguas-abr26.txt",
@@ -221,6 +307,18 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
 
   "app-proprio": {
     conceito: "Vídeo de parceiro · app com a marca da barbearia",
+    atmosfera: "#1a1d24",
+    telaProva: "app-marca",
+    passos: [
+      "O app sai com a marca, a logo e as cores da sua barbearia.",
+      "O cliente escolhe o profissional e o serviço e agenda sozinho.",
+      "Pelo mesmo app, ele assina o clube e cadastra o cartão.",
+    ],
+    antesDepois: [
+      { hoje: "O cliente agenda por mensagem.", com: "O cliente agenda pelo app da sua barbearia." },
+      { hoje: "Sua marca some depois que ele sai da cadeira.", com: "Sua marca fica no celular dele." },
+      { hoje: "A assinatura é vendida no balcão.", com: "A assinatura é feita no app, com o cartão." },
+    ],
     anuncio: {
       fonte: "transcricoes/rafael-guapo.txt",
       frase: "aplicativo com a sua marca",
@@ -247,6 +345,18 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
   // ─────────────────────────────── MEIO ───────────────────────────────
   "sem-caderno": {
     conceito: "O fim do caderninho",
+    atmosfera: "#472f14",
+    telaProva: "resumo-assinantes",
+    passos: [
+      "Todos os assinantes numa lista, com a situação de cada um.",
+      "Um toque em Vencidos e aparece só quem atrasou.",
+      "Quem está em dia agenda pelo app; quem atrasou fica bloqueado.",
+    ],
+    antesDepois: [
+      { hoje: "Caderno com nome, data e “pagou?”.", com: "Lista com Ativo e Vencido." },
+      { hoje: "Cobrança por Pix, um por um.", com: "Cobrança automática no cartão." },
+      { hoje: "Descobrir o atraso com o cliente na cadeira.", com: "Quem atrasou fica bloqueado antes de agendar." },
+    ],
     tela: "clube-previsao-faturas",
     anuncio: {
       fonte: "06 · m1 · COPY 4 do André (O FIM DO CADERNINHO)",
@@ -257,7 +367,8 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
     },
     titulo: "É impossível gerenciar as assinaturas da sua barbearia manualmente.",
     apoio:
-      "Você vai perder o controle e vai ter prejuízos. Com a BestBarbers, a cobrança é automática no cartão, quem pagou agenda pelo app e quem atrasou fica bloqueado, de forma automática.",
+      // «100%» como na arte m1 — decisão do André, 23/Set/26.
+      "Você vai perder o controle e vai ter prejuízos. Com a BestBarbers: cobrança 100% automática no cartão, quem pagou agenda pelo app e quem atrasou fica bloqueado, de forma automática.",
     prova: {
       titulo: "Você abre a lista e vê quem pagou",
       texto:
@@ -272,6 +383,18 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
 
   "um-sistema-so": {
     conceito: "Dois sistemas",
+    atmosfera: "#66502d",
+    telaProva: "dois-sistemas",
+    passos: [
+      "O cliente assina e paga no cartão.",
+      "Agenda pelo app da sua barbearia.",
+      "A comissão do barbeiro já sai calculada dessa assinatura.",
+    ],
+    antesDepois: [
+      { hoje: "Agenda num sistema, cobrança em outro.", com: "Agenda e cobrança no mesmo lugar." },
+      { hoje: "Conferir em dois lugares quem pagou e quem cortou.", com: "O atendimento do assinante já aparece ligado à assinatura." },
+      { hoje: "Comissão da assinatura numa planilha à parte.", com: "Comissão da assinatura calculada por profissional." },
+    ],
     anuncio: {
       fonte: "06 · m3 · COPY 7 do André (DOIS SISTEMAS), cortada para 3 itens",
       frase: "A agenda da barbearia em um sistema e a cobrança das assinaturas em outro?",
@@ -299,6 +422,18 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
 
   "bloqueio-na-agenda": {
     conceito: "O inadimplente que continua agendando",
+    atmosfera: "#3c2814",
+    telaProva: "agenda-bloqueio",
+    passos: [
+      "A mensalidade vence sem pagamento.",
+      "O assinante tenta marcar pelo app e fica bloqueado.",
+      "A agenda do barbeiro segue só com quem está em dia.",
+    ],
+    antesDepois: [
+      { hoje: "Quem deve continua marcando horário.", com: "Quem atrasou fica bloqueado para agendar." },
+      { hoje: "O barbeiro decide na cadeira se atende.", com: "A regra é do sistema." },
+      { hoje: "Você avisa o cliente que ele está devendo.", com: "Você não precisa avisar nem barrar ninguém." },
+    ],
     tela: "clube-assinatura-vencida",
     anuncio: {
       fonte: "06 · m4 · O inadimplente que continua agendando",
@@ -324,6 +459,18 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
 
   "parceiro-seletto": {
     conceito: "Vídeo de parceiro · previsibilidade de caixa",
+    atmosfera: "#1e3a5f",
+    telaProva: "previsao-mes",
+    passos: [
+      "Cada assinante paga a mensalidade no cartão, na data dele.",
+      "Você vê no mês quais faturas já foram pagas.",
+      "E quais estão aguardando ou venceram.",
+    ],
+    antesDepois: [
+      { hoje: "Descobrir no fechamento quanto entrou.", com: "Ver no mês o que já foi pago." },
+      { hoje: "Receita que depende do movimento da semana.", com: "Mensalidade que entra na data." },
+      { hoje: "Não saber quem atrasou.", com: "Faturas vencidas separadas." },
+    ],
     tela: "clube-previsao-faturas",
     anuncio: {
       fonte: "transcricoes/joao-seletto-07-220-novos-assinantes-mai26.txt",
@@ -350,6 +497,18 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
 
   "parceiro-guapo": {
     conceito: "Vídeo de parceiro · o mecanismo do clube",
+    atmosfera: "#322210",
+    telaProva: "jornada-assinante",
+    passos: [
+      "O cliente assina pelo app e cadastra o cartão.",
+      "O valor da mensalidade cai automático, todo mês.",
+      "Ele agenda sozinho pelo app; se atrasar, fica bloqueado.",
+    ],
+    antesDepois: [
+      { hoje: "Cobrar cada assinante todo mês.", com: "O valor cai automático no cartão." },
+      { hoje: "Agendar o assinante por mensagem.", com: "Ele agenda sozinho pelo app." },
+      { hoje: "Mês que começa do zero.", com: "Mês que começa com o clube entrando." },
+    ],
     tela: "clube-cobranca",
     anuncio: {
       fonte: "transcricoes/guapo-clube-faturamento-garantido-cortes-aprov.txt",
@@ -385,6 +544,12 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
  * formulário. P1 cai em `geral`, e não em `abertura`: `abertura` na família é
  * «vai abrir a barbearia», e o dono que ainda não montou o clube já tem barbearia.
  */
+/**
+ * O pedido de contato das páginas /clube (botão da prova, chamada final, CTA fixo e o envio do
+ * passo 2 do formulário). Um lugar só: os quatro têm que dizer a mesma coisa.
+ */
+export const ROTULO_CONTATO_CLUBE = "Quero melhorar meus resultados";
+
 export function situacaoDaPorta(porta: Porta | null): PcSituacao {
   if (porta === 2) return "manual";
   if (porta === 3) return "migracao";
@@ -412,7 +577,7 @@ export function pecaDoClube(slug: SlugClube): PcPeca {
     // demonstração aberta que ainda é placeholder (guarda V9 da família).
     ponte: "como_segue",
     formularioVariante: "curto",
-    botaoContato: "Quero conversar sobre meu clube",
+    botaoContato: ROTULO_CONTATO_CLUBE,
     artefatoExigido: null,
   };
 }

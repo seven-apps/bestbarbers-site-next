@@ -161,3 +161,16 @@ test("/clube/<peca>: campanha, conjunto e anúncio da URL chegam ao card", () =>
       "ESTATICO-P3-M4-BLOQUEIO-NA-AGENDA-MEIO | ESTATICO-P3-M4-BLOQUEIO-NA-AGENDA-MEIO | n/d | AMPLO-P3-M4-MIGRACAO",
   );
 });
+
+test("A/B do herói: o braço `cena` vai no bb_lp_version (lido da <meta> que a página renderiza)", () => {
+  const g = globalThis as unknown as { document?: { querySelector: (q: string) => { getAttribute: () => string } | null } };
+  g.document = { querySelector: () => ({ getAttribute: () => "cena" }) };
+  try {
+    assert.equal(comRota("/clube/retentativa").fields.bb_lp_version, "clube-retentativa-cena");
+    // Fora da família /clube/<slug> a meta não muda nada.
+    assert.equal(comRota("/cadeira-cheia").fields.bb_lp_version, "cadeira-cheia");
+  } finally {
+    delete g.document;
+  }
+  assert.equal(comRota("/clube/retentativa").fields.bb_lp_version, "clube-retentativa", "sem meta = braço base");
+});

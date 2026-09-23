@@ -63,6 +63,8 @@ export interface PcPassoContextoProps {
    * para qualquer consumidor que não passe a situação.
    */
   titulo?: string;
+  /** Some da tela, fica para leitor de tela e como alvo do foco (`sr-only`). */
+  tituloOculto?: boolean;
   /** True quando o passo entrou por troca (e não na primeira pintura): só aí anima. */
   animar?: boolean;
 }
@@ -77,6 +79,7 @@ export function PcPassoContexto({
   erroGeral = null,
   rotuloBotao = "Continuar para pedir contato",
   titulo = "Como está seu clube hoje?",
+  tituloOculto = false,
   animar = false,
 }: PcPassoContextoProps) {
   const tituloRef = useRef<HTMLHeadingElement | null>(null);
@@ -101,7 +104,7 @@ export function PcPassoContexto({
 
   return (
     <div className={`${estilos.passo} ${animar ? estilos.passoEntraAtras : ""}`}>
-      <h3 id={tituloId} ref={tituloRef} tabIndex={-1} className={estilos.passoTitulo}>
+      <h3 id={tituloId} ref={tituloRef} tabIndex={-1} className={tituloOculto ? "sr-only" : estilos.passoTitulo}>
         {titulo}
       </h3>
 

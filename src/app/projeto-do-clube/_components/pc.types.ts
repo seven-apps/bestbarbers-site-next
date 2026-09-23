@@ -76,6 +76,11 @@ export interface PcPaginaConfig {
   peca: PcPeca;
   /** Selo do herói escolhido pela página — o kicker do anúncio. Ausente = o da situação. */
   identificacao?: string;
+  /**
+   * Braço do A/B do herói em `/clube/[peca]`: `base` (sem cena) ou `cena` (a foto do
+   * anúncio no herói). Vai em todo evento; ausente nas rotas que não estão em teste.
+   */
+  variante?: "base" | "cena";
   /** Tela do herói escolhida pela página (`/clube/[peca]`). Ausente = a da situação. */
   artefatoHeroi?: PcArtefatoId;
 }

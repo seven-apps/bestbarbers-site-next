@@ -337,7 +337,8 @@ html:has(.pc) > body {
 
 .pc-botao--acao {
   background: linear-gradient(135deg, var(--pc-acao-hover), var(--pc-acao));
-  color: #fff;
+  /* `--pc-acao-texto`: páginas que trocam a ação para ouro (/clube/[peca]) pedem texto escuro. */
+  color: var(--pc-acao-texto, #fff);
   box-shadow: var(--pc-brilho-acao);
 }
 .pc-botao--acao:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 14px 40px rgba(2,171,21,.46); }

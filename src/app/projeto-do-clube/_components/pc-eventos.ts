@@ -43,6 +43,12 @@ export const PC_EVENTOS = {
   demoAberta: "clube_demo_aberta",
   formIniciado: "projeto_form_iniciado",
   condicoesAbertas: "condicoes_abertas",
+  /** `/clube/[peca]`: o bloco de prova da promessa entrou ≥50% na tela. Uma vez por carga. */
+  provaVista: "clube_prova_vista",
+  /** `/clube/[peca]`: clique no botão único do herói (o «Ver…» do anúncio). */
+  heroiClique: "clube_heroi_clique",
+  /** `/clube/app-proprio`: primeira mexida no simulador do app (cor, logo ou fundo). Uma vez por carga. */
+  appSimulado: "clube_app_simulado",
 } as const;
 
 export type PcEvento = (typeof PC_EVENTOS)[keyof typeof PC_EVENTOS];
@@ -75,6 +81,12 @@ export interface PcEventos {
   formIniciado: () => void;
   /** Clique em qualquer link de condições. Uma vez por `onde`, por carga. */
   condicoesAbertas: (onde: PcOndeCondicoes) => void;
+  /** O bloco de prova ficou visível. Uma vez por carga. */
+  provaVista: () => void;
+  /** Clique no botão do herói. Sem guarda: dois cliques são dois fatos. */
+  heroiClique: () => void;
+  /** Primeira interação com o simulador do app. Uma vez por carga. */
+  appSimulado: () => void;
 }
 
 /**
@@ -86,7 +98,7 @@ export interface PcEventos {
  */
 export function usePcEventos(config: PcPaginaConfig): PcEventos {
   const { trackCustomEvent, trackNonCatalogEvent } = useMetaPixel();
-  const { rota, situacao, peca, source } = config;
+  const { rota, situacao, peca, source, variante } = config;
 
   /**
    * As chaves que TODO evento desta família carrega. `porta`, `tema` e `pagina` vêm do
@@ -102,8 +114,9 @@ export function usePcEventos(config: PcPaginaConfig): PcEventos {
       situacao,
       peca: peca.id,
       source,
+      ...(variante ? { variante } : {}),
     }),
-    [rota, situacao, peca.id, source],
+    [rota, situacao, peca.id, source, variante],
   );
 
   const viewContent = useCallback(() => {
@@ -159,8 +172,24 @@ export function usePcEventos(config: PcPaginaConfig): PcEventos {
     [base, rota, trackNonCatalogEvent],
   );
 
+  const provaVista = useCallback(() => {
+    umaVez(`${rota}:provaVista`, () => {
+      void trackNonCatalogEvent(PC_EVENTOS.provaVista, base());
+    });
+  }, [base, rota, trackNonCatalogEvent]);
+
+  const heroiClique = useCallback(() => {
+    void trackNonCatalogEvent(PC_EVENTOS.heroiClique, base());
+  }, [base, trackNonCatalogEvent]);
+
+  const appSimulado = useCallback(() => {
+    umaVez(`${rota}:appSimulado`, () => {
+      void trackNonCatalogEvent(PC_EVENTOS.appSimulado, base());
+    });
+  }, [base, rota, trackNonCatalogEvent]);
+
   return useMemo(
-    () => ({ viewContent, situacaoEscolhida, demoAberta, formIniciado, condicoesAbertas }),
-    [viewContent, situacaoEscolhida, demoAberta, formIniciado, condicoesAbertas],
+    () => ({ viewContent, situacaoEscolhida, demoAberta, formIniciado, condicoesAbertas, provaVista, heroiClique, appSimulado }),
+    [viewContent, situacaoEscolhida, demoAberta, formIniciado, condicoesAbertas, provaVista, heroiClique, appSimulado],
   );
 }
