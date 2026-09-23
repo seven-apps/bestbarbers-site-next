@@ -147,7 +147,12 @@ export function PcPagina({ config }: PcPaginaProps) {
     eventos.viewContent();
   }, [eventos]);
 
-  const abertura = PC_ABERTURAS[situacao];
+  // O selo do herói: o kicker do anúncio, quando a página declara um (/clube/[peca]) e a
+  // situação ainda é a da rota — se a pessoa trocou no seletor, vale o texto da situação.
+  const abertura =
+    config.identificacao && situacao === situacaoDaRota
+      ? { ...PC_ABERTURAS[situacao], identificacao: config.identificacao }
+      : PC_ABERTURAS[situacao];
   const ponte = ponteEfetiva(peca);
   const blocoForm = blocoDoFormulario(peca);
 

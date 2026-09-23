@@ -63,7 +63,7 @@ export const PORTAS_CLUBE = {
   },
   "mes-que-comeca-pago": {
     porta: null,
-    porque: "t3 («Toda barbearia começa o mês do zero») fala da despesa fixa de qualquer barbearia; não declara situação.",
+    porque: "t3 («Virou o mês. Você ainda precisa ficar cobrando o cliente manualmente?») mira quem já tem clube e cobra na mão, mas é TOPO: o topo é anterior à porta (06-OITO-ESTATICOS) e quem separa é o modal.",
     etapa: "Topo",
     conjunto: "BB-TOPO-DONO-SET26",
     formato: "estatico",

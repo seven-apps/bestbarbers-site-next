@@ -25,7 +25,7 @@
  *    `/projeto-do-clube/condicoes`. Valor fechado nunca aparece.
  */
 
-import { useEffect, useRef, type CSSProperties } from "react";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import { PcSecao } from "./PcSecao";
 import { PcArtefato } from "./PcArtefato";
 import { PcAncoras, PC_ANCORAS_PADRAO, type PcAncoraItem } from "./PcAncoras";
@@ -93,6 +93,25 @@ interface PcHeroiProps {
   mostrarBarraConfianca?: boolean;
   /** Gancho de medição opcional (`condicoes_abertas`), ligado por B9. */
   aoAbrirCondicoes?: () => void;
+}
+
+/**
+ * Pinta de dourado os trechos do título que a arte do anúncio pinta (message match
+ * visual). Trecho que não está no título é ignorado — nunca quebra a manchete.
+ */
+function comDestaque(titulo: string, trechos?: readonly string[]): ReactNode {
+  const validos = (trechos ?? []).filter((t) => t && titulo.includes(t));
+  if (validos.length === 0) return titulo;
+  const partes = titulo.split(new RegExp(`(${validos.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`));
+  return partes.map((parte, i) =>
+    validos.includes(parte) ? (
+      <span key={i} style={{ color: "var(--pc-ouro)" }}>
+        {parte}
+      </span>
+    ) : (
+      parte
+    ),
+  );
 }
 
 export function PcHeroi({
@@ -175,7 +194,7 @@ export function PcHeroi({
             ) : null}
 
             <h1 className="pc-titulo pc-titulo--1" data-pc-entrada>
-              {titulo}
+              {comDestaque(titulo, peca.titulo?.trim() ? peca.tituloDestaque : undefined)}
             </h1>
 
             <p className="pc-subtitulo" data-pc-entrada>

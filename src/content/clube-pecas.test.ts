@@ -43,13 +43,13 @@ const ESPERADOS = [
 /** Todo texto que chega à tela de cada página, já com os números resolvidos. */
 function textosVisiveis(slug: (typeof SLUGS_CLUBE)[number]): string[] {
   const p = pecaDoClube(slug);
-  return [p.titulo, p.apoio, p.botaoPrincipal, p.exemploTitulo, p.exemploTexto, p.faqPergunta, p.faqResposta];
+  return [p.titulo, p.apoio, p.botaoPrincipal, CONTEUDO_CLUBE[slug].anuncio.kicker ?? "", p.exemploTitulo, p.exemploTexto, p.faqPergunta, p.faqResposta];
 }
 
 /** Texto CRU da configuração (antes do token virar número). */
 function textosCrus(slug: (typeof SLUGS_CLUBE)[number]): string[] {
   const c = CONTEUDO_CLUBE[slug];
-  return [c.conceito, c.titulo, c.apoio, c.botaoPrincipal, c.prova.titulo, c.prova.texto, c.faq.pergunta, c.faq.resposta];
+  return [c.conceito, c.titulo, c.apoio, c.botaoPrincipal ?? "", c.anuncio.kicker ?? "", c.anuncio.cta ?? "", c.prova.titulo, c.prova.texto, c.faq.pergunta, c.faq.resposta];
 }
 
 const normalizar = (s: string) =>
@@ -187,5 +187,29 @@ test("TELA do herói: toda tela declarada existe no registro, está `real` e tem
     const arquivo = bloco.match(/arquivoFinal:\s*"([^"]+)"/)?.[1] ?? "";
     assert.ok(existsSync(join(RAIZ_SRC, "..", "public", arquivo)), `${slug}: arquivo ausente ${arquivo}`);
     assert.equal(configDaPaginaClube(slug).artefatoHeroi, tela);
+  }
+});
+
+test("ESTÁTICOS: selo e botão do herói são o kicker e o CTA literais da arte", () => {
+  for (const slug of SLUGS_CLUBE) {
+    const { anuncio } = CONTEUDO_CLUBE[slug];
+    const cfg = configDaPaginaClube(slug);
+    if (PORTAS_CLUBE[slug].formato === "estatico") {
+      assert.ok(anuncio.kicker && anuncio.cta, `${slug}: estático sem kicker/CTA da arte`);
+      assert.equal(cfg.identificacao, anuncio.kicker, slug);
+      assert.equal(cfg.peca.botaoPrincipal, anuncio.cta, slug);
+      // Selo e botão também passam pelas travas de texto (acento, nomes, promessa).
+      assert.doesNotMatch(`${anuncio.kicker} ${anuncio.cta}`, /\b(nao|voce|cobranca|ja)\b|100\s?%|garantid/i, slug);
+    } else {
+      assert.ok(cfg.peca.botaoPrincipal.trim().length > 5, `${slug}: vídeo sem botão principal`);
+    }
+  }
+});
+
+test("DESTAQUE dourado: todo trecho existe, literal, no título (senão some em silêncio)", () => {
+  for (const slug of SLUGS_CLUBE) {
+    for (const trecho of CONTEUDO_CLUBE[slug].anuncio.destaque ?? []) {
+      assert.ok(pecaDoClube(slug).titulo.includes(trecho), `${slug}: «${trecho}» não está no título`);
+    }
   }
 });

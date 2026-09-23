@@ -37,6 +37,8 @@ export interface PcPeca {
   situacao: PcSituacao;
   etapa: "Topo" | "Meio" | "Fundo";
   titulo: string;
+  /** Trechos LITERAIS do título pintados de dourado — os mesmos da arte do anúncio. */
+  tituloDestaque?: readonly string[];
   apoio: string;
   botaoPrincipal: string;
   exemploTitulo: string;
@@ -72,6 +74,8 @@ export interface PcPaginaConfig {
   /** "Migracao" — entra no `originDesc` de visita direta. */
   rotulo: string;
   peca: PcPeca;
+  /** Selo do herói escolhido pela página — o kicker do anúncio. Ausente = o da situação. */
+  identificacao?: string;
   /** Tela do herói escolhida pela página (`/clube/[peca]`). Ausente = a da situação. */
   artefatoHeroi?: PcArtefatoId;
 }

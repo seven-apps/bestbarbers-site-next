@@ -35,7 +35,8 @@
  *  - ESTÁTICOS: bestbarbers-ai/docs/operacional/plano-v3-maquina-vendas/
  *    criativos-funil-clube/06-OITO-ESTATICOS-TEXTO-FINAL-2026-09-23.md — o SSOT do
  *    texto que foi para a arte (NÃO o 05, que são as 32 hipóteses dos autores).
- *    A `frase` de cada página é a headline do estático, literal.
+ *    A `frase` de cada página é a headline do estático, literal; `kicker` e `cta` também
+ *    são literais da arte vigente (`l8-cena-r2/`, revisada em 23/Set).
  *  - Vídeos: transcrições em bestbarbers-ai/output/trafego-pago/transcricoes/ —
  *    transcrição AUTOMÁTICA do original; conferir contra o corte que vai ao ar
  *    (cap. 36 §11, item 8). Por isso as quatro levam `conferir`.
@@ -59,12 +60,18 @@ export interface ConteudoPecaClube {
     fonte: string;
     /** Trecho LITERAL do anúncio que a primeira dobra tem que repetir. */
     frase: string;
+    /** Selo do estático, literal (vira o selo do herói). Só estáticos. */
+    kicker?: string;
+    /** Botão do estático, literal (vira o botão principal do herói). Só estáticos. */
+    cta?: string;
+    /** Trechos da headline que a arte pinta de dourado — a página pinta os mesmos. */
+    destaque?: readonly string[];
   };
   /** Primeira dobra: título (contém `anuncio.frase`) e apoio. */
   titulo: string;
   apoio: string;
-  /** Botão principal do herói — leva à demonstração da página. */
-  botaoPrincipal: string;
+  /** Botão principal do herói quando o anúncio não tem CTA escrito (vídeos). */
+  botaoPrincipal?: string;
   /** A prova específica DESTA promessa (bloco «O seu caso»). */
   prova: { titulo: string; texto: string };
   /** Pergunta em destaque no FAQ — a objeção que a promessa desperta. */
@@ -90,11 +97,13 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
     anuncio: {
       fonte: "06 · t1 · COPY 3 do André (MEDO DO ILIMITADO)",
       frase: "E se o cliente pagar a assinatura e vier cortar toda semana?",
+      kicker: "Plano com regra",
+      cta: "Ver como configurar o plano",
+      destaque: ["toda semana"],
     },
     titulo: "E se o cliente pagar a assinatura e vier cortar toda semana?",
     apoio:
-      "O maior erro é vender assinatura sem regras e sem trava de agendamento no sistema. Crie planos limitados de segunda a quarta, por exemplo, e configure as regras de agendamento na BestBarbers.",
-    botaoPrincipal: "Ver como montar o plano com regra",
+      "O maior erro é vender assinatura sem regras e sem trava de agendamento no sistema. Crie planos limitados de segunda a quarta, por exemplo, e configure as regras de agendamento com a BestBarbers.",
     prova: {
       titulo: "A regra fica no plano, não na sua memória",
       texto:
@@ -115,11 +124,13 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
     anuncio: {
       fonte: "06 · t2 · Anúncio 5 do André (Cobrança e Inadimplência)",
       frase: "Você não precisa mais se preocupar em cobrar a assinatura do seu cliente",
+      kicker: "Cobrança automática",
+      cta: "Ver a cobrança automática",
+      destaque: ["cobrar a assinatura"],
     },
     titulo: "Você não precisa mais se preocupar em cobrar a assinatura do seu cliente.",
     apoio:
-      "A BestBarbers cobra a mensalidade dos assinantes da sua barbearia no cartão, todo mês, de forma automática. Quem está em dia agenda pelo app; quem atrasou fica bloqueado.",
-    botaoPrincipal: "Ver a cobrança automática",
+      "A BestBarbers cuida das cobranças das assinaturas da sua barbearia para você, de forma automática: a mensalidade é cobrada no cartão todo mês, quem está em dia agenda pelo app e quem atrasou fica bloqueado.",
     prova: {
       titulo: "O cliente passa o cartão uma vez",
       texto:
@@ -136,24 +147,26 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
     conceito: "O dia 1",
     tela: "clube-cobranca",
     anuncio: {
-      fonte: "06 · t3 · O dia 1",
-      frase: "Toda barbearia começa o mês do zero. A sua também?",
+      fonte: "06 · t3 · O dia 1 (reescrita 23/Set, arte l8-cena-r2)",
+      frase: "Virou o mês. Você ainda precisa ficar cobrando o cliente manualmente?",
+      kicker: "Cobrança do clube",
+      cta: "Ver o mês que começa pago",
+      destaque: ["cobrando o cliente manualmente"],
     },
-    titulo: "Toda barbearia começa o mês do zero. A sua também?",
+    titulo: "Virou o mês. Você ainda precisa ficar cobrando o cliente manualmente?",
     apoio:
-      "O erro não é faturar pouco: é começar todo dia 1 com a folha do dia 5 já vencendo e nenhuma mensalidade entrando. Monte o clube da sua barbearia na BestBarbers: o cliente cadastra o cartão uma vez e a mensalidade é cobrada todo mês, venha ele à barbearia ou não.",
-    botaoPrincipal: "Ver como a mensalidade entra",
+      "O erro é ter clube e continuar cobrando um por um. Assinatura que depende de mensagem não é recorrência. Na BestBarbers, o cliente cadastra o cartão uma vez e a mensalidade é cobrada todo mês, na data, sozinha.",
     prova: {
-      titulo: "A receita do clube não depende do movimento da semana",
+      titulo: "Recorrência de verdade não depende de mensagem",
       texto:
-        "Cada assinante tem a data de cobrança dele, definida na adesão. Nessa data a mensalidade é cobrada no cartão, sozinha — com a cadeira cheia ou vazia. No primeiro mês, a receita é a das assinaturas que você acabou de vender; a partir daí, o clube entra todo mês.",
+        "Cada assinante tem a data de cobrança dele, definida na adesão. Nessa data a mensalidade é cobrada no cartão, sem você mandar mensagem para ninguém, e o extrato mostra quem já pagou. No primeiro mês entram as assinaturas que você acabou de vender; a partir daí, o mês já começa com o clube entrando.",
     },
     faq: {
       // O «dia 1» é da barbearia (a despesa), não da cobrança: o vencimento é por
       // assinante. A pergunta existe para ninguém ler a manchete como promessa de data.
       pergunta: "A mensalidade é cobrada sempre no dia 1?",
       resposta:
-        "Não necessariamente. A data de cobrança é de cada assinante, definida na adesão. O que não muda é que ela acontece no cartão, na data marcada, sem você cobrar ninguém.",
+        "A cobrança acontece na data de vencimento de cada assinante, definida na adesão: quem vence no dia 1 paga no dia 1. Sempre no cartão, sem você cobrar ninguém.",
     },
   },
 
@@ -163,11 +176,13 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
     anuncio: {
       fonte: "06 · t4 · O cartão que recusou",
       frase: "O cartão do assinante recusou. E aí, quem cobra de novo?",
+      kicker: "O cartão recusou",
+      cta: "Ver como o sistema cobra de novo",
+      destaque: ["E aí, quem cobra de novo?"],
     },
     titulo: "O cartão do assinante recusou. E aí, quem cobra de novo?",
     apoio:
-      "Na maioria das barbearias, quem cobra de novo é o dono — quando ele lembra. Na BestBarbers, quando o cartão recusa, o sistema tenta de novo sozinho, e quem está em atraso fica bloqueado para agendar.",
-    botaoPrincipal: "Ver o que acontece quando o cartão recusa",
+      "Na maioria das barbearias, esse alguém é o dono — quando ele lembra. Enquanto isso, o cliente continua cortando. Na BestBarbers, quando o cartão recusa, o sistema tenta de novo sozinho, e quem está em atraso fica bloqueado para agendar.",
     prova: {
       titulo: "Você não precisa ser a segunda tentativa",
       texto:
@@ -236,11 +251,13 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
     anuncio: {
       fonte: "06 · m1 · COPY 4 do André (O FIM DO CADERNINHO)",
       frase: "É impossível gerenciar as assinaturas da sua barbearia manualmente",
+      kicker: "O fim do caderninho",
+      cta: "Ver como sair do caderno",
+      destaque: ["impossível", "manualmente"],
     },
     titulo: "É impossível gerenciar as assinaturas da sua barbearia manualmente.",
     apoio:
       "Você vai perder o controle e vai ter prejuízos. Com a BestBarbers, a cobrança é automática no cartão, quem pagou agenda pelo app e quem atrasou fica bloqueado, de forma automática.",
-    botaoPrincipal: "Ver quem está em dia",
     prova: {
       titulo: "Você abre a lista e vê quem pagou",
       texto:
@@ -258,12 +275,14 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
     anuncio: {
       fonte: "06 · m3 · COPY 7 do André (DOIS SISTEMAS), cortada para 3 itens",
       frase: "A agenda da barbearia em um sistema e a cobrança das assinaturas em outro?",
+      kicker: "Dois sistemas",
+      cta: "Ver a agenda e a cobrança juntas",
+      destaque: ["em outro?"],
     },
     // Só a headline do estático: com o sub junto, o título dava 8 linhas no celular.
     titulo: "A agenda da barbearia em um sistema e a cobrança das assinaturas em outro?",
     apoio:
       "Você está perdendo tempo e dinheiro. Com a BestBarbers, é um sistema só: o cliente assina e paga no cartão, agenda pelo app da sua barbearia, e a comissão do barbeiro já sai calculada dessa assinatura.",
-    botaoPrincipal: "Ver agenda e cobrança juntas",
     prova: {
       // Os três itens da COPY 7 cortada (cap. 36 §5.3): a comissão fica porque é o
       // item que só faz sentido com agenda e cobrança no mesmo sistema.
@@ -284,11 +303,13 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
     anuncio: {
       fonte: "06 · m4 · O inadimplente que continua agendando",
       frase: "O cliente que está devendo continua marcando horário no seu sistema?",
+      kicker: "Quem atrasou não agenda",
+      cta: "Ver o bloqueio na agenda",
+      destaque: ["continua marcando horário"],
     },
     titulo: "O cliente que está devendo continua marcando horário no seu sistema?",
     apoio:
       "Se a resposta é sim, quem decide se atende ou não é o seu barbeiro, com o cliente já na cadeira. Na BestBarbers a regra é do sistema: quem está em dia agenda pelo app sozinho, quem atrasou a mensalidade fica bloqueado.",
-    botaoPrincipal: "Ver o bloqueio na agenda",
     prova: {
       titulo: "O bloqueio acontece na agenda, não no balcão",
       texto:
@@ -379,8 +400,10 @@ export function pecaDoClube(slug: SlugClube): PcPeca {
     situacao: situacaoDaPorta(porta),
     etapa,
     titulo: comNumerosOficiais(c.titulo),
+    ...(c.anuncio.destaque ? { tituloDestaque: c.anuncio.destaque } : {}),
     apoio: comNumerosOficiais(c.apoio),
-    botaoPrincipal: c.botaoPrincipal,
+    // O botão repete o do anúncio: quem clicou em «Ver o bloqueio na agenda» procura isso.
+    botaoPrincipal: c.anuncio.cta ?? c.botaoPrincipal ?? "Ver como funciona",
     exemploTitulo: comNumerosOficiais(c.prova.titulo),
     exemploTexto: comNumerosOficiais(c.prova.texto),
     faqPergunta: comNumerosOficiais(c.faq.pergunta),
@@ -404,6 +427,7 @@ export function configDaPaginaClube(slug: SlugClube): PcPaginaConfig {
     source: `lp_clube_${slug.replace(/-/g, "_")}`,
     rotulo: `Clube-${slug}`,
     peca,
+    ...(CONTEUDO_CLUBE[slug].anuncio.kicker ? { identificacao: CONTEUDO_CLUBE[slug].anuncio.kicker } : {}),
     ...(CONTEUDO_CLUBE[slug].tela ? { artefatoHeroi: CONTEUDO_CLUBE[slug].tela } : {}),
   };
 }
