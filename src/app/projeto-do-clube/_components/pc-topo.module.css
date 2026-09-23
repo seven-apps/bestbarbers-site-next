@@ -335,6 +335,15 @@
   display: flex;
   flex-direction: column;
   gap: var(--pc-e-4);
+  /* O seletor é montado fora de um <PcSecao> (fica colado no herói), então a margem
+     lateral e a largura máxima das seções têm que vir daqui. Sem isto os botões
+     encostavam na borda da tela, no celular e no desktop (medido em 23/Set/26). */
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--pc-max) + 2 * var(--pc-secao-x));
+  margin-inline: auto;
+  padding-inline: var(--pc-secao-x);
+  padding-bottom: var(--pc-secao-y);
 }
 
 .seletorOpcoes {

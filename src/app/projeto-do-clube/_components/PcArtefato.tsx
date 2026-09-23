@@ -45,6 +45,12 @@ export function PcArtefato({
   const proporcao = { aspectRatio: spec.proporcao };
 
   if (spec.status === "placeholder") {
+    // Em produção a caixa «Placeholder» NÃO vai ao ar: medido em 23/Set/26, ela ocupava
+    // metade da dobra do herói no desktop e a primeira tela depois dela no celular — para
+    // quem veio do anúncio, é a página dizendo que não está pronta. Sem a imagem, o cartão
+    // do herói fica com o cabeçalho e os três passos. Em desenvolvimento ela continua
+    // visível, para ninguém esquecer que falta a captura real.
+    if (process.env.NODE_ENV === "production") return null;
     return (
       <div
         className={`${estilos.artefato} ${estilos.placeholder} ${className}`.trim()}

@@ -55,7 +55,13 @@ function Casca({
             quando a ponte efetiva é «Como segue a conversa», porque o bloco
             `PcComoFunciona`, logo acima, já contou os mesmos quatro passos. Dizer a
             mesma coisa duas vezes na mesma rolagem não reforça — cansa. */}
-        {texto ? <p className="pc-texto pc-texto--grande">{texto}</p> : null}
+        {/* O respiro entre título e texto mora aqui: `.pc-texto` zera a margem, e os dois
+            vivem em `PcRevelar` separados. Sem ele o título grudava no parágrafo. */}
+        {texto ? (
+          <p className="pc-texto pc-texto--grande" style={{ marginTop: "var(--pc-e-4)" }}>
+            {texto}
+          </p>
+        ) : null}
         {children}
       </PcRevelar>
     </PcSecao>
