@@ -23,6 +23,9 @@
     0 0 80px -30px var(--atmosfera, rgba(255, 175, 2, 0.35));
   flex: none;
   position: relative;
+  /* Centrado por si: o contêiner da animação ocupa a coluna inteira, e sem isto o aparelho
+     encostava à esquerda (revisão de alinhamento de 23/Set). */
+  margin-inline: auto;
 }
 /* Dynamic Island, como na moldura do mockup do whitelabel. */
 .ilha {
@@ -110,7 +113,8 @@
 .grande { width: 38px; height: 38px; border-radius: 10px; background: var(--t-ouro); color: #171206; font-weight: 900; font-size: 20px; display: grid; place-items: center; flex: none; }
 
 /* trilha / jornada */
-.trilha, .jornada { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 22px; padding: 10px 18px 22px; }
+/* Começa logo abaixo do cabeçalho: centrada na vertical, abria um vão vazio no meio da tela. */
+.trilha, .jornada { display: flex; flex-direction: column; justify-content: flex-start; gap: 22px; padding: 20px 18px 22px; }
 .trilha > div, .jornada > div { display: flex; align-items: center; gap: 12px; }
 .trilha p b, .jornada p b { display: block; font-size: 14px; font-weight: 800; color: #fff; }
 .trilha p small, .jornada p small { font-size: 11.5px; color: #aeb2ba; font-weight: 600; }

@@ -162,6 +162,7 @@ const TELAS: Record<TelaClubeId, () => ReactNode> = {
         <div data-anim="entra" data-ordem={2}><span className={`${e.marco} ${e.m_marca}`}>↻</span><p><b className={e.ouro}>Nova tentativa de cobrança</b><small>feita pelo sistema, sozinho</small></p></div>
         <div data-anim="entra" data-ordem={4}><span className={`${e.marco} ${e.m_alerta}`}>🔒︎</span><p><b>Agendamento bloqueado</b><small>enquanto a mensalidade estiver em atraso</small></p></div>
       </div>
+      <div className={e.rodapeTela} data-anim="entra" data-ordem={6}>Ninguém precisou cobrar de novo</div>
     </>
   ),
 
@@ -309,6 +310,7 @@ const TELAS: Record<TelaClubeId, () => ReactNode> = {
         <div data-anim="entra" data-ordem={2}><span className={`${e.marco} ${e.m_ok}`}>R$</span><p><b>Mensalidade paga</b><small>R$ 119,90 cobrados no cartão, automático</small></p></div>
         <div data-anim="entra" data-ordem={4}><span className={`${e.marco} ${e.m_ok}`}>✓</span><p><b>Horário confirmado</b><small>Sábado, 10:00 · com Léo</small></p></div>
       </div>
+      <div className={e.rodapeTela} data-anim="entra" data-ordem={6}>Tudo pelo app, sem mensagem de cobrança</div>
     </>
   ),
 };

@@ -89,5 +89,9 @@ export function TelaAnimada({ children, aoVer }: { children: ReactNode; aoVer?: 
     };
   }, []);
 
-  return <div ref={raiz}>{children}</div>;
+  return (
+    <div ref={raiz} style={{ width: "100%" }}>
+      {children}
+    </div>
+  );
 }
