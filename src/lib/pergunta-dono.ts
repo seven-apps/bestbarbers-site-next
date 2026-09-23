@@ -28,6 +28,49 @@ export const EVENTO_POR_RESPOSTA: Readonly<Record<RespostaDono, string>> = {
   nao: "NaoDonoBarbearia",
 };
 
+/**
+ * ── SEGUNDA PERGUNTA: o porte ────────────────────────────────────────────────────────
+ *
+ * Por quê (André, 22/Set/26): `DonoBarbearia` qualifica o PAPEL, não o PORTE. Barbeiro
+ * solo é dono de barbearia e responde "Sim" dizendo a verdade — o evento não está sendo
+ * enganado, ele mede exatamente o que foi desenhado para medir, e isso não é o que separa
+ * quem compra. Medido na casa: anti-perfil (solo ou até R$2 mil) converte 0,3% em venda
+ * contra 1,83% de quem tem equipe. Otimizar por custo por evento, com um evento que não
+ * discrimina porte, instrui o leilão a comprar o anti-perfil e a chamar isso de eficiência.
+ *
+ * **O evento do "Sim" dispara ANTES desta pergunta** (decisão do André, 22/Set). Assim:
+ *   - quem abandona na segunda tela JÁ contou como `DonoBarbearia` → zero perda de volume
+ *     de otimização, e o conjunto continua alimentando os 50 eventos/semana da Meta;
+ *   - quem responde vira dado de PORTE por criativo, desde o dia 1.
+ * A pergunta extra é gratuita em volume e paga só em informação.
+ *
+ * Sem isto, o gate de composição precisaria de 62 leads de formulário e levaria de 5 a 12
+ * semanas para fechar — o freio chegaria depois de a campanha já ter comprado o mix que
+ * ele deveria impedir. Com isto, cada resposta é dado de porte e o gate fecha em ~9 dias.
+ *
+ * Três eventos e não um com parâmetro, pelo mesmo motivo do par acima: público e conversão
+ * personalizada casam por NOME sem depender de filtro por `custom_data` — cujo casamento
+ * por TIPO a Meta não documenta e só se confirma no Gerenciador depois de popular.
+ */
+export type PorteDono = "solo" | "2a4" | "5mais";
+
+export const EVENTO_POR_PORTE: Readonly<Record<PorteDono, string>> = {
+  /** Anti-perfil medido. Existe para virar EXCLUSÃO de público, não alvo. */
+  solo: "DonoSolo",
+  /** Casa com o `LeadComEquipe` do formulário: o corte da casa é 2+ profissionais. */
+  "2a4": "DonoComEquipe",
+  "5mais": "DonoComEquipe",
+};
+
+/** Rótulo do botão. Um toque, sem digitação — o atrito é o que derruba a taxa de resposta. */
+export const ROTULO_PORTE: Readonly<Record<PorteDono, string>> = {
+  solo: "Só eu",
+  "2a4": "2 a 4",
+  "5mais": "5 ou mais",
+};
+
+export const PORTES: ReadonlyArray<PorteDono> = ["solo", "2a4", "5mais"];
+
 /** Prefixos de campanha que recebem a pergunta (comparação sem caixa). */
 export const CAMPANHAS_COM_PERGUNTA: ReadonlyArray<string> = ["BB-TOPO-"];
 /** Segunda via: `fase=TOPO-SET26` (url_tags padrão da fase). */
@@ -66,6 +109,9 @@ export interface ParametrosResposta {
   publico?: string;
   ad_id?: string;
   porta?: number;
+  /** Só no evento da segunda pergunta. Fica junto de `campanha`/`publico`/`ad_id`
+   *  para dar a composição por criativo sem cruzar tabela. */
+  porte?: PorteDono;
   [k: string]: string | number | undefined;
 }
 
@@ -89,24 +135,41 @@ export function parametrosDaResposta(resposta: RespostaDono, search: string, pat
   return out;
 }
 
-export interface RespostaGravada { resposta: RespostaDono; ts: number }
+export interface RespostaGravada { resposta: RespostaDono; ts: number; porte?: PorteDono }
+
+const ehPorte = (v: unknown): v is PorteDono => PORTES.includes(v as PorteDono);
 
 export function lerResposta(storage: Pick<Storage, "getItem"> | undefined): RespostaGravada | null {
   try {
     const raw = storage?.getItem(CHAVE_RESPOSTA);
     if (!raw) return null;
     const v = JSON.parse(raw) as Partial<RespostaGravada>;
-    return v.resposta === "sim" || v.resposta === "nao" ? { resposta: v.resposta, ts: Number(v.ts) || 0 } : null;
+    if (v.resposta !== "sim" && v.resposta !== "nao") return null;
+    const out: RespostaGravada = { resposta: v.resposta, ts: Number(v.ts) || 0 };
+    if (ehPorte(v.porte)) out.porte = v.porte;
+    return out;
   } catch {
     return null;
   }
 }
 
+/** Grava a 1ª resposta. O `porte` entra depois, por `gravarPorte` — quem fecha a segunda
+ *  tela fica com a resposta salva e sem porte, e não é perguntado de novo. */
 export function gravarResposta(storage: Pick<Storage, "setItem"> | undefined, resposta: RespostaDono, ts: number): void {
   try {
     storage?.setItem(CHAVE_RESPOSTA, JSON.stringify({ resposta, ts } satisfies RespostaGravada));
   } catch {
     /* privacy mode etc. — a resposta ainda vai ao pixel */
+  }
+}
+
+export function gravarPorte(storage: Pick<Storage, "getItem" | "setItem"> | undefined, porte: PorteDono, ts: number): void {
+  try {
+    const atual = lerResposta(storage);
+    const gravar: RespostaGravada = { resposta: atual?.resposta ?? "sim", ts: atual?.ts ?? ts, porte };
+    storage?.setItem(CHAVE_RESPOSTA, JSON.stringify(gravar));
+  } catch {
+    /* idem — o evento de porte já foi ao pixel antes desta linha */
   }
 }
 

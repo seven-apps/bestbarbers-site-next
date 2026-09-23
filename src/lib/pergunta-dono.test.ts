@@ -6,8 +6,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import * as modulo from "./pergunta-dono.ts";
-const { deveMostrarPergunta, parametrosDaResposta, lerResposta, gravarResposta, EVENTO_POR_RESPOSTA } =
-  modulo as typeof import("./pergunta-dono");
+const {
+  deveMostrarPergunta, parametrosDaResposta, lerResposta, gravarResposta, gravarPorte,
+  EVENTO_POR_RESPOSTA, EVENTO_POR_PORTE, ROTULO_PORTE, PORTES,
+} = modulo as typeof import("./pergunta-dono");
 
 const TOPO = "?utm_source=meta&utm_campaign=BB-TOPO-PAGE-VIEW-ESTATICO-SET26&publico=LOOK-A-LIKE-DONOS-2024-E-LEADS-SCORE70-01&ad_id=120253000000000001&utm_content=VIDEO-P1-M1-JS-APP-CORTES-CLUBE&fase=TOPO-SET26";
 
@@ -54,4 +56,41 @@ test("storage: grava e lê a resposta; valor estranho vira null; storage ausente
   assert.equal(lerResposta(storage), null);
   assert.equal(lerResposta(undefined), null);
   assert.doesNotThrow(() => gravarResposta(undefined, "nao", 0));
+});
+
+// ── segunda pergunta: o porte ────────────────────────────────────────────────────────
+
+test("porte: solo tem evento próprio (vira exclusão); 2+ casa com o LeadComEquipe do form", () => {
+  assert.equal(EVENTO_POR_PORTE.solo, "DonoSolo", "anti-perfil precisa de evento próprio para virar exclusão");
+  assert.equal(EVENTO_POR_PORTE["2a4"], "DonoComEquipe");
+  assert.equal(EVENTO_POR_PORTE["5mais"], "DonoComEquipe", "o corte da casa é 2+, não uma escada de faixas");
+  assert.deepEqual([...PORTES], ["solo", "2a4", "5mais"], "a ordem é a dos botões na tela");
+  for (const p of PORTES) assert.ok(ROTULO_PORTE[p]?.length, `faixa ${p} sem rótulo vira botão vazio`);
+});
+
+test("porte entra no mesmo pacote de parâmetros — composição por criativo sem cruzar tabela", () => {
+  const p = { ...parametrosDaResposta("sim", TOPO, "/clube", 2), porte: "2a4" as const };
+  assert.equal(p.porte, "2a4");
+  assert.equal(p.ad_id, "120253000000000001", "sem ad_id não dá para ler composição por peça");
+  assert.equal(p.publico, "LOOK-A-LIKE-DONOS-2024-E-LEADS-SCORE70-01");
+  assert.equal(p.campanha, "BB-TOPO-PAGE-VIEW-ESTATICO-SET26");
+});
+
+test("gravarPorte preserva a 1ª resposta e o ts — fechar a 2ª tela não apaga o DonoBarbearia", () => {
+  const mem = new Map<string, string>();
+  const storage = { getItem: (k: string) => mem.get(k) ?? null, setItem: (k: string, v: string) => void mem.set(k, v) };
+  gravarResposta(storage, "sim", 1_758_000_000_000);
+  gravarPorte(storage, "5mais", 1_758_000_009_999);
+  assert.deepEqual(lerResposta(storage), { resposta: "sim", ts: 1_758_000_000_000, porte: "5mais" });
+});
+
+test("quem respondeu antes desta mudança continua válido, e sem porte inventado", () => {
+  const mem = new Map<string, string>([["bb_dono", '{"resposta":"sim","ts":1758000000000}']]);
+  const storage = { getItem: (k: string) => mem.get(k) ?? null, setItem: (k: string, v: string) => void mem.set(k, v) };
+  const lido = lerResposta(storage);
+  assert.equal(lido?.resposta, "sim");
+  assert.equal(lido?.porte, undefined, "ausência de porte nunca vira um porte");
+  mem.set("bb_dono", '{"resposta":"sim","ts":1,"porte":"gigante"}');
+  assert.equal(lerResposta(storage)?.porte, undefined, "porte fora da lista é descartado, não propagado");
+  assert.doesNotThrow(() => gravarPorte(undefined, "solo", 0));
 });
