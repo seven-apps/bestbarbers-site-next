@@ -17,8 +17,15 @@ export type PcPonteId = "como_segue" | "veja_primeiro" | "use_material";
 /** Variante do texto de apoio acima do formulário. */
 export type PcFormVariante = "padrao" | "curto";
 
-/** Id de peça do acervo (L001…L098). Sempre validado contra PC_PECAS antes de usar. */
-export type PcPecaId = `L${string}`;
+/**
+ * Id de peça. Duas famílias:
+ *  - `L001…L098` — o acervo desta rota, resolvido por `utm_content` e sempre validado
+ *    contra PC_PECAS antes de usar;
+ *  - `clube/<slug>` — as páginas por anúncio de `/clube/[peca]` (`content/clube-pecas.ts`),
+ *    resolvidas pelo CAMINHO. O id vai no parâmetro `peca` dos eventos, então o prefixo
+ *    é o que separa as duas famílias no Events Manager.
+ */
+export type PcPecaId = `L${string}` | `clube/${string}`;
 
 /** Chave de `PC_ARTEFATOS` (registro de B5). */
 export type PcArtefatoId = string;
@@ -65,6 +72,8 @@ export interface PcPaginaConfig {
   /** "Migracao" — entra no `originDesc` de visita direta. */
   rotulo: string;
   peca: PcPeca;
+  /** Tela do herói escolhida pela página (`/clube/[peca]`). Ausente = a da situação. */
+  artefatoHeroi?: PcArtefatoId;
 }
 
 /** Par pergunta/resposta do FAQ (o destacado da peça e os gerais). */

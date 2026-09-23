@@ -204,6 +204,7 @@ export function PcPagina({ config }: PcPaginaProps) {
           abertura={abertura}
           peca={peca}
           situacao={situacao}
+          artefato={config.artefatoHeroi}
           notaPreco={PC_BLOCOS.notaPreco}
           hrefCondicoes={hrefCondicoes}
           aoPedirContato={irParaFormulario}

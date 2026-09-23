@@ -91,10 +91,15 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   //   de /blog/[slug], /conteudo/[slug], /sistema-para-barbearia/[cidade] e
   //   /dezembro-lotado/materiais, que já estão no ar e já têm série histórica.
   //   Esta família nasce hoje: não há série para quebrar.
+  // - Páginas por anúncio `/clube/<peca>` → "clube-<peca>" (23/Set/26, cap. 36 §4). Mesma
+  //   exceção estreita e pelo mesmo motivo: sem ela as onze gravariam "clube" e colapsariam
+  //   na /clube. O slug É a raiz do criativo — é isso que torna o rastreio automático. A
+  //   `/clube` sozinha continua "clube" (série histórica intacta): a regra exige a barra.
   const seg = pathname.replace(/^\/+|\/+$/g, "");
+  const slugCompleto = seg.startsWith("projeto-do-clube") || seg.startsWith("clube/");
   const lpVersion =
     seg.match(/^v\d+/i)?.[0]?.toUpperCase() ||
-    (seg.startsWith("projeto-do-clube") ? seg.replace(/\//g, "-") : seg.split("/")[0]) ||
+    (slugCompleto ? seg.replace(/\//g, "-") : seg.split("/")[0]) ||
     "home";
 
   const fase = param("fase");

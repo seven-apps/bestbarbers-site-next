@@ -36,6 +36,12 @@
 import { PcSecao } from "./PcSecao";
 import { PcRevelar } from "./PcRevelar";
 import { PcNumero } from "./PcNumero";
+import { NUMEROS_OFICIAIS, type NumeroOficialId } from "@/lib/numeros-oficiais";
+
+function doOficial(id: NumeroOficialId) {
+  const { valor, rotulo, fonte } = NUMEROS_OFICIAIS[id];
+  return { valor, rotulo, fonte };
+}
 
 interface PcNumeroVerificado {
   id: string;
@@ -48,36 +54,15 @@ interface PcNumeroVerificado {
   fonte: string;
 }
 
+/**
+ * Valor, rótulo e fonte vêm de `@/lib/numeros-oficiais` — a MESMA fonte que as
+ * páginas `/clube/[peca]` usam. Aqui só se escolhe a ordem e a moldura do contador.
+ */
 const PC_NUMEROS: PcNumeroVerificado[] = [
-  {
-    id: "barbearias",
-    valor: 1200,
-    sufixo: "+",
-    rotulo: "barbearias usam a BestBarbers",
-    fonte: "knowledge/dominio/competitors-intel.md",
-  },
-  {
-    id: "assinantes",
-    valor: 51000,
-    sufixo: "+",
-    rotulo: "assinantes de clube na base da plataforma",
-    fonte: "knowledge/dominio/competitors-intel.md",
-  },
-  {
-    id: "processado",
-    valor: 5,
-    prefixo: "R$ ",
-    sufixo: " mi+",
-    rotulo: "processados por mês na plataforma",
-    fonte: "knowledge/marketing/stories-instagram-playbook.md",
-  },
-  {
-    id: "agendamentos",
-    valor: 6,
-    sufixo: " mi+",
-    rotulo: "agendamentos por mês",
-    fonte: "knowledge/marketing/instagram-voz-do-time.md",
-  },
+  { id: "barbearias", sufixo: "+", ...doOficial("barbearias") },
+  { id: "assinantes", sufixo: "+", ...doOficial("assinantes") },
+  { id: "processado", prefixo: "R$ ", sufixo: " mi+", ...doOficial("processado") },
+  { id: "agendamentos", sufixo: " mi+", ...doOficial("agendamentos") },
 ];
 
 /** Rodapé literal da biblioteca aprovada: o que estes números NÃO dizem. */

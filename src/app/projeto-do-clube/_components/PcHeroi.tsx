@@ -84,6 +84,12 @@ interface PcHeroiProps {
   /** Situação da rota — escolhe o artefato do herói. Cai para a da peça. */
   situacao?: PcSituacao;
   /** A barra de confiança fecha o herói; B9 desliga sem editar este arquivo. */
+  /**
+   * Artefato do herói escolhido pela PÁGINA, não pela situação. As páginas por anúncio
+   * de `/clube/[peca]` mostram a tela que prova a promessa daquele anúncio; sem isto,
+   * vale o mapa por situação abaixo.
+   */
+  artefato?: PcArtefatoId;
   mostrarBarraConfianca?: boolean;
   /** Gancho de medição opcional (`condicoes_abertas`), ligado por B9. */
   aoAbrirCondicoes?: () => void;
@@ -97,6 +103,7 @@ export function PcHeroi({
   aoPedirContato,
   aoVerDemonstracao,
   situacao,
+  artefato,
   mostrarBarraConfianca = true,
   aoAbrirCondicoes,
 }: PcHeroiProps) {
@@ -104,7 +111,8 @@ export function PcHeroi({
   const movimentoReduzido = usePcMovimentoReduzido();
 
   const situacaoEfetiva: PcSituacao = situacao ?? peca.situacao ?? "geral";
-  const artefatoId = PC_ARTEFATO_DO_HEROI[situacaoEfetiva] ?? PC_ARTEFATO_DO_HEROI.geral;
+  const artefatoId =
+    artefato ?? PC_ARTEFATO_DO_HEROI[situacaoEfetiva] ?? PC_ARTEFATO_DO_HEROI.geral;
 
   const titulo = peca.titulo?.trim() || abertura.titulo;
   const apoio = peca.apoio?.trim() || abertura.apoio;

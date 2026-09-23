@@ -129,3 +129,35 @@ test("a exceção NÃO vaza: rota multi-segmento de fora da família segue no 1�
   assert.equal(comRota("/").fields.bb_lp_version, "home");
   assert.equal(comRota("/cadeira-cheia").fields.bb_lp_version, "cadeira-cheia");
 });
+
+// ————— /clube/[peca]: as 11 páginas por anúncio (cap. 36 §4, 23/Set/26) —————
+
+test("/clube/<peca> grava o slug no bb_lp_version; a /clube sozinha segue 'clube'", () => {
+  assert.equal(comRota("/clube/sem-caderno").fields.bb_lp_version, "clube-sem-caderno");
+  assert.equal(comRota("/clube/retentativa/").fields.bb_lp_version, "clube-retentativa");
+  // Série histórica da /clube não muda de nome.
+  assert.equal(comRota("/clube").fields.bb_lp_version, "clube");
+  assert.equal(comRota("/clube/").fields.bb_lp_version, "clube");
+  // Rota irmã de nome parecido não pega a exceção.
+  assert.equal(comRota("/clube-de-assinaturas").fields.bb_lp_version, "clube-de-assinaturas");
+});
+
+test("/clube/<peca>: campanha, conjunto e anúncio da URL chegam ao card", () => {
+  const r = comRota(
+    "/clube/bloqueio-na-agenda",
+    "?fase=MEIO-SET26&campanha=BB-MEIO-CLUBE-SET26&publico=AMPLO-P3-M4-MIGRACAO" +
+      "&ad=ESTATICO-P3-M4-BLOQUEIO-NA-AGENDA-MEIO&creative=ESTATICO-P3-M4-BLOQUEIO-NA-AGENDA-MEIO" +
+      "&campaign_id=120250000000000001&adset_id=120250000000000002&ad_id=120250000000000003",
+  );
+  assert.equal(r.fields.bb_campaign_name, "BB-MEIO-CLUBE-SET26");
+  assert.equal(r.fields.bb_campaign_id, "120250000000000001");
+  assert.equal(r.fields.bb_adset_id, "120250000000000002");
+  assert.equal(r.fields.bb_ad_id, "120250000000000003");
+  assert.equal(r.fields.bb_lp_version, "clube-bloqueio-na-agenda");
+  // A Descrição da Campanha (8 segmentos) abre pela página e carrega conjunto e anúncio.
+  assert.equal(
+    r.originDesc,
+    "clube-bloqueio-na-agenda | MEIO-SET26 | BB-MEIO-CLUBE-SET26 | AMPLO-P3-M4-MIGRACAO | " +
+      "ESTATICO-P3-M4-BLOQUEIO-NA-AGENDA-MEIO | ESTATICO-P3-M4-BLOQUEIO-NA-AGENDA-MEIO | n/d | AMPLO-P3-M4-MIGRACAO",
+  );
+});

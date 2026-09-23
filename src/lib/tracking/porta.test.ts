@@ -150,3 +150,30 @@ test("paramsGuiaBaixado: porta só quando a LP da isca está no mapa", () => {
   assert.deepEqual(paramsGuiaBaixado("cadeira-cheia"), { guia: "cadeira-cheia", porta: 1, tema: "cadeira-cheia", pagina: "/obrigado" });
   assert.deepEqual(paramsGuiaBaixado("isca-que-nao-existe"), { guia: "isca-que-nao-existe", pagina: "/obrigado" });
 });
+
+// ————— /clube/[peca]: porta declarada em portas-clube.ts (cap. 36 §4.2) —————
+
+test("/clube/<peca>: P2 e P3 nascem com a porta certa; página genérica não recebe porta", () => {
+  assert.deepEqual(portaDaPagina("/clube/sem-caderno"), { porta: 2, tema: "sem-caderno" });
+  assert.deepEqual(portaDaPagina("/clube/um-sistema-so"), { porta: 3, tema: "um-sistema-so" });
+  assert.deepEqual(portaDaPagina("/clube/bloqueio-na-agenda/"), { porta: 3, tema: "bloqueio-na-agenda" });
+  assert.deepEqual(portaDaPagina("/clube/plano-com-regra"), { porta: 1, tema: "plano-com-regra" });
+  assert.equal(portaDaPagina("/clube/cobranca-automatica"), null);
+  assert.equal(portaDaPagina("/clube/parceiro-guapo"), null);
+  // Slug inexistente e sub-rota não inventam porta.
+  assert.equal(portaDaPagina("/clube/precificacao"), null);
+  assert.equal(portaDaPagina("/clube/sem-caderno/extra"), null);
+  assert.equal(portaDaPagina("/clube"), null);
+});
+
+test("/clube/<peca>: o Lead leva a porta da página, e o link ainda vence", () => {
+  assert.equal(portaDoLead("/clube/sem-caderno"), 2);
+  assert.equal(portaDoLead("/clube/um-sistema-so", null), 3);
+  assert.equal(portaDoLead("/clube/cobranca-automatica"), undefined);
+  assert.equal(portaDoLead("/clube/sem-caderno", "p3-migracao"), 3);
+  assert.deepEqual(paramsDaPagina("/clube/sem-caderno", "p2-caderno"), {
+    pagina: "/clube/sem-caderno",
+    porta: 2,
+    tema: "sem-caderno",
+  });
+});

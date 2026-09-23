@@ -1,0 +1,409 @@
+/**
+ * /clube/[peca] — O TEXTO DAS 11 PÁGINAS POR ANÚNCIO. Um template, onze objetos.
+ *
+ * Plano: bestbarbers-ai/docs/operacional/plano-v3-maquina-vendas/
+ * 36-ARQUITETURA-TOPO-MEIO-E-PAGINAS-2026-09-23.md §4.
+ *
+ * ────────────────────────────────────────────────────────────────────────────
+ * A REGRA QUE FAZ ISTO FUNCIONAR: MESSAGE MATCH
+ * ────────────────────────────────────────────────────────────────────────────
+ * A primeira dobra REPETE a promessa do anúncio, quase literalmente. Quem clicou em
+ * «o cartão recusou e a cobrança parou ali» tem que ler essa frase ao chegar. Por
+ * isso cada peça carrega `anuncio.frase` — o trecho LITERAL do anúncio — e o teste
+ * `clube-pecas.test.ts` recusa página cujo título não contenha essa frase.
+ * Mudou o anúncio? Muda a `frase` e o título juntos, ou o teste para o deploy.
+ *
+ * ────────────────────────────────────────────────────────────────────────────
+ * O QUE ESTE ARQUIVO NÃO TEM (e o teste cobra)
+ * ────────────────────────────────────────────────────────────────────────────
+ *  - PORTA: mora em `lib/tracking/portas-clube.ts` (o pixel precisa dela em todo o
+ *    site; este texto não). O tipo `SlugClube` amarra os dois.
+ *  - NÚMERO DE ESCALA DIGITADO: «1.200+» e «51.000+» entram por token
+ *    (`{barbearias}`, `{assinantes}`) e saem de `lib/numeros-oficiais.ts`.
+ *  - ORIGEM DO PLOOMES: é do `useUtmParams`, dentro do formulário — nunca daqui.
+ *  - PREÇO: a única menção é a nota do herói da família («A partir de R$299»).
+ *  - NOME de cliente, parceiro ou concorrente — nem nas páginas dos vídeos de
+ *    parceiro. O vídeo já mostra a pessoa; a página fala do mecanismo.
+ *  - Número de tentativas ou prazo da retentativa, promessa de resultado
+ *    («zero inadimplência», «garantido»), «100% automática» (ADENDO-LASTRO A2).
+ *
+ * O resto da página (demonstração, como funciona, comparativo, objeções, números,
+ * condições, formulário, FAQ geral) é o da família `/projeto-do-clube`, pela
+ * situação que a porta implica — ver `configDaPaginaClube`.
+ *
+ * Fontes do texto de cada anúncio:
+ *  - ESTÁTICOS: bestbarbers-ai/docs/operacional/plano-v3-maquina-vendas/
+ *    criativos-funil-clube/06-OITO-ESTATICOS-TEXTO-FINAL-2026-09-23.md — o SSOT do
+ *    texto que foi para a arte (NÃO o 05, que são as 32 hipóteses dos autores).
+ *    A `frase` de cada página é a headline do estático, literal.
+ *  - Vídeos: transcrições em bestbarbers-ai/output/trafego-pago/transcricoes/ —
+ *    transcrição AUTOMÁTICA do original; conferir contra o corte que vai ao ar
+ *    (cap. 36 §11, item 8). Por isso as quatro levam `conferir`.
+ */
+
+import type {
+  PcArtefatoId,
+  PcPaginaConfig,
+  PcPeca,
+  PcSituacao,
+} from "../app/projeto-do-clube/_components/pc.types.ts";
+import type { Porta } from "../lib/tracking/porta.ts";
+import { PORTAS_CLUBE, type SlugClube } from "../lib/tracking/portas-clube.ts";
+import { comNumerosOficiais } from "../lib/numeros-oficiais.ts";
+
+export interface ConteudoPecaClube {
+  /** Nome curto do conceito, para quem lê o código e o Events Manager. */
+  conceito: string;
+  anuncio: {
+    /** Onde está o texto do anúncio. */
+    fonte: string;
+    /** Trecho LITERAL do anúncio que a primeira dobra tem que repetir. */
+    frase: string;
+  };
+  /** Primeira dobra: título (contém `anuncio.frase`) e apoio. */
+  titulo: string;
+  apoio: string;
+  /** Botão principal do herói — leva à demonstração da página. */
+  botaoPrincipal: string;
+  /** A prova específica DESTA promessa (bloco «O seu caso»). */
+  prova: { titulo: string; texto: string };
+  /** Pergunta em destaque no FAQ — a objeção que a promessa desperta. */
+  faq: { pergunta: string; resposta: string };
+  /**
+   * A tela do sistema que prova ESTA promessa, no herói (id de `pc-artefatos.ts`).
+   * Ausente = a tela padrão da situação. As telas são recriações fiéis do painel com
+   * dados fictícios — a captura real traz cliente, faturamento e taxas.
+   */
+  tela?: PcArtefatoId;
+  /** Pendência antes de o anúncio apontar para cá. Ausente = pronta. */
+  conferir?: string;
+}
+
+const CONFERIR_VIDEO =
+  "O texto do anúncio vem da transcrição automática do vídeo original. Conferir a frase contra o corte que vai ao ar (cap. 36 §11, item 8) antes de ligar o anúncio a esta página.";
+
+export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
+  // ─────────────────────────────── TOPO ───────────────────────────────
+  "plano-com-regra": {
+    conceito: "Medo do ilimitado",
+    tela: "clube-plano-regra",
+    anuncio: {
+      fonte: "06 · t1 · COPY 3 do André (MEDO DO ILIMITADO)",
+      frase: "E se o cliente pagar a assinatura e vier cortar toda semana?",
+    },
+    titulo: "E se o cliente pagar a assinatura e vier cortar toda semana?",
+    apoio:
+      "O maior erro é vender assinatura sem regras e sem trava de agendamento no sistema. Crie planos limitados de segunda a quarta, por exemplo, e configure as regras de agendamento na BestBarbers.",
+    botaoPrincipal: "Ver como montar o plano com regra",
+    prova: {
+      titulo: "A regra fica no plano, não na sua memória",
+      texto:
+        "Na BestBarbers você cadastra o plano com os dias em que ele vale e o limite de utilização no mês. O assinante agenda pelo app dentro dessa regra, a mensalidade é cobrada no cartão todo mês e quem atrasou fica bloqueado. Você não precisa barrar ninguém no balcão.",
+    },
+    faq: {
+      // Os dois campos reais do cadastro do plano (a arte t1 mostra a tela):
+      // «Dias específicos» e «Limite de utilização».
+      pergunta: "Dá para limitar o plano por dia da semana e por quantidade de usos no mês?",
+      resposta:
+        "Sim. No cadastro do plano você escolhe os dias específicos em que ele vale e o limite de utilização no mês, e o agendamento pelo app segue essa regra.",
+    },
+  },
+
+  "cobranca-automatica": {
+    conceito: "Cobrança e inadimplência",
+    tela: "clube-cobranca",
+    anuncio: {
+      fonte: "06 · t2 · Anúncio 5 do André (Cobrança e Inadimplência)",
+      frase: "Você não precisa mais se preocupar em cobrar a assinatura do seu cliente",
+    },
+    titulo: "Você não precisa mais se preocupar em cobrar a assinatura do seu cliente.",
+    apoio:
+      "A BestBarbers cobra a mensalidade dos assinantes da sua barbearia no cartão, todo mês, de forma automática. Quem está em dia agenda pelo app; quem atrasou fica bloqueado.",
+    botaoPrincipal: "Ver a cobrança automática",
+    prova: {
+      titulo: "O cliente passa o cartão uma vez",
+      texto:
+        "Na adesão, o assinante cadastra o cartão. A partir daí a mensalidade é cobrada todo mês, sozinha. Se o cartão recusa, o sistema tenta cobrar de novo. E você vê na hora quem está em dia e quem atrasou. A BestBarbers está em {barbearias} barbearias.",
+    },
+    faq: {
+      pergunta: "E se o cartão do cliente recusar?",
+      resposta:
+        "O sistema tenta a cobrança de novo, sozinho. Enquanto o pagamento não entra, o assinante fica bloqueado para agendar pelo app.",
+    },
+  },
+
+  "mes-que-comeca-pago": {
+    conceito: "O dia 1",
+    tela: "clube-cobranca",
+    anuncio: {
+      fonte: "06 · t3 · O dia 1",
+      frase: "Toda barbearia começa o mês do zero. A sua também?",
+    },
+    titulo: "Toda barbearia começa o mês do zero. A sua também?",
+    apoio:
+      "O erro não é faturar pouco: é começar todo dia 1 com a folha do dia 5 já vencendo e nenhuma mensalidade entrando. Monte o clube da sua barbearia na BestBarbers: o cliente cadastra o cartão uma vez e a mensalidade é cobrada todo mês, venha ele à barbearia ou não.",
+    botaoPrincipal: "Ver como a mensalidade entra",
+    prova: {
+      titulo: "A receita do clube não depende do movimento da semana",
+      texto:
+        "Cada assinante tem a data de cobrança dele, definida na adesão. Nessa data a mensalidade é cobrada no cartão, sozinha — com a cadeira cheia ou vazia. No primeiro mês, a receita é a das assinaturas que você acabou de vender; a partir daí, o clube entra todo mês.",
+    },
+    faq: {
+      // O «dia 1» é da barbearia (a despesa), não da cobrança: o vencimento é por
+      // assinante. A pergunta existe para ninguém ler a manchete como promessa de data.
+      pergunta: "A mensalidade é cobrada sempre no dia 1?",
+      resposta:
+        "Não necessariamente. A data de cobrança é de cada assinante, definida na adesão. O que não muda é que ela acontece no cartão, na data marcada, sem você cobrar ninguém.",
+    },
+  },
+
+  retentativa: {
+    conceito: "O cartão que recusou",
+    tela: "clube-assinatura-vencida",
+    anuncio: {
+      fonte: "06 · t4 · O cartão que recusou",
+      frase: "O cartão do assinante recusou. E aí, quem cobra de novo?",
+    },
+    titulo: "O cartão do assinante recusou. E aí, quem cobra de novo?",
+    apoio:
+      "Na maioria das barbearias, quem cobra de novo é o dono — quando ele lembra. Na BestBarbers, quando o cartão recusa, o sistema tenta de novo sozinho, e quem está em atraso fica bloqueado para agendar.",
+    botaoPrincipal: "Ver o que acontece quando o cartão recusa",
+    prova: {
+      titulo: "Você não precisa ser a segunda tentativa",
+      texto:
+        "Cartão cancelado, limite estourado, banco fora do ar: acontece em qualquer cobrança no cartão, em qualquer barbearia. Na BestBarbers, quando o cartão do assinante recusa, o sistema tenta cobrar de novo, sem você precisar lembrar. E enquanto o pagamento não entra, o assinante fica bloqueado para marcar horário pelo app.",
+    },
+    faq: {
+      pergunta: "O assinante com o cartão recusado continua agendando?",
+      resposta:
+        "Não pelo app. Enquanto a mensalidade não é paga, ele fica bloqueado para agendar. Quem está em dia agenda normalmente.",
+    },
+  },
+
+  "parceiro-astro": {
+    conceito: "Vídeo de parceiro · a cobrança que era chata",
+    tela: "clube-cobranca",
+    anuncio: {
+      fonte: "transcricoes/du-duastro-assinatura-divisor-de-aguas-abr26.txt",
+      frase: "ficar cobrando cliente",
+    },
+    titulo: "Chega de ficar cobrando cliente todo mês.",
+    apoio:
+      "Na BestBarbers, a cobrança do clube é automática: o cliente passa o cartão uma vez e a mensalidade é cobrada todo mês, sozinha. Quem está em dia agenda pelo app; quem atrasou fica bloqueado. Você volta a cuidar da barbearia, não da cobrança.",
+    botaoPrincipal: "Ver a cobrança automática",
+    prova: {
+      titulo: "O clube não é só um plano para o cliente",
+      texto:
+        "É uma ferramenta de gestão para a barbearia. Na BestBarbers você vê na hora quem está em dia e quem atrasou, o histórico de cobrança de cada assinante, mês a mês, e a comissão das assinaturas separada por profissional.",
+    },
+    faq: {
+      pergunta: "Preciso cobrar o assinante que atrasou?",
+      resposta:
+        "Não. A cobrança é no cartão e, se o cartão recusa, o sistema tenta de novo. Enquanto não paga, o assinante fica bloqueado para agendar pelo app.",
+    },
+    conferir: CONFERIR_VIDEO,
+  },
+
+  "app-proprio": {
+    conceito: "Vídeo de parceiro · app com a marca da barbearia",
+    anuncio: {
+      fonte: "transcricoes/rafael-guapo.txt",
+      frase: "aplicativo com a sua marca",
+    },
+    titulo: "Um aplicativo com a sua marca, a sua logo e a sua identidade visual, no bolso do seu cliente.",
+    apoio:
+      "No app da sua barbearia o cliente escolhe o profissional e o serviço, agenda sozinho e assina o clube. A mensalidade é cobrada no cartão todo mês, e quem atrasou fica bloqueado para agendar.",
+    botaoPrincipal: "Ver o app com a sua marca",
+    prova: {
+      titulo: "O clube mora dentro do app",
+      texto:
+        "O cliente faz login, escolhe o plano e assina pelo próprio app da sua barbearia. Dali em diante ele agenda pelo mesmo app, e a mensalidade é cobrada no cartão sem você pedir.",
+    },
+    faq: {
+      pergunta: "O app sai com o nome e a marca da minha barbearia?",
+      resposta:
+        "Sim: o app leva a marca, a logo e a identidade visual da sua barbearia. O que entra no seu caso e as condições são apresentados na conversa, antes de qualquer compromisso.",
+    },
+    conferir:
+      "Nenhum registro liga a transcrição `rafael-guapo.txt` ao anúncio «Topo 19: vídeo Guapo app próprio» (ad 120252969265930522) — a ligação foi pelo assunto. " +
+      CONFERIR_VIDEO,
+  },
+
+  // ─────────────────────────────── MEIO ───────────────────────────────
+  "sem-caderno": {
+    conceito: "O fim do caderninho",
+    tela: "clube-previsao-faturas",
+    anuncio: {
+      fonte: "06 · m1 · COPY 4 do André (O FIM DO CADERNINHO)",
+      frase: "É impossível gerenciar as assinaturas da sua barbearia manualmente",
+    },
+    titulo: "É impossível gerenciar as assinaturas da sua barbearia manualmente.",
+    apoio:
+      "Você vai perder o controle e vai ter prejuízos. Com a BestBarbers, a cobrança é automática no cartão, quem pagou agenda pelo app e quem atrasou fica bloqueado, de forma automática.",
+    botaoPrincipal: "Ver quem está em dia",
+    prova: {
+      titulo: "Você abre a lista e vê quem pagou",
+      texto:
+        "Na BestBarbers você vê na hora quais assinantes estão em dia e quais atrasaram. Quem atrasou entra numa lista, e você manda mensagem para todos de uma vez. A mensalidade de quem está em dia é cobrada no cartão todo mês, sozinha — você não cobra ninguém.",
+    },
+    faq: {
+      pergunta: "Preciso começar o clube do zero para sair do caderno?",
+      resposta:
+        "Não. A gente importa a sua lista de assinantes com os vencimentos que eles já têm, e cada assinante cadastra o cartão para continuar no app.",
+    },
+  },
+
+  "um-sistema-so": {
+    conceito: "Dois sistemas",
+    anuncio: {
+      fonte: "06 · m3 · COPY 7 do André (DOIS SISTEMAS), cortada para 3 itens",
+      frase: "A agenda da barbearia em um sistema e a cobrança das assinaturas em outro?",
+    },
+    // Só a headline do estático: com o sub junto, o título dava 8 linhas no celular.
+    titulo: "A agenda da barbearia em um sistema e a cobrança das assinaturas em outro?",
+    apoio:
+      "Você está perdendo tempo e dinheiro. Com a BestBarbers, é um sistema só: o cliente assina e paga no cartão, agenda pelo app da sua barbearia, e a comissão do barbeiro já sai calculada dessa assinatura.",
+    botaoPrincipal: "Ver agenda e cobrança juntas",
+    prova: {
+      // Os três itens da COPY 7 cortada (cap. 36 §5.3): a comissão fica porque é o
+      // item que só faz sentido com agenda e cobrança no mesmo sistema.
+      titulo: "A comissão só fecha quando agenda e cobrança estão juntas",
+      texto:
+        "Com a agenda num sistema e a cobrança em outro, ninguém liga o corte do assinante ao pagamento dele. Na BestBarbers os dois estão juntos: o atendimento do assinante entra na comissão do profissional, em coluna separada, com o que já foi pago e o que está pendente.",
+    },
+    faq: {
+      pergunta: "Troco de sistema sem perder assinante?",
+      resposta:
+        "Sim. A gente importa a sua planilha de assinantes com os vencimentos que eles já têm. Cada assinante cadastra o cartão de novo para continuar no app — e isso é dito a ele com transparência.",
+    },
+  },
+
+  "bloqueio-na-agenda": {
+    conceito: "O inadimplente que continua agendando",
+    tela: "clube-assinatura-vencida",
+    anuncio: {
+      fonte: "06 · m4 · O inadimplente que continua agendando",
+      frase: "O cliente que está devendo continua marcando horário no seu sistema?",
+    },
+    titulo: "O cliente que está devendo continua marcando horário no seu sistema?",
+    apoio:
+      "Se a resposta é sim, quem decide se atende ou não é o seu barbeiro, com o cliente já na cadeira. Na BestBarbers a regra é do sistema: quem está em dia agenda pelo app sozinho, quem atrasou a mensalidade fica bloqueado.",
+    botaoPrincipal: "Ver o bloqueio na agenda",
+    prova: {
+      titulo: "O bloqueio acontece na agenda, não no balcão",
+      texto:
+        "Quando a mensalidade vence sem pagamento, o assinante fica bloqueado para agendar pelo app — sem você precisar avisar esse cliente nem barrar ele na porta. A mensalidade é cobrada no cartão todo mês; se o cartão recusa, o sistema tenta cobrar de novo.",
+    },
+    faq: {
+      pergunta: "Quem está em dia sente alguma diferença?",
+      resposta:
+        "Não. Quem está com a mensalidade em dia agenda pelo app normalmente; o bloqueio vale só para quem atrasou.",
+    },
+  },
+
+  "parceiro-seletto": {
+    conceito: "Vídeo de parceiro · previsibilidade de caixa",
+    tela: "clube-previsao-faturas",
+    anuncio: {
+      fonte: "transcricoes/joao-seletto-07-220-novos-assinantes-mai26.txt",
+      frase: "previsibilidade de caixa",
+    },
+    // Os números do vídeo (assinantes novos, média por mês) são RESULTADO DE TERCEIRO:
+    // não entram na página, que fala do mecanismo e não da operação de outra barbearia.
+    titulo: "Assinante novo entrando todo mês vira previsibilidade de caixa.",
+    apoio:
+      "Na BestBarbers, cada assinante paga a mensalidade no cartão, na data dele, todo mês. Você vê quem está em dia antes de o mês começar, em vez de descobrir no fechamento.",
+    botaoPrincipal: "Ver como o clube entra no caixa",
+    prova: {
+      titulo: "O ritmo do clube vira número na tela",
+      texto:
+        "Na BestBarbers você acompanha os assinantes do clube, quem está em dia e quem atrasou, e o histórico de cobrança de cada um, mês a mês. Resultado de outra barbearia não é previsão para a sua — por isso a conversa começa pela sua carteira.",
+    },
+    faq: {
+      pergunta: "Quantos assinantes eu vou conseguir?",
+      resposta:
+        "Ninguém pode prometer esse número: depende da sua carteira, do preço e da regra do plano. Na conversa a gente olha a sua operação antes de falar de clube.",
+    },
+    conferir: CONFERIR_VIDEO,
+  },
+
+  "parceiro-guapo": {
+    conceito: "Vídeo de parceiro · o mecanismo do clube",
+    tela: "clube-cobranca",
+    anuncio: {
+      fonte: "transcricoes/guapo-clube-faturamento-garantido-cortes-aprov.txt",
+      frase: "O cliente assina, o valor cai automático",
+    },
+    titulo: "O cliente assina, o valor cai automático e ele agenda sozinho pelo app.",
+    apoio:
+      "É o clube rodando na BestBarbers: a mensalidade é cobrada no cartão, na data de cada assinante, e o mês já começa com a receita do clube entrando.",
+    botaoPrincipal: "Ver o clube funcionando",
+    prova: {
+      titulo: "Três passos, um depois do outro",
+      texto:
+        "O cliente assina pelo app da sua barbearia e cadastra o cartão. A mensalidade é cobrada todo mês, sozinha. Com o pagamento em dia ele agenda pelo app; se atrasar, fica bloqueado.",
+    },
+    faq: {
+      pergunta: "O primeiro mês já começa pago?",
+      resposta:
+        "O primeiro mês tem a receita das assinaturas que você acabou de vender. A partir daí, cada mês começa com a mensalidade dos assinantes sendo cobrada na data de cada um.",
+    },
+    conferir:
+      "A transcrição traz «igualdade de faturamento garantido» e «Best Buy» — erros do reconhecimento de voz. A página usa só o trecho legível. " +
+      CONFERIR_VIDEO,
+  },
+};
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Montagem — do conteúdo para a configuração que o template da família entende.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/**
+ * Porta → situação da família. A situação escolhe o texto de apoio da página
+ * (comparativo, objeções, FAQ geral) e pré-preenche a pergunta do clube no
+ * formulário. P1 cai em `geral`, e não em `abertura`: `abertura` na família é
+ * «vai abrir a barbearia», e o dono que ainda não montou o clube já tem barbearia.
+ */
+export function situacaoDaPorta(porta: Porta | null): PcSituacao {
+  if (porta === 2) return "manual";
+  if (porta === 3) return "migracao";
+  return "geral";
+}
+
+export function pecaDoClube(slug: SlugClube): PcPeca {
+  const c = CONTEUDO_CLUBE[slug];
+  const { porta, etapa } = PORTAS_CLUBE[slug];
+  return {
+    id: `clube/${slug}`,
+    conceito: c.conceito,
+    situacao: situacaoDaPorta(porta),
+    etapa,
+    titulo: comNumerosOficiais(c.titulo),
+    apoio: comNumerosOficiais(c.apoio),
+    botaoPrincipal: c.botaoPrincipal,
+    exemploTitulo: comNumerosOficiais(c.prova.titulo),
+    exemploTexto: comNumerosOficiais(c.prova.texto),
+    faqPergunta: comNumerosOficiais(c.faq.pergunta),
+    faqResposta: comNumerosOficiais(c.faq.resposta),
+    // «Como segue a conversa» e nenhum artefato exigido: a página não promete
+    // demonstração aberta que ainda é placeholder (guarda V9 da família).
+    ponte: "como_segue",
+    formularioVariante: "curto",
+    botaoContato: "Quero conversar sobre meu clube",
+    artefatoExigido: null,
+  };
+}
+
+export function configDaPaginaClube(slug: SlugClube): PcPaginaConfig {
+  const peca = pecaDoClube(slug);
+  return {
+    situacao: peca.situacao,
+    rota: `/clube/${slug}`,
+    // `source` do dataLayer/useLeadForm e rótulo da visita DIRETA (sem UTM). No
+    // tráfego pago a origem e a descrição vêm do `useUtmParams`, nunca daqui.
+    source: `lp_clube_${slug.replace(/-/g, "_")}`,
+    rotulo: `Clube-${slug}`,
+    peca,
+    ...(CONTEUDO_CLUBE[slug].tela ? { artefatoHeroi: CONTEUDO_CLUBE[slug].tela } : {}),
+  };
+}

@@ -20,6 +20,9 @@
  * a porta entra como parâmetro ao lado, nunca no lugar do nome.
  */
 
+// Extensão explícita: o `node --test` não resolve import relativo sem ela.
+import { PORTAS_CLUBE, slugClubeDoCaminho } from "./portas-clube.ts";
+
 export type Porta = 1 | 2 | 3 | 4;
 
 export interface PaginaPorta {
@@ -125,12 +128,20 @@ function normalizarPath(pathname: string): string {
   return semBarra === "" ? "/" : semBarra;
 }
 
-/** Porta da página, se ela estiver no mapa. */
+/**
+ * Porta da página, se ela estiver no mapa — ou se for uma das páginas por anúncio de
+ * `/clube/[peca]`, cuja porta é declarada em `portas-clube.ts` (rota dinâmica: não
+ * existe um `page.tsx` por slug, então elas não cabem no mapa acima nem na guarda
+ * de `porta.test.ts` que confere o arquivo). Tema = o próprio slug.
+ */
 export function portaDaPagina(pathname: string): PaginaPorta | null {
-  const chave = normalizarPath(pathname) as PaginaComPorta;
-  return Object.prototype.hasOwnProperty.call(PORTA_POR_PAGINA, chave)
-    ? PORTA_POR_PAGINA[chave]
-    : null;
+  const chave = normalizarPath(pathname);
+  if (Object.prototype.hasOwnProperty.call(PORTA_POR_PAGINA, chave)) {
+    return PORTA_POR_PAGINA[chave as PaginaComPorta];
+  }
+  const slug = slugClubeDoCaminho(chave);
+  const porta = slug ? PORTAS_CLUBE[slug].porta : null;
+  return slug && porta ? { porta, tema: slug } : null;
 }
 
 /**

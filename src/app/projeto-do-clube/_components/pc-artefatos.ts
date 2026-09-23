@@ -41,27 +41,54 @@ export interface PcArtefatoSpec {
 }
 
 export const PC_ARTEFATOS: Record<string, PcArtefatoSpec> = {
-  // TODO(asset): clube-cobranca — herói das rotas geral e clube-manual + mecanismo
+  // Recriação fiel do «Extrato de recebimentos de assinaturas» do painel, com dados
+  // fictícios (scripts/creative/render-telas-sistema-clube.ts, repo do OS). A captura
+  // real tinha nomes de clientes, faturamento real e a coluna de taxas.
   "clube-cobranca": {
     id: "clube-cobranca",
     descricao:
-      "Tela do clube com a cobrança de um assinante: plano, data e situação do pagamento. Marca e dados fictícios identificados.",
+      "Extrato de recebimentos de assinaturas: mensalidades pagas no crédito, com status Recebido, por assinante. Dados fictícios identificados.",
     proporcao: "4/3",
     pesoAlvoKb: 150,
     arquivoFinal: "/images/projeto-clube/clube-cobranca.webp",
-    alt: "Tela do clube de assinaturas mostrando a cobrança de um assinante",
-    status: "placeholder",
+    alt: "Extrato de recebimentos do clube: mensalidades pagas no cartão de crédito, com status recebido",
+    status: "real",
   },
-  // TODO(asset): clube-plano-regra — herói das rotas migracao e abertura
+  // Recriação fiel do cadastro do plano do painel (dados fictícios): limite de
+  // utilização e dias específicos ligados, segunda a quarta marcados.
   "clube-plano-regra": {
     id: "clube-plano-regra",
     descricao:
-      "Cadastro do plano do clube com os serviços incluídos e os dias de uso configurados. Nomes e valores fictícios.",
+      "Cadastro do plano do clube com limite de utilização e dias específicos (segunda a quarta). Nomes e valores fictícios.",
     proporcao: "4/3",
     pesoAlvoKb: 150,
     arquivoFinal: "/images/projeto-clube/clube-plano-regra.webp",
-    alt: "Cadastro de um plano de clube com serviços incluídos e dias de uso",
-    status: "placeholder",
+    alt: "Cadastro de um plano de clube com limite de utilização e atendimento só de segunda a quarta",
+    status: "real",
+  },
+  // Recriação fiel de «Detalhes da assinatura»: assinatura Vencida, com a fatura do mês
+  // vencida e as anteriores pagas. Páginas: retentativa e bloqueio-na-agenda.
+  "clube-assinatura-vencida": {
+    id: "clube-assinatura-vencida",
+    descricao:
+      "Detalhes de uma assinatura com status Vencido: fatura do mês vencida, meses anteriores pagos. Dados fictícios.",
+    proporcao: "4/3",
+    pesoAlvoKb: 150,
+    arquivoFinal: "/images/projeto-clube/clube-assinatura-vencida.webp",
+    alt: "Detalhes de uma assinatura vencida: a fatura do mês não foi paga e as anteriores foram",
+    status: "real",
+  },
+  // Recriação fiel de «Previsão de pagamentos de faturas»: pagas, vencidas e aguardando no
+  // mês, por assinante. Páginas: sem-caderno e parceiro-seletto.
+  "clube-previsao-faturas": {
+    id: "clube-previsao-faturas",
+    descricao:
+      "Previsão de pagamentos por data de vencimento: faturas do mês pagas, vencidas e aguardando, por assinante. Dados fictícios.",
+    proporcao: "4/3",
+    pesoAlvoKb: 150,
+    arquivoFinal: "/images/projeto-clube/clube-previsao-faturas.webp",
+    alt: "Previsão de faturas do mês: quais assinantes pagaram, quais venceram e quais estão aguardando",
+    status: "real",
   },
   // TODO(asset): clube-extrato-comissao — peças L004, L013, L051, L052, L054, L095
   "clube-extrato-comissao": {
