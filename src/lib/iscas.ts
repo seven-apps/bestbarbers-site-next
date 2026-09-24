@@ -19,7 +19,10 @@
  */
 
 /** Ids válidos de isca. É o que a /obrigado aceita em `?isca=`. */
-export type IscaId = "cadeira-cheia" | "do-zero-a-assinatura";
+export type IscaId =
+  | "cadeira-cheia"
+  | "do-zero-a-assinatura"
+  | "assinante-por-indicacao";
 
 export interface Isca {
   /** Nome do guia, como aparece no h1 ("Seu guia {titulo} está aqui"). */
@@ -86,6 +89,27 @@ export const ISCAS: Record<IscaId, Isca> = {
     whatsapp:
       "Olá!%20Baixei%20o%20guia%20Assinatura%20do%20Zero%20e%20quero%20ver%20como%20o%20app%20cobra%20a%20mensalidade%20e%20fecha%20a%20comissão%20do%20clube.",
     pixelId: "Guia Assinatura do Zero",
+  },
+  /*
+   * Terceira isca (24/Set/2026). SSOT do conteúdo:
+   * bestbarbers-ai/data/iscas/ebooks.json → `assinante-por-indicacao` (7 páginas, 6
+   * passos) e docs/operacional/ebook-assinante-por-indicacao.md. LP: /assinante-por-indicacao.
+   *
+   * `pixelId` NÃO leva o sufixo "PDF": o content_name do evento de download é montado
+   * como `${isca.pixelId} PDF` na ObrigadoContent — escrever "… PDF" aqui sairia
+   * duplicado ("Guia Assinante por Indicação PDF PDF") no Events Manager.
+   */
+  "assinante-por-indicacao": {
+    titulo: "Assinante por Indicação",
+    palavraDestaque: "por Indicação",
+    pdf: "/guia-assinante-por-indicacao.pdf",
+    subtitulo:
+      "Comece pelo “Passo 1 — O Pedido na Cadeira”: é ele que põe o método na rua ainda esta semana.",
+    consultor:
+      "Quer ver a conta do convite com os números da sua barbearia — e a cortesia cadastrada com a comissão de cada barbeiro? Um consultor da BestBarbers monta isso com você numa conversa rápida de 15 min.",
+    whatsapp:
+      "Olá!%20Baixei%20o%20guia%20Assinante%20por%20Indicação%20e%20quero%20ver%20como%20o%20app%20registra%20o%20convidado%20e%20fecha%20a%20comissão%20do%20barbeiro.",
+    pixelId: "Guia Assinante por Indicação",
   },
 };
 
