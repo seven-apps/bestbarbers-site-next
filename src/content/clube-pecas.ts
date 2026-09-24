@@ -421,7 +421,7 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
   },
 
   "bloqueio-na-agenda": {
-    conceito: "O inadimplente que continua agendando",
+    conceito: "Só agenda quem está em dia",
     atmosfera: "#3c2814",
     telaProva: "agenda-bloqueio",
     passos: [
@@ -436,15 +436,15 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
     ],
     tela: "clube-assinatura-vencida",
     anuncio: {
-      fonte: "06 · m4 · O inadimplente que continua agendando",
-      frase: "O cliente que está devendo continua marcando horário no seu sistema?",
+      fonte: "06 · m4 · Só agenda quem está em dia (copy trocada 24/Set)",
+      frase: "No BestBarbers, o assinante da sua barbearia só agenda se estiver em dia.",
       kicker: "Quem atrasou não agenda",
       cta: "Ver o bloqueio na agenda",
-      destaque: ["continua marcando horário"],
+      destaque: ["só agenda se estiver em dia"],
     },
-    titulo: "O cliente que está devendo continua marcando horário no seu sistema?",
+    titulo: "No BestBarbers, o assinante da sua barbearia só agenda se estiver em dia.",
     apoio:
-      "Se a resposta é sim, quem decide se atende ou não é o seu barbeiro, com o cliente já na cadeira. Na BestBarbers a regra é do sistema: quem está em dia agenda pelo app sozinho, quem atrasou a mensalidade fica bloqueado.",
+      "Se o assinante do seu clube ficar inadimplente, o sistema bloqueia o agendamento automaticamente. Quem está em dia agenda pelo app sozinho.",
     prova: {
       titulo: "O bloqueio acontece na agenda, não no balcão",
       texto:
