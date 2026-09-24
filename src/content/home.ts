@@ -37,16 +37,14 @@ export const homeContent = {
       text: "QUERO UM APP PRÓPRIO\nPARA MINHA BARBEARIA",
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Hero",
     },
-    // DEPENDÊNCIA RESOLVIDA (19/Set/26, 19h41): a arte chegou e foi conferida no pixel —
-    // `public/images/hero-app-proprio-sem-rosto.png`, 1080×434, exatamente o contrato.
-    // O que falta NÃO é arte: o arquivo está UNTRACKED no git. Um commit que pegue só
-    // arquivos modificados sobe esta linha sem a imagem. Precisa de `git add` explícito
-    // do caminho acima (ação do @devops, junto com as outras artes novas).
-    // Contrato cumprido: sem rosto de pessoa, sem logo de barbearia de terceiro.
-    // Saiu daqui: `hero-best-5-influencers.png` (5 rostos, 2 de ex-parceiros banidos).
+    // RESTAURADA em 24/Set/26 por decisão do André: a foto dos cinco parceiros voltou.
+    // Ela foi produzida e publicada com a parceria vigente — acervo legítimo, que fica
+    // intacto (regra de 23/Jun/26: a restrição a ex-parceiro vale só para peça NOVA).
+    // A troca de 22/Set pela `hero-app-proprio-sem-rosto.png` (Barbearia Exemplo) foi um erro.
+    // Dimensão declarada = dimensão real do arquivo (1080×434, conferido com sips).
     image: {
-      src: "/images/hero-app-proprio-sem-rosto.png",
-      alt: "App próprio de barbearia rodando no celular, com a marca da própria barbearia",
+      src: "/images/hero-best-5-influencers.png",
+      alt: "App próprio para barbearia — BestBarbers na App Store e Play Store",
       width: 1080,
       height: 434,
     },
