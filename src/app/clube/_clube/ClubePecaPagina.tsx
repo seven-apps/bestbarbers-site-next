@@ -146,6 +146,7 @@ export function ClubePecaPagina({ slug, variante }: { slug: SlugClube; variante:
           tituloSecao="Conte mais sobre a sua barbearia"
           apoioSecao=""
           ocultarTituloPasso1
+          semNotaSituacao
           compacto
           rotuloContinuar="Continuar"
           clubStatusInicial={PC_CLUB_STATUS_POR_SITUACAO[peca.situacao]}

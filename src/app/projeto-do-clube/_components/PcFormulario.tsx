@@ -111,6 +111,11 @@ export interface PcFormularioProps {
    */
   ocultarTituloPasso1?: boolean;
   /**
+   * Tira a nota «Já marcamos a situação que você escolheu…» do passo 1. A situação continua
+   * pré-preenchida pela rota; só a nota sai. `/clube/[peca]`: decisão do André, 23/Set.
+   */
+  semNotaSituacao?: boolean;
+  /**
    * Espaçamentos enxutos (seção, cartão, barra de passo, perguntas, botão). Os campos mantêm
    * 44 px de área de toque. Usado em `/clube/[peca]`, a pedido do André (23/Set).
    */
@@ -130,6 +135,7 @@ export function PcFormulario({
   situacao = "geral",
   variante = "padrao",
   ocultarTituloPasso1 = false,
+  semNotaSituacao = false,
   compacto = false,
   rotuloContinuar,
   id = PC_FORMULARIO_ID,
@@ -390,6 +396,7 @@ export function PcFormulario({
                     tituloId={tituloPassoId}
                     titulo={PC_ROTULO_CONTEXTO[situacao]}
                     tituloOculto={ocultarTituloPasso1}
+                    semNotaSituacao={semNotaSituacao}
                     {...(rotuloContinuar ? { rotuloBotao: rotuloContinuar } : {})}
                     erroGeral={submitError}
                     animar={animar}
