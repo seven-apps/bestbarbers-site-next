@@ -65,6 +65,8 @@ export interface PcPassoContextoProps {
   titulo?: string;
   /** Some da tela, fica para leitor de tela e como alvo do foco (`sr-only`). */
   tituloOculto?: boolean;
+  /** Não mostra a nota «Já marcamos a situação…» (o pré-preenchimento continua). */
+  semNotaSituacao?: boolean;
   /** True quando o passo entrou por troca (e não na primeira pintura): só aí anima. */
   animar?: boolean;
 }
@@ -80,6 +82,7 @@ export function PcPassoContexto({
   rotuloBotao = "Continuar para pedir contato",
   titulo = "Como está seu clube hoje?",
   tituloOculto = false,
+  semNotaSituacao = false,
   animar = false,
 }: PcPassoContextoProps) {
   const tituloRef = useRef<HTMLHeadingElement | null>(null);
@@ -108,7 +111,7 @@ export function PcPassoContexto({
         {titulo}
       </h3>
 
-      {situacaoHerdada && <p className={estilos.notaSituacao}>{NOTA_SITUACAO_PREENCHIDA}</p>}
+      {situacaoHerdada && !semNotaSituacao && <p className={estilos.notaSituacao}>{NOTA_SITUACAO_PREENCHIDA}</p>}
 
       <PerguntasQualificacao
         valores={valores}
