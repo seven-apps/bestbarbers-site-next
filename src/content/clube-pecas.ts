@@ -496,7 +496,7 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
   },
 
   "parceiro-guapo": {
-    conceito: "Vídeo de parceiro · o mecanismo do clube",
+    conceito: "Vídeo de parceiro · a dor (depender do movimento de porta) e o mecanismo do clube",
     atmosfera: "#322210",
     telaProva: "jornada-assinante",
     passos: [
@@ -512,11 +512,11 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
     tela: "clube-cobranca",
     anuncio: {
       fonte: "transcricoes/guapo-clube-faturamento-garantido-cortes-aprov.txt",
-      frase: "O cliente assina, o valor cai automático",
+      frase: "parar de depender do movimento de porta",
     },
-    titulo: "O cliente assina, o valor cai automático e ele agenda sozinho pelo app.",
+    titulo: "Parar de depender do movimento de porta é ter o mês começando com a receita do clube já entrando.",
     apoio:
-      "É o clube rodando na BestBarbers: a mensalidade é cobrada no cartão, na data de cada assinante, e o mês já começa com a receita do clube entrando.",
+      "É o clube rodando na BestBarbers: o cliente assina, o valor cai automático no cartão, na data dele, e agenda sozinho pelo app da barbearia.",
     botaoPrincipal: "Ver o clube funcionando",
     prova: {
       titulo: "Três passos, um depois do outro",
@@ -529,7 +529,7 @@ export const CONTEUDO_CLUBE: Record<SlugClube, ConteudoPecaClube> = {
         "O primeiro mês tem a receita das assinaturas que você acabou de vender. A partir daí, cada mês começa com a mensalidade dos assinantes sendo cobrada na data de cada um.",
     },
     conferir:
-      "A transcrição traz «igualdade de faturamento garantido» e «Best Buy» — erros do reconhecimento de voz. A página usa só o trecho legível. " +
+      "Corte do André de 23/Set: o vídeo abre com «Quer parar de depender do movimento de porta e ter uma receita previsível?» e o H1 continua essa frase; o mecanismo desceu para o apoio. A transcrição traz «igualdade de faturamento garantido» e «Best Buy» — erros do reconhecimento de voz. " +
       CONFERIR_VIDEO,
   },
 };
