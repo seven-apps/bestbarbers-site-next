@@ -35,22 +35,17 @@ export const clubeContent = {
     cta: {
       text: "QUERO O CLUBE\nNA MINHA BARBEARIA",
     },
-    // Arte do herói: PRODUTO, nunca rosto de pessoa (19/Set/26).
-    // Saiu daqui: `hero-best-5-influencers.png`. Aquela arte tem cinco rostos e o alt
-    // desta linha era genérico — por isso nenhuma varredura por nome a encontrava —
-    // mas dois dos cinco são ex-parceiros com uso de imagem revogado (medido abrindo
-    // o pixel: rosto 1 e rosto 3, o do centro). Recorte não resolve: a arte sai inteira.
-    // Entrou: composição só de aparelhos, no mesmo padrão que a `TrustHeroV12` já
-    // aprovou — sem rosto, sem @ e sem logo de barbearia de ex-parceiro.
-    // As três telas são capturas reais do produto (`imagens-mobile/`): clube de
-    // assinatura no pagamento do plano + tela inicial com o espaço da logo do cliente.
-    // Dimensão declarada = dimensão real do arquivo (a anterior, 1712×450, achatava
-    // uma arte 1080×434 na renderização).
+    // RESTAURADA em 24/Set/26 por decisão do André: a mesma foto dos cinco parceiros da home
+    // («usa essa mesma imagem dos parceiros»). A foto foi produzida e publicada com a parceria
+    // vigente — acervo legítimo, que fica intacto (regra de 23/Jun/26: a restrição a
+    // ex-parceiro vale só para peça NOVA). A troca de 22/Set pela arte de produto
+    // (`hero-clube-app-assinaturas.png`) foi um erro — mesmo conserto da home no 59bc6c2.
+    // Dimensão declarada = dimensão real do arquivo (1080×434), igual à home.
     image: {
-      src: "/images/hero-clube-app-assinaturas.png",
-      alt: "App próprio da barbearia em três celulares: a tela do clube de assinatura no momento do pagamento do plano e a tela inicial com o espaço reservado para a logo da barbearia, no iPhone e no Android",
-      width: 1600,
-      height: 780,
+      src: "/images/hero-best-5-influencers.png",
+      alt: "App próprio para barbearia — BestBarbers na App Store e Play Store",
+      width: 1080,
+      height: 434,
     },
   },
 
