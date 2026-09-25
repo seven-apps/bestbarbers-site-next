@@ -11,7 +11,8 @@
  *  - SERVER COMPONENT: só formulário, FAQ, CTA fixo, eventos e a animação hidratam.
  *  - Ouro é a única cor de ação (o verde fica para o «Pago» das telas); a luz de fundo do herói
  *    é a cor da cena da arte (`atmosfera`).
- *  - A/B do herói (`lib/ab-clube.ts`): `cena` põe a FOTO do anúncio no topo; `base` não.
+ *  - A/B (`lib/ab-clube.ts`): `curta` é esta página como está (o herói `base` de 23/Set); `cena`
+ *    põe a FOTO do anúncio no topo (fora do sorteio desde 24/Set, servida só por `?ab=cena`).
  *
  * O que NÃO mudou: o formulário de 2 passos inteiro (score, porta, originId pelo UTM, eventos de
  * Lead do `useLeadForm`), o FAQ e o rodapé da família.
@@ -20,7 +21,7 @@ import Image from "next/image";
 import type { CSSProperties, ReactNode } from "react";
 
 import { CONTEUDO_CLUBE, ROTULO_CONTATO_CLUBE, configDaPaginaClube } from "@/content/clube-pecas";
-import { caminhoCena } from "@/lib/ab-clube";
+import { META_VARIANTE, caminhoCena } from "@/lib/ab-clube";
 import { NUMEROS_OFICIAIS } from "@/lib/numeros-oficiais";
 import type { SlugClube } from "@/lib/tracking/portas-clube";
 import { PcFormulario, PC_FORMULARIO_ID } from "../../projeto-do-clube/_components/PcFormulario";
@@ -51,7 +52,7 @@ function comDestaque(titulo: string, trechos?: readonly string[]): ReactNode {
   return titulo.split(re).map((parte, i) => (validos.includes(parte) ? <span key={i} className={s.ouro}>{parte}</span> : parte));
 }
 
-export function ClubePecaPagina({ slug, variante }: { slug: SlugClube; variante: "base" | "cena" }) {
+export function ClubePecaPagina({ slug, variante }: { slug: SlugClube; variante: "curta" | "cena" }) {
   const conteudo = CONTEUDO_CLUBE[slug];
   const config = { ...configDaPaginaClube(slug), variante };
   const { peca } = config;
@@ -59,8 +60,8 @@ export function ClubePecaPagina({ slug, variante }: { slug: SlugClube; variante:
 
   return (
     <div className={s.pagina} style={{ "--atmosfera": conteudo.atmosfera } as CSSProperties}>
-      {/* O braço do A/B, para o card do Ploomes (`lead-attribution.ts` lê esta meta). */}
-      <meta name="bb-variante" content={variante} />
+      {/* O braço do A/B, para o card do Ploomes e para todo evento do pixel (`lead-attribution.ts`, `useMetaPixel`). */}
+      <meta name={META_VARIANTE} content={variante} />
 
       <header className={s.cabecalho}>
         <Image src="/images/Logo-BestBarbers-branco_1.webp" alt="BestBarbers" width={132} height={30} loading="eager" />

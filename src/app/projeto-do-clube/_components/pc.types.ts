@@ -77,10 +77,11 @@ export interface PcPaginaConfig {
   /** Selo do herói escolhido pela página — o kicker do anúncio. Ausente = o da situação. */
   identificacao?: string;
   /**
-   * Braço do A/B do herói em `/clube/[peca]`: `base` (sem cena) ou `cena` (a foto do
-   * anúncio no herói). Vai em todo evento; ausente nas rotas que não estão em teste.
+   * Braço do A/B de página em `/clube/[peca]` (`lib/ab-clube.ts`): `curta` (esta página) ou
+   * `cena` (a foto do anúncio no herói, fora do sorteio). O braço `longa` não passa por aqui:
+   * é a `ClubePage`. Vai em todo evento; ausente nas rotas que não estão em teste.
    */
-  variante?: "base" | "cena";
+  variante?: "curta" | "cena";
   /** Tela do herói escolhida pela página (`/clube/[peca]`). Ausente = a da situação. */
   artefatoHeroi?: PcArtefatoId;
 }

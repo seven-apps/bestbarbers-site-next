@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { varianteVista } from '@/lib/ab-clube';
 
 const PIXEL_ID = '1100195158903491';
 
@@ -29,6 +30,17 @@ declare global {
 /** Gera ID único para deduplicação de eventos. Use o MESMO eventId em Pixel + CAPI. */
 export const generateEventId = (): string =>
   `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+
+/**
+ * Braço do A/B de página (`<meta name="bb-variante">`, ver `lib/ab-clube.ts`): entra em TODO
+ * evento do pixel (fbq + image pixel) quando a página em teste o declara. Fora do teste não há
+ * meta e nada muda. O dado explícito do chamador vence (`...data` por cima).
+ */
+const comVariante = (data?: MetaPixelEventData): MetaPixelEventData | undefined => {
+  const variante = varianteVista();
+  if (!variante) return data;
+  return { variante, ...data };
+};
 
 /**
  * Dispara um image pixel diretamente para o endpoint do Facebook.
@@ -97,7 +109,7 @@ export const useMetaPixel = () => {
     const mergedData: MetaPixelEventData = {
       content_name: 'BestBarbers Lead Form',
       content_category: 'lead_generation',
-      ...data,
+      ...comVariante(data),
     };
 
     // Disparo via SDK (envia dados ricos: cookies, user-agent etc.)
@@ -125,7 +137,7 @@ export const useMetaPixel = () => {
     const mergedData: MetaPixelEventData = {
       content_name: 'BestBarbers Registration',
       content_category: 'lead_generation',
-      ...data,
+      ...comVariante(data),
     };
 
     if (typeof window !== 'undefined' && window.fbq) {
@@ -153,7 +165,7 @@ export const useMetaPixel = () => {
     const mergedData: MetaPixelEventData = {
       content_name: 'BestBarbers Qualified Lead',
       content_category: 'lead_generation',
-      ...data,
+      ...comVariante(data),
     };
 
     if (typeof window !== 'undefined' && window.fbq) {
@@ -185,7 +197,7 @@ export const useMetaPixel = () => {
     const mergedData: MetaPixelEventData = {
       content_name: 'BestBarbers Qualified Lead 60',
       content_category: 'lead_generation',
-      ...data,
+      ...comVariante(data),
     };
 
     if (typeof window !== 'undefined' && window.fbq) {
@@ -215,17 +227,18 @@ export const useMetaPixel = () => {
    */
   const trackNonCatalogEvent = useCallback((eventName: string, data?: MetaPixelEventData, externalEventId?: string): Promise<void> => {
     const eventId = externalEventId || generateEventId();
+    const dados = comVariante(data);
 
     if (typeof window !== 'undefined' && window.fbq) {
       try {
-        window.fbq('trackCustom', eventName, data, { eventID: eventId });
+        window.fbq('trackCustom', eventName, dados, { eventID: eventId });
       } catch (error) {
         console.error(`Erro ao rastrear evento customizado ${eventName} do Meta Pixel:`, error);
       }
     }
 
     // Mesmo eventID nos dois caminhos: a Meta deduplica e conta UMA vez.
-    return sendImagePixel(eventName, eventId, data);
+    return sendImagePixel(eventName, eventId, dados);
   }, []);
 
   /**
@@ -233,17 +246,18 @@ export const useMetaPixel = () => {
    */
   const trackCustomEvent = useCallback((eventName: string, data?: MetaPixelEventData, externalEventId?: string): Promise<void> => {
     const eventId = externalEventId || generateEventId();
+    const dados = comVariante(data);
 
     if (typeof window !== 'undefined' && window.fbq) {
       try {
-        window.fbq('track', eventName, data, { eventID: eventId });
-        console.log(`Meta Pixel: ${eventName} event tracked`, data);
+        window.fbq('track', eventName, dados, { eventID: eventId });
+        console.log(`Meta Pixel: ${eventName} event tracked`, dados);
       } catch (error) {
         console.error(`Erro ao rastrear evento ${eventName} do Meta Pixel:`, error);
       }
     }
 
-    return sendImagePixel(eventName, eventId, data);
+    return sendImagePixel(eventName, eventId, dados);
   }, []);
 
   /**

@@ -9,6 +9,7 @@ import { validarEmailOpcional } from '@/lib/form-passo1';
 import { calcularScoreV2, interesseLegado, temEquipe } from '@/lib/lead-score';
 import { MSG_CLUBE, MSG_FATURAMENTO, MSG_PROFISSIONAIS, MSG_SISTEMA } from '@/lib/qualificacao';
 import { portaDoLead } from '@/lib/tracking/porta';
+import { varianteVista } from '@/lib/ab-clube';
 
 /**
  * Formulário ÚNICO de 8 perguntas (André, 14/Set/26): dono · WhatsApp · e-mail
@@ -317,6 +318,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
             current_system: formData.currentSystem,
             lead_score: leadScore,
             lp_version: source,
+            // Braço do A/B de página (`lib/ab-clube.ts`), o mesmo que vai no `bb_lp_version`
+            // e em todo evento do pixel; null fora das páginas em teste.
+            variante: varianteVista(),
           },
           utm_params: {
             source: utmParams.utm_source,

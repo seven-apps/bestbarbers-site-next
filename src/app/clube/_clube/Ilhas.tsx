@@ -39,7 +39,7 @@ export function EventosPagina({ config }: { config: PcPaginaConfig }) {
       valor: Math.round(m.name === "CLS" ? m.value * 1000 : m.value),
       nota: m.rating,
       pagina: config.rota,
-      variante: config.variante ?? "base",
+      variante: config.variante ?? "curta",
       navegador_app: /Instagram|FBAN|FBAV/i.test(navigator.userAgent) ? "instagram" : "outro",
     });
   });
