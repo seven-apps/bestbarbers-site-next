@@ -162,15 +162,26 @@ test("/clube/<peca>: campanha, conjunto e anúncio da URL chegam ao card", () =>
   );
 });
 
-test("A/B do herói: o braço `cena` vai no bb_lp_version (lido da <meta> que a página renderiza)", () => {
+test("A/B de página: o braço visto vai no bb_lp_version (lido da <meta> que a página renderiza)", () => {
   const g = globalThis as unknown as { document?: { querySelector: (q: string) => { getAttribute: () => string } | null } };
-  g.document = { querySelector: () => ({ getAttribute: () => "cena" }) };
-  try {
-    assert.equal(comRota("/clube/retentativa").fields.bb_lp_version, "clube-retentativa-cena");
-    // Fora da família /clube/<slug> a meta não muda nada.
-    assert.equal(comRota("/cadeira-cheia").fields.bb_lp_version, "cadeira-cheia");
-  } finally {
-    delete g.document;
-  }
-  assert.equal(comRota("/clube/retentativa").fields.bb_lp_version, "clube-retentativa", "sem meta = braço base");
+  const comMeta = (braco: string, fn: () => void) => {
+    g.document = { querySelector: () => ({ getAttribute: () => braco }) };
+    try {
+      fn();
+    } finally {
+      delete g.document;
+    }
+  };
+  // Os dois braços do sorteio (ciclo 1, 24/Set/26). No `longa` o pathname do navegador continua
+  // `/clube/<slug>` (rewrite): o slug da peça de ORIGEM fica no card nos dois braços.
+  comMeta("curta", () => assert.equal(comRota("/clube/retentativa").fields.bb_lp_version, "clube-retentativa-curta"));
+  comMeta("longa", () => assert.equal(comRota("/clube/retentativa").fields.bb_lp_version, "clube-retentativa-longa"));
+  comMeta("longa", () => assert.equal(comRota("/clube/parceiro-guapo/").fields.bb_lp_version, "clube-parceiro-guapo-longa"));
+  // O braço `cena` continua reconhecido (fora do sorteio, servido por `?ab=cena`).
+  comMeta("cena", () => assert.equal(comRota("/clube/retentativa").fields.bb_lp_version, "clube-retentativa-cena"));
+  // Valor desconhecido na meta = ignorado; fora da família /clube/<slug> a meta não muda nada.
+  comMeta("base", () => assert.equal(comRota("/clube/retentativa").fields.bb_lp_version, "clube-retentativa"));
+  comMeta("longa", () => assert.equal(comRota("/cadeira-cheia").fields.bb_lp_version, "cadeira-cheia"));
+  comMeta("longa", () => assert.equal(comRota("/clube").fields.bb_lp_version, "clube", "a /clube direta (sem sorteio) não ganha sufixo"));
+  assert.equal(comRota("/clube/retentativa").fields.bb_lp_version, "clube-retentativa", "sem meta = sem sufixo (página fora do teste)");
 });

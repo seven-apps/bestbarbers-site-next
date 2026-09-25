@@ -3,8 +3,9 @@
  * (cap. 36 §4). A 12ª página é uma entrada em `lib/tracking/portas-clube.ts` (slug + porta) e
  * outra em `content/clube-pecas.ts` (texto); o `tsc` exige as duas. Nunca copie este arquivo.
  *
- * Este arquivo serve o braço `base` do A/B do herói. O braço `cena` é `/clube-cena/[peca]`,
- * servido por REWRITE do middleware (a URL no navegador continua esta) — ver `lib/ab-clube.ts`.
+ * Este arquivo serve o braço `curta` do A/B de página (ciclo 1, 24/Set/26). O braço `longa` é
+ * `/clube-longa/[peca]` (a página longa `/clube`) e o `cena`, fora do sorteio, é `/clube-cena/[peca]`;
+ * os dois são servidos por REWRITE do middleware (a URL no navegador continua esta) — ver `lib/ab-clube.ts`.
  *
  * - `dynamicParams = false`: só os onze slugs existem; slug errado no anúncio = 404, visível
  *   no LPV do primeiro dia, em vez de uma página genérica calada.
@@ -43,5 +44,5 @@ export async function generateMetadata({ params }: PropsDaRota): Promise<Metadat
 export default async function ClubePecaPage({ params }: PropsDaRota) {
   const { peca } = await params;
   if (!ehSlugClube(peca)) notFound();
-  return <ClubePecaPagina slug={peca} variante="base" />;
+  return <ClubePecaPagina slug={peca} variante="curta" />;
 }

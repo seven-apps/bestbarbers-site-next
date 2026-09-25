@@ -14,6 +14,7 @@
 import type { UtmParams } from "@/hooks/useUtmParams";
 // Extensão explícita: é o que permite ao `node --test` (npm test) carregar este
 // módulo sem build. Ver `allowImportingTsExtensions` no tsconfig.
+import { varianteVista } from "./ab-clube.ts";
 
 /** Campos bb_* em nome lógico — idênticos no Contact e no Deal do Ploomes. */
 export interface LeadAttributionFields {
@@ -97,17 +98,16 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   //   `/clube` sozinha continua "clube" (série histórica intacta): a regra exige a barra.
   const seg = pathname.replace(/^\/+|\/+$/g, "");
   const slugCompleto = seg.startsWith("projeto-do-clube") || seg.startsWith("clube/");
-  // Braço `cena` do A/B do herói (`src/lib/ab-clube.ts`): a página declara o braço numa
-  // <meta name="bb-variante">, e o card ganha o sufixo `-cena`. Lido do DOM, e não do cookie,
-  // porque é o que a pessoa VIU — o cookie pode ter mudado depois.
-  const variante =
-    typeof document !== "undefined"
-      ? document.querySelector('meta[name="bb-variante"]')?.getAttribute("content")
-      : null;
+  // Braço do A/B de página (`src/lib/ab-clube.ts`): a página declara o braço numa
+  // <meta name="bb-variante">, e o card ganha o sufixo `-curta` / `-longa` (ou `-cena`, fora do
+  // sorteio). Lido do DOM, e não do cookie, porque é o que a pessoa VIU — o cookie pode ter
+  // mudado depois, ou nem existir. No braço `longa` o pathname do navegador continua
+  // `/clube/<slug>` (rewrite), então o slug da PEÇA DE ORIGEM fica no card nos dois braços.
+  const variante = varianteVista();
   const lpVersion =
     (seg.match(/^v\d+/i)?.[0]?.toUpperCase() ||
       (slugCompleto ? seg.replace(/\//g, "-") : seg.split("/")[0]) ||
-      "home") + (variante === "cena" && seg.startsWith("clube/") ? "-cena" : "");
+      "home") + (variante && seg.startsWith("clube/") ? `-${variante}` : "");
 
   const fase = param("fase");
   const campanha = param("campanha");

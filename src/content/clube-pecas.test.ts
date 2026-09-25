@@ -153,8 +153,8 @@ test("PT-BR com acentuação completa (as palavras que mais escapam)", () => {
   }
 });
 
-test("NOINDEX na casca, sem sobrescrita nas páginas; slug fora da lista = 404 (nos dois braços do A/B)", () => {
-  for (const rota of ["clube/[peca]", "clube-cena/[peca]"]) {
+test("NOINDEX na casca, sem sobrescrita nas páginas; slug fora da lista = 404 (nos três braços do A/B)", () => {
+  for (const rota of ["clube/[peca]", "clube-longa/[peca]", "clube-cena/[peca]"]) {
     const casca = ler(`app/${rota}/layout.tsx`);
     assert.match(casca, /robots:\s*\{\s*index:\s*false,\s*follow:\s*false/, rota);
     const pagina = ler(`app/${rota}/page.tsx`);
@@ -166,7 +166,7 @@ test("NOINDEX na casca, sem sobrescrita nas páginas; slug fora da lista = 404 (
 });
 
 test("originId NUNCA hardcoded: a origem do Ploomes é do useUtmParams, no formulário", () => {
-  for (const rel of ["app/clube/[peca]/page.tsx", "app/clube-cena/[peca]/page.tsx", "app/clube/_clube/ClubePecaPagina.tsx", "app/clube/_clube/Ilhas.tsx", "content/clube-pecas.ts", "lib/tracking/portas-clube.ts"]) {
+  for (const rel of ["app/clube/[peca]/page.tsx", "app/clube-longa/[peca]/page.tsx", "app/clube-cena/[peca]/page.tsx", "app/clube/_clube/ClubePecaPagina.tsx", "app/clube/_clube/Ilhas.tsx", "content/clube-pecas.ts", "lib/tracking/portas-clube.ts"]) {
     const codigo = ler(rel);
     assert.doesNotMatch(codigo, /originId\s*[:=]|OriginId|[?&]origin=|\b4021\d{4}\b|\b12000\d{4}\b/, rel);
   }
@@ -233,14 +233,19 @@ test("PROVA: toda página tem tela animada existente, 3 passos, 3 pares hoje × 
   }
 });
 
-test("A/B do herói: sorteio, cookie, rota e cenas exportadas", async () => {
+test("A/B de página (ciclo 1): sorteio curta × longa por cookie; cena fora do sorteio; rewrite, nunca redirect", async () => {
   const ab = (await import("../lib/ab-clube.ts")) as typeof import("../lib/ab-clube");
-  assert.equal(ab.bracoDoVisitante("cena", 0.1), "cena", "cookie válido vence o sorteio");
-  assert.equal(ab.bracoDoVisitante("lixo", 0.1), "base");
-  assert.equal(ab.bracoDoVisitante(undefined, 0.9), "cena");
-  assert.equal(ab.rotaDoBraco("retentativa", "cena"), "/clube-cena/retentativa");
-  assert.equal(ab.rotaDoBraco("retentativa", "base"), null);
-  assert.equal(ab.rotaDoBraco("parceiro-guapo", "cena"), null, "página de vídeo não tem cena: fica em base");
+  // A regra fina do módulo está em `lib/ab-clube.test.ts`; aqui, o contrato que as páginas usam.
+  assert.deepEqual([...ab.BRACOS_NO_SORTEIO], ["curta", "longa"]);
+  assert.equal(ab.rotaDoBraco("retentativa", "longa"), "/clube-longa/retentativa");
+  assert.equal(ab.rotaDoBraco("parceiro-guapo", "longa"), "/clube-longa/parceiro-guapo", "todas as 11 têm braço longo");
+  assert.equal(ab.rotaDoBraco("retentativa", "curta"), null);
+  // A página curta serve `curta`; a longa renderiza a meta `longa`; a cena continua existindo.
+  assert.match(ler("app/clube/[peca]/page.tsx"), /variante="curta"/);
+  assert.match(ler("app/clube-longa/[peca]/page.tsx"), /content="longa"/);
+  assert.match(ler("app/clube-longa/[peca]/page.tsx"), /<ClubePage \/>/, "o braço longo É a página longa /clube");
+  assert.match(ler("app/clube-cena/[peca]/page.tsx"), /variante="cena"/);
+  assert.match(ler("app/clube/_clube/ClubePecaPagina.tsx"), /name=\{META_VARIANTE\} content=\{variante\}/);
   for (const slug of ab.SLUGS_COM_CENA) {
     assert.ok(SLUGS_CLUBE.includes(slug), slug);
     assert.equal(PORTAS_CLUBE[slug].formato, "estatico", `${slug}: só estático tem a foto da arte`);
@@ -253,4 +258,6 @@ test("A/B do herói: sorteio, cookie, rota e cenas exportadas", async () => {
   assert.match(mw, /NextResponse\.rewrite/);
   assert.doesNotMatch(mw, /NextResponse\.redirect/);
   assert.match(mw, /matcher:\s*"\/clube\/:peca"/);
+  assert.match(mw, /url\.pathname = destino/, "o rewrite troca só o pathname: a query inteira segue");
+  assert.doesNotMatch(mw, /url\.search\s*=|searchParams\.(set|delete)/, "o middleware não mexe na query");
 });
