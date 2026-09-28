@@ -28,14 +28,16 @@ const ORIGEM = "[Site-Clube-V2]";
 const BT_MIGRACAO = `${ORIGEM}BT-Migracao`;
 
 /**
- * Página /clube-v2 — a v2 da copy do clube (28/Set/26), em rota própria para NÃO tocar na
- * `/clube`, que é o braço `longa` do ciclo 1. Ordem decidida com o André:
+ * A página do clube (v2 da copy, 28/Set/26). Por decisão do André ela É a `/clube` e o único
+ * destino de `/clube/<peça>` (braço `longa`, servido por `/clube-longa/[peca]`).
+ * Ordem decidida com o André:
  * herói → prova → tudo em um só lugar → precificação → migração → planos com limite →
  * nota fiscal → notificações → passo a passo → perguntas frequentes.
  *
  * Reaproveitados SEM alteração: FAQClube,
- * FooterClube e o LeadFormModal. O card no Ploomes sai com `bb_lp_version = clube-v2`
- * (1º segmento do pathname) e o originDesc no padrão [Site-Clube-V2]BT-<Secao>.
+ * FooterClube e o LeadFormModal. O `bb_lp_version` do card não muda (`clube` na raiz,
+ * `clube-<peça>-longa` por anúncio); o que marca a página nova é o originDesc no padrão
+ * [Site-Clube-V2]BT-<Secao> e o campo `versao: "v2"` dos eventos do pixel.
  */
 export function ClubeV2Page() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -49,7 +51,7 @@ export function ClubeV2Page() {
   const openModal = useCallback(
     (desc: string) => {
       const lado = desc === BT_MIGRACAO ? CLUBE_FORK.migrar : CLUBE_FORK.criar;
-      void trackNonCatalogEvent(lado.evento, { porta: lado.porta, secao: desc, pagina: "/clube-v2" });
+      void trackNonCatalogEvent(lado.evento, { porta: lado.porta, secao: desc, pagina: "/clube", versao: "v2" });
       setModalDesc(desc);
       setModalOpen(true);
     },
@@ -60,8 +62,11 @@ export function ClubeV2Page() {
 
   useEffect(() => {
     trackCustomEvent("ViewContent", {
-      content_name: "LP Clube V2 - Clube de Assinaturas",
+      // Mesmo `content_name` da página anterior: público e conversão personalizada da Meta
+      // que leem esse nome continuam valendo. A versão vai num campo à parte.
+      content_name: "LP Clube - Clube de Assinaturas",
       content_category: "landing_page",
+      versao: "v2",
     });
   }, [trackCustomEvent]);
 
@@ -69,7 +74,7 @@ export function ClubeV2Page() {
     (sectionId: string) => {
       if (trackedSections.current.has(sectionId)) return;
       trackedSections.current.add(sectionId);
-      void trackNonCatalogEvent("ScrollDepth", { section: sectionId, page: "clube-v2" });
+      void trackNonCatalogEvent("ScrollDepth", { section: sectionId, page: "clube", versao: "v2" });
     },
     [trackNonCatalogEvent],
   );

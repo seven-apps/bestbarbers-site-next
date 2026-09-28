@@ -1,11 +1,8 @@
 /**
- * Conteúdo da página /clube-v2 — a v2 da copy do clube (28/Set/26), em rota PRÓPRIA.
- *
- * Por que rota própria e não edição de `clube.ts`: a `/clube` é o braço `longa` do A/B de
- * página do ciclo 1 (`lib/ab-clube.ts`) e, desde 28/Set, recebe 100% do tráfego do teste.
- * Mexer em `clube.ts` ou nos componentes de `components/clube/` muda a página no meio da
- * leitura. Aqui nada é compartilhado com o que o ciclo 1 lê, exceto blocos reaproveitados
- * SEM alteração (NFS-e, passo a passo, FAQ, rodapé).
+ * Conteúdo da página do clube — v2 da copy (28/Set/26). Por decisão do André, é o conteúdo
+ * da `/clube` e de todo `/clube/<peça>` (braço `longa`). O conteúdo anterior (`clube.ts`)
+ * ainda alimenta o passo a passo, a navbar (logo e link de cliente), o FAQ e o rodapé, e
+ * fica no repositório para rollback da página antiga.
  *
  * Régua da copy (decisão do André, 28/Set/26): público leigo → didática e direta; sujeito
  * explícito em toda frase; mecanismo antes de promessa; zero metáfora e zero frase de efeito;

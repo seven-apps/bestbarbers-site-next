@@ -4,6 +4,8 @@
  *
  *   curta = a página curta por anúncio (`/clube/[peca]`, herói `base`, formulário de 2 passos);
  *   longa = a página longa `/clube` (formulário antigo, o controle que converteu ~10% na TOPO-BH).
+ *           Desde 28/Set/26 a página longa é a v2 da copy (`ClubeV2Page`), por decisão do André,
+ *           e é o ÚNICO braço em sorteio: todo anúncio de clube cai nela. O rótulo `longa` fica.
  *
  * O braço `cena` (a foto do anúncio no herói, veredito de 23/Set) SAIU DO SORTEIO até o veredito
  * do ciclo 1. O código dele fica: a rota `/clube-cena/[peca]` continua servida por `?ab=cena`

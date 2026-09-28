@@ -1,6 +1,9 @@
 /**
- * Braço `longa` do A/B de página de `/clube/[peca]`: a página longa `/clube` (`ClubePage`, com o
- * formulário antigo), servida por REWRITE do middleware. Ninguém chega aqui pela URL: o navegador
+ * Braço `longa` de `/clube/[peca]`: a página longa `/clube`, servida por REWRITE do middleware.
+ * Desde 28/Set/26 (decisão do André) a página longa É a v2 da copy (`ClubeV2Page`) e é o ÚNICO
+ * destino de todo anúncio de clube: o sorteio tem um braço só (`lib/ab-clube.ts`).
+ * O rótulo continua `longa` de propósito: o placar do ciclo e o e-mail por anúncio reconhecem
+ * o card pelo sufixo `-longa` do `bb_lp_version`; rótulo novo deixaria lead sem e-mail. Ninguém chega aqui pela URL: o navegador
  * continua mostrando `/clube/<slug>?<query>`, que é a chave da porta, do `bb_lp_version` e da
  * conversão personalizada da Meta. Regra e métrica em `lib/ab-clube.ts`.
  *
@@ -11,8 +14,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { ClubePage } from "@/components/clube/ClubePage";
-import { clubeContent } from "@/content/clube";
+import { ClubeV2Page } from "@/components/clube-v2/ClubeV2Page";
+import { clubeV2Content } from "@/content/clube-v2";
 import { META_VARIANTE } from "@/lib/ab-clube";
 import { SLUGS_CLUBE, ehSlugClube } from "@/lib/tracking/portas-clube";
 
@@ -27,8 +30,8 @@ interface PropsDaRota {
 }
 
 export const metadata: Metadata = {
-  title: clubeContent.seo.title,
-  description: clubeContent.seo.description,
+  title: clubeV2Content.seo.title,
+  description: clubeV2Content.seo.description,
   alternates: { canonical: null },
 };
 
@@ -39,7 +42,7 @@ export default async function ClubeLongaPage({ params }: PropsDaRota) {
     <>
       {/* O braço do A/B, para o card do Ploomes e para todo evento do pixel (`lead-attribution.ts`, `useMetaPixel`). */}
       <meta name={META_VARIANTE} content="longa" />
-      <ClubePage />
+      <ClubeV2Page />
     </>
   );
 }
