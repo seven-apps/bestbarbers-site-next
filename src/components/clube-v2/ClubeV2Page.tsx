@@ -5,7 +5,6 @@ import { useMetaPixel } from "@/hooks/useMetaPixel";
 import { CLUBE_FORK } from "@/lib/tracking/porta";
 import { clubeV2Content } from "@/content/clube-v2";
 import { NavbarClube } from "@/components/clube/NavbarClube";
-import { NotasFiscaisClube } from "@/components/clube/NotasFiscaisClube";
 import { PassosClube } from "@/components/clube/PassosClube";
 import { FAQClube } from "@/components/clube/FAQClube";
 import { FooterClube } from "@/components/clube/FooterClube";
@@ -19,8 +18,8 @@ import { SecaoTextoImagem } from "@/components/clube-v2/SecaoTextoImagem";
 const SCROLL_SECTIONS = [
   "prova-section",
   "tudo-section",
-  "migracao-section",
   "precificacao-section",
+  "migracao-section",
   "passos-section",
   "faq-section",
 ] as const;
@@ -31,10 +30,10 @@ const BT_MIGRACAO = `${ORIGEM}BT-Migracao`;
 /**
  * Página /clube-v2 — a v2 da copy do clube (28/Set/26), em rota própria para NÃO tocar na
  * `/clube`, que é o braço `longa` do ciclo 1. Ordem decidida com o André:
- * herói → prova → tudo em um só lugar → migração → precificação → planos com limite →
+ * herói → prova → tudo em um só lugar → precificação → migração → planos com limite →
  * nota fiscal → notificações → passo a passo → perguntas frequentes.
  *
- * Reaproveitados SEM alteração: NavbarClube, NotasFiscaisClube, PassosClube, FAQClube,
+ * Reaproveitados SEM alteração: NavbarClube, PassosClube, FAQClube,
  * FooterClube e o LeadFormModal. O card no Ploomes sai com `bb_lp_version = clube-v2`
  * (1º segmento do pathname) e o originDesc no padrão [Site-Clube-V2]BT-<Secao>.
  */
@@ -109,18 +108,14 @@ export function ClubeV2Page() {
           imagem={c.tudoEmUmLugar.image}
           imagemNa="direita"
           fundo="cinza"
-          imagemEstreita
+          moldura="solta"
         />
-      </div>
-
-      <div id="migracao-section">
-        <MigracaoV2 onCtaClick={() => openModal(BT_MIGRACAO)} />
       </div>
 
       <div id="precificacao-section">
         <SecaoTextoImagem
           titulo={c.precificacao.titulo}
-          paragrafos={c.precificacao.paragrafos}
+          itens={c.precificacao.itens}
           cta={c.precificacao.cta}
           onCtaClick={() => openModal(`${ORIGEM}BT-Precificacao`)}
           imagem={c.precificacao.image}
@@ -128,28 +123,40 @@ export function ClubeV2Page() {
         />
       </div>
 
+      <div id="migracao-section">
+        <MigracaoV2 onCtaClick={() => openModal(BT_MIGRACAO)} />
+      </div>
+
       <SecaoTextoImagem
         titulo={c.planosComLimite.titulo}
-        paragrafos={c.planosComLimite.paragrafos}
+        itens={c.planosComLimite.itens}
         cta={c.planosComLimite.cta}
         onCtaClick={() => openModal(`${ORIGEM}BT-Planos`)}
         imagem={c.planosComLimite.image}
         imagemNa="direita"
         fundo="cinza"
+        moldura="notebook"
         legenda={c.planosComLimite.legenda}
-        imagemEstreita
       />
 
-      <NotasFiscaisClube onCtaClick={() => openModal(`${ORIGEM}BT-Nota-fiscal`)} />
+      <SecaoTextoImagem
+        titulo={c.notaFiscal.titulo}
+        itens={c.notaFiscal.itens}
+        cta={c.notaFiscal.cta}
+        onCtaClick={() => openModal(`${ORIGEM}BT-Nota-fiscal`)}
+        imagem={c.notaFiscal.image}
+        imagemNa="esquerda"
+        moldura="sombra"
+      />
 
       <SecaoTextoImagem
         titulo={c.notificacoes.titulo}
-        paragrafos={c.notificacoes.paragrafos}
+        itens={c.notificacoes.itens}
         cta={c.notificacoes.cta}
         onCtaClick={() => openModal(`${ORIGEM}BT-Notificacoes`)}
         imagem={c.notificacoes.image}
-        imagemNa="esquerda"
-        fundo="cinza"
+        imagemNa="direita"
+        moldura="solta"
       />
 
       <div id="passos-section">

@@ -1,25 +1,16 @@
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import { clubeV2Content } from "@/content/clube-v2";
-import fotoJoaoSeletto from "@/app/parceiros/assets/joao-seletto.png";
-import fotoKaiqueAlves from "@/app/parceiros/assets/kaique-alves.png";
-import fotoDavidChamps from "@/app/parceiros/assets/david-champs.png";
 
 /**
- * Prova da /clube-v2, em três camadas e nesta ordem:
- *   1. EMPRESA — o número oficial + a esteira de logos (parceiros da foto do herói primeiro);
- *   2. PARCEIRO FALANDO — foto + fala LITERAL entre aspas (o número é de quem fala);
- *   3. BARBEARIA DO TAMANHO DO LEITOR — 3 cases por porte e cidade, sem nome.
+ * Prova da /clube-v2, em duas camadas e nesta ordem:
+ *   1. EMPRESA — o número oficial + a esteira de logos (parceiros são os primeiros da fila);
+ *   2. PARCEIRO FALANDO — foto grande na metade esquerda do cartão e a fala LITERAL, entre
+ *      aspas, na metade direita (o número é de quem fala; a casa não afirma).
  * Vem logo abaixo do herói: prova antes de qualquer outra promessa.
  *
  * Régua de logo: barbearia de ex-parceiro com uso de imagem revogado NÃO entra aqui, nem o
  * logo nem o nome do arquivo (mesma régua de `components/clube/ClientesClube.tsx`).
  */
-const FOTOS: Record<string, StaticImageData> = {
-  "joao-seletto": fotoJoaoSeletto,
-  "kaique-alves": fotoKaiqueAlves,
-  "david-champs": fotoDavidChamps,
-};
-
 const LOGOS_CLIENTES = [
   "/images/Barber-Style.webp",
   "/images/Sr-Barbearia.webp",
@@ -42,7 +33,12 @@ const LOGOS_CLIENTES = [
   "/images/Vitor.webp",
 ];
 
-function Esteira({ logos, direcao, duracao }: { logos: { src: string; alt: string }[]; direcao: "left" | "right"; duracao: string }) {
+interface Logo {
+  src: string;
+  alt: string;
+}
+
+function Esteira({ logos, direcao, duracao }: { logos: Logo[]; direcao: "left" | "right"; duracao: string }) {
   return (
     <div className="relative">
       <div className="absolute left-0 top-0 bottom-0 w-6 md:w-16 bg-gradient-to-r from-white to-transparent z-10" />
@@ -70,14 +66,15 @@ function Esteira({ logos, direcao, duracao }: { logos: { src: string; alt: strin
 
 export function ProvaV2() {
   const { prova } = clubeV2Content;
-  const clientes = LOGOS_CLIENTES.map((src, i) => ({ src, alt: `Logo de barbearia cliente ${i + 1}` }));
-  const meio = Math.ceil(clientes.length / 2);
-  // Parceiros ficam numa fileira FIXA acima da esteira: em movimento eles se perdem.
-  const fileira1 = clientes.slice(0, meio);
-  const fileira2 = clientes.slice(meio);
+  const clientes: Logo[] = LOGOS_CLIENTES.map((src, i) => ({ src, alt: `Logo de barbearia cliente ${i + 1}` }));
+  // Parceiros abrem a fila: a esteira parte do início, então são os primeiros a aparecer.
+  const todos: Logo[] = [...prova.logosParceiros, ...clientes];
+  const meio = Math.ceil(todos.length / 2);
+  const fileira1 = todos.slice(0, meio);
+  const fileira2 = todos.slice(meio);
 
   return (
-    <section className="bg-white py-14 md:py-20 w-full overflow-hidden">
+    <section className="bg-white py-12 md:py-20 w-full overflow-hidden">
       {/* 1. Empresa */}
       <div className="px-4 md:container-custom">
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-snug text-neutral-black-text text-center max-w-4xl mx-auto mb-8 md:mb-12">
@@ -85,73 +82,48 @@ export function ProvaV2() {
           {prova.titulo.resto}
         </h2>
       </div>
-      <div className="flex flex-wrap justify-center gap-4 md:gap-6 px-4 mb-6 md:mb-8">
-        {prova.logosParceiros.map((logo) => (
-          <div
-            key={logo.src}
-            className="w-24 h-24 md:w-32 md:h-32 flex items-center justify-center bg-white rounded-2xl shadow-md border border-[#ffaf02]/40 p-2 md:p-3 overflow-hidden"
-          >
-            <Image src={logo.src} alt={logo.alt} width={128} height={128} className="w-full h-full object-contain rounded-xl" />
-          </div>
-        ))}
-      </div>
       <div className="w-full max-w-6xl mx-auto overflow-hidden py-2 space-y-4 md:space-y-6">
         <Esteira logos={fileira1} direcao="left" duracao="28s" />
         <Esteira logos={fileira2} direcao="right" duracao="32s" />
       </div>
 
       {/* 2. Parceiro falando */}
-      <div className="pt-14 md:pt-20">
-      <div className="container-custom">
-        <h3 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-neutral-black-text text-center mb-8 md:mb-10">
-          {prova.depoimentos.titulo}
-        </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {prova.depoimentos.itens.map((d) => (
-            <figure key={d.chave} className="bg-[#121212] rounded-2xl p-6 md:p-7 flex flex-col">
-              <blockquote className="flex-1">
-                <p className="text-base md:text-[17px] text-white leading-relaxed">
-                  <span aria-hidden className="text-[#ffaf02] font-extrabold">“</span>
-                  {d.fala}
-                  <span aria-hidden className="text-[#ffaf02] font-extrabold">”</span>
-                </p>
-              </blockquote>
-              <figcaption className="flex items-center gap-3 mt-6">
-                <div className="w-14 h-14 rounded-full overflow-hidden bg-[#2a2a2a] shrink-0">
-                  <Image src={FOTOS[d.chave]} alt={`Foto de ${d.nome}`} width={112} height={112} className="w-full h-full object-cover object-top" />
-                </div>
-                <div>
-                  <cite className="not-italic text-sm font-bold text-white block">{d.nome}</cite>
-                  <span className="text-xs text-gray-400">{d.barbearia}</span>
-                </div>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </div>
-
-      </div>
-
-      {/* 3. Barbearia do tamanho do leitor */}
-      <div className="pt-14 md:pt-20">
-      <div className="container-custom">
-        <div className="text-center mb-8 md:mb-10">
-          <h3 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-neutral-black-text mb-3">
-            {prova.cases.titulo}
+      <div className="pt-12 md:pt-20">
+        <div className="container-custom">
+          <h3 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-neutral-black-text text-center mb-8 md:mb-10">
+            {prova.depoimentos.titulo}
           </h3>
-          <p className="text-sm md:text-base text-gray-500 max-w-2xl mx-auto">{prova.cases.apoio}</p>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-6 max-w-6xl mx-auto">
+            {prova.depoimentos.itens.map((d) => (
+              <figure key={d.chave} className="bg-[#121212] rounded-2xl overflow-hidden grid grid-cols-[46%_54%] min-h-[280px] lg:grid-cols-1 lg:min-h-0">
+                {/* celular: foto na metade esquerda, do topo à base · desktop: foto grande em cima */}
+                <div className="relative bg-[#ffaf02] lg:h-80">
+                  <Image
+                    src={d.foto}
+                    alt={`Foto de ${d.nome}, ${d.barbearia}`}
+                    fill
+                    className="object-cover object-top"
+                    sizes="(max-width: 1024px) 50vw, 320px"
+                  />
+                </div>
+                {/* metade direita: a fala literal e quem fala */}
+                <div className="flex flex-col justify-center p-4 md:p-5 lg:p-6">
+                  <blockquote>
+                    <p className="text-sm md:text-[15px] text-white leading-snug">
+                      <span aria-hidden className="text-[#ffaf02] font-extrabold">“</span>
+                      {d.fala}
+                      <span aria-hidden className="text-[#ffaf02] font-extrabold">”</span>
+                    </p>
+                  </blockquote>
+                  <figcaption className="mt-4">
+                    <cite className="not-italic text-sm font-bold text-white block">{d.nome}</cite>
+                    <span className="text-xs text-gray-400">{d.barbearia}</span>
+                  </figcaption>
+                </div>
+              </figure>
+            ))}
+          </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {prova.cases.itens.map((c) => (
-            <div key={c.cidade} className="bg-gray-50 rounded-2xl p-6 md:p-7 border border-gray-100">
-              <p className="text-xl md:text-2xl font-extrabold text-[#b37a00] leading-tight mb-2">{c.numero}</p>
-              <p className="text-sm md:text-base text-gray-700 leading-relaxed mb-4">{c.texto}</p>
-              <p className="text-sm font-bold text-neutral-black-text">{c.porte}</p>
-              <p className="text-xs text-gray-500">{c.cidade}</p>
-            </div>
-          ))}
-        </div>
-      </div>
       </div>
     </section>
   );
