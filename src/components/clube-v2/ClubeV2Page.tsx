@@ -4,11 +4,11 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useMetaPixel } from "@/hooks/useMetaPixel";
 import { CLUBE_FORK } from "@/lib/tracking/porta";
 import { clubeV2Content } from "@/content/clube-v2";
-import { NavbarClube } from "@/components/clube/NavbarClube";
-import { PassosClube } from "@/components/clube/PassosClube";
 import { FAQClube } from "@/components/clube/FAQClube";
 import { FooterClube } from "@/components/clube/FooterClube";
 import { LeadFormModal } from "@/components/sections/LeadFormModal";
+import { NavbarV2 } from "@/components/clube-v2/NavbarV2";
+import { PassosV2 } from "@/components/clube-v2/PassosV2";
 import { HeroV2 } from "@/components/clube-v2/HeroV2";
 import { ProvaV2 } from "@/components/clube-v2/ProvaV2";
 import { MigracaoV2 } from "@/components/clube-v2/MigracaoV2";
@@ -33,7 +33,7 @@ const BT_MIGRACAO = `${ORIGEM}BT-Migracao`;
  * herói → prova → tudo em um só lugar → precificação → migração → planos com limite →
  * nota fiscal → notificações → passo a passo → perguntas frequentes.
  *
- * Reaproveitados SEM alteração: NavbarClube, PassosClube, FAQClube,
+ * Reaproveitados SEM alteração: FAQClube,
  * FooterClube e o LeadFormModal. O card no Ploomes sai com `bb_lp_version = clube-v2`
  * (1º segmento do pathname) e o originDesc no padrão [Site-Clube-V2]BT-<Secao>.
  */
@@ -92,7 +92,7 @@ export function ClubeV2Page() {
 
   return (
     <main className="min-h-screen">
-      <NavbarClube onCtaClick={() => openModal(`${ORIGEM}BT-Header`)} />
+      <NavbarV2 onCtaClick={() => openModal(`${ORIGEM}BT-Header`)} />
       <HeroV2 onCtaClick={() => openModal(`${ORIGEM}BT-Hero`)} />
 
       <div id="prova-section">
@@ -160,7 +160,7 @@ export function ClubeV2Page() {
       />
 
       <div id="passos-section">
-        <PassosClube onCtaClick={() => openModal(`${ORIGEM}BT-Passos`)} />
+        <PassosV2 onCtaClick={() => openModal(`${ORIGEM}BT-Passos`)} />
       </div>
 
       <div id="faq-section">

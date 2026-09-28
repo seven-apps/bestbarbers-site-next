@@ -28,6 +28,17 @@
 import { homeContent } from "@/content/home";
 
 export const clubeV2Content = {
+  // ===== BOTÕES DA NAVBAR E DO PASSO A PASSO =====
+  // O dono de barbearia fala "assinatura" mais do que "clube" (André, 28/Set/26): o botão
+  // usa a palavra dele. Navbar e passo a passo são cópias dos componentes da /clube só para
+  // trocar o texto do botão sem tocar na página do ciclo 1.
+  navbar: {
+    cta: { text: "QUERO ASSINATURA NA MINHA BARBEARIA", textMobile: "Quero assinatura" },
+  },
+  passos: {
+    cta: "QUERO ASSINATURA NA MINHA BARBEARIA",
+  },
+
   // ===== 1. HERÓI =====
   hero: {
     title: {
@@ -43,7 +54,7 @@ export const clubeV2Content = {
       "Bloqueio de quem está com o pagamento atrasado",
       "Nota fiscal emitida em cada cobrança",
     ],
-    cta: { text: "QUERO O CLUBE\nNA MINHA BARBEARIA" },
+    cta: { text: "QUERO ASSINATURA\nNA MINHA BARBEARIA" },
     // Mesma foto dos cinco parceiros da home e da /clube: acervo que não se troca.
     image: homeContent.hero.image,
   },
@@ -99,7 +110,7 @@ export const clubeV2Content = {
       "Relatório de frequência de cada assinante",
       "Nota fiscal emitida em cada cobrança",
     ],
-    cta: "QUERO O CLUBE NA MINHA BARBEARIA",
+    cta: "QUERO ASSINATURA NA MINHA BARBEARIA",
     image: {
       // A mesma arte da seção de assinaturas da home (pedido do André, 28/Set).
       src: "/images/gerenciamento-de-assinaturas.png",
@@ -117,7 +128,7 @@ export const clubeV2Content = {
       "O assinante cadastra o cartão no primeiro acesso ao app",
       "Você não perde nenhum assinante na mudança",
     ],
-    cta: "JÁ TENHO CLUBE E QUERO MIGRAR",
+    cta: "QUERO MIGRAR MEU CLUBE DE ASSINATURAS",
     image: {
       src: "/images/clube/cena/sem-caderno-faixa.webp",
       alt: "Caderno de controle rabiscado ao lado do celular com a lista de assinantes e o vencimento de cada um",
@@ -138,7 +149,7 @@ export const clubeV2Content = {
       "Um especialista monta o clube com você",
       "Gerente de contas dedicado desde o primeiro dia",
     ],
-    cta: "QUERO AJUDA PARA MONTAR MEU CLUBE",
+    cta: "QUERO AJUDA PARA PRECIFICAR MINHA ASSINATURA",
     image: {
       src: "/images/clube-v2/tabela-precificacao.webp",
       alt: "Tabela de precificação do BestBarbers calculando a mensalidade recomendada do clube, a margem da barbearia e o ganho do barbeiro",
@@ -156,7 +167,7 @@ export const clubeV2Content = {
       "O sistema controla o uso de cada assinante",
       "O assinante marca um horário de cada vez",
     ],
-    cta: "QUERO O CLUBE NA MINHA BARBEARIA",
+    cta: "QUERO ASSINATURA NA MINHA BARBEARIA",
     image: {
       // Tela INTEIRA do sistema, dentro de um notebook (André, 28/Set). A lista de planos da
       // conta de demonstração vai desfocada, como no estático do mesmo tema.
@@ -178,7 +189,7 @@ export const clubeV2Content = {
       "Integração com a prefeitura da sua cidade",
       "PDF e XML prontos para o seu contador",
     ],
-    cta: "QUERO O CLUBE NA MINHA BARBEARIA",
+    cta: "QUERO ASSINATURA NA MINHA BARBEARIA",
     image: {
       src: "/images/Nota-fiscal_1.webp",
       alt: "Emissão automática de nota fiscal a cada cobrança de assinatura no BestBarbers",
@@ -196,7 +207,7 @@ export const clubeV2Content = {
       "Notificações ilimitadas, sem custo adicional",
       "Chegam com a logo da sua barbearia, como as do iFood e do Nubank",
     ],
-    cta: "QUERO O CLUBE NA MINHA BARBEARIA",
+    cta: "QUERO ASSINATURA NA MINHA BARBEARIA",
     image: {
       src: "/images/notifications-app-proprio.webp",
       alt: "Notificações do app da barbearia chegando no celular do cliente com a logo da barbearia",
