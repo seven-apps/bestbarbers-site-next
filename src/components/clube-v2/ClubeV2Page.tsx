@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useMetaPixel } from "@/hooks/useMetaPixel";
+import { useBracoForm } from "@/hooks/useBracoForm";
+import { MARCADOR_FORM } from "@/lib/form-progressivo";
 import { CLUBE_FORK } from "@/lib/tracking/porta";
 import { clubeV2Content } from "@/content/clube-v2";
 import { FAQClube } from "@/components/clube/FAQClube";
@@ -38,12 +40,17 @@ const BT_MIGRACAO = `${ORIGEM}BT-Migracao`;
  * FooterClube e o LeadFormModal. O `bb_lp_version` do card não muda (`clube` na raiz,
  * `clube-<peça>-longa` por anúncio); o que marca a página nova é o originDesc no padrão
  * [Site-Clube-V2]BT-<Secao> e o campo `versao: "v2"` dos eventos do pixel.
+ *
+ * TESTE DO FORMULÁRIO (28/Set/26, `lib/form-progressivo.ts`): metade dos visitantes abre o
+ * modal com o formulário atual e metade com o progressivo. O braço é sorteado aqui e vai
+ * para o modal, que mede os marcos e marca o card.
  */
 export function ClubeV2Page() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalDesc, setModalDesc] = useState<string>("");
   const { trackCustomEvent, trackNonCatalogEvent } = useMetaPixel();
   const trackedSections = useRef<Set<string>>(new Set());
+  const bracoForm = useBracoForm();
 
   // Fork criar × migrar como evento do pixel, igual à /clube. O `forkDoClube` de
   // `lib/tracking/porta.ts` compara com o originDesc da /clube; aqui a regra é local para
@@ -51,11 +58,17 @@ export function ClubeV2Page() {
   const openModal = useCallback(
     (desc: string) => {
       const lado = desc === BT_MIGRACAO ? CLUBE_FORK.migrar : CLUBE_FORK.criar;
-      void trackNonCatalogEvent(lado.evento, { porta: lado.porta, secao: desc, pagina: "/clube", versao: "v2" });
+      void trackNonCatalogEvent(lado.evento, {
+        porta: lado.porta,
+        secao: desc,
+        pagina: "/clube",
+        versao: "v2",
+        ...(bracoForm && { formulario: MARCADOR_FORM[bracoForm] }),
+      });
       setModalDesc(desc);
       setModalOpen(true);
     },
-    [trackNonCatalogEvent],
+    [trackNonCatalogEvent, bracoForm],
   );
 
   const closeModal = useCallback(() => setModalOpen(false), []);
@@ -173,7 +186,7 @@ export function ClubeV2Page() {
       </div>
       <FooterClube />
 
-      <LeadFormModal isOpen={modalOpen} onClose={closeModal} originDesc={modalDesc} />
+      <LeadFormModal isOpen={modalOpen} onClose={closeModal} originDesc={modalDesc} bracoTeste={bracoForm} />
     </main>
   );
 }
