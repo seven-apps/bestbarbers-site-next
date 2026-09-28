@@ -243,7 +243,7 @@ test("A/B de página (ciclo 1): sorteio curta × longa por cookie; cena fora do 
   // A página curta serve `curta`; a longa renderiza a meta `longa`; a cena continua existindo.
   assert.match(ler("app/clube/[peca]/page.tsx"), /variante="curta"/);
   assert.match(ler("app/clube-longa/[peca]/page.tsx"), /content="longa"/);
-  assert.match(ler("app/clube-longa/[peca]/page.tsx"), /<ClubePage \/>/, "o braço longo É a página longa /clube");
+  assert.match(ler("app/clube-longa/[peca]/page.tsx"), /<ClubeV2Page \/>/, "o braço longo É a página longa /clube (v2 da copy desde 28/Set/26)");
   assert.match(ler("app/clube-cena/[peca]/page.tsx"), /variante="cena"/);
   assert.match(ler("app/clube/_clube/ClubePecaPagina.tsx"), /name=\{META_VARIANTE\} content=\{variante\}/);
   for (const slug of ab.SLUGS_COM_CENA) {
