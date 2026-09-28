@@ -36,6 +36,11 @@ export const clubeV2Content = {
     cta: { text: "QUERO ASSINATURA NA MINHA BARBEARIA", textMobile: "Quero assinatura" },
   },
   passos: {
+    // Título próprio da v2 (André, 28/Set): sem quebra forçada, o navegador reparte as linhas.
+    titulo: {
+      highlight: "Passo a passo",
+      main: " para ter o clube de assinaturas no app próprio personalizado da sua barbearia",
+    },
     cta: "QUERO ASSINATURA NA MINHA BARBEARIA",
   },
 
@@ -160,7 +165,7 @@ export const clubeV2Content = {
 
   // ===== 5. PLANOS COM LIMITE =====
   planosComLimite: {
-    titulo: { main: "Tem medo de o assinante vir toda semana?", highlight: "Crie planos com limite" },
+    titulo: { main: "Tem medo do assinante vir toda semana?", highlight: "Crie planos com limite de uso" },
     itens: [
       "Limite por quantidade, como 4 cortes por mês",
       "Limite por dia da semana, como de segunda a quarta",

@@ -9,7 +9,7 @@ interface PassosV2Props {
 
 /**
  * Cópia do PassosClube para a /clube-v2: os 5 passos são os mesmos (lidos de `clubeContent`);
- * muda SÓ o texto do botão, lido de `clubeV2Content.passos`.
+ * mudam o título e o texto do botão, lidos de `clubeV2Content.passos`.
  * originDesc: [Site-Clube-V2]BT-Passos.
  */
 export function PassosV2({ onCtaClick }: PassosV2Props) {
@@ -21,14 +21,14 @@ export function PassosV2({ onCtaClick }: PassosV2Props) {
         <div className="flex flex-col items-center justify-center w-full space-y-8 md:space-y-10 lg:space-y-12">
           {/* Título */}
           <div className="text-center">
-            <h2 className="text-xl md:text-2xl lg:text-3xl font-medium leading-normal text-white text-center whitespace-pre-line">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-medium leading-snug text-white text-center text-balance max-w-3xl mx-auto">
               <span
                 className="text-primary font-bold"
                 style={{ color: "#ffaf02" }}
               >
-                {steps.title.highlight}
+                {clubeV2Content.passos.titulo.highlight}
               </span>
-              {steps.title.main}
+              {clubeV2Content.passos.titulo.main}
             </h2>
           </div>
 

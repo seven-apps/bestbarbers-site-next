@@ -70,9 +70,13 @@ export function SecaoTextoImagem({
       <div className="container-custom">
         <div className={`flex flex-col ${imagemNa === "esquerda" ? "lg:flex-row-reverse" : "lg:flex-row"} items-center justify-between gap-8 lg:gap-16`}>
           <div className="flex-1 flex flex-col justify-center items-center lg:items-start w-full space-y-5 md:space-y-6">
-            <h2 className="text-2xl md:text-4xl font-bold leading-tight text-neutral-black-text text-center lg:text-left max-w-xl lg:max-w-none">
-              {titulo.main}{" "}
-              <span style={{ color: "#ffaf02" }}>{titulo.highlight}</span>
+            {/* A parte amarela desce para a linha dela: pergunta em cima, resposta embaixo.
+                `text-balance` reparte as palavras entre as linhas e evita palavra sozinha no fim. */}
+            <h2 className="text-2xl md:text-4xl font-bold leading-tight text-neutral-black-text text-center lg:text-left text-balance max-w-xl lg:max-w-none">
+              <span className="block">{titulo.main}</span>
+              <span className="block mt-1" style={{ color: "#ffaf02" }}>
+                {titulo.highlight}
+              </span>
             </h2>
 
             <Checklist itens={itens} />
