@@ -236,7 +236,7 @@ test("PROVA: toda página tem tela animada existente, 3 passos, 3 pares hoje × 
 test("A/B de página (ciclo 1): sorteio curta × longa por cookie; cena fora do sorteio; rewrite, nunca redirect", async () => {
   const ab = (await import("../lib/ab-clube.ts")) as typeof import("../lib/ab-clube");
   // A regra fina do módulo está em `lib/ab-clube.test.ts`; aqui, o contrato que as páginas usam.
-  assert.deepEqual([...ab.BRACOS_NO_SORTEIO], ["curta", "longa"]);
+  assert.deepEqual([...ab.BRACOS_NO_SORTEIO], ["longa"]);
   assert.equal(ab.rotaDoBraco("retentativa", "longa"), "/clube-longa/retentativa");
   assert.equal(ab.rotaDoBraco("parceiro-guapo", "longa"), "/clube-longa/parceiro-guapo", "todas as 11 têm braço longo");
   assert.equal(ab.rotaDoBraco("retentativa", "curta"), null);

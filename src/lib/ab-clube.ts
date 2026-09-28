@@ -37,7 +37,7 @@ export const BRACOS_CLUBE = ["curta", "longa", "cena"] as const;
 export type BracoClube = (typeof BRACOS_CLUBE)[number];
 
 /** Os braços que o sorteio 50/50 distribui HOJE. Mudar aqui é mudar o teste. */
-export const BRACOS_NO_SORTEIO = ["curta", "longa"] as const;
+export const BRACOS_NO_SORTEIO = ["longa"] as const;
 export type BracoSorteado = (typeof BRACOS_NO_SORTEIO)[number];
 
 export function ehBracoClube(valor: unknown): valor is BracoClube {

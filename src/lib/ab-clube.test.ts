@@ -8,29 +8,19 @@ import * as modulo from "./ab-clube.ts";
 
 const ab = modulo as typeof import("./ab-clube");
 
-test("o sorteio distribui curta × longa, 50/50, e só entre esses dois", () => {
-  assert.deepEqual([...ab.BRACOS_NO_SORTEIO], ["curta", "longa"]);
-  assert.equal(ab.bracoDoVisitante(undefined, 0), "curta");
-  assert.equal(ab.bracoDoVisitante(undefined, 0.499), "curta");
-  assert.equal(ab.bracoDoVisitante(undefined, 0.5), "longa");
-  assert.equal(ab.bracoDoVisitante(undefined, 0.999), "longa");
-  // Fora do intervalo [0,1) não quebra: cai no primeiro ou no último braço.
-  assert.equal(ab.bracoDoVisitante(undefined, 1), "longa");
-  assert.equal(ab.bracoDoVisitante(undefined, -1), "curta");
-  // 10.000 sorteios uniformes: cada braço fica perto de metade (tolerância de 3 pontos).
-  let longa = 0;
-  for (let i = 0; i < 10_000; i++) if (ab.bracoDoVisitante(null, i / 10_000) === "longa") longa++;
-  assert.ok(Math.abs(longa / 10_000 - 0.5) < 0.03, `longa = ${longa}`);
+test("o sorteio tem um braço só, longa, desde 28/Set/26 (decisão do André: a longa fez 12 de 24 com equipe × 4 de 16 da curta)", () => {
+  assert.deepEqual([...ab.BRACOS_NO_SORTEIO], ["longa"]);
+  for (const sorteio of [0, 0.499, 0.5, 0.999, 1, -1]) assert.equal(ab.bracoDoVisitante(undefined, sorteio), "longa");
 });
 
 test("cookie válido vence o sorteio; cookie do teste anterior (base/cena) ou lixo ressorteia", () => {
-  assert.equal(ab.bracoDoVisitante("curta", 0.9), "curta");
   assert.equal(ab.bracoDoVisitante("longa", 0.1), "longa");
-  // `cena` está em código mas FORA do sorteio: um cookie antigo com ele não prende o visitante lá.
-  assert.equal(ab.bracoDoVisitante("cena", 0.1), "curta");
+  // `curta` e `cena` estão em código mas FORA do sorteio: um cookie antigo com eles não prende o visitante lá.
+  assert.equal(ab.bracoDoVisitante("curta", 0.9), "longa");
+  assert.equal(ab.bracoDoVisitante("cena", 0.1), "longa");
   assert.equal(ab.bracoDoVisitante("cena", 0.9), "longa");
   assert.equal(ab.bracoDoVisitante("base", 0.9), "longa", "o nome antigo do braço curto não vale mais");
-  assert.equal(ab.bracoDoVisitante("lixo", 0.1), "curta");
+  assert.equal(ab.bracoDoVisitante("lixo", 0.1), "longa");
   assert.equal(ab.bracoDoVisitante("", 0.9), "longa");
 });
 
