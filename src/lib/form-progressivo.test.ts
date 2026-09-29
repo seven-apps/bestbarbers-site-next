@@ -26,17 +26,41 @@ const vazio: import("./form-progressivo").ValoresForm = {
 };
 const contato = { ...vazio, ownerName: "João Silva", whatsapp: "(11) 99999-9999", barbershopName: "Barbearia do João" };
 
-test("abre com três campos: nada aparece enquanto falta nome, WhatsApp ou barbearia", () => {
-  assert.equal(fp.etapaLiberada(vazio, false), 1);
-  assert.equal(fp.etapaLiberada({ ...contato, barbershopName: "" }, true), 1);
-  assert.equal(fp.etapaLiberada({ ...contato, ownerName: "" }, true), 1);
-  assert.equal(fp.etapaLiberada(contato, false), 1, "telefone incompleto não libera");
-  assert.equal(fp.etapaLiberada({ ...contato, barbershopName: "B" }, true), 1, "uma letra não é nome");
+test("abre com três campos: nada aparece enquanto o nome da barbearia está vazio", () => {
+  assert.equal(fp.etapaLiberada(vazio), 1);
+  assert.equal(fp.etapaLiberada({ ...contato, barbershopName: "" }), 1);
+  assert.equal(fp.etapaLiberada({ ...contato, barbershopName: "   " }), 1, "espaço não é texto");
   assert.equal(fp.perguntasVisiveis(1), 0);
 });
 
-test("os três preenchidos liberam e-mail e faturamento JUNTOS", () => {
-  assert.equal(fp.etapaLiberada(contato, true), 2);
+test("a PRIMEIRA letra do nome da barbearia já revela (ajuste do André): sem pausa e sem clicar fora", () => {
+  assert.equal(fp.etapaLiberada({ ...contato, barbershopName: "B" }), 2);
+  // Não espera os outros dois: o que ficou para trás é cobrado no botão.
+  assert.equal(fp.etapaLiberada({ ...vazio, barbershopName: "B" }), 2);
+  assert.equal(fp.primeiroPendente({ ...vazio, barbershopName: "Barbearia" }, false), "ownerName");
+  const modal = ler("../components/sections/LeadFormModal.tsx");
+  assert.doesNotMatch(modal, /setTimeout/, "a revelação voltou a depender de tempo");
+  assert.doesNotMatch(modal, /onBlur/, "a revelação voltou a depender de sair do campo");
+});
+
+test("o marco `contato` do pixel segue exigindo os três campos válidos, nos dois braços", () => {
+  assert.equal(fp.contatoCompleto(contato, true), true);
+  assert.equal(fp.contatoCompleto(contato, false), false);
+  assert.equal(fp.contatoCompleto({ ...contato, barbershopName: "B" }, true), false);
+  assert.equal(fp.contatoCompleto({ ...contato, ownerName: "" }, true), false);
+});
+
+test("título e botão do modal progressivo: o texto do André, com a palavra do dono", () => {
+  const t = fp.TEXTOS_DO_MODAL_PROGRESSIVO;
+  assert.equal(t.botao, "QUERO ASSINATURA NA MINHA BARBEARIA");
+  assert.equal(
+    t.titulo.antes + t.titulo.destaque + t.titulo.depois,
+    "Tenha um aplicativo próprio personalizado da sua barbearia, com clube de assinaturas integrado",
+  );
+});
+
+test("o nome da barbearia libera e-mail e faturamento JUNTOS", () => {
+  assert.equal(fp.etapaLiberada(contato), 2);
   assert.equal(fp.ETAPA_DO_CAMPO.email, 2);
   assert.equal(fp.ETAPA_DO_CAMPO.monthlyRevenue, 2);
   assert.equal(fp.perguntasVisiveis(2), 1);
@@ -44,31 +68,31 @@ test("os três preenchidos liberam e-mail e faturamento JUNTOS", () => {
 
 test("o e-mail nunca é portão: vazio ou preenchido, a etapa é a mesma", () => {
   for (const email of ["", "joao@email.com", "torto"]) {
-    assert.equal(fp.etapaLiberada({ ...contato, email }, true), 2);
-    assert.equal(fp.etapaLiberada({ ...contato, email, monthlyRevenue: "x" }, true), 3);
+    assert.equal(fp.etapaLiberada({ ...contato, email }), 2);
+    assert.equal(fp.etapaLiberada({ ...contato, email, monthlyRevenue: "x" }), 3);
   }
   assert.notEqual(fp.primeiroPendente({ ...contato, email: "" }, true), "email");
 });
 
 test("cada resposta libera a pergunta seguinte, uma de cada vez", () => {
   const a = { ...contato, monthlyRevenue: "De R$ 10 mil a R$ 20 mil" };
-  assert.equal(fp.etapaLiberada(a, true), 3);
+  assert.equal(fp.etapaLiberada(a), 3);
   const b = { ...a, currentSystem: "Não utilizo nenhum" };
-  assert.equal(fp.etapaLiberada(b, true), 4);
+  assert.equal(fp.etapaLiberada(b), 4);
   const c = { ...b, clubStatus: "Já tenho o clube, mas gerencio manualmente" };
-  assert.equal(fp.etapaLiberada(c, true), 5);
+  assert.equal(fp.etapaLiberada(c), 5);
   assert.equal(fp.perguntasVisiveis(5), 4);
 });
 
 test("campo que apareceu não some: apagar um anterior não recolhe a tela", () => {
-  assert.equal(fp.proximaEtapa(4, { ...contato, ownerName: "" }, true), 4);
-  assert.equal(fp.proximaEtapa(2, vazio, false), 2);
-  assert.equal(fp.proximaEtapa(1, contato, true), 2);
+  assert.equal(fp.proximaEtapa(4, { ...contato, ownerName: "" }), 4);
+  assert.equal(fp.proximaEtapa(2, vazio), 2);
+  assert.equal(fp.proximaEtapa(1, contato), 2);
 });
 
 test("preenchimento automático do navegador com tudo de uma vez abre até onde os dados chegam", () => {
   const tudo = { ...contato, monthlyRevenue: "a", currentSystem: "b", clubStatus: "c", employeeCount: "d" };
-  assert.equal(fp.proximaEtapa(1, tudo, true), 5);
+  assert.equal(fp.proximaEtapa(1, tudo), 5);
   assert.equal(fp.primeiroPendente(tudo, true), null);
 });
 

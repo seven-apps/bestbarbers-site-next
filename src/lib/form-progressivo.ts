@@ -5,7 +5,7 @@
  * à medida que a pessoa preenche. Nada some depois de aparecer.
  *
  *   etapa 1 (abre)            nome do dono · WhatsApp do dono · nome da barbearia
- *   etapa 2 (os 3 preenchidos) e-mail + faturamento, JUNTOS
+ *   etapa 2 (digitou a barbearia) e-mail + faturamento, JUNTOS
  *   etapa 3 (faturamento)     sistema
  *   etapa 4 (sistema)         clube
  *   etapa 5 (clube)           profissionais
@@ -118,14 +118,24 @@ const MIN_LETRAS = 2;
 const preenchido = (v: string | undefined) => (v ?? "").trim().length >= MIN_LETRAS;
 const escolhido = (v: string | undefined) => (v ?? "").trim().length > 0;
 
-/** Os três campos de contato da primeira tela estão preenchidos? */
+/**
+ * Os três campos de contato da primeira tela estão preenchidos? É a regra do MARCO
+ * `contato` do pixel (igual nos dois braços), não a da revelação.
+ */
 export function contatoCompleto(v: ValoresForm, telefoneValido: boolean): boolean {
   return preenchido(v.ownerName) && telefoneValido && preenchido(v.barbershopName);
 }
 
-/** Até que etapa os DADOS já liberam. Não olha o e-mail: opcional nunca é portão. */
-export function etapaLiberada(v: ValoresForm, telefoneValido: boolean): Etapa {
-  if (!contatoCompleto(v, telefoneValido)) return 1;
+/**
+ * Até que etapa os DADOS já liberam. Não olha o e-mail: opcional nunca é portão.
+ *
+ * A etapa 2 abre na PRIMEIRA letra do nome da barbearia (ajuste do André, 28/Set/26: com a
+ * pausa de digitação os campos só apareciam para ele ao clicar fora). Ela não espera nome e
+ * WhatsApp válidos: o terceiro campo é o último da primeira tela, e o que ficou para trás é
+ * cobrado no botão, com aviso embaixo do campo (`primeiroPendente`).
+ */
+export function etapaLiberada(v: ValoresForm): Etapa {
+  if (!escolhido(v.barbershopName)) return 1;
   if (!escolhido(v.monthlyRevenue)) return 2;
   if (!escolhido(v.currentSystem)) return 3;
   if (!escolhido(v.clubStatus)) return 4;
@@ -133,8 +143,8 @@ export function etapaLiberada(v: ValoresForm, telefoneValido: boolean): Etapa {
 }
 
 /** A etapa na tela só cresce: campo que apareceu não some, mesmo se um anterior for apagado. */
-export function proximaEtapa(atual: Etapa, v: ValoresForm, telefoneValido: boolean): Etapa {
-  const liberada = etapaLiberada(v, telefoneValido);
+export function proximaEtapa(atual: Etapa, v: ValoresForm): Etapa {
+  const liberada = etapaLiberada(v);
   return liberada > atual ? liberada : atual;
 }
 
@@ -183,7 +193,20 @@ export function primeiroPendente(v: ValoresForm, telefoneValido: boolean): Campo
   return null;
 }
 
-// ── Rótulos do braço progressivo (texto do André, 28/Set/26) ─────────────────────────
+// ── Textos do braço progressivo (texto do André, 28/Set/26) ──────────────────────────
+
+/**
+ * Título e botão do modal no braço progressivo. O título sai em três pedaços porque o do
+ * meio vai em amarelo. O botão é o mesmo da página: "assinatura" é a palavra do dono.
+ */
+export const TEXTOS_DO_MODAL_PROGRESSIVO = {
+  titulo: {
+    antes: "Tenha um aplicativo próprio personalizado da sua barbearia, com ",
+    destaque: "clube de assinaturas integrado",
+    depois: "",
+  },
+  botao: "QUERO ASSINATURA NA MINHA BARBEARIA",
+} as const;
 
 export const CAMPOS_DE_CONTATO_PROGRESSIVO = [
   { name: "ownerName", label: "Nome do dono da barbearia", placeholder: "Ex: João Silva", type: "text", autoComplete: "name" },

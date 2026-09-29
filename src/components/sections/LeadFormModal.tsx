@@ -10,6 +10,8 @@ import {
   ETAPA_FINAL,
   ETAPA_INICIAL,
   MARCADOR_FORM,
+  TEXTOS_DO_MODAL_PROGRESSIVO,
+  contatoCompleto,
   eventoDoMarco,
   perguntasVisiveis,
   primeiroPendente,
@@ -40,15 +42,6 @@ interface LeadFormModalProps {
    */
   bracoTeste?: BracoForm | null;
 }
-
-/** Pausa na digitação antes de revelar a etapa 2 — nada pula embaixo do dedo de quem ainda escreve. */
-const PAUSA_DIGITACAO_MS = 500;
-/**
- * Espera ao sair do campo. Sem ela, quem sai do campo CLICANDO NO BOTÃO perde o clique: os
- * campos novos nascem entre o apertar e o soltar, o botão desce e o toque cai no vazio
- * (medido na captura local de 28/Set/26). Com ela o clique chega primeiro e é o botão que revela.
- */
-const ESPERA_AO_SAIR_MS = 150;
 
 /**
  * Aviso de cada campo no formulário progressivo. Aparece EMBAIXO do campo, e não na caixa do
@@ -158,32 +151,19 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
   const campoParaFocar = useRef<CampoForm | null>(null);
   const telefoneValido = isValidPhone();
 
+  // Revela NA HORA: a primeira letra do nome da barbearia abre a etapa 2, e cada resposta
+  // abre a pergunta seguinte. Sem pausa e sem depender de sair do campo (ajuste do André).
+  // Os campos nascem ABAIXO de onde a pessoa digita, então nada se mexe embaixo do dedo.
   useEffect(() => {
-    if (!emTeste) return;
-    const alvo = proximaEtapa(etapa, formData, telefoneValido);
-    if (alvo === etapa) return;
-    // Só a passagem 1 → 2 nasce de texto digitado; as outras nascem de uma escolha.
-    const espera = etapa === ETAPA_INICIAL ? PAUSA_DIGITACAO_MS : 0;
-    const t = setTimeout(() => setEtapa(alvo), espera);
-    return () => clearTimeout(t);
-  }, [emTeste, etapa, formData, telefoneValido]);
+    if (!progressivo) return;
+    setEtapa((atual) => proximaEtapa(atual, formData));
+  }, [progressivo, formData]);
 
-  // Saiu do campo: revela sem esperar a pausa da digitação.
-  const esperaAoSair = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const aoSairDoCampo = useCallback(() => {
-    if (!emTeste) return;
-    if (esperaAoSair.current) clearTimeout(esperaAoSair.current);
-    esperaAoSair.current = setTimeout(() => {
-      setEtapa((atual) => proximaEtapa(atual, formData, telefoneValido));
-    }, ESPERA_AO_SAIR_MS);
-  }, [emTeste, formData, telefoneValido]);
-  useEffect(() => () => {
-    if (esperaAoSair.current) clearTimeout(esperaAoSair.current);
-  }, []);
-
+  // Marco `contato`: os três campos válidos. Mesma regra nos dois braços, separada da revelação.
+  const contatoOk = emTeste && contatoCompleto(formData, telefoneValido);
   useEffect(() => {
-    if (etapa > ETAPA_INICIAL) marcar("contato");
-  }, [etapa, marcar]);
+    if (contatoOk) marcar("contato");
+  }, [contatoOk, marcar]);
 
   useEffect(() => {
     if (isOpen) marcar("aberto");
@@ -308,13 +288,23 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
 
         <div className="p-6 md:p-8">
           {/* Titulo */}
-          <h2 className="font-extrabold text-[22px] leading-[30px] md:text-[28px] md:leading-[36px] text-white text-center mb-2">
-            Tenha um{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffaf02] to-[#ffc233]">
-              Aplicativo Próprio Personalizado
-            </span>
-            {" "}da sua barbearia!
-          </h2>
+          {progressivo ? (
+            <h2 className="font-extrabold text-[20px] leading-[28px] md:text-[26px] md:leading-[34px] text-white text-center text-balance mb-2 px-6 md:px-4">
+              {TEXTOS_DO_MODAL_PROGRESSIVO.titulo.antes}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffaf02] to-[#ffc233]">
+                {TEXTOS_DO_MODAL_PROGRESSIVO.titulo.destaque}
+              </span>
+              {TEXTOS_DO_MODAL_PROGRESSIVO.titulo.depois}
+            </h2>
+          ) : (
+            <h2 className="font-extrabold text-[22px] leading-[30px] md:text-[28px] md:leading-[36px] text-white text-center mb-2">
+              Tenha um{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffaf02] to-[#ffc233]">
+                Aplicativo Próprio Personalizado
+              </span>
+              {" "}da sua barbearia!
+            </h2>
+          )}
 
           {/* Subtitulo */}
           <p className="text-gray-400 text-sm md:text-base text-center mb-6">
@@ -345,7 +335,6 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                     name={field.name}
                     value={formData[field.name]}
                     onChange={handleInputChange}
-                    onBlur={aoSairDoCampo}
                     placeholder={field.placeholder}
                     autoComplete={field.autoComplete}
                     required={field.name !== "email"}
@@ -374,7 +363,6 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                   name={field.name}
                   value={formData[field.name as keyof typeof formData]}
                   onChange={handleInputChange}
-                  onBlur={emTeste ? aoSairDoCampo : undefined}
                   placeholder={field.placeholder}
                   required={field.name !== "email"}
                   className="w-full bg-[#1a1d25] border-2 border-[#2a2d35] rounded-xl px-4 py-3.5 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45]"
@@ -409,7 +397,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                   </>
                 ) : (
                   <>
-                    QUERO UM APP PERSONALIZADO!
+                    {progressivo ? TEXTOS_DO_MODAL_PROGRESSIVO.botao : "QUERO UM APP PERSONALIZADO!"}
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}
