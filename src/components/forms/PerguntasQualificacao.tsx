@@ -52,6 +52,14 @@ export interface PerguntasQualificacaoProps {
   variante?: VarianteQualificacao;
   /** Classe do contêiner — os formulários usam para herdar o espaçamento do `<form>`. */
   className?: string;
+  /**
+   * Quantas das quatro perguntas mostrar, na ordem fixa (faturamento → sistema → clube →
+   * profissionais). Só o formulário progressivo do modal passa isto (`lib/form-progressivo.ts`);
+   * sem a prop saem as quatro, como em todos os outros formulários.
+   */
+  quantas?: number;
+  /** Classe de cada pergunta — o formulário progressivo usa para animar a entrada. */
+  classeItem?: string;
 }
 
 const TEMA: Record<VarianteQualificacao, {
@@ -92,6 +100,8 @@ export function PerguntasQualificacao({
   erros = {},
   variante = "claro",
   className = "space-y-4",
+  quantas = 4,
+  classeItem = "",
 }: PerguntasQualificacaoProps) {
   const tema = TEMA[variante];
   const prefixo = useId();
@@ -134,7 +144,7 @@ export function PerguntasQualificacao({
   }) => {
     const id = `${prefixo}-${campo}`;
     return (
-      <div className="space-y-1.5">
+      <div key={campo} className={`space-y-1.5 ${classeItem}`.trim()}>
         <label htmlFor={id} className="block font-semibold text-[13px] leading-[20px]" style={estiloRotulo}>
           {rotulo}
         </label>
@@ -180,40 +190,41 @@ export function PerguntasQualificacao({
     );
   };
 
-  return (
-    <div className={className}>
-      {campoSelecao({
-        campo: "monthlyRevenue",
-        rotulo: "Qual o faturamento médio da sua barbearia?",
-        ajuda: "Por mês, somando todos os profissionais",
-        opcoes: FATURAMENTO_OPCOES,
-        mensagemErro: MSG_FATURAMENTO,
-        temErro: Boolean(erros.monthlyRevenue),
-      })}
+  // Nenhuma pergunta na tela = nenhum contêiner: um `<div>` vazio ainda ocuparia o
+  // espaçamento do `<form>` (space-y) e deixaria um buraco acima do botão.
+  if (quantas <= 0) return null;
 
-      {campoSelecao({
-        campo: "currentSystem",
-        rotulo: "Você já utiliza algum sistema para a sua barbearia hoje?",
-        opcoes: SISTEMA_OPCOES,
-        mensagemErro: MSG_SISTEMA,
-        temErro: Boolean(erros.currentSystem),
-      })}
+  const perguntas = [
+    campoSelecao({
+      campo: "monthlyRevenue",
+      rotulo: "Qual o faturamento médio da sua barbearia?",
+      ajuda: "Por mês, somando todos os profissionais",
+      opcoes: FATURAMENTO_OPCOES,
+      mensagemErro: MSG_FATURAMENTO,
+      temErro: Boolean(erros.monthlyRevenue),
+    }),
+    campoSelecao({
+      campo: "currentSystem",
+      rotulo: "Você já utiliza algum sistema para a sua barbearia hoje?",
+      opcoes: SISTEMA_OPCOES,
+      mensagemErro: MSG_SISTEMA,
+      temErro: Boolean(erros.currentSystem),
+    }),
+    campoSelecao({
+      campo: "clubStatus",
+      rotulo: "Você tem clube de assinaturas na sua barbearia hoje?",
+      opcoes: CLUBE_OPCOES,
+      mensagemErro: MSG_CLUBE,
+      temErro: Boolean(erros.clubStatus),
+    }),
+    campoSelecao({
+      campo: "employeeCount",
+      rotulo: "Quantos profissionais trabalham na sua barbearia?",
+      opcoes: PROFISSIONAIS_OPCOES,
+      mensagemErro: MSG_PROFISSIONAIS,
+      temErro: Boolean(erros.employeeCount),
+    }),
+  ];
 
-      {campoSelecao({
-        campo: "clubStatus",
-        rotulo: "Você tem clube de assinaturas na sua barbearia hoje?",
-        opcoes: CLUBE_OPCOES,
-        mensagemErro: MSG_CLUBE,
-        temErro: Boolean(erros.clubStatus),
-      })}
-
-      {campoSelecao({
-        campo: "employeeCount",
-        rotulo: "Quantos profissionais trabalham na sua barbearia?",
-        opcoes: PROFISSIONAIS_OPCOES,
-        mensagemErro: MSG_PROFISSIONAIS,
-        temErro: Boolean(erros.employeeCount),
-      })}
-    </div>
-  );
+  return <div className={className}>{perguntas.slice(0, quantas)}</div>;
 }

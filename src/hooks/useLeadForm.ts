@@ -44,6 +44,13 @@ export interface UseLeadFormOptions {
   originDesc?: string;
   /** Source identifier para BBAI API (atribuição em relatórios). Default: 'lp_v5' (retrocompat). */
   source?: string;
+  /**
+   * Marcador de TESTE de formulário (`lib/form-progressivo.ts`: `form_ctrl` / `form_prog`).
+   * Vai no FIM do `leadEventId` — que o card guarda em `bb_lead_event_id` — e num campo
+   * `formulario` do pixel e do dataLayer. Ausente (todas as páginas fora do teste) = o id
+   * nasce exatamente como sempre nasceu.
+   */
+  marcadorEvento?: string;
 }
 
 declare global {
@@ -65,6 +72,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     originId,
     originDesc,
     source = 'lp_v5',
+    marcadorEvento,
   } = options;
 
   const [formData, setFormData] = useState<FormData>({
@@ -202,7 +210,10 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       const utmParams = getUtmParams();
       const phoneDigits = formData.whatsapp.replace(/\D/g, '');
       const initials = formData.ownerName.trim().split(/\s+/).map(n => n[0]).join('').toLowerCase();
-      const leadEventId = `${Date.now()}-${initials}`;
+      // O marcador do teste de formulário entra DEPOIS das iniciais: o pixel e a CAPI usam
+      // esta mesma string (com os sufixos '-q', '-q60', '-eq'), então o par de dedup
+      // continua casado, e o card passa a dizer qual formulário a pessoa preencheu.
+      const leadEventId = `${Date.now()}-${initials}${marcadorEvento ? `-${marcadorEvento}` : ''}`;
 
       // 1.1. DEDUP — usa o resultado do background dedup se já checou este telefone;
       // senão consulta na hora (cobre quem cola o número e clica antes de terminar).
@@ -321,6 +332,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
             // Braço do A/B de página (`lib/ab-clube.ts`), o mesmo que vai no `bb_lp_version`
             // e em todo evento do pixel; null fora das páginas em teste.
             variante: varianteVista(),
+            // Braço do teste de formulário; null fora do teste.
+            formulario: marcadorEvento ?? null,
           },
           utm_params: {
             source: utmParams.utm_source,
@@ -467,6 +480,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         ...(leadScore !== null && { lead_score: leadScore }),
         ...(utmParams.utm_content && { content_id: utmParams.utm_content }),
         ...(portaLead !== undefined && { porta: portaLead }),
+        ...(marcadorEvento && { formulario: marcadorEvento }),
       };
 
       // Nas campanhas de ESCALA da Operação 400, a Meta passou a otimizar pelo evento
@@ -551,6 +565,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     buildAttribution,
     resolveDedup,
     source,
+    marcadorEvento,
   ]);
 
   const resetForm = useCallback(() => {
