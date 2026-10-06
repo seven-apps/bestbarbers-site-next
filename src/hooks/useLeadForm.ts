@@ -5,6 +5,16 @@ import { useWhatsAppRedirect } from './useWhatsAppRedirect';
 import { useMetaPixel } from './useMetaPixel';
 import { useUtmParams } from './useUtmParams';
 import { criarCardRecadastro } from '@/lib/recadastro';
+import {
+  abrirConversaComLucas,
+  cadastrarContatoNovo,
+  caminhoDoLead,
+  corpoDaNutricao,
+  criarLeadNutricao,
+  linkDoWhatsAppLucas,
+  mensagemDaPagina,
+} from '@/lib/lead-nutricao';
+import { MENSAGEM_PADRAO_LUCAS, MENSAGENS_LUCAS, NUMERO_WHATSAPP_LUCAS } from '@/content/lucas-whatsapp';
 import { validarEmailOpcional } from '@/lib/form-passo1';
 import { calcularScoreV2, interesseLegado, temEquipe } from '@/lib/lead-score';
 import { MSG_CLUBE, MSG_FATURAMENTO, MSG_PROFISSIONAIS, MSG_SISTEMA } from '@/lib/qualificacao';
@@ -51,6 +61,12 @@ export interface UseLeadFormOptions {
    * nasce exatamente como sempre nasceu.
    */
   marcadorEvento?: string;
+  /**
+   * Lead < 60 que foi para o Lucas (`lib/lead-nutricao.ts`): por padrão, no celular o WhatsApp
+   * abre sozinho em ~2 s. `true` nas páginas que ENTREGAM algo depois do formulário (a tabela
+   * que destrava, o guia na tela de obrigado): ali o lead ganha só o botão, sem sair da página.
+   */
+  lucasSoBotao?: boolean;
 }
 
 declare global {
@@ -73,6 +89,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     originDesc,
     source = 'lp_v5',
     marcadorEvento,
+    lucasSoBotao = false,
   } = options;
 
   const [formData, setFormData] = useState<FormData>({
@@ -95,7 +112,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
   const dedupCacheRef = useRef<{ phone: string; exists: boolean } | null>(null);
 
   const { applyPhoneMask, isValidPhone } = usePhoneMask();
-  const { submitLead, checkPhoneExists, buildAttribution } = usePloomesAPI({ originId, originDesc });
+  const { submitLead, checkPhoneExists, buildAttribution, buildContactPayload } = usePloomesAPI({ originId, originDesc });
   const { redirectToWhatsApp: redirect } = useWhatsAppRedirect();
   // trackLead em todo submit válido (gate aberto — Operação 400) + trackQualifiedLead
   // adicional quando score >= 30 (preserva leitura de CPQL). trackCompleteRegistration
@@ -359,7 +376,16 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         leadScore: leadScore ?? undefined,
         leadEventId,
       };
-      if (dedup.exists) {
+      // Três caminhos (src/lib/lead-nutricao.ts): telefone conhecido → recadastro; contato novo
+      // com nota < 60 → tenta o Lucas (ADR-035, 06/Out/26); o resto → o caminho de sempre.
+      const caminho = caminhoDoLead({
+        telefoneExiste: dedup.exists,
+        nota: leadScore,
+        numeroLucas: NUMERO_WHATSAPP_LUCAS,
+      });
+      // Card criado no pipe de nutrição: o lead vai para o WhatsApp do Lucas no fim do submit.
+      let dealIdLucas: number | null = null;
+      if (caminho === 'recadastro') {
         // RECADASTRO (23/Jul/26): telefone já existe no Ploomes → em vez de barrar,
         // cria um card novo na Qualificação para o contato existente, com as mesmas
         // informações do fluxo padrão e o SDR do card anterior replicado. Marcado com
@@ -386,7 +412,25 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
           return;
         }
       } else {
-        await submitLead(ploomesData);
+        // `lucas` só vale com o card criado: qualquer falha da rota faz `submitLead`, o caminho
+        // de hoje (contato pela chave do site → card na Qualificação → rodízio de SDR).
+        dealIdLucas = await cadastrarContatoNovo(
+          caminho,
+          () =>
+            criarLeadNutricao(
+              corpoDaNutricao({
+                contato: buildContactPayload(ploomesData),
+                atribuicao: buildAttribution(ploomesData),
+                // `lucas` só nasce com nota numérica abaixo do corte (caminhoDoLead).
+                nota: leadScore as number,
+                faturamento: formData.monthlyRevenue || undefined,
+                colaboradores: formData.employeeCount || undefined,
+                clube: formData.clubStatus || undefined,
+                sistema: formData.currentSystem || undefined,
+              }),
+            ),
+          () => submitLead(ploomesData),
+        );
       }
 
       // 5. Meta Pixel + CAPI direta — dispara TAMBÉM no recadastro (André, 23/Jul/26):
@@ -427,6 +471,10 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         fetch(`${capiUrl}/api/meta-capi/track`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          // `keepalive`: o envio sobrevive à saída da página. Sem ele, o lead < 60 que vai para
+          // o WhatsApp do Lucas (ou qualquer navegação logo depois do submit) cancela o fetch e a
+          // cópia do servidor some — o evento fica só no pixel, sem as match keys.
+          keepalive: true,
           body: JSON.stringify({
             eventName,
             eventId,
@@ -537,11 +585,20 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // Chama callback de sucesso se fornecido
       onSuccess?.();
 
-      // Redireciona para WhatsApp
-      if (redirectToWhatsApp) {
+      // Lead < 60 com card na nutrição: a tela do layout raiz (ConversaComLucas) leva ao
+      // WhatsApp do Lucas. Vem depois do onSuccess para a página fazer o que já faz (destravar a
+      // tabela, ir para a tela de obrigado) e a conversa aparecer por cima.
+      if (dealIdLucas !== null) {
+        const mensagem = mensagemDaPagina(window.location.pathname, MENSAGENS_LUCAS, MENSAGEM_PADRAO_LUCAS);
+        abrirConversaComLucas({
+          link: linkDoWhatsAppLucas(NUMERO_WHATSAPP_LUCAS, mensagem, dealIdLucas),
+          soBotao: lucasSoBotao,
+        });
+      } else if (redirectToWhatsApp) {
+        // Redireciona para WhatsApp
         redirect();
       }
-      
+
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
       setSubmitError(errorMessage);
@@ -563,9 +620,11 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     getUtmParams,
     submitLead,
     buildAttribution,
+    buildContactPayload,
     resolveDedup,
     source,
     marcadorEvento,
+    lucasSoBotao,
   ]);
 
   const resetForm = useCallback(() => {

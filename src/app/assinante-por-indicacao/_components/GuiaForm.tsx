@@ -84,6 +84,8 @@ export function GuiaForm() {
     // no submit, e é awaited antes deste onSuccess. Por isso a /obrigado NÃO refaz Lead.
     // O destino sai do builder tipado (nunca string à mão), pra o tsc pegar id errado.
     onSuccess: () => router.push(hrefObrigado("assinante-por-indicacao")),
+    // A /obrigado entrega o guia: o lead < 60 ganha só o botão do WhatsApp do Lucas, sem sair dela.
+    lucasSoBotao: true,
     onError: (error) => {
       console.error("Erro ao enviar formulário:", error);
       alert("Não foi possível enviar agora. Confira os dados e tente de novo.");

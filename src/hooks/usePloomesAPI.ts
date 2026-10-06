@@ -103,7 +103,11 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     });
   }, [getUtmParams, getOriginMapping, customOriginId, customOriginDesc]);
 
-  const createContact = useCallback(async (data: PloomesContactData): Promise<PloomesAPIResponse> => {
+  /**
+   * Corpo do POST /Contacts. Separado do envio porque o lead < 60 manda o MESMO contato para
+   * a rota da nutrição no OS (src/lib/lead-nutricao.ts), que só troca quem cria.
+   */
+  const buildContactPayload = useCallback((data: PloomesContactData) => {
     const { originId, originDesc, fields, leadScore } = buildAttribution(data);
 
     // Campos estruturados bb_* (criados abr/2026 + mai/2026). FieldKeys ficam em
@@ -176,6 +180,10 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       ]
     };
 
+    return ploomesData;
+  }, [buildAttribution]);
+
+  const createContact = useCallback(async (data: PloomesContactData): Promise<PloomesAPIResponse> => {
     const response = await fetch(`${PLOOMES_BASE_URL}/Contacts`, {
       method: 'POST',
       headers: {
@@ -183,7 +191,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
         'Content-Type': 'application/json',
         'user-key': PLOOMES_API_KEY
       },
-      body: JSON.stringify(ploomesData)
+      body: JSON.stringify(buildContactPayload(data))
     });
 
     if (!response.ok) {
@@ -192,7 +200,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     }
 
     return response.json();
-  }, [buildAttribution]);
+  }, [buildContactPayload]);
 
   const createDeal = useCallback(async (
     contactId: number, 
@@ -286,6 +294,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     createDeal,
     checkPhoneExists,
     buildAttribution,
+    buildContactPayload,
     submitLead
   };
 };

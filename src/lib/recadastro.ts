@@ -45,11 +45,17 @@ export interface RecadastroResultado {
 /** Timeout do backend — acima disso o lead esperando já é pior que a mensagem antiga. */
 const TIMEOUT_MS = 12_000;
 
-export async function criarCardRecadastro(input: RecadastroInput): Promise<RecadastroResultado> {
-  const base =
+/** Base do OS (bestbarbers-ai) que o formulário chama. A nutrição do < 60 usa a mesma. */
+export function baseDoOS(): string {
+  return (
     process.env.NEXT_PUBLIC_BBAI_DASHBOARD_URL ||
     process.env.NEXT_PUBLIC_BBAI_API_URL ||
-    "https://bbai.bestbarbers.app";
+    "https://bbai.bestbarbers.app"
+  );
+}
+
+export async function criarCardRecadastro(input: RecadastroInput): Promise<RecadastroResultado> {
+  const base = baseDoOS();
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
