@@ -22,8 +22,8 @@
 /** Marca de revisão: enquanto `true`, nenhum texto daqui foi aprovado. */
 export const TEXTOS_PENDENTES_DE_APROVACAO = true;
 
-/** PROVISÓRIO — o nome do curso é decisão do André. Trocar o nome = trocar só esta constante. */
-export const NOME_DO_CURSO = "Curso de assinatura";
+/** Nome do curso, decidido pelo André em 06/Out/26. Trocar o nome = trocar só esta constante. */
+export const NOME_DO_CURSO = "Assinatura na Prática";
 
 /**
  * Vira o `bb_lp_version` do card (regra do slug em `lib/lead-attribution.ts`) e o caminho das
@@ -296,7 +296,7 @@ export const TEXTOS_AREA = {
      * do 03 v1. O Lucas reconhece pela frase "lembretes das aulas" e pelo sufixo. Não escreva o
      * código aqui.
      */
-    mensagem: "Oi! Estou fazendo o curso de assinatura do BestBarbers. Quero receber os lembretes das aulas por aqui.",
+    mensagem: "Oi! Estou fazendo o curso Assinatura na Prática, do BestBarbers. Quero receber os lembretes das aulas por aqui.",
     depois: "Mande a mensagem que já está escrita no WhatsApp para ativar os lembretes.",
   },
   linkInvalido: {
@@ -310,7 +310,7 @@ export const TEXTOS_AREA = {
     whatsapp: {
       pergunta: "Prefere pelo WhatsApp?",
       botao: "PEDIR O LINK NO WHATSAPP",
-      mensagem: "Oi! Quero receber de novo o link do curso de assinatura do BestBarbers.",
+      mensagem: "Oi! Quero receber de novo o link do curso Assinatura na Prática, do BestBarbers.",
     },
     rodape: { pergunta: "Ainda não tem cadastro?", botao: "FAZER MEU CADASTRO" },
   },

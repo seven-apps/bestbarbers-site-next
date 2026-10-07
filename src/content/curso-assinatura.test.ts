@@ -60,7 +60,7 @@ test("slug e caminhos fixos do contrato; a guarda da área casa só a área", ()
 });
 
 test("nome provisório e textos marcados como pendentes", () => {
-  assert.equal(NOME_DO_CURSO, "Curso de assinatura");
+  assert.equal(NOME_DO_CURSO, "Assinatura na Prática");
   assert.equal(TEXTOS_PENDENTES_DE_APROVACAO, true);
 });
 
