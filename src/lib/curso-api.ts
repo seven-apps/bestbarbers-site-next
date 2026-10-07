@@ -189,9 +189,20 @@ export function corpoDaInscricao(cadastro: CadastroConcluido, chave: string): Co
   };
 }
 
-/** UUID v4 por envio (§2.3). Só o navegador e o OS conhecem. */
-export function novaChave(): string {
-  return crypto.randomUUID();
+type FonteAleatoria = { getRandomValues<T extends Uint8Array>(a: T): T; randomUUID?: () => string };
+
+/**
+ * UUID v4 por envio (§2.3). Só o navegador e o OS conhecem. `crypto.randomUUID` não existe em
+ * Safari anterior ao 15.4 nem fora de contexto seguro: aí monta o v4 com `getRandomValues`, em vez
+ * de lançar depois do cadastro feito (a tela ficaria presa em "Liberando o seu acesso…").
+ */
+export function novaChave(fonte: FonteAleatoria = globalThis.crypto): string {
+  if (typeof fonte.randomUUID === "function") return fonte.randomUUID();
+  const b = fonte.getRandomValues(new Uint8Array(16));
+  b[6] = (b[6] & 0x0f) | 0x40; // versão 4
+  b[8] = (b[8] & 0x3f) | 0x80; // variante RFC 4122
+  const h = Array.from(b, (x) => x.toString(16).padStart(2, "0")).join("");
+  return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
 }
 
 export type ResultadoInscricao =
@@ -322,14 +333,25 @@ export async function lerAluno(token: string, opcoes: OpcoesDeRede = {}): Promis
   return estado ? { ok: true, dados: estado } : { ok: false, motivo: "servidor" };
 }
 
-/** `POST /api/curso/aluno/progresso`. Idempotente no servidor: repetir não muda nada. */
+/**
+ * `POST /api/curso/aluno/progresso`. Idempotente no servidor: repetir não muda nada.
+ *
+ * Sai com `keepalive` (o marco do fim do vídeo chega mesmo se a pessoa fechar a aba). Navegador
+ * que recusa `keepalive` com preflight de CORS (o `Authorization` exige preflight) lança
+ * `TypeError` na hora: aí repete uma vez sem `keepalive`, para o progresso nunca depender disso.
+ * Medido em 06/Out/26: o Chrome 153 aceita; Safari e Firefox não foram medidos.
+ */
 export async function registrarProgresso(
   token: string,
   aula: NumeroAula,
   marco: Marco,
   opcoes: OpcoesDeRede = {},
 ): Promise<Resultado<{ marco: number; aulasConcluidas: number }>> {
-  const r = await chamar("/api/curso/aluno/progresso", { method: "POST", token, body: JSON.stringify({ aula, marco }), keepalive: true }, opcoes);
+  const corpo = JSON.stringify({ aula, marco });
+  let r = await chamar("/api/curso/aluno/progresso", { method: "POST", token, body: corpo, keepalive: true }, opcoes);
+  if (r.status === 0 && "erro" in r && r.erro === "TypeError") {
+    r = await chamar("/api/curso/aluno/progresso", { method: "POST", token, body: corpo }, opcoes);
+  }
   if (r.status !== 200) return falha(r.status, r.corpo);
   const d = r.corpo as { marco?: unknown; aulasConcluidas?: unknown } | null;
   return { ok: true, dados: { marco: Number(d?.marco ?? marco), aulasConcluidas: Number(d?.aulasConcluidas ?? 0) } };

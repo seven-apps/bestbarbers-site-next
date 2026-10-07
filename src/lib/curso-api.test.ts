@@ -21,6 +21,7 @@ import {
   linkBonusLucas,
   linkDaArea,
   linkLucasSemCodigo,
+  novaChave,
   pedirLink,
   registrarProgresso,
   registrarSinal,
@@ -309,4 +310,37 @@ test("bônus do Lucas: número vazio, fora do formato ou código estranho = sem 
   assert.equal(linkBonusLucas("5531988887777", "Oi", "K7M2QI"), "", "I não existe no alfabeto Crockford");
   assert.equal(linkLucasSemCodigo("", "Oi"), "");
   assert.equal(linkLucasSemCodigo("5531988887777", "Oi"), "https://wa.me/5531988887777?text=Oi");
+});
+
+// ─── Revisão adversarial (06/Out/26) ──────────────────────────────────────────────────────
+
+const UUID_V4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+test("novaChave: com randomUUID usa ele; sem ele (Safari < 15.4) monta um v4 válido para o OS", () => {
+  assert.match(novaChave(), UUID_V4);
+  assert.equal(novaChave({ getRandomValues: (a) => a, randomUUID: () => CHAVE }), CHAVE);
+  const semUuid = { getRandomValues: <T extends Uint8Array>(a: T): T => { a.fill(0xff); return a; } };
+  const chave = novaChave(semUuid);
+  assert.match(chave, UUID_V4, "a rota do OS só aceita UUID v4");
+  assert.equal(chave, "ffffffff-ffff-4fff-bfff-ffffffffffff");
+  assert.notEqual(novaChave({ getRandomValues: (a) => globalThis.crypto.getRandomValues(a) }), novaChave({ getRandomValues: (a) => globalThis.crypto.getRandomValues(a) }));
+});
+
+test("progresso: navegador que recusa keepalive com preflight (TypeError) repete sem keepalive", async () => {
+  const { f, chamadas } = fetchFalso([
+    () => { throw new TypeError("Preflight request for request with keepalive specified is currently not supported"); },
+    () => json(200, { status: "ok", marco: 90, aulasConcluidas: 3 }),
+  ]);
+  const r = await registrarProgresso(TOKEN, 3, 90, { fetch: f, base: BASE });
+  assert.deepEqual(r, { ok: true, dados: { marco: 90, aulasConcluidas: 3 } });
+  assert.equal(chamadas.length, 2);
+  assert.equal(chamadas[0].init?.keepalive, true);
+  assert.equal(chamadas[1].init?.keepalive, undefined);
+  assert.deepEqual(JSON.parse(String(chamadas[1].init?.body)), { aula: 3, marco: 90 });
+});
+
+test("progresso: resposta HTTP (mesmo 5xx) não repete na hora; o player repete com espera", async () => {
+  const { f, chamadas } = fetchFalso([() => json(503, { status: "erro", detalhe: "indisponivel" })]);
+  assert.deepEqual(await registrarProgresso(TOKEN, 1, 25, { fetch: f, base: BASE }), { ok: false, motivo: "servidor" });
+  assert.equal(chamadas.length, 1);
 });

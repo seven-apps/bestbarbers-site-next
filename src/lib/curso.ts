@@ -284,6 +284,24 @@ export function marcosParaEnviar(input: {
   return alcancados.filter((m) => !input.enviados.has(m) && (input.doServidor === null || m > input.doServidor));
 }
 
+/**
+ * Espera antes de repetir um marco que falhou por rede ou servidor (§9): 2 s, 4 s, 8 s… até 60 s.
+ * Crescente para uma queda de rede não estourar o limite de 200/h por token.
+ */
+export function esperaParaRepetir(tentativas: number): number {
+  const n = Math.max(1, Math.floor(tentativas));
+  return Math.min(60_000, 2_000 * 2 ** (n - 1));
+}
+
+/**
+ * A duração que divide a fração: a do player e, enquanto ele ainda não sabe (o `getDuration()`
+ * devolve 0 antes de o vídeo carregar), a da constante da aula. Sem nenhuma das duas = 0.
+ */
+export function duracaoParaFracao(doPlayer: number, daConstante: number | null): number {
+  if (Number.isFinite(doPlayer) && doPlayer > 0) return doPlayer;
+  return daConstante !== null && daConstante > 0 ? daConstante : 0;
+}
+
 /** Serializa os intervalos para o `localStorage` (inteiros de décimo de segundo: cabe pouco). */
 export function serializarIntervalos(intervalos: Intervalos): string {
   return JSON.stringify(intervalos.map(([a, b]) => [Math.round(a * 10) / 10, Math.round(b * 10) / 10]));
@@ -381,6 +399,20 @@ export function comMarco(estado: EstadoAluno, aula: NumeroAula, marco: Marco): E
   const aulasConcluidas = aulas.filter((a) => a.concluida).length;
   const proximaAula = aulas.find((a) => !a.concluida)?.numero ?? 7;
   return { ...estado, aulas, aulasConcluidas, proximaAula, terminou: estado.terminou || (aula === 6 && marco >= 90) };
+}
+
+/**
+ * O estado relido do OS sem deixar o progresso da tela descer. Um GET que saiu antes de um marco
+ * ser gravado volta com o marco antigo; o servidor só sobe (§4.2), então o marco que a tela já
+ * tinha (só entra na tela depois do 200 do OS) continua valendo. Aluno diferente = o novo inteiro.
+ */
+export function semRegredir(novo: EstadoAluno, anterior: EstadoAluno | null): EstadoAluno {
+  if (!anterior || anterior.aluno.codigo !== novo.aluno.codigo) return novo;
+  let estado = novo;
+  for (const a of anterior.aulas) {
+    if (a.marco !== null) estado = comMarco(estado, a.numero, a.marco);
+  }
+  return { ...estado, terminou: novo.terminou || anterior.terminou || estado.terminou };
 }
 
 export function proximaDepois(aula: NumeroAula): NumeroAula | null {

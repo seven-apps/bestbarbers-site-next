@@ -34,6 +34,7 @@ import {
   mostrarBoasVindas,
   proximaDepois,
   selosDaAula,
+  semRegredir,
   telaInicial,
   tokensParaTentar,
   type EstadoAluno,
@@ -244,11 +245,14 @@ export function AreaDoAluno() {
     return () => window.removeEventListener("hashchange", aoMudarFragmento);
   }, [carregar]);
 
-  /** Relê o estado depois de uma gravação (ficha e sinal mudam o que a tela mostra). */
+  /**
+   * Relê o estado depois de uma gravação (ficha e sinal mudam o que a tela mostra). O progresso da
+   * tela não desce: um GET que saiu antes de um marco ser gravado volta com o marco antigo.
+   */
   const recarregar = useCallback(async () => {
     if (!token.current) return;
     const r = await lerAluno(token.current);
-    if (r.ok) setEstado(r.dados);
+    if (r.ok) setEstado((atual) => semRegredir(r.dados, atual));
     else if (r.motivo === "token_invalido") linkInvalido();
   }, [linkInvalido]);
 

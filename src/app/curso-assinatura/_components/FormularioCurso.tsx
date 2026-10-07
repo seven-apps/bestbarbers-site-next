@@ -22,6 +22,7 @@ import {
   inscreverNoCurso,
   linkDaArea,
   novaChave,
+  type CorpoInscricao,
 } from "@/lib/curso-api";
 import { COR, TituloSecao } from "./Primitivos";
 
@@ -40,6 +41,15 @@ const CAMPOS = [
 ] as const;
 
 type Fase = "formulario" | "inscrevendo" | "falhou";
+
+/** O `localStorage` pode lançar só de ser lido (cookies bloqueados no Safari e no Chrome). */
+function armazenamento(): Storage | null {
+  try {
+    return window.localStorage;
+  } catch {
+    return null;
+  }
+}
 
 /**
  * O formulário de hoje (useLeadForm, `lucasSoBotao: true`) e, no sucesso, a inscrição no curso
@@ -62,19 +72,26 @@ export function FormularioCurso() {
 
   const aposCadastro = useCallback(async (cadastro: CadastroConcluido) => {
     setFase("inscrevendo");
-    const corpo = corpoDaInscricao(cadastro, novaChave());
-    const resultado = await inscreverNoCurso(corpo);
-    const storage = typeof window !== "undefined" ? window.localStorage : null;
-    if (resultado.ok) {
-      guardarToken(storage, resultado.token);
-      apagarInscricaoPendente(storage);
-      window.location.assign(linkDaArea(resultado.token));
-      return;
+    const storage = armazenamento();
+    let corpo: CorpoInscricao | null = null;
+    try {
+      corpo = corpoDaInscricao(cadastro, novaChave());
+      const resultado = await inscreverNoCurso(corpo);
+      if (resultado.ok) {
+        guardarToken(storage, resultado.token);
+        apagarInscricaoPendente(storage);
+        window.location.assign(linkDaArea(resultado.token));
+        return;
+      }
+      // O cadastro no Ploomes já foi feito; o curso não pode se perder. O que pode dar certo depois
+      // fica guardado para a próxima visita (e a reconciliação do OS cobre o resto).
+      console.warn(`[Curso] a inscrição falhou (${resultado.motivo}); o acesso segue por e-mail.`);
+      if (resultado.guardarPendente) guardarInscricaoPendente(storage, corpo);
+    } catch (err) {
+      // Nada aqui pode prender a tela em "Liberando o seu acesso…" depois do cadastro feito.
+      console.warn(`[Curso] a inscrição falhou (${err instanceof Error ? err.name : "erro"}); o acesso segue por e-mail.`);
+      if (corpo) guardarInscricaoPendente(storage, corpo);
     }
-    // O cadastro no Ploomes já foi feito; o curso não pode se perder. O que pode dar certo depois
-    // fica guardado para a próxima visita (e a reconciliação do OS cobre o resto).
-    console.warn(`[Curso] a inscrição falhou (${resultado.motivo}); o acesso segue por e-mail.`);
-    if (resultado.guardarPendente) guardarInscricaoPendente(storage, corpo);
     setFase("falhou");
   }, []);
 

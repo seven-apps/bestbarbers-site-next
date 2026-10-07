@@ -14,6 +14,8 @@ import {
   contagens,
   dataBR,
   dataNaJanela,
+  duracaoParaFracao,
+  esperaParaRepetir,
   fracaoAssistida,
   hojeEmBrasilia,
   lerEstadoAluno,
@@ -31,6 +33,7 @@ import {
   registrarTique,
   respostasDaFicha,
   selosDaAula,
+  semRegredir,
   serializarIntervalos,
   somarDias,
   somarIntervalo,
@@ -454,4 +457,46 @@ test("comMarco: o marco só sobe; 90 conclui, muda a próxima aula e a contagem;
   assert.equal(concluiu.proximaAula, 3);
   assert.equal(comMarco(e, 6, 90).terminou, true);
   assert.equal(comMarco(e, 5, 100).terminou, false);
+});
+
+// ─── Revisão adversarial (06/Out/26) ──────────────────────────────────────────────────────
+
+test("semRegredir: GET que saiu antes do marco gravado não faz o progresso da tela descer", () => {
+  const naTela = comMarco(comMarco(estado(), 3, 90), 2, 50); // 1 e 3 concluídas, 2 em andamento
+  const doGetAntigo = estado(); // o GET leu o banco antes dos dois marcos
+  const mesclado = semRegredir(doGetAntigo, naTela);
+  assert.equal(mesclado.aulas[2].marco, 90);
+  assert.equal(mesclado.aulas[2].concluida, true);
+  assert.equal(mesclado.aulas[1].marco, 50);
+  assert.equal(mesclado.aulasConcluidas, 2);
+  assert.equal(mesclado.proximaAula, 2);
+});
+
+test("semRegredir: o que o GET traz de novo (ficha, sinal, marco maior) vale; aluno diferente = o novo inteiro", () => {
+  const naTela = comMarco(estado(), 2, 25);
+  const doGet = comMarco(estado({ sinal: { tipo: "quero_isso", em: "2026-10-07T15:00:00Z" }, dataQuerComecar: "2026-11-03" }), 2, 90);
+  const mesclado = semRegredir(doGet, naTela);
+  assert.equal(mesclado.aulas[1].marco, 90, "marco maior do servidor fica");
+  assert.deepEqual(mesclado.sinal, { tipo: "quero_isso", em: "2026-10-07T15:00:00Z" });
+  assert.equal(mesclado.dataQuerComecar, "2026-11-03");
+  const outroAluno = estado({ aluno: { codigo: "ZZZZZZ", primeiroNome: "Ana", email: null, whatsapp: "", temAssinatura: false } });
+  assert.equal(semRegredir(outroAluno, naTela), outroAluno);
+  assert.equal(semRegredir(doGet, null), doGet);
+});
+
+test("esperaParaRepetir: 2 s, 4 s, 8 s… até 60 s", () => {
+  assert.deepEqual([1, 2, 3, 4, 5, 6, 7, 20].map(esperaParaRepetir), [2000, 4000, 8000, 16000, 32000, 60000, 60000, 60000]);
+  assert.equal(esperaParaRepetir(0), 2000);
+});
+
+test("duracaoParaFracao: a do player; antes de o vídeo carregar (0), a da constante", () => {
+  assert.equal(duracaoParaFracao(381.2, 380), 381.2);
+  assert.equal(duracaoParaFracao(0, 380), 380);
+  assert.equal(duracaoParaFracao(Number.NaN, null), 0);
+  // Trechos guardados de uma visita anterior já valem 90% na abertura da aula (o reenvio do player).
+  const trechos = somarIntervalo([], 0, 345);
+  assert.deepEqual(
+    marcosParaEnviar({ fracao: fracaoAssistida(trechos, duracaoParaFracao(0, 380)), deuPlay: true, terminouVideo: false, enviados: new Set(), doServidor: 25 }),
+    [50, 90],
+  );
 });
