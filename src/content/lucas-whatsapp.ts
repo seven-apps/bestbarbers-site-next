@@ -19,7 +19,7 @@
  * hoje — contato pela chave do site, card na Qualificação, rodízio de SDR — e a rota da
  * nutrição nem é chamada. Preencher com o número do chip do Lucas antes de publicar.
  */
-export const NUMERO_WHATSAPP_LUCAS = "";
+export const NUMERO_WHATSAPP_LUCAS: string = "553172183568";
 
 /**
  * ⚠️ PENDENTE DE APROVAÇÃO DO ANDRÉ (propostos em 06/Out/26) — todos os textos daqui para baixo.
