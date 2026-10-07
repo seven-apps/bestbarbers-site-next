@@ -293,15 +293,6 @@ export function esperaParaRepetir(tentativas: number): number {
   return Math.min(60_000, 2_000 * 2 ** (n - 1));
 }
 
-/**
- * A duração que divide a fração: a do player e, enquanto ele ainda não sabe (o `getDuration()`
- * devolve 0 antes de o vídeo carregar), a da constante da aula. Sem nenhuma das duas = 0.
- */
-export function duracaoParaFracao(doPlayer: number, daConstante: number | null): number {
-  if (Number.isFinite(doPlayer) && doPlayer > 0) return doPlayer;
-  return daConstante !== null && daConstante > 0 ? daConstante : 0;
-}
-
 /** Serializa os intervalos para o `localStorage` (inteiros de décimo de segundo: cabe pouco). */
 export function serializarIntervalos(intervalos: Intervalos): string {
   return JSON.stringify(intervalos.map(([a, b]) => [Math.round(a * 10) / 10, Math.round(b * 10) / 10]));

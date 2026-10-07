@@ -5,7 +5,6 @@ import { Clapperboard, TriangleAlert } from "lucide-react";
 import { TEXTOS_AREA, type Aula } from "@/content/curso-assinatura";
 import { chaveAssistido, chavePosicao, gravar, ler } from "@/lib/curso-api";
 import {
-  duracaoParaFracao,
   esperaParaRepetir,
   fracaoAssistida,
   lerIntervalos,
@@ -94,7 +93,9 @@ function armazenamento(): Storage | null {
  * Nenhum marco se perde por queda de rede: a nova tentativa tem relógio próprio (não espera o
  * próximo tique, que não vem com o vídeo pausado ou no fim), e ao abrir a aula o player reenvia o
  * que os trechos guardados no aparelho já alcançaram e o OS ainda não tem (ex.: o 90 da aula 3,
- * que é sinal de compra, falhou no fim do vídeo e a pessoa fechou a aba).
+ * que é sinal de compra, falhou no fim do vídeo e a pessoa fechou a aba). A fração usa só a
+ * duração que o player informa: a da constante é estimativa e podia concluir a aula sem ela ter
+ * sido assistida (medido em 06/Out/26: `getDuration()` às vezes devolve 0 no `onReady`).
  */
 export function PlayerAula({
   aula,
@@ -129,6 +130,7 @@ export function PlayerAula({
     let player: YTPlayer | null = null;
     let relogio: number | undefined;
     let retentativa: number | undefined;
+    let esperaDuracao: number | undefined;
     let acompanhamento: Acompanhamento = { intervalos: lerIntervalos(ler(storage, chaveTrechos)), ultimoTempo: null };
     // Trecho guardado = houve play numa visita anterior (o 0 daquela visita pode ter falhado).
     let deuPlay = acompanhamento.intervalos.length > 0;
@@ -137,23 +139,32 @@ export function PlayerAula({
     const enviando = new Set<Marco>();
     const espera = new Map<Marco, { tentativas: number; ate: number }>();
 
-    const duracaoDaConstante = segundosDaDuracao(aula.duracao);
-
-    /** Repete os marcos pendentes quando a espera mais curta acabar, com o vídeo tocando ou não. */
+    /**
+     * Repete os marcos pendentes quando a espera mais curta acabar, com o vídeo tocando ou não.
+     * Só agenda espera FUTURA de marco fora do ar: nunca vira laço apertado.
+     */
     const agendarRetentativa = () => {
-      if (!vivo || retentativa !== undefined || espera.size === 0) return;
-      const proxima = Math.min(...[...espera.values()].map((e) => e.ate));
+      if (retentativa !== undefined) window.clearTimeout(retentativa);
+      retentativa = undefined;
+      if (!vivo) return;
+      const agora = Date.now();
+      const futuras = [...espera.entries()].filter(([m, e]) => !enviando.has(m) && e.ate > agora).map(([, e]) => e.ate);
+      if (!futuras.length) return;
       retentativa = window.setTimeout(() => {
         retentativa = undefined;
         if (vivo) avaliar();
-      }, Math.max(0, proxima - Date.now()) + 50);
+      }, Math.min(...futuras) - agora + 50);
     };
 
     const avaliar = () => {
       if (!player) return;
-      const fracao = fracaoAssistida(acompanhamento.intervalos, duracaoParaFracao(player.getDuration(), duracaoDaConstante));
+      const fracao = fracaoAssistida(acompanhamento.intervalos, player.getDuration());
       const agora = Date.now();
-      for (const marco of marcosParaEnviar({ fracao, deuPlay, terminouVideo, enviados, doServidor: marcoRef.current })) {
+      const pendentes = marcosParaEnviar({ fracao, deuPlay, terminouVideo, enviados, doServidor: marcoRef.current });
+      // Marco que o OS já cobriu (um maior foi gravado) não precisa mais de nova tentativa.
+      for (const m of [...espera.keys()]) if (!pendentes.includes(m)) espera.delete(m);
+      agendarRetentativa();
+      for (const marco of pendentes) {
         if (enviando.has(marco) || (espera.get(marco)?.ate ?? 0) > agora) continue;
         enviando.add(marco);
         void enviarRef.current(marco).then((resolvido) => {
@@ -192,7 +203,7 @@ export function PlayerAula({
         alvo.className = "absolute inset-0 w-full h-full";
         container.appendChild(alvo);
         const guardado = Number(ler(storage, chaveLugar));
-        const inicio = posicaoParaRetomar(Number.isFinite(guardado) && guardado > 0 ? guardado : null, duracaoDaConstante);
+        const inicio = posicaoParaRetomar(Number.isFinite(guardado) && guardado > 0 ? guardado : null, segundosDaDuracao(aula.duracao));
         player = new YT.Player(alvo, {
           host: "https://www.youtube-nocookie.com",
           videoId: aula.youtubeId,
@@ -200,9 +211,17 @@ export function PlayerAula({
           height: "100%",
           playerVars: { rel: 0, playsinline: 1, modestbranding: 1, ...(inicio ? { start: inicio } : {}) },
           events: {
-            // Reenvia o que os trechos guardados já alcançaram e o OS ainda não tem.
+            // Reenvia o que os trechos guardados já alcançaram e o OS ainda não tem. O player pode
+            // não saber a duração no onReady: confere de novo a cada 1 s, por até 15 s.
             onReady: () => {
-              if (vivo) avaliar();
+              let vezes = 0;
+              const conferir = () => {
+                if (!vivo || !player) return;
+                avaliar();
+                if (player.getDuration() > 0 || ++vezes >= 15) return;
+                esperaDuracao = window.setTimeout(conferir, 1_000);
+              };
+              conferir();
             },
             onStateChange: (e) => {
               if (e.data === YT.PlayerState.PLAYING) {
@@ -234,6 +253,7 @@ export function PlayerAula({
       vivo = false;
       parar();
       if (retentativa !== undefined) window.clearTimeout(retentativa);
+      if (esperaDuracao !== undefined) window.clearTimeout(esperaDuracao);
       try {
         player?.destroy();
       } catch {

@@ -14,7 +14,6 @@ import {
   contagens,
   dataBR,
   dataNaJanela,
-  duracaoParaFracao,
   esperaParaRepetir,
   fracaoAssistida,
   hojeEmBrasilia,
@@ -489,14 +488,11 @@ test("esperaParaRepetir: 2 s, 4 s, 8 s… até 60 s", () => {
   assert.equal(esperaParaRepetir(0), 2000);
 });
 
-test("duracaoParaFracao: a do player; antes de o vídeo carregar (0), a da constante", () => {
-  assert.equal(duracaoParaFracao(381.2, 380), 381.2);
-  assert.equal(duracaoParaFracao(0, 380), 380);
-  assert.equal(duracaoParaFracao(Number.NaN, null), 0);
-  // Trechos guardados de uma visita anterior já valem 90% na abertura da aula (o reenvio do player).
+test("reenvio ao abrir a aula: trechos de uma visita anterior valem pela duração REAL do vídeo", () => {
   const trechos = somarIntervalo([], 0, 345);
-  assert.deepEqual(
-    marcosParaEnviar({ fracao: fracaoAssistida(trechos, duracaoParaFracao(0, 380)), deuPlay: true, terminouVideo: false, enviados: new Set(), doServidor: 25 }),
-    [50, 90],
-  );
+  // Vídeo de 380 s: 345 s guardados = 90% → o 50 e o 90 que o OS ainda não tem saem na abertura.
+  assert.deepEqual(marcosParaEnviar({ fracao: fracaoAssistida(trechos, 380), deuPlay: true, terminouVideo: false, enviados: new Set(), doServidor: 25 }), [50, 90]);
+  // Player que ainda não sabe a duração (0): nada além do 0 sai — a constante (estimativa) não
+  // pode inflar a fração e concluir a aula 3, que é sinal de compra.
+  assert.deepEqual(marcosParaEnviar({ fracao: fracaoAssistida(trechos, 0), deuPlay: true, terminouVideo: false, enviados: new Set(), doServidor: null }), [0]);
 });
