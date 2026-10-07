@@ -11,7 +11,8 @@ import {
   lerTokenGuardado,
 } from "@/lib/curso-api";
 import { FormularioCurso } from "./FormularioCurso";
-import { AulasCurso, ContinuarCurso, HeroiCurso, LevaCurso, NavbarCurso, QuemEnsina } from "./SecoesVitrine";
+import { ProvaV2 } from "@/components/clube-v2/ProvaV2";
+import { AulasCurso, ContinuarCurso, HeroiCurso, LevaCurso, NavbarCurso } from "./SecoesVitrine";
 
 /**
  * Vitrine do curso de assinatura (`/curso-assinatura`, bloco A da estrutura de 06/Out):
@@ -64,7 +65,8 @@ export function VitrineCurso() {
       <HeroiCurso onCta={irAoFormulario} temLink={temLink} />
       <AulasCurso onCta={irAoFormulario} />
       <LevaCurso />
-      <QuemEnsina />
+      {/* Prova da /clube (pedido do André, 06/Out): 1.200+ barbearias e os 3 parceiros falando. */}
+      <ProvaV2 />
       <section id="formulario" className="relative py-14 md:py-20 overflow-hidden" style={{ background: "#0a0a0a" }}>
         <div
           aria-hidden

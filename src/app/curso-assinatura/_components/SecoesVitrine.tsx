@@ -196,25 +196,3 @@ export function LevaCurso() {
     </section>
   );
 }
-
-/** Quem ensina: o André (foto provisória do acervo; a final é com a Hellen). */
-export function QuemEnsina() {
-  const { foto } = T.quemEnsina;
-  return (
-    <section className="py-14 md:py-20 overflow-hidden" style={{ backgroundColor: COR.escuro }}>
-      <div className="container-custom flex flex-col md:flex-row items-center gap-8 md:gap-14">
-        <div className="w-full md:w-[40%] flex justify-center">
-          {/* A foto é recortada na cintura: o degradê funde o corte no fundo (como no site antigo). */}
-          <div className="relative w-[220px] md:w-[300px]">
-            <Image src={foto.src} alt={foto.alt} width={foto.width} height={foto.height} className="w-full h-auto" />
-            <div aria-hidden className="absolute inset-x-0 bottom-0 h-1/3" style={{ background: `linear-gradient(to bottom, transparent, ${COR.escuro})` }} />
-          </div>
-        </div>
-        <div className="w-full md:w-[60%] flex flex-col items-center md:items-start gap-5">
-          <TituloSecao titulo={T.quemEnsina.titulo} destaque={T.quemEnsina.destaque} tom="escuro" alinhar="esquerda" />
-          <Checklist itens={T.quemEnsina.itens} tom="escuro" />
-        </div>
-      </div>
-    </section>
-  );
-}

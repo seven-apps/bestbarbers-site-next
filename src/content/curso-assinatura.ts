@@ -145,7 +145,7 @@ export const TEXTOS_VITRINE = {
   seo: {
     titulo: `${NOME_DO_CURSO}: como montar a assinatura da sua barbearia | BestBarbers`,
     descricao:
-      "6 aulas curtas com o André Rangel, CEO do BestBarbers: quanto cobrar, como cobrar todo mês, como pagar o barbeiro e como lançar a assinatura na sua barbearia.",
+      "6 aulas curtas, a partir do que as barbearias clientes do BestBarbers já aplicam: quanto cobrar, como cobrar todo mês, como pagar o barbeiro e como lançar a assinatura na sua barbearia.",
   },
   navbar: {
     botao: "QUERO ASSISTIR ÀS AULAS",
@@ -157,7 +157,7 @@ export const TEXTOS_VITRINE = {
     titulo: "Como montar a assinatura da sua barbearia",
     destaque: "em 6 aulas curtas",
     frase:
-      "O André Rangel, CEO do BestBarbers, ensina quanto cobrar, como pagar o barbeiro e como lançar, com cada passo mostrado na tela do BestBarbers.",
+      "O André Rangel, dono do BestBarbers, ensina quanto cobrar, como pagar o barbeiro e como lançar a assinatura, a partir do que as barbearias clientes do BestBarbers já aplicam no dia a dia.",
     /** A duração total sai da soma das constantes (`null` se faltar alguma). */
     destaqueDuracao: (minutosTotais: number | null) =>
       minutosTotais === null ? "6 aulas curtas" : `6 aulas curtas, cerca de ${minutosTotais} minutos no total`,
@@ -184,20 +184,6 @@ export const TEXTOS_VITRINE = {
       "A data da reunião com a equipe",
       "A data do lançamento e o tamanho do primeiro lote",
     ],
-  },
-  quemEnsina: {
-    titulo: "Quem ensina",
-    destaque: "André Rangel, CEO do BestBarbers",
-    itens: [
-      "Mais de 1.200 barbearias usam o BestBarbers.",
-      "O curso responde às perguntas sobre assinatura que os donos de barbearia mais trazem para o BestBarbers.",
-      "Nas aulas, o André mostra cada passo na tela do BestBarbers, funcionando.",
-    ],
-    /**
-     * PROVISÓRIA: foto do acervo do site (exportação antiga do Webflow). A foto final do curso é
-     * pendência da Hellen (03 §2.4).
-     */
-    foto: { src: "/images/Andre-1-1_1.webp", alt: "André Rangel, CEO do BestBarbers", width: 680, height: 966 },
   },
   formulario: {
     titulo: "Preencha o formulário",
