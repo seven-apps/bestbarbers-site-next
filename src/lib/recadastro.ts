@@ -39,6 +39,8 @@ export interface RecadastroInput {
 export interface RecadastroResultado {
   ok: boolean;
   dealId?: number;
+  /** Contato existente que ganhou o card (a rota já devolve). O curso de assinatura usa na inscrição. */
+  contactId?: number;
   motivo?: string;
 }
 
@@ -87,8 +89,8 @@ export async function criarCardRecadastro(input: RecadastroInput): Promise<Recad
     if (!res.ok) {
       return { ok: false, motivo: `http_${res.status}` };
     }
-    const data = (await res.json()) as { dealId?: number };
-    return { ok: true, dealId: data?.dealId };
+    const data = (await res.json()) as { dealId?: number; contactId?: number };
+    return { ok: true, dealId: data?.dealId, contactId: data?.contactId };
   } catch (err) {
     return { ok: false, motivo: err instanceof Error ? err.name : "erro" };
   } finally {

@@ -15,11 +15,14 @@ import {
   mensagemDaPagina,
 } from '@/lib/lead-nutricao';
 import { MENSAGEM_PADRAO_LUCAS, MENSAGENS_LUCAS, NUMERO_WHATSAPP_LUCAS } from '@/content/lucas-whatsapp';
-import { validarEmailOpcional } from '@/lib/form-passo1';
+import { MSG_EMAIL_OBRIGATORIO, validarEmailOpcional } from '@/lib/form-passo1';
+import { montarCadastroConcluido, type CadastroConcluido, type CaminhoFeito } from '@/lib/cadastro-concluido';
 import { calcularScoreV2, interesseLegado, temEquipe } from '@/lib/lead-score';
 import { MSG_CLUBE, MSG_FATURAMENTO, MSG_PROFISSIONAIS, MSG_SISTEMA } from '@/lib/qualificacao';
 import { portaDoLead } from '@/lib/tracking/porta';
 import { varianteVista } from '@/lib/ab-clube';
+
+export type { CadastroConcluido } from '@/lib/cadastro-concluido';
 
 /**
  * Formulário ÚNICO de 8 perguntas (André, 14/Set/26): dono · WhatsApp · e-mail
@@ -45,7 +48,11 @@ export interface FormData {
 }
 
 export interface UseLeadFormOptions {
-  onSuccess?: () => void;
+  /**
+   * Chamado depois do cadastro no Ploomes, com QUEM se cadastrou e POR ONDE o lead entrou
+   * (`CadastroConcluido`). Quem passa `() => …` ignora o argumento.
+   */
+  onSuccess?: (cadastro: CadastroConcluido) => void;
   onError?: (error: Error) => void;
   redirectToWhatsApp?: boolean;
   /** ID de origem customizado para o Ploomes - sobrescreve o mapeamento de UTM */
@@ -67,6 +74,11 @@ export interface UseLeadFormOptions {
    * que destrava, o guia na tela de obrigado): ali o lead ganha só o botão, sem sair da página.
    */
   lucasSoBotao?: boolean;
+  /**
+   * E-mail OBRIGATÓRIO nesta página. Padrão `false`: em todo o site o e-mail continua opcional.
+   * Só a página do curso de assinatura liga (o link do curso e os e-mails dependem dele).
+   */
+  emailObrigatorio?: boolean;
 }
 
 declare global {
@@ -90,6 +102,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     source = 'lp_v5',
     marcadorEvento,
     lucasSoBotao = false,
+    emailObrigatorio = false,
   } = options;
 
   const [formData, setFormData] = useState<FormData>({
@@ -183,6 +196,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     // se vazio, segue (canal de contato é o WhatsApp). Reduz fricção visita→lead.
     // A regra mora em lib/form-passo1 porque os formulários multi-step rodam a MESMA
     // validação já no avanço do passo 1, onde o campo de e-mail está na tela.
+    if (emailObrigatorio && !formData.email.trim()) return MSG_EMAIL_OBRIGATORIO;
     const erroEmail = validarEmailOpcional(formData.email);
     if (erroEmail) return erroEmail;
     if (!formData.whatsapp.trim()) {
@@ -207,7 +221,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       return MSG_PROFISSIONAIS;
     }
     return null;
-  }, [formData, isValidPhone]);
+  }, [formData, isValidPhone, emailObrigatorio]);
 
   const handleSubmit = useCallback(async (e?: React.FormEvent | React.MouseEvent) => {
     e?.preventDefault();
@@ -385,6 +399,10 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       });
       // Card criado no pipe de nutrição: o lead vai para o WhatsApp do Lucas no fim do submit.
       let dealIdLucas: number | null = null;
+      // O que de fato rodou, para o `onSuccess` (`CadastroConcluido`): o curso inscreve com isso.
+      let caminhoFeito: CaminhoFeito = 'sdr';
+      let dealIdCadastro: number | null = null;
+      let contactIdCadastro: number | null = null;
       if (caminho === 'recadastro') {
         // RECADASTRO (23/Jul/26): telefone já existe no Ploomes → em vez de barrar,
         // cria um card novo na Qualificação para o contato existente, com as mesmas
@@ -411,10 +429,13 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
           setIsSubmitting(false);
           return;
         }
+        caminhoFeito = 'recadastro';
+        dealIdCadastro = recadastro.dealId ?? null;
+        contactIdCadastro = recadastro.contactId ?? null;
       } else {
         // `lucas` só vale com o card criado: qualquer falha da rota faz `submitLead`, o caminho
         // de hoje (contato pela chave do site → card na Qualificação → rodízio de SDR).
-        dealIdLucas = await cadastrarContatoNovo(
+        const novo = await cadastrarContatoNovo(
           caminho,
           () =>
             criarLeadNutricao(
@@ -431,6 +452,10 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
             ),
           () => submitLead(ploomesData),
         );
+        caminhoFeito = novo.caminho;
+        dealIdCadastro = novo.dealId;
+        contactIdCadastro = novo.contactId;
+        dealIdLucas = novo.caminho === 'lucas' ? novo.dealId : null;
       }
 
       // 5. Meta Pixel + CAPI direta — dispara TAMBÉM no recadastro (André, 23/Jul/26):
@@ -582,8 +607,17 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // Marca como enviado com sucesso (mantém botão desabilitado durante redirect)
       setSubmitted(true);
 
-      // Chama callback de sucesso se fornecido
-      onSuccess?.();
+      // Chama callback de sucesso se fornecido, com quem se cadastrou e por onde entrou.
+      onSuccess?.(
+        montarCadastroConcluido({
+          formData,
+          nota: leadScore,
+          caminho: caminhoFeito,
+          dealId: dealIdCadastro,
+          contactId: contactIdCadastro,
+          atribuicao: buildAttribution(ploomesData),
+        }),
+      );
 
       // Lead < 60 com card na nutrição: a tela do layout raiz (ConversaComLucas) leva ao
       // WhatsApp do Lucas. Vem depois do onSuccess para a página fazer o que já faz (destravar a

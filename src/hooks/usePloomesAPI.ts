@@ -9,6 +9,7 @@ import {
   PLOOMES_OPCOES_SISTEMA,
 } from '@/lib/ploomes-fields';
 import { buildLeadAttribution, type LeadAttribution } from '@/lib/lead-attribution';
+import { idDoContatoCriado } from '@/lib/cadastro-concluido';
 
 export interface PloomesContactData {
   barbershopName: string;
@@ -273,7 +274,12 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     }
   }, []);
 
-  const submitLead = useCallback(async (data: PloomesContactData): Promise<void> => {
+  /**
+   * Cria o contato e devolve o id dele (`null` se a resposta vier sem). Antes devolvia `void`;
+   * o id passou a sair para o curso de assinatura inscrever a pessoa com o contato certo
+   * (contrato `02-contrato-tecnico.md` §2.2, no bestbarbers-ai). Ninguém lia o retorno antigo.
+   */
+  const submitLead = useCallback(async (data: PloomesContactData): Promise<{ contactId: number | null }> => {
     try {
       // Cria o contato no Ploomes
       const contactResponse = await createContact(data);
@@ -283,6 +289,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       // para criar sozinho. Mantendo a função disponível caso necessário.
       
       console.log('Contato criado com sucesso no Ploomes:', contactResponse);
+      return { contactId: idDoContatoCriado(contactResponse) };
     } catch (error) {
       console.error('Erro ao enviar lead para Ploomes:', error);
       throw error;

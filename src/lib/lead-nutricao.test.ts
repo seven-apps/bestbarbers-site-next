@@ -100,15 +100,24 @@ test("caminhoDoLead: sem número do Lucas (vazio ou torto) → sdr, a rota nem �
 
 // ─── A orquestração do contato novo ───────────────────────────────────────────────────────
 
-test("< 60: chama a rota e devolve o card; o caminho de hoje NÃO roda", async () => {
+test("< 60: chama a rota e devolve o card e o contato; o caminho de hoje NÃO roda", async () => {
   let hoje = 0;
-  const dealId = await cadastrarContatoNovo(
+  const feito = await cadastrarContatoNovo(
     "lucas",
-    async (): Promise<ResultadoNutricao> => ({ ok: true, dealId: 1202661959 }),
+    async (): Promise<ResultadoNutricao> => ({ ok: true, dealId: 1202661959, contactId: 120554433 }),
     async () => { hoje++; },
   );
-  assert.equal(dealId, 1202661959);
+  assert.deepEqual(feito, { caminho: "lucas", dealId: 1202661959, contactId: 120554433 });
   assert.equal(hoje, 0);
+});
+
+test("< 60 com a rota sem contactId (versão antiga do OS): o card vale, o contato fica null", async () => {
+  const feito = await cadastrarContatoNovo(
+    "lucas",
+    async (): Promise<ResultadoNutricao> => ({ ok: true, dealId: 1202661959 }),
+    async () => ({ contactId: 1 }),
+  );
+  assert.deepEqual(feito, { caminho: "lucas", dealId: 1202661959, contactId: null });
 });
 
 test("< 60 com a rota falhando: cai no caminho de hoje e não devolve card", async () => {
@@ -117,12 +126,13 @@ test("< 60 com a rota falhando: cai no caminho de hoje e não devolve card", asy
   console.warn = (...a: unknown[]) => { avisos.push(a); };
   try {
     let hoje = 0;
-    const dealId = await cadastrarContatoNovo(
+    const feito = await cadastrarContatoNovo(
       "lucas",
       async (): Promise<ResultadoNutricao> => ({ ok: false, motivo: "http_502" }),
-      async () => { hoje++; },
+      async () => { hoje++; return { contactId: 120554433 }; },
     );
-    assert.equal(dealId, null);
+    // O caminho é o que RODOU: o `lucas` que falhou vira `sdr` (o curso inscreve com isso).
+    assert.deepEqual(feito, { caminho: "sdr", dealId: null, contactId: 120554433 });
     assert.equal(hoje, 1);
     assert.equal(avisos.length, 1, "falha da rota não pode ser silenciosa");
   } finally {
@@ -133,12 +143,13 @@ test("< 60 com a rota falhando: cai no caminho de hoje e não devolve card", asy
 test("sdr (≥ 60, sem nota, sem número): a rota nunca é chamada", async () => {
   let rota = 0;
   let hoje = 0;
-  const dealId = await cadastrarContatoNovo(
+  const feito = await cadastrarContatoNovo(
     "sdr",
     async (): Promise<ResultadoNutricao> => { rota++; return { ok: true, dealId: 1 }; },
     async () => { hoje++; },
   );
-  assert.equal(dealId, null);
+  // Caminho de hoje sem id na resposta (ou chamador antigo que devolve void): contato null.
+  assert.deepEqual(feito, { caminho: "sdr", dealId: null, contactId: null });
   assert.equal(rota, 0);
   assert.equal(hoje, 1);
 });
@@ -162,10 +173,10 @@ test("erro do caminho de hoje sobe para o formulário, como sempre subiu", async
 
 // ─── O POST na rota do OS ─────────────────────────────────────────────────────────────────
 
-test("201 criado → ok com o dealId; POST JSON na rota da nutrição da mesma base do recadastro", async () => {
+test("201 criado → ok com o dealId e o contactId; POST JSON na rota da nutrição da mesma base do recadastro", async () => {
   const { f, chamadas } = fetchFalso(() => json(201, { status: "criado", contactId: 9, dealId: 1202661959 }));
   const r = await criarLeadNutricao(corpo(), { fetch: f });
-  assert.deepEqual(r, { ok: true, dealId: 1202661959 });
+  assert.deepEqual(r, { ok: true, dealId: 1202661959, contactId: 9 });
   assert.equal(chamadas.length, 1);
   assert.match(chamadas[0].url, /\/api\/ploomes\/lead-nutricao$/);
   assert.equal(chamadas[0].init?.method, "POST");

@@ -82,6 +82,12 @@ export const MENSAGENS_LUCAS: ReadonlyArray<{ caminho: string; mensagem: string 
     caminho: "/assinante-por-indicacao",
     mensagem: "Oi! Pedi o guia Assinante por Indicação. Quero conseguir assinantes pela indicação dos meus clientes.",
   },
+  {
+    // Curso de assinatura (contrato do curso §2.2). A vitrine leva direto para a área do aluno, então
+    // esta mensagem só fica na tela quando a inscrição no curso falha e a pessoa fica na vitrine.
+    caminho: "/curso-assinatura",
+    mensagem: "Oi! Me cadastrei no curso de assinatura do BestBarbers. Quero receber o link das aulas.",
+  },
 ];
 
 /** Textos da tela que leva ao WhatsApp (`src/components/ConversaComLucas.tsx`). */

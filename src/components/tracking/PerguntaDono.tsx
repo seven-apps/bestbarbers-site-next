@@ -22,6 +22,7 @@ import {
   type PorteDono,
   type RespostaDono,
 } from "@/lib/pergunta-dono";
+import { ehAreaDoAluno } from "@/content/curso-assinatura";
 
 /** `utm_campaign` do snapshot que o useUtmParams guarda na sessão (navegação interna). */
 function campanhaDaSessao(): string | null {
@@ -51,6 +52,9 @@ export function PerguntaDono() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    // A área do aluno do curso não tem rastreador (o GTM e o pixel nem carregam lá): a pergunta,
+    // que vive de evento do pixel, também não aparece no meio da aula.
+    if (ehAreaDoAluno(window.location.pathname)) return;
     if (lerResposta(window.localStorage) || foiDispensada(window.sessionStorage)) return;
     if (!deveMostrarPergunta(window.location.search, campanhaDaSessao())) return;
     const t = window.setTimeout(() => setEstado("pergunta"), ATRASO_MS);

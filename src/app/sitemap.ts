@@ -49,6 +49,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.8,
     },
+    // Vitrine do curso de assinatura (indexável). A área do aluno fica FORA (noindex, link pessoal).
+    {
+      url: `${baseUrl}/curso-assinatura`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
     {
       url: `${baseUrl}/blog`,
       lastModified: new Date(),

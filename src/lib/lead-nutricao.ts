@@ -108,7 +108,13 @@ export function corpoDaNutricao(input: {
   };
 }
 
-export type ResultadoNutricao = { ok: true; dealId: number } | { ok: false; motivo: string };
+/**
+ * `contactId` (opcional) é o contato criado pela rota, que já o devolve no 201. O curso de
+ * assinatura usa para a inscrição (contrato `02-contrato-tecnico.md` §2.2, no bestbarbers-ai).
+ */
+export type ResultadoNutricao =
+  | { ok: true; dealId: number; contactId?: number | null }
+  | { ok: false; motivo: string };
 
 /**
  * POST na rota do OS. NUNCA lança: devolve o card ou o motivo. Só 201 com `status: "criado"` e
@@ -134,11 +140,12 @@ export async function criarLeadNutricao(
       body: JSON.stringify(corpo),
     });
     if (res.status !== 201) return { ok: false, motivo: `http_${res.status}` };
-    const data = (await res.json()) as { status?: unknown; dealId?: unknown };
+    const data = (await res.json()) as { status?: unknown; dealId?: unknown; contactId?: unknown };
     if (data?.status !== "criado" || !Number.isInteger(data.dealId) || (data.dealId as number) <= 0) {
       return { ok: false, motivo: "resposta_inesperada" };
     }
-    return { ok: true, dealId: data.dealId as number };
+    const contactId = Number.isInteger(data.contactId) && (data.contactId as number) > 0 ? (data.contactId as number) : null;
+    return { ok: true, dealId: data.dealId as number, contactId };
   } catch (err) {
     return { ok: false, motivo: err instanceof Error ? err.name : "erro" };
   } finally {
@@ -146,24 +153,34 @@ export async function criarLeadNutricao(
   }
 }
 
+/** O que o cadastro do contato novo de fato fez (o `caminho` é o que RODOU, não o que se tentou). */
+export interface ContatoCadastrado {
+  caminho: Exclude<CaminhoDoLead, "recadastro">;
+  /** Card da nutrição; `null` quando o lead foi para o SDR (o card nasce pela automação). */
+  dealId: number | null;
+  /** Contato criado, quando a resposta trouxe o id. */
+  contactId: number | null;
+}
+
 /**
  * Cadastro do contato NOVO (o recadastro tem caminho próprio). `lucas` tenta a nutrição e,
- * se ela falhar, faz o caminho de hoje; `sdr` faz só o caminho de hoje. Devolve o `dealId` do
- * card da nutrição, ou `null` quando o lead foi para o SDR.
+ * se ela falhar, faz o caminho de hoje; `sdr` faz só o caminho de hoje. Devolve o caminho que
+ * rodou (`lucas` que falhou vira `sdr`), o `dealId` do card da nutrição (ou `null`) e o
+ * `contactId`, que o curso de assinatura usa na inscrição.
  */
 export async function cadastrarContatoNovo(
   caminho: Exclude<CaminhoDoLead, "recadastro">,
   nutricao: () => Promise<ResultadoNutricao>,
-  caminhoDeHoje: () => Promise<void>,
-): Promise<number | null> {
+  caminhoDeHoje: () => Promise<{ contactId: number | null } | void>,
+): Promise<ContatoCadastrado> {
   if (caminho === "lucas") {
     const resultado = await nutricao();
-    if (resultado.ok) return resultado.dealId;
+    if (resultado.ok) return { caminho: "lucas", dealId: resultado.dealId, contactId: resultado.contactId ?? null };
     // Falha nunca silenciosa: o lead não se perde, mas quem abrir o console vê o porquê.
     console.warn(`[Lucas] a rota da nutrição falhou (${resultado.motivo}); o lead segue para o SDR.`);
   }
-  await caminhoDeHoje();
-  return null;
+  const hoje = await caminhoDeHoje();
+  return { caminho: "sdr", dealId: null, contactId: hoje?.contactId ?? null };
 }
 
 /**

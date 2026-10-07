@@ -12,5 +12,5 @@ export { useLeadForm } from './useLeadForm';
 // Types
 export type { UtmParams, OriginMapping } from './useUtmParams';
 export type { PloomesContactData, PloomesAPIResponse } from './usePloomesAPI';
-export type { FormData, UseLeadFormOptions } from './useLeadForm';
+export type { CadastroConcluido, FormData, UseLeadFormOptions } from './useLeadForm';
 export type { MetaPixelEventData } from './useMetaPixel';

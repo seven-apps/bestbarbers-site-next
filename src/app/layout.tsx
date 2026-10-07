@@ -104,15 +104,25 @@ export default function RootLayout({
     >
       <head>
         {!localPreview && <>
+        {/*
+          ÁREA DO ALUNO DO CURSO SEM RASTREADOR (contrato do curso §3, no bestbarbers-ai): a área
+          abre com o link pessoal no fragmento (#t=<token>), e o GTM e o PageView do pixel leem a
+          URL da página. Os dois scripts abaixo são inline e rodam antes de qualquer componente, por
+          isso a guarda é aqui, pelo caminho. O caminho é o de CAMINHO_AREA em
+          src/content/curso-assinatura.ts: mudar lá exige mudar aqui. A vitrine do curso continua
+          com tudo, e quem vai da vitrine para a área navega com location.assign (página nova).
+        */}
         {/* Google Tag Manager */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
+              if (!location.pathname.startsWith('/curso-assinatura/aluno')) {
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
               j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
               })(window,document,'script','dataLayer','GTM-WTZDP6PL');
+              }
             `,
           }}
         />
@@ -122,6 +132,7 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
+              if (!location.pathname.startsWith('/curso-assinatura/aluno')) {
               !function(f,b,e,v,n,t,s)
               {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
               n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -132,6 +143,7 @@ export default function RootLayout({
               'https://connect.facebook.net/en_US/fbevents.js');
               fbq('init', '1100195158903491');
               fbq('track', 'PageView');
+              }
             `,
           }}
         />
