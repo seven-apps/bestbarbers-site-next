@@ -43,7 +43,7 @@ export function ehAreaDoAluno(pathname: string): boolean {
  * Id da origem "Curso de assinatura" no Ploomes (bloco D da estrutura). `null` enquanto a origem
  * não existe: vale a UTM e, sem UTM, o padrão do site (40210426), como no modal.
  */
-export const ORIGEM_PLOOMES_CURSO: number | null = null;
+export const ORIGEM_PLOOMES_CURSO: number | null = 120004129;
 /** Descrição da campanha no tráfego sem UTM. Estável: não muda quando o nome do curso mudar. */
 export const ORIGEM_DESC_CURSO = "LP - Curso de assinatura";
 /** `source` do `useLeadForm` (relatórios da BBAI e `lp_version` do dataLayer). */
