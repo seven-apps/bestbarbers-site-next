@@ -12,14 +12,18 @@
  */
 
 /**
- * Número do WhatsApp do Lucas, só dígitos, com 55 e DDD (ex.: 5531999999999).
- *
- * VAZIO DE PROPÓSITO: o número não foi confirmado na construção (06/Out/26). Enquanto
- * estiver vazio (ou fora do formato 55 + DDD + número), o lead < 60 segue o caminho de
- * hoje — contato pela chave do site, card na Qualificação, rodízio de SDR — e a rota da
- * nutrição nem é chamada. Preencher com o número do chip do Lucas antes de publicar.
+ * Número do WhatsApp do Lucas, só dígitos, com 55 e DDD (ex.: 5531999999999). Confirmado com o
+ * chip em 07/Out/26. O curso também usa este número (bônus da aula e link inválido).
  */
 export const NUMERO_WHATSAPP_LUCAS: string = "553172183568";
+
+/**
+ * Liga o desvio do lead novo com nota < 60 para o Lucas (ADR-035). DESLIGADO de propósito em
+ * 09/Out/26: o curso sobe antes, e o desvio só liga depois do teste com 1 card real (plano: 13/Out).
+ * Desligado, o lead < 60 segue o caminho de hoje — contato pela chave do site, card na
+ * Qualificação, rodízio de SDR — e a rota da nutrição nem é chamada. Ligar = `true` + publicar.
+ */
+export const DESVIO_NOTA_60_LIGADO = false;
 
 /**
  * ⚠️ PENDENTE DE APROVAÇÃO DO ANDRÉ (propostos em 06/Out/26) — todos os textos daqui para baixo.

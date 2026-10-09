@@ -14,7 +14,7 @@ import {
   linkDoWhatsAppLucas,
   mensagemDaPagina,
 } from '@/lib/lead-nutricao';
-import { MENSAGEM_PADRAO_LUCAS, MENSAGENS_LUCAS, NUMERO_WHATSAPP_LUCAS } from '@/content/lucas-whatsapp';
+import { DESVIO_NOTA_60_LIGADO, MENSAGEM_PADRAO_LUCAS, MENSAGENS_LUCAS, NUMERO_WHATSAPP_LUCAS } from '@/content/lucas-whatsapp';
 import { MSG_EMAIL_OBRIGATORIO, validarEmailOpcional } from '@/lib/form-passo1';
 import { montarCadastroConcluido, type CadastroConcluido, type CaminhoFeito } from '@/lib/cadastro-concluido';
 import { calcularScoreV2, interesseLegado, temEquipe } from '@/lib/lead-score';
@@ -395,7 +395,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       const caminho = caminhoDoLead({
         telefoneExiste: dedup.exists,
         nota: leadScore,
-        numeroLucas: NUMERO_WHATSAPP_LUCAS,
+        // Desvio desligado = número vazio: o lead < 60 segue o caminho de sempre.
+        numeroLucas: DESVIO_NOTA_60_LIGADO ? NUMERO_WHATSAPP_LUCAS : '',
       });
       // Card criado no pipe de nutrição: o lead vai para o WhatsApp do Lucas no fim do submit.
       let dealIdLucas: number | null = null;

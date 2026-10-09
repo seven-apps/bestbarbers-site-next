@@ -12,6 +12,7 @@ import {
 } from "@/content/curso-assinatura";
 import { minutosTotais } from "@/lib/curso";
 import { BotaoAmarelo, COR, ThumbAula, TituloSecao, rotuloDaAula } from "./Primitivos";
+import { VideoBoasVindas } from "./VideoBoasVindas";
 
 const T = TEXTOS_VITRINE;
 
@@ -92,6 +93,10 @@ export function HeroiCurso({ onCta, temLink }: { onCta: () => void; temLink: boo
               {T.heroi.titulo} <span style={{ color: COR.amarelo }}>{T.heroi.destaque}</span>
             </h1>
             <p className="text-base md:text-lg font-medium leading-snug text-white/80 text-center lg:text-left max-w-xl">{T.heroi.frase}</p>
+            {/* Celular: o vídeo logo depois da frase. No desktop, ele fica no cartão da direita. */}
+            <div className="w-full max-w-xl lg:hidden">
+              <VideoBoasVindas />
+            </div>
             <Checklist itens={destaques} tom="escuro" />
             <BotaoAmarelo onClick={onCta}>
               {T.heroi.botao}
@@ -102,7 +107,7 @@ export function HeroiCurso({ onCta, temLink }: { onCta: () => void; temLink: boo
 
           <div className="hidden lg:block w-full lg:w-[48%]">
             <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-4 shadow-[0_24px_80px_rgba(0,0,0,0.5)]">
-              <ThumbAula aula={AULAS[0]} />
+              <VideoBoasVindas />
               <ul className="mt-4 space-y-1.5">
                 {AULAS.map((aula) => (
                   <li key={aula.numero} className="flex items-center gap-3 rounded-xl px-3 py-2 bg-white/[0.03]">

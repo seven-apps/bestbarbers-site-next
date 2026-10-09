@@ -437,11 +437,11 @@ test("datas em Brasília: 23h30 de Brasília ainda é o mesmo dia; janelas do co
   assert.equal(dataNaJanela("2026-02-30", "2026-01-01", "2027-01-01"), false, "data que não existe");
 });
 
-test("durações saem da constante: 6:20 → 6 min; total do curso ≈ 34 min (03 §2.1)", () => {
+test("durações saem da constante: 6:20 → 6 min; total do curso ≈ 33 min (aulas 1 e 2 reais, 09/Out/26)", () => {
   assert.equal(minutosDaDuracao("6:20"), "6 min");
   assert.equal(minutosDaDuracao("4:49"), "5 min");
   assert.equal(minutosDaDuracao(""), null);
-  assert.equal(minutosTotais(AULAS.map((a) => a.duracao)), 34);
+  assert.equal(minutosTotais(AULAS.map((a) => a.duracao)), 33);
   assert.equal(minutosTotais(["6:20", ""]), null, "aula sem duração some do total");
 });
 

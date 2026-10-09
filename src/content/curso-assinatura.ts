@@ -93,16 +93,16 @@ export const AULAS: ReadonlyArray<Aula> = [
     numero: 1,
     titulo: "Quanto cobrar: os dois erros de preço",
     resumo: "O teto do preço da sua assinatura e os dois erros que derrubam um plano.",
-    duracao: "6:20",
-    youtubeId: "",
+    duracao: "5:44",
+    youtubeId: "N2WZWuGYV0A",
     thumb: null,
   },
   {
     numero: 2,
     titulo: "Cobrar sem correr atrás de ninguém",
     resumo: "A mensalidade cobrada no cartão todo mês, e o cliente com pagamento atrasado sem conseguir agendar.",
-    duracao: "4:49",
-    youtubeId: "",
+    duracao: "5:03",
+    youtubeId: "HwOGJsgmlwM",
     thumb: null,
   },
   {
@@ -139,6 +139,12 @@ export const AULAS: ReadonlyArray<Aula> = [
   },
 ];
 
+/**
+ * Vídeo de boas-vindas, no herói da vitrine. Não é aula: não tem ficha nem progresso. Vídeo NÃO
+ * LISTADO no YouTube, com incorporação liberada (conferido em 09/Out/26, com as aulas 1 e 2).
+ */
+export const VIDEO_BOAS_VINDAS = { youtubeId: "x6MTIWRLQ4Q", duracao: "1:22" } as const;
+
 // ─── Vitrine (03 §2) ────────────────────────────────────────────────────────────────────────
 
 export const TEXTOS_VITRINE = {
@@ -166,6 +172,8 @@ export const TEXTOS_VITRINE = {
       "No fim, o seu plano de assinatura montado numa tela só",
     ],
     botao: "QUERO ASSISTIR ÀS AULAS",
+    /** Texto novo (09/Out/26): o selo do vídeo de boas-vindas e o rótulo do botão de play. */
+    video: "Boas-vindas ao curso",
   },
   aulas: {
     titulo: "As 6 aulas",
