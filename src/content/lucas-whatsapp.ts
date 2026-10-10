@@ -18,15 +18,15 @@
 export const NUMERO_WHATSAPP_LUCAS: string = "553172183568";
 
 /**
- * Liga o desvio do lead novo com nota < 60 para o Lucas (ADR-035). DESLIGADO de propósito em
- * 09/Out/26: o curso sobe antes, e o desvio só liga depois do teste com 1 card real (plano: 13/Out).
- * Desligado, o lead < 60 segue o caminho de hoje — contato pela chave do site, card na
- * Qualificação, rodízio de SDR — e a rota da nutrição nem é chamada. Ligar = `true` + publicar.
+ * Liga o desvio do lead novo com nota < 60 para o Lucas (ADR-035). LIGADO em 10/Out/26 (GO do André;
+ * o comercial confirmou o corte em 09/Out). Desligar = `false` + publicar: o lead < 60 volta ao
+ * caminho de antes — contato pela chave do site, card na Qualificação, rodízio de SDR — e a rota da
+ * nutrição nem é chamada.
  */
-export const DESVIO_NOTA_60_LIGADO = false;
+export const DESVIO_NOTA_60_LIGADO = true;
 
 /**
- * ⚠️ PENDENTE DE APROVAÇÃO DO ANDRÉ (propostos em 06/Out/26) — todos os textos daqui para baixo.
+ * Aprovados pelo André em 06/Out/26 (item L14 da página de textos) — todos os textos daqui para baixo.
  */
 
 /** Página sem texto próprio: home, barra de navegação em qualquer página, blog, LPs /vN. */
