@@ -177,6 +177,8 @@ export function PcFormulario({
     source: config.source,
     originId: utm.originId ?? PC_ORIGEM_DIRETA,
     originDesc: utm.originDesc ?? `[Projeto-Clube]${config.rotulo}`,
+    // A confirmação entrega o guia: o lead < 60 ganha só o botão do WhatsApp do Lucas.
+    lucasSoBotao: true,
     // `redirectToWhatsApp` fica FALSO (padrão): o `messageMap` do redirect cita
     // nomes de parceiros, dois deles banidos. O destino é a confirmação própria.
     onSuccess: () => {

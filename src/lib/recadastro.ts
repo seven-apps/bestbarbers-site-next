@@ -39,17 +39,25 @@ export interface RecadastroInput {
 export interface RecadastroResultado {
   ok: boolean;
   dealId?: number;
+  /** Contato existente que ganhou o card (a rota já devolve). O curso de assinatura usa na inscrição. */
+  contactId?: number;
   motivo?: string;
 }
 
 /** Timeout do backend — acima disso o lead esperando já é pior que a mensagem antiga. */
 const TIMEOUT_MS = 12_000;
 
-export async function criarCardRecadastro(input: RecadastroInput): Promise<RecadastroResultado> {
-  const base =
+/** Base do OS (bestbarbers-ai) que o formulário chama. A nutrição do < 60 usa a mesma. */
+export function baseDoOS(): string {
+  return (
     process.env.NEXT_PUBLIC_BBAI_DASHBOARD_URL ||
     process.env.NEXT_PUBLIC_BBAI_API_URL ||
-    "https://bbai.bestbarbers.app";
+    "https://bbai.bestbarbers.app"
+  );
+}
+
+export async function criarCardRecadastro(input: RecadastroInput): Promise<RecadastroResultado> {
+  const base = baseDoOS();
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
@@ -81,8 +89,8 @@ export async function criarCardRecadastro(input: RecadastroInput): Promise<Recad
     if (!res.ok) {
       return { ok: false, motivo: `http_${res.status}` };
     }
-    const data = (await res.json()) as { dealId?: number };
-    return { ok: true, dealId: data?.dealId };
+    const data = (await res.json()) as { dealId?: number; contactId?: number };
+    return { ok: true, dealId: data?.dealId, contactId: data?.contactId };
   } catch (err) {
     return { ok: false, motivo: err instanceof Error ? err.name : "erro" };
   } finally {

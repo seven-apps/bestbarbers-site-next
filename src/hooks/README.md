@@ -81,9 +81,14 @@ const {
 interface UseLeadFormOptions {
   onSuccess?: () => void;           // Callback de sucesso
   onError?: (error: Error) => void; // Callback de erro
-  redirectToWhatsApp?: boolean;     // Redirecionar para WhatsApp (padrão: true)
+  redirectToWhatsApp?: boolean;     // Redirecionar para WhatsApp (padrão: false)
+  lucasSoBotao?: boolean;           // Lead < 60 no Lucas: só o botão do WhatsApp, sem abrir sozinho (padrão: false)
 }
 ```
+
+**Lead com nota < 60 (ADR-035):** contato novo abaixo do corte vai para a rota do OS
+`/api/ploomes/lead-nutricao` e, com o card criado, para o WhatsApp do Lucas (`src/lib/lead-nutricao.ts`,
+textos e número em `src/content/lucas-whatsapp.ts`). Qualquer falha cai no caminho de sempre.
 
 ### 2. `usePhoneMask`
 

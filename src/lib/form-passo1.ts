@@ -22,6 +22,12 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const MSG_EMAIL_INVALIDO = 'E-mail deve ser válido';
 
 /**
+ * Só nas páginas que ligam `emailObrigatorio` no `useLeadForm` (hoje, a do curso de assinatura,
+ * onde o link do curso chega por e-mail). No resto do site o e-mail continua opcional.
+ */
+export const MSG_EMAIL_OBRIGATORIO = 'E-mail é obrigatório';
+
+/**
  * Valida o e-mail OPCIONAL. Devolve `null` quando está tudo certo — inclusive (e
  * principalmente) quando o campo está vazio, que é o caso que nunca pode barrar ninguém.
  */

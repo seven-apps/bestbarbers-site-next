@@ -82,6 +82,8 @@ export function FormModalTabelaGated({ isOpen, onClose, onSuccess }: Props) {
     source: "tabela_precificacao_clube_gated",
     originId: utmMapping.originId ?? TABELA_ORIGIN_ID,
     originDesc: utmMapping.originDesc || TABELA_ORIGIN_DESC,
+    // A tabela destrava na própria página: o lead < 60 ganha só o botão do WhatsApp do Lucas.
+    lucasSoBotao: true,
     // Envio bem-sucedido: a página fecha o modal e libera o resultado (Coluna 2).
     onSuccess: () => {
       onSuccess?.();

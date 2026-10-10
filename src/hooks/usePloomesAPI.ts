@@ -9,6 +9,7 @@ import {
   PLOOMES_OPCOES_SISTEMA,
 } from '@/lib/ploomes-fields';
 import { buildLeadAttribution, type LeadAttribution } from '@/lib/lead-attribution';
+import { idDoContatoCriado } from '@/lib/cadastro-concluido';
 
 export interface PloomesContactData {
   barbershopName: string;
@@ -103,7 +104,11 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     });
   }, [getUtmParams, getOriginMapping, customOriginId, customOriginDesc]);
 
-  const createContact = useCallback(async (data: PloomesContactData): Promise<PloomesAPIResponse> => {
+  /**
+   * Corpo do POST /Contacts. Separado do envio porque o lead < 60 manda o MESMO contato para
+   * a rota da nutrição no OS (src/lib/lead-nutricao.ts), que só troca quem cria.
+   */
+  const buildContactPayload = useCallback((data: PloomesContactData) => {
     const { originId, originDesc, fields, leadScore } = buildAttribution(data);
 
     // Campos estruturados bb_* (criados abr/2026 + mai/2026). FieldKeys ficam em
@@ -176,6 +181,10 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       ]
     };
 
+    return ploomesData;
+  }, [buildAttribution]);
+
+  const createContact = useCallback(async (data: PloomesContactData): Promise<PloomesAPIResponse> => {
     const response = await fetch(`${PLOOMES_BASE_URL}/Contacts`, {
       method: 'POST',
       headers: {
@@ -183,7 +192,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
         'Content-Type': 'application/json',
         'user-key': PLOOMES_API_KEY
       },
-      body: JSON.stringify(ploomesData)
+      body: JSON.stringify(buildContactPayload(data))
     });
 
     if (!response.ok) {
@@ -192,7 +201,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     }
 
     return response.json();
-  }, [buildAttribution]);
+  }, [buildContactPayload]);
 
   const createDeal = useCallback(async (
     contactId: number, 
@@ -265,7 +274,12 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     }
   }, []);
 
-  const submitLead = useCallback(async (data: PloomesContactData): Promise<void> => {
+  /**
+   * Cria o contato e devolve o id dele (`null` se a resposta vier sem). Antes devolvia `void`;
+   * o id passou a sair para o curso de assinatura inscrever a pessoa com o contato certo
+   * (contrato `02-contrato-tecnico.md` §2.2, no bestbarbers-ai). Ninguém lia o retorno antigo.
+   */
+  const submitLead = useCallback(async (data: PloomesContactData): Promise<{ contactId: number | null }> => {
     try {
       // Cria o contato no Ploomes
       const contactResponse = await createContact(data);
@@ -275,6 +289,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       // para criar sozinho. Mantendo a função disponível caso necessário.
       
       console.log('Contato criado com sucesso no Ploomes:', contactResponse);
+      return { contactId: idDoContatoCriado(contactResponse) };
     } catch (error) {
       console.error('Erro ao enviar lead para Ploomes:', error);
       throw error;
@@ -286,6 +301,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     createDeal,
     checkPhoneExists,
     buildAttribution,
+    buildContactPayload,
     submitLead
   };
 };
