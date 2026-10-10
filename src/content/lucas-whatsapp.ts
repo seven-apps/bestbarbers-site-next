@@ -97,9 +97,7 @@ export const MENSAGENS_LUCAS: ReadonlyArray<{ caminho: string; mensagem: string 
 /** Textos da tela que leva ao WhatsApp (`src/components/ConversaComLucas.tsx`). */
 export const TEXTOS_CONVERSA_LUCAS = {
   titulo: "Cadastro feito!",
-  /** Celular, nas páginas em que o WhatsApp abre sozinho. */
-  abrindo: "Abrindo o WhatsApp para você continuar a conversa com a BestBarbers…",
-  /** Computador, ou celular nas páginas que só ganham o botão. */
+  /** O cartão: computador, celular nas páginas que só ganham o botão, e a reserva quando o app não abre. */
   convite: "Mande a mensagem no WhatsApp para continuar a conversa com a BestBarbers.",
   botao: "Abrir o WhatsApp",
 } as const;

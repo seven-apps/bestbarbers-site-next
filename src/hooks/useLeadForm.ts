@@ -12,6 +12,7 @@ import {
   corpoDaNutricao,
   criarLeadNutricao,
   dealIdDoLucasNoRecadastro,
+  linkDoAppWhatsAppLucas,
   linkDoWhatsAppLucas,
   mensagemDaPagina,
   pedeNutricaoNoRecadastro,
@@ -630,6 +631,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         const mensagem = mensagemDaPagina(window.location.pathname, MENSAGENS_LUCAS, MENSAGEM_PADRAO_LUCAS);
         abrirConversaComLucas({
           link: linkDoWhatsAppLucas(NUMERO_WHATSAPP_LUCAS, mensagem, dealIdLucas),
+          appLink: linkDoAppWhatsAppLucas(NUMERO_WHATSAPP_LUCAS, mensagem, dealIdLucas),
           soBotao: lucasSoBotao,
         });
       } else if (redirectToWhatsApp) {

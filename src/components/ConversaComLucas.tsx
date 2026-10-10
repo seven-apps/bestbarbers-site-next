@@ -5,57 +5,83 @@ import { MessageCircle, X } from "lucide-react";
 import { EVENTO_CONVERSA_LUCAS, type ConversaComLucas as Conversa } from "@/lib/lead-nutricao";
 import { TEXTOS_CONVERSA_LUCAS as TEXTOS } from "@/content/lucas-whatsapp";
 
-/** Tempo para o lead ler "cadastro feito" antes de o celular abrir o WhatsApp. */
-const ATRASO_ABRIR_MS = 2_000;
+/**
+ * Celular, página comum: quanto esperar o WhatsApp abrir antes de mostrar o cartão de reserva. Se a página
+ * continua na tela depois disso, o app não abriu (navegador que bloqueia, WhatsApp não instalado).
+ */
+const ESPERA_APP_MS = 1_500;
 
 /**
  * Leva o lead < 60 ao WhatsApp do Lucas depois do formulário (ADR-035; regra em
  * `src/lib/lead-nutricao.ts`). Montado no layout raiz e inerte até o `useLeadForm` disparar o
  * evento — por isso sobrevive ao `router.push` das páginas que vão para a tela de obrigado.
  *
- * - Celular, página comum: cartão no centro e o WhatsApp abre sozinho em ~2 s.
- * - Computador: o mesmo cartão, só com o botão.
+ * - Celular, página comum: abre o APP na hora (`whatsapp://`), com a mensagem pronta, sem cartão antes
+ *   (pedido do André, 10/Out/26: o cartão de 2 s e a página do api.whatsapp.com atrasavam o lead). O
+ *   cartão só aparece se o app não abrir em 1,5 s (com o botão pelo `wa.me`, que abre no toque) ou
+ *   quando a pessoa volta do WhatsApp (para reabrir se não enviou).
+ * - Computador: o cartão com o botão (`wa.me`).
  * - `soBotao` (a página entrega algo depois do formulário: tabela, guia): barra no rodapé,
- *   sem cobrir o que a pessoa acabou de destravar, e nunca abre sozinha.
+ *   sem cobrir o que a pessoa acabou de destravar, e nunca abre sozinha. No celular, o botão abre o app.
  *
  * z-110: fica acima do LeadFormModal (z-100), que continua aberto depois do envio.
  */
 export function ConversaComLucas() {
   const [conversa, setConversa] = useState<Conversa | null>(null);
-  const [abreSozinho, setAbreSozinho] = useState(false);
+  const [celular, setCelular] = useState(false);
+  // O app foi chamado e o cartão espera: ou o app abre (a página some), ou ele aparece como reserva.
+  const [esperandoApp, setEsperandoApp] = useState(false);
+  // O app não abriu: a reserva usa o `wa.me`, porque o `whatsapp://` acabou de falhar neste navegador.
+  const [appFalhou, setAppFalhou] = useState(false);
 
   useEffect(() => {
     const ouvir = (e: Event) => {
       const detalhe = (e as CustomEvent<Conversa>).detail;
       if (!detalhe?.link) return;
       // Celular = tela de toque sem mouse. É onde o WhatsApp é um app e abrir sozinho faz sentido.
-      const celular = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
-      setAbreSozinho(celular && !detalhe.soBotao);
+      const ehCelular = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+      setCelular(ehCelular);
+      setAppFalhou(false);
       setConversa(detalhe);
+      if (ehCelular && !detalhe.soBotao && detalhe.appLink) {
+        setEsperandoApp(true);
+        // Na hora, dentro do evento: quanto mais perto do toque em "enviar", mais o navegador aceita abrir o app.
+        window.location.href = detalhe.appLink;
+      }
     };
     window.addEventListener(EVENTO_CONVERSA_LUCAS, ouvir);
     return () => window.removeEventListener(EVENTO_CONVERSA_LUCAS, ouvir);
   }, []);
 
   useEffect(() => {
-    if (!conversa || !abreSozinho) return;
+    if (!esperandoApp) return;
     const t = window.setTimeout(() => {
-      window.location.href = conversa.link;
-    }, ATRASO_ABRIR_MS);
-    // Fechar o cartão cancela a abertura.
-    return () => window.clearTimeout(t);
-  }, [conversa, abreSozinho]);
+      if (document.visibilityState === "visible") {
+        setAppFalhou(true);
+        setEsperandoApp(false);
+      }
+    }, ESPERA_APP_MS);
+    // O app abriu e a pessoa voltou para o site: o cartão fica, para reabrir se ela não enviou.
+    const aoVoltar = () => {
+      if (document.visibilityState === "visible") setEsperandoApp(false);
+      else window.clearTimeout(t);
+    };
+    document.addEventListener("visibilitychange", aoVoltar);
+    return () => {
+      window.clearTimeout(t);
+      document.removeEventListener("visibilitychange", aoVoltar);
+    };
+  }, [esperandoApp]);
 
-  if (!conversa) return null;
+  if (!conversa || esperandoApp) return null;
 
   const fechar = () => setConversa(null);
+  // Celular: o app direto. Computador, ou app que já falhou neste navegador: o `wa.me` (abre no toque).
+  const usaApp = celular && !appFalhou && !!conversa.appLink;
   const botao = (
     <a
-      href={conversa.link}
-      target="_blank"
-      rel="noopener noreferrer"
-      // Quem tocou antes dos 2 s já foi: a abertura automática não pode abrir de novo.
-      onClick={() => setAbreSozinho(false)}
+      href={usaApp ? conversa.appLink : conversa.link}
+      {...(usaApp ? {} : { target: "_blank", rel: "noopener noreferrer" })}
       className="w-full whitespace-nowrap bg-[#25D366] text-white font-extrabold text-[16px] py-4 px-6 rounded-full shadow-[0_8px_30px_rgba(37,211,102,0.4)] hover:brightness-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
     >
       <MessageCircle className="w-5 h-5" />
@@ -110,7 +136,7 @@ export function ConversaComLucas() {
           {TEXTOS.titulo}
         </h2>
         <p className="text-[#5a5a5a] text-[15px] leading-[21px] mb-5">
-          {abreSozinho ? TEXTOS.abrindo : TEXTOS.convite}
+          {TEXTOS.convite}
         </p>
         {botao}
       </div>

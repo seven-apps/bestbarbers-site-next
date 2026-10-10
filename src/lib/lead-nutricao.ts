@@ -228,11 +228,24 @@ export function linkDoWhatsAppLucas(numero: string, mensagem: string, dealId: nu
   return `https://wa.me/${numeroValidoDoLucas(numero)}?text=${encodeURIComponent(texto)}`;
 }
 
+/**
+ * O mesmo convite pelo link do APP (`whatsapp://`): no celular, abre a conversa direto no WhatsApp, com a
+ * mensagem pronta. O `wa.me` só abre o app quando a pessoa TOCA no link; aberto pelo site sozinho, ele cai na
+ * página do api.whatsapp.com, que pede "Permitir" (medido pelo André em 10/Out/26 no iPhone).
+ */
+export function linkDoAppWhatsAppLucas(numero: string, mensagem: string, dealId: number): string {
+  const texto = `${mensagem} (cód. ${dealId})`;
+  return `whatsapp://send?phone=${numeroValidoDoLucas(numero)}&text=${encodeURIComponent(texto)}`;
+}
+
 /** Evento que o formulário dispara e a tela do WhatsApp (`ConversaComLucas`, no layout raiz) ouve. */
 export const EVENTO_CONVERSA_LUCAS = "bb:conversa-lucas";
 
 export interface ConversaComLucas {
+  /** `wa.me`: o computador e o botão de reserva quando o app não abre. */
   link: string;
+  /** `whatsapp://`: o celular abre o app direto (`linkDoAppWhatsAppLucas`). */
+  appLink: string;
   /** true = a página entrega algo depois do formulário (tabela, guia): só o botão, nunca abre sozinha. */
   soBotao: boolean;
 }
