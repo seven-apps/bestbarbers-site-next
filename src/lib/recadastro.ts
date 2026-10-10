@@ -34,6 +34,12 @@ export interface RecadastroInput {
    * existente APENAS quando o campo está vazio lá, nunca sobrescrevendo.
    */
   email?: string;
+  /**
+   * Pede a Nutrição (emenda de 10/Out/26 ao ADR-035): nota < 60 com o desvio do Lucas ligado
+   * (`pedeNutricaoNoRecadastro`). O OS cria o card no pipe do Lucas e devolve `pipe: "nutricao"`,
+   * ou fica na Qualificação (venda aberta no Fechamento, falha) e devolve `pipe: "qualificacao"`.
+   */
+  nutricao?: boolean;
 }
 
 export interface RecadastroResultado {
@@ -41,6 +47,8 @@ export interface RecadastroResultado {
   dealId?: number;
   /** Contato existente que ganhou o card (a rota já devolve). O curso de assinatura usa na inscrição. */
   contactId?: number;
+  /** Onde o OS pôs o card. Sem o campo (OS anterior a 10/Out/26) = Qualificação. */
+  pipe?: "qualificacao" | "nutricao";
   motivo?: string;
 }
 
@@ -56,14 +64,18 @@ export function baseDoOS(): string {
   );
 }
 
-export async function criarCardRecadastro(input: RecadastroInput): Promise<RecadastroResultado> {
+export async function criarCardRecadastro(
+  input: RecadastroInput,
+  opts: { fetch?: typeof fetch } = {},
+): Promise<RecadastroResultado> {
   const base = baseDoOS();
+  const fazerFetch = opts.fetch ?? fetch;
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
 
   try {
-    const res = await fetch(`${base}/api/ploomes/recadastro-deal`, {
+    const res = await fazerFetch(`${base}/api/ploomes/recadastro-deal`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       signal: controller.signal,
@@ -83,14 +95,16 @@ export async function criarCardRecadastro(input: RecadastroInput): Promise<Recad
         // Score numérico → bb_lead_score do card (o backend traduz para a FieldKey do deal).
         ...(typeof input.atribuicao.leadScore === 'number' ? { leadScore: Math.trunc(input.atribuicao.leadScore) } : {}),
         atribuicao: input.atribuicao.fields,
+        ...(input.nutricao ? { nutricao: true } : {}),
       }),
     });
 
     if (!res.ok) {
       return { ok: false, motivo: `http_${res.status}` };
     }
-    const data = (await res.json()) as { dealId?: number; contactId?: number };
-    return { ok: true, dealId: data?.dealId, contactId: data?.contactId };
+    const data = (await res.json()) as { dealId?: number; contactId?: number; pipe?: unknown };
+    const pipe = data?.pipe === "nutricao" || data?.pipe === "qualificacao" ? data.pipe : undefined;
+    return { ok: true, dealId: data?.dealId, contactId: data?.contactId, ...(pipe ? { pipe } : {}) };
   } catch (err) {
     return { ok: false, motivo: err instanceof Error ? err.name : "erro" };
   } finally {

@@ -1,5 +1,10 @@
 /**
- * NUTRIÇÃO — lead NOVO com nota < 60 vai para o WhatsApp do Lucas, não para a fila do SDR.
+ * NUTRIÇÃO — lead com nota < 60 vai para o WhatsApp do Lucas, não para a fila do SDR.
+ *
+ * Emenda de 10/Out/26 (André): o RECADASTRO com nota < 60 também vai ao Lucas — o primeiro contato
+ * do SDR já não deu certo. O caminho continua `recadastro` (o OS acha o contato que já existe), mas
+ * o site pede a Nutrição (`pedeNutricaoNoRecadastro`) e, se o OS devolver `pipe: "nutricao"`, leva
+ * o lead ao WhatsApp do Lucas com o código do card (`dealIdDoLucasNoRecadastro`).
  *
  * Decisão do André (06/Out/26, ADR-035 no bestbarbers-ai). Só o contato novo abaixo do corte
  * muda de caminho: em vez de nascer pela chave do Ploomes do site (que dispara a automação do
@@ -55,6 +60,19 @@ export function caminhoDoLead(input: {
   if (input.telefoneExiste) return "recadastro";
   if (abaixoDoCorte(input.nota) && numeroValidoDoLucas(input.numeroLucas)) return "lucas";
   return "sdr";
+}
+
+/**
+ * O recadastro pede a Nutrição? Nota < 60 e o desvio ligado (número válido do Lucas). As exceções
+ * (venda aberta no Fechamento, falha) são do OS, que devolve onde o card ficou.
+ */
+export function pedeNutricaoNoRecadastro(input: { nota: number | null | undefined; numeroLucas: string }): boolean {
+  return abaixoDoCorte(input.nota) && numeroValidoDoLucas(input.numeroLucas) !== "";
+}
+
+/** O card do recadastro está no pipe do Lucas? Então o lead vai ao WhatsApp dele com este código. */
+export function dealIdDoLucasNoRecadastro(r: { ok: boolean; pipe?: string; dealId?: number }): number | null {
+  return r.ok && r.pipe === "nutricao" && Number.isInteger(r.dealId) && (r.dealId as number) > 0 ? (r.dealId as number) : null;
 }
 
 /** O contato exatamente como `usePloomesAPI.buildContactPayload` monta para o POST /Contacts. */

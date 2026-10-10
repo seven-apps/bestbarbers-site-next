@@ -19,9 +19,11 @@ import {
   caminhoDoLead,
   corpoDaNutricao,
   criarLeadNutricao,
+  dealIdDoLucasNoRecadastro,
   linkDoWhatsAppLucas,
   mensagemDaPagina,
   numeroValidoDoLucas,
+  pedeNutricaoNoRecadastro,
   type CorpoNutricao,
   type ResultadoNutricao,
 } from "./lead-nutricao.ts";
@@ -327,4 +329,22 @@ test("hook: recadastro primeiro; contato novo pela orquestração, com submitLea
 test("hook: a conversa com o Lucas só abre com card criado, e o redirect genérico não roda junto", () => {
   assert.match(hook, /if \(dealIdLucas !== null\) \{[\s\S]*?abrirConversaComLucas\(/);
   assert.match(hook, /\} else if \(redirectToWhatsApp\) \{/);
+});
+
+// ─── Recadastro < 60 vai ao Lucas (emenda de 10/Out/26 ao ADR-035) ─────────────────────────────
+
+test("pedeNutricaoNoRecadastro: nota < 60 com o número do Lucas; ≥ 60, sem nota ou desvio desligado não pedem", () => {
+  assert.equal(pedeNutricaoNoRecadastro({ nota: 20, numeroLucas: "553172183568" }), true);
+  assert.equal(pedeNutricaoNoRecadastro({ nota: 59.9, numeroLucas: "553172183568" }), true);
+  assert.equal(pedeNutricaoNoRecadastro({ nota: 60, numeroLucas: "553172183568" }), false);
+  assert.equal(pedeNutricaoNoRecadastro({ nota: undefined, numeroLucas: "553172183568" }), false);
+  assert.equal(pedeNutricaoNoRecadastro({ nota: 20, numeroLucas: "" }), false, "desvio desligado = número vazio");
+});
+
+test("dealIdDoLucasNoRecadastro: só o card que o OS pôs na Nutrição leva ao Lucas", () => {
+  assert.equal(dealIdDoLucasNoRecadastro({ ok: true, pipe: "nutricao", dealId: 1203126573 }), 1203126573);
+  assert.equal(dealIdDoLucasNoRecadastro({ ok: true, pipe: "qualificacao", dealId: 1203126573 }), null);
+  assert.equal(dealIdDoLucasNoRecadastro({ ok: true, dealId: 1203126573 }), null, "OS antigo, sem pipe = Qualificação");
+  assert.equal(dealIdDoLucasNoRecadastro({ ok: true, pipe: "nutricao" }), null);
+  assert.equal(dealIdDoLucasNoRecadastro({ ok: false, pipe: "nutricao", dealId: 1 }), null);
 });

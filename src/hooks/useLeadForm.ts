@@ -11,8 +11,10 @@ import {
   caminhoDoLead,
   corpoDaNutricao,
   criarLeadNutricao,
+  dealIdDoLucasNoRecadastro,
   linkDoWhatsAppLucas,
   mensagemDaPagina,
+  pedeNutricaoNoRecadastro,
 } from '@/lib/lead-nutricao';
 import { DESVIO_NOTA_60_LIGADO, MENSAGEM_PADRAO_LUCAS, MENSAGENS_LUCAS, NUMERO_WHATSAPP_LUCAS } from '@/content/lucas-whatsapp';
 import { MSG_EMAIL_OBRIGATORIO, validarEmailOpcional } from '@/lib/form-passo1';
@@ -392,12 +394,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       };
       // Três caminhos (src/lib/lead-nutricao.ts): telefone conhecido → recadastro; contato novo
       // com nota < 60 → tenta o Lucas (ADR-035, 06/Out/26); o resto → o caminho de sempre.
-      const caminho = caminhoDoLead({
-        telefoneExiste: dedup.exists,
-        nota: leadScore,
-        // Desvio desligado = número vazio: o lead < 60 segue o caminho de sempre.
-        numeroLucas: DESVIO_NOTA_60_LIGADO ? NUMERO_WHATSAPP_LUCAS : '',
-      });
+      // Desvio desligado = número vazio: o lead < 60 segue o caminho de sempre.
+      const numeroLucas = DESVIO_NOTA_60_LIGADO ? NUMERO_WHATSAPP_LUCAS : '';
+      const caminho = caminhoDoLead({ telefoneExiste: dedup.exists, nota: leadScore, numeroLucas });
       // Card criado no pipe de nutrição: o lead vai para o WhatsApp do Lucas no fim do submit.
       let dealIdLucas: number | null = null;
       // O que de fato rodou, para o `onSuccess` (`CadastroConcluido`): o curso inscreve com isso.
@@ -421,6 +420,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
           // existe, então ninguém escrevia o campo). O backend só PREENCHE contato sem
           // e-mail — nunca sobrescreve o que o CRM já tem.
           email: ploomesData.email,
+          // Recadastro < 60 também vai ao Lucas (emenda de 10/Out/26 ao ADR-035): o OS decide o pipe.
+          nutricao: pedeNutricaoNoRecadastro({ nota: leadScore, numeroLucas }),
         });
 
         if (!recadastro.ok) {
@@ -433,6 +434,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         caminhoFeito = 'recadastro';
         dealIdCadastro = recadastro.dealId ?? null;
         contactIdCadastro = recadastro.contactId ?? null;
+        // Card no pipe do Lucas: no fim do submit, o lead vai ao WhatsApp dele, como o contato novo < 60.
+        dealIdLucas = dealIdDoLucasNoRecadastro(recadastro);
       } else {
         // `lucas` só vale com o card criado: qualquer falha da rota faz `submitLead`, o caminho
         // de hoje (contato pela chave do site → card na Qualificação → rodízio de SDR).
