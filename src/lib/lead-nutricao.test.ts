@@ -20,6 +20,7 @@ import {
   corpoDaNutricao,
   criarLeadNutricao,
   dealIdDoLucasNoRecadastro,
+  linkDoAppWhatsAppLucas,
   linkDoWhatsAppLucas,
   mensagemDaPagina,
   numeroValidoDoLucas,
@@ -277,6 +278,16 @@ test("< 60 com card: link do WhatsApp do Lucas com a mensagem da página e o có
   const texto = url.searchParams.get("text") ?? "";
   assert.ok(texto.startsWith(mensagem));
   // Contrato com o Lucas: o código fecha a mensagem neste formato.
+  assert.match(texto, /\(cód\. 1202661959\)$/);
+});
+
+test("link do APP (whatsapp://): mesmo número, mesma mensagem e o mesmo código do wa.me", () => {
+  const mensagem = mensagemDaPagina("/clube", MENSAGENS_LUCAS, MENSAGEM_PADRAO_LUCAS);
+  const app = linkDoAppWhatsAppLucas("+55 31 98888-7777", mensagem, 1202661959);
+  assert.ok(app.startsWith(`whatsapp://send?phone=${NUMERO}&text=`), app);
+  const texto = decodeURIComponent(app.split("&text=")[1] ?? "");
+  const web = new URL(linkDoWhatsAppLucas("+55 31 98888-7777", mensagem, 1202661959)).searchParams.get("text");
+  assert.equal(texto, web, "o Lucas acha o card pelo mesmo texto nos dois links");
   assert.match(texto, /\(cód\. 1202661959\)$/);
 });
 
