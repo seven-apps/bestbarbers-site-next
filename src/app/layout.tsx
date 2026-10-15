@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import { PerguntaDono } from "@/components/tracking/PerguntaDono";
 import { ConversaComLucas } from "@/components/ConversaComLucas";
 
 const montserrat = Montserrat({
@@ -175,8 +174,6 @@ export default function RootLayout({
         </>}
 
         {children}
-        {/* "Você é dono de barbearia?" — só para o tráfego do TOPO (lib/pergunta-dono.ts); inerte no resto */}
-        {!localPreview && <PerguntaDono />}
         {/* Lead < 60 → WhatsApp do Lucas (lib/lead-nutricao.ts); inerte até o formulário chamar */}
         <ConversaComLucas />
       </body>
