@@ -15,6 +15,7 @@ import type { UtmParams } from "@/hooks/useUtmParams";
 // Extensão explícita: é o que permite ao `node --test` (npm test) carregar este
 // módulo sem build. Ver `allowImportingTsExtensions` no tsconfig.
 import { varianteVista } from "./ab-clube.ts";
+import { cupomDaUrl, CUPOM_CAMPANHA } from "./cupom-parceiro.ts";
 
 /** Campos bb_* em nome lógico — idênticos no Contact e no Deal do Ploomes. */
 export interface LeadAttributionFields {
@@ -164,8 +165,12 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   // quem chegava sem descrição de campanha (/parceiros, as calculadoras e a /v12 orgânica
   // caem no ramo legacy, onde `builder` nasce vazio) perdia o `[SCORE: n]` inteiro — o
   // SDR via o card sem nota e o lead sumia da leitura de CPQL sem nenhum aviso.
+  // Cupom do parceiro (out/26, `cupom-parceiro.ts`): só o código válido do MESMO parceiro do link entra. Vai logo depois
+  // do score, para o SDR e o closer verem no card o desconto que o lead já espera.
+  const cupom = cupomDaUrl({ cupom: param("cupom"), source: param("source") });
   let prefixo = "";
   if (leadScore !== undefined) prefixo = `[SCORE: ${leadScore}] `;
+  if (cupom) prefixo += `[CUPOM: ${cupom.codigo}] `;
   if (prefixo) originDesc = `${prefixo}${originDesc ?? ""}`.trim();
 
   const fields: LeadAttributionFields = {};
@@ -175,7 +180,8 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
 
   // Wave 1 — Meta ad params (url_tags Wave 4)
   put("bb_campaign_id", param("campaign_id") || param("campanha_id"));
-  put("bb_campaign_name", campanha);
+  // Sem campanha de anúncio na URL, o cupom marca a campanha dos stories (separa do "grupo" do mesmo parceiro).
+  put("bb_campaign_name", campanha || (cupom ? CUPOM_CAMPANHA : ""));
   put("bb_adset_id", param("adset_id") || publico);
   put("bb_ad_id", adId || adName);
   put("bb_lp_version", lpVersion);

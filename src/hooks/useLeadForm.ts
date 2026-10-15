@@ -18,6 +18,7 @@ import {
   pedeNutricaoNoRecadastro,
 } from '@/lib/lead-nutricao';
 import { DESVIO_NOTA_60_LIGADO, MENSAGEM_PADRAO_LUCAS, MENSAGENS_LUCAS, NUMERO_WHATSAPP_LUCAS } from '@/content/lucas-whatsapp';
+import { cupomDaUrl, mensagemLucasDoCupom } from '@/lib/cupom-parceiro';
 import { MSG_EMAIL_OBRIGATORIO, validarEmailOpcional } from '@/lib/form-passo1';
 import { montarCadastroConcluido, type CadastroConcluido, type CaminhoFeito } from '@/lib/cadastro-concluido';
 import { calcularScoreV2, interesseLegado, temEquipe } from '@/lib/lead-score';
@@ -628,7 +629,12 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // WhatsApp do Lucas. Vem depois do onSuccess para a página fazer o que já faz (destravar a
       // tabela, ir para a tela de obrigado) e a conversa aparecer por cima.
       if (dealIdLucas !== null) {
-        const mensagem = mensagemDaPagina(window.location.pathname, MENSAGENS_LUCAS, MENSAGEM_PADRAO_LUCAS);
+        // Quem chegou pelo cupom do parceiro (out/26) fala do cupom na 1ª mensagem: o Lucas já sabe da oferta.
+        const busca = new URLSearchParams(window.location.search);
+        const cupomDoLink = cupomDaUrl({ cupom: busca.get('cupom'), source: busca.get('source') });
+        const mensagem = cupomDoLink
+          ? mensagemLucasDoCupom(cupomDoLink)
+          : mensagemDaPagina(window.location.pathname, MENSAGENS_LUCAS, MENSAGEM_PADRAO_LUCAS);
         abrirConversaComLucas({
           link: linkDoWhatsAppLucas(NUMERO_WHATSAPP_LUCAS, mensagem, dealIdLucas),
           appLink: linkDoAppWhatsAppLucas(NUMERO_WHATSAPP_LUCAS, mensagem, dealIdLucas),
