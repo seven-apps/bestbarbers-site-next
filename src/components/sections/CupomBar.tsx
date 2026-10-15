@@ -1,70 +1,64 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Ticket, ArrowRight } from "lucide-react";
 import { CUPOM_VALIDO_ATE_TEXTO, CUPOM_VALOR, type CupomParceiro } from "@/lib/cupom-parceiro";
 
 /**
- * Cartão verde do cupom do parceiro (out/26), fixo no rodapé da tela enquanto a pessoa lê a página. Pedido do André
- * (15/Out/26): "tem que ser bem mais chamativo" — o código grande, o valor e um botão que pulsa. Leva ao formulário no
- * clique.
+ * Faixa verde do cupom do parceiro (out/26), colada embaixo do menu e fixa com ele: o cupom fica na tela o tempo todo.
+ * Pedido do André (15/Out/26): "o verde dá a sensação de que está ganhando". Um brilho corre pelo verde e o botão
+ * pulsa; o clique leva ao formulário. Vai na prop `faixa` do Navbar.
  */
 export function CupomBar({ cupom, onCtaClick }: { cupom: CupomParceiro; onCtaClick: () => void }) {
-  // Aparece quando o topo (que já mostra o cupom) sai da tela; some quando o formulário aparece. Assim a 1ª tela fica
-  // limpa e o cartão sobe na rolagem, sem cobrir o botão do topo nem o de enviar.
-  const [heroNaTela, setHeroNaTela] = useState(true);
-  const [formNaTela, setFormNaTela] = useState(false);
-  useEffect(() => {
-    if (typeof IntersectionObserver === "undefined") { setHeroNaTela(false); return; }
-    const hero = document.getElementById("cupom-hero");
-    const form = document.getElementById("form-section");
-    const obs = new IntersectionObserver((entradas) => {
-      for (const e of entradas) {
-        if (e.target === hero) setHeroNaTela(e.isIntersecting);
-        if (e.target === form) setFormNaTela(e.isIntersecting);
-      }
-    }, { threshold: 0.05 });
-    if (hero) obs.observe(hero); else setHeroNaTela(false);
-    if (form) obs.observe(form);
-    return () => obs.disconnect();
-  }, []);
-  const escondido = heroNaTela || formNaTela;
-
   return (
-    <div
-      className={`fixed inset-x-0 bottom-0 z-40 px-3 md:px-6 transition-transform duration-300 ${escondido ? "translate-y-[140%]" : "translate-y-0"}`}
-      style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 12px)" }}
-      role="region"
-      aria-label={`Cupom ${cupom.codigo} ativado`}
+    <button
+      type="button"
+      onClick={onCtaClick}
+      aria-label={`Cupom ${cupom.codigo} ativado: R$${CUPOM_VALOR} de desconto. Ir para o cadastro`}
+      className="cupom-faixa relative block w-full overflow-hidden text-white"
+      style={{ background: "linear-gradient(90deg, #02a114, #06c81e 50%, #02a114)", fontFamily: "var(--font-montserrat)" }}
     >
-      <button
-        type="button"
-        onClick={onCtaClick}
-        className="cupom-cartao mx-auto flex w-full max-w-3xl items-center gap-3 md:gap-5 rounded-2xl border-2 border-dashed border-white/60 px-4 py-3.5 md:px-6 md:py-4 text-left text-white"
-        style={{ background: "linear-gradient(135deg, #02a114, #04c41a)", boxShadow: "0 12px 40px rgba(2,171,21,0.55), 0 0 0 4px rgba(4,196,26,0.18)", fontFamily: "var(--font-montserrat)" }}
-      >
-        <span className="flex h-12 w-12 md:h-14 md:w-14 flex-none items-center justify-center rounded-full bg-white/20">
-          <Ticket className="h-7 w-7 md:h-8 md:w-8" />
-        </span>
-        <span className="flex min-w-0 flex-1 flex-col">
-          <span className="text-[11px] md:text-xs font-bold uppercase tracking-[0.18em] opacity-90">Cupom ativado</span>
-          <span className="text-[24px] md:text-[30px] font-extrabold leading-none tracking-wide">{cupom.codigo}</span>
-          <span className="mt-1 text-[13px] md:text-[15px] font-semibold leading-tight">
-            R${CUPOM_VALOR} off no seu app próprio<span className="hidden md:inline"> · até {CUPOM_VALIDO_ATE_TEXTO}</span>
+      <span className="cupom-brilho" aria-hidden="true" />
+      {/* O espaçamento vertical fica num span por fora: o .container-custom do site zera o padding vertical. */}
+      <span className="relative block py-2.5 md:py-3">
+      <span className="container-custom relative flex items-center justify-between gap-3">
+        <span className="flex min-w-0 items-center gap-2.5 md:gap-3">
+          <Ticket className="h-6 w-6 md:h-7 md:w-7 flex-none" strokeWidth={2.4} />
+          <span className="flex min-w-0 flex-col text-left leading-tight md:flex-row md:items-baseline md:gap-3">
+            <span className="text-[16px] md:text-[19px] font-extrabold tracking-wide whitespace-nowrap"><span className="hidden md:inline">CUPOM </span>{cupom.codigo} ATIVADO</span>
+            <span className="text-[12.5px] md:text-[15px] font-semibold opacity-95">
+              R${CUPOM_VALOR} off no<span className="hidden md:inline"> seu</span> app próprio<span className="hidden md:inline"> · até {CUPOM_VALIDO_ATE_TEXTO}</span>
+            </span>
           </span>
         </span>
-        <span className="cupom-botao flex flex-none items-center gap-1.5 rounded-xl bg-white px-4 py-3 md:px-6 md:py-3.5 text-[14px] md:text-[16px] font-extrabold uppercase text-[#028a10]">
-          Usar <span className="hidden sm:inline">cupom</span> <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
+        <span className="cupom-botao flex flex-none items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 md:px-5 md:py-2 text-[12.5px] md:text-[14px] font-extrabold uppercase text-[#028a10]">
+          <span>Usar<span className="hidden sm:inline"> cupom</span></span>
+          <ArrowRight className="h-4 w-4" />
         </span>
-      </button>
+      </span>
+      </span>
       <style jsx>{`
+        .cupom-brilho {
+          position: absolute;
+          inset: 0 auto 0 -40%;
+          width: 35%;
+          background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+          transform: skewX(-20deg);
+          animation: cupom-brilho 3.2s ease-in-out infinite;
+          pointer-events: none;
+        }
+        @keyframes cupom-brilho {
+          0% { left: -40%; }
+          55%, 100% { left: 130%; }
+        }
         @keyframes cupom-pulso {
-          0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55); }
-          50% { transform: scale(1.04); box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); }
+          0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6); }
+          50% { transform: scale(1.05); box-shadow: 0 0 0 7px rgba(255, 255, 255, 0); }
         }
         .cupom-botao { animation: cupom-pulso 1.8s ease-in-out infinite; }
-        @media (prefers-reduced-motion: reduce) { .cupom-botao { animation: none; } }
+        @media (prefers-reduced-motion: reduce) {
+          .cupom-brilho, .cupom-botao { animation: none; }
+        }
       `}</style>
-    </div>
+    </button>
   );
 }

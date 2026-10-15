@@ -111,7 +111,7 @@ export function HeroPartnerSection({
 
   return (
     <section
-      className="section-primary pt-32 pb-8 md:pb-12 lg:pb-0 flex justify-center items-end relative overflow-hidden"
+      className={`section-primary ${cupom ? "pt-48 md:pt-56" : "pt-32"} pb-8 md:pb-12 lg:pb-0 flex justify-center items-end relative overflow-hidden`}
       style={{ backgroundColor: "#ffaf02" }}
     >
       <div className="container-custom relative">
@@ -120,9 +120,7 @@ export function HeroPartnerSection({
           <div id={cupom ? "cupom-hero" : undefined} className={`flex flex-col justify-center items-center lg:items-start space-y-4 lg:space-y-6 text-center lg:text-left relative z-10 ${isPartnerImage ? 'w-full lg:w-1/2 order-first mb-8 lg:mb-0 pb-0' : 'w-full lg:w-[35%] pb-8 md:pb-12 lg:pb-12'}`}>
             {cupom ? (
               <>
-                <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-extrabold tracking-widest" style={{ backgroundColor: "#121212", color: "#ffaf02" }}>
-                  CUPOM {cupom.codigo.toUpperCase()} ATIVADO
-                </span>
+                {/* O selo "cupom ativado" saiu daqui em 15/Out: a faixa verde do menu já diz isso o tempo todo. */}
                 {/* Pedido do André (15/Out/26): o título nomeia o que a pessoa ganha — o app próprio da barbearia. */}
                 <h1 className="text-[34px] md:text-5xl lg:text-5xl font-extrabold leading-[1.1] text-neutral-bg2 max-w-lg lg:max-w-none">
                   <span className="text-white">R${CUPOM_VALOR} de desconto</span> para você ter o app próprio da sua barbearia
