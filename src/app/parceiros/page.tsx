@@ -33,7 +33,8 @@ function ParceirosContent() {
     // O cadastro sobe para logo depois do topo (decisão da reunião de 14/Out/26); o produto vem depois.
     return (
       <>
-        <Navbar onCtaClick={scrollToForm} />
+        {/* A faixa verde do cupom fica colada no menu, fixa: o cupom aparece o tempo todo (André, 15/Out/26). */}
+        <Navbar onCtaClick={scrollToForm} faixa={<CupomBar cupom={cupom} onCtaClick={scrollToForm} />} />
         <HeroPartnerSection onCtaClick={scrollToForm} source={source} cupom={cupom} />
         <FormSection
           title={`Garanta a sua oferta exclusiva: cupom ${cupom.codigo}`}
@@ -49,7 +50,6 @@ function ParceirosContent() {
         <NotificationsSection onCtaClick={scrollToForm} />
         <BasicPlanSection />
         <Footer />
-        <CupomBar cupom={cupom} onCtaClick={scrollToForm} />
       </>
     );
   }

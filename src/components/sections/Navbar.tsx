@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { homeContent } from "@/content/home";
@@ -10,9 +10,11 @@ import { LeadFormModal } from "@/components/sections/LeadFormModal";
 interface NavbarProps {
   onCtaClick?: () => void;
   withoutCta?: boolean;
+  /** Faixa colada embaixo do menu, fixa junto com ele (ex.: o cupom do parceiro, out/26). */
+  faixa?: ReactNode;
 }
 
-export function Navbar({ onCtaClick, withoutCta = false }: NavbarProps) {
+export function Navbar({ onCtaClick, withoutCta = false, faixa }: NavbarProps) {
   const { navbar } = homeContent;
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -80,6 +82,7 @@ export function Navbar({ onCtaClick, withoutCta = false }: NavbarProps) {
           </button>
         </div>}
       </div>
+      {faixa}
     </nav>
 
     {/* Modal interno para quando onCtaClick não é fornecido */}
