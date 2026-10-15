@@ -35,6 +35,7 @@ import gabrielReisImg from "@/app/parceiros/assets/gabriel-reis.png";
 import jeffersonAuxImg from "@/app/parceiros/assets/jefferson-aux.png";
 import vittorPallaceImg from "@/app/parceiros/assets/vittor-pallace.png";
 import lucasStartImg from "@/app/parceiros/assets/lucas-start.png";
+import isaacArtsImg from "@/app/parceiros/assets/isaac-arts.png";
 
 
 interface HeroPartnerSectionProps {
@@ -89,6 +90,7 @@ export function HeroPartnerSection({
     "jefferson-aux": jeffersonAuxImg,
     "vittor-pallace": vittorPallaceImg,
     "lucas-start": lucasStartImg,
+    "isaac-arts": isaacArtsImg,
   }), []);
 
   // Slug desconhecido OU banido cai no herói genérico — fallback, nunca erro.
@@ -175,7 +177,7 @@ export function HeroPartnerSection({
 
           {/* Mockup da imagem */}
           {isPartnerImage ? (
-            <div className="w-full lg:w-1/2 flex justify-center lg:justify-end order-last -mb-8 lg:-mb-12">
+            <div className="w-full lg:w-1/2 flex justify-center lg:justify-end order-last -mb-8 lg:-mb-12 lg:self-end">
               <div className="relative w-full max-w-[100%] md:max-w-[95%] lg:max-w-full">
                 <Image
                   src={displayImage}

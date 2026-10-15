@@ -9,7 +9,7 @@
  * Por que uma LISTA FECHADA e não "qualquer ?cupom=": o desconto é real e o closer aplica o que o card diz.
  * Um cupom digitado à mão na URL (ou de outro parceiro, ou vencido) cai na página normal, sem desconto.
  * Os códigos e a lista dos 22 vieram do André em 15/Out/26; a origem de cada um foi conferida ao vivo no
- * Ploomes no mesmo dia (todas existem). O Isaac Arts ainda não tem foto no herói (cai na arte genérica).
+ * Ploomes no mesmo dia (todas existem). A foto do Isaac Arts entrou no herói em 15/Out/26 (recorte enviado pelo André).
  */
 
 export interface CupomParceiro {
