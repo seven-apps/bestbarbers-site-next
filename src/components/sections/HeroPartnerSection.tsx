@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
 import { useMemo } from "react";
 import type { StaticImageData } from "next/image";
+import { CUPOM_VALIDO_ATE_TEXTO, CUPOM_VALOR, doParceiro, type CupomParceiro } from "@/lib/cupom-parceiro";
 
 // Import partner images
 import santiagoImg from "@/app/parceiros/assets/santiago.png";
@@ -39,6 +40,8 @@ import lucasStartImg from "@/app/parceiros/assets/lucas-start.png";
 interface HeroPartnerSectionProps {
   onCtaClick?: () => void;
   source?: string | null;
+  /** Cupom válido do link (out/26): o topo vira a oferta do cupom; a foto do parceiro continua. */
+  cupom?: CupomParceiro | null;
 }
 
 /**
@@ -54,6 +57,7 @@ const SOURCES_BANIDOS = new Set(["rapha", "mileno"]);
 export function HeroPartnerSection({
   onCtaClick,
   source,
+  cupom,
 }: HeroPartnerSectionProps) {
   const { hero } = homeContent;
 
@@ -104,6 +108,33 @@ export function HeroPartnerSection({
         <div className={`flex flex-col lg:flex-row justify-between gap-0 w-full ${isPartnerImage ? 'items-center lg:gap-16' : 'items-end lg:min-h-[420px]'}`}>
           {/* Conteúdo textual */}
           <div className={`flex flex-col justify-center items-center lg:items-start space-y-4 lg:space-y-6 text-center lg:text-left relative z-10 ${isPartnerImage ? 'w-full lg:w-1/2 order-first mb-8 lg:mb-0 pb-0' : 'w-full lg:w-[35%] pb-8 md:pb-12 lg:pb-12'}`}>
+            {cupom ? (
+              <>
+                <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-extrabold tracking-widest" style={{ backgroundColor: "#121212", color: "#ffaf02" }}>
+                  CUPOM {cupom.codigo.toUpperCase()} ATIVADO
+                </span>
+                <h1 className="text-4xl md:text-5xl lg:text-5xl font-extrabold leading-tight text-neutral-bg2 max-w-lg lg:max-w-none">
+                  <span className="text-white">R${CUPOM_VALOR} de desconto</span>
+                  <br />
+                  na sua 1ª mensalidade
+                </h1>
+                <p className="text-medium font-medium leading-normal text-neutral-bg2">
+                  O cupom {doParceiro(cupom)} vale até {CUPOM_VALIDO_ATE_TEXTO}. Cadastre a sua barbearia e um consultor do BestBarbers fala com você no WhatsApp e aplica o desconto.
+                </p>
+                <div className="rounded-2xl border-2 border-dashed px-6 py-3 text-center" style={{ borderColor: "#121212" }}>
+                  <span className="block text-[11px] font-bold tracking-widest text-neutral-bg2/70">SEU CUPOM</span>
+                  <span className="block text-3xl md:text-4xl font-extrabold tracking-wider text-neutral-bg2">{cupom.codigo}</span>
+                </div>
+                <Button
+                  onClick={onCtaClick}
+                  className="text-sm font-bold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
+                  style={{ backgroundColor: "#121212", color: "#ffaf02" }}
+                >
+                  QUERO USAR MEU CUPOM
+                </Button>
+              </>
+            ) : (
+            <>
             <h1 className="text-4xl md:text-5xl lg:text-4xl font-extrabold leading-tight text-neutral-bg2 max-w-lg lg:max-w-none">
               {hero.title.main}
               <span className="text-white">{hero.title.highlight}</span>
@@ -137,6 +168,8 @@ export function HeroPartnerSection({
                   {hero.cta.text}
                 </Link>
               </Button>
+            )}
+            </>
             )}
           </div>
 

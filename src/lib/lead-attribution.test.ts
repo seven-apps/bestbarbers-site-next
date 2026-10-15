@@ -185,3 +185,36 @@ test("A/B de página: o braço visto vai no bb_lp_version (lido da <meta> que a 
   comMeta("longa", () => assert.equal(comRota("/clube").fields.bb_lp_version, "clube", "a /clube direta (sem sorteio) não ganha sufixo"));
   assert.equal(comRota("/clube/retentativa").fields.bb_lp_version, "clube-retentativa", "sem meta = sem sufixo (página fora do teste)");
 });
+
+// Cupom do parceiro (out/26): o relógio fica preso dentro da validade, senão o teste vence em 01/Nov.
+const naParceiros = (search: string) => {
+  const global = globalThis as unknown as JanelaDeTeste;
+  global.window = { location: { search, pathname: "/parceiros" } };
+  const r = buildLeadAttribution({
+    utmParams: {} as unknown as Parameters<typeof buildLeadAttribution>[0]["utmParams"],
+    originId: 40214765,
+    originDesc: "João Seletto",
+    leadScore: 72,
+  });
+  delete global.window;
+  return r;
+};
+
+test("cupom válido do parceiro: [CUPOM:] logo depois do score e a campanha dos stories", (t) => {
+  t.mock.timers.enable({ apis: ["Date"], now: new Date("2026-10-20T12:00:00-03:00") });
+  const r = naParceiros("?source=joao-seletto&origin=40214765&cupom=seletto200");
+  assert.equal(r.originDesc, "[SCORE: 72] [CUPOM: SELETTO200] João Seletto");
+  assert.equal(r.fields.bb_campaign_name, "stories-cupom-out26");
+  assert.equal(r.fields.bb_lp_version, "parceiros");
+});
+
+test("cupom de outro parceiro, inventado ou vencido: nada de cupom no card", (t) => {
+  t.mock.timers.enable({ apis: ["Date"], now: new Date("2026-10-20T12:00:00-03:00") });
+  for (const q of ["?source=jorgin&cupom=SELETTO200", "?source=joao-seletto&cupom=GRATIS999"]) {
+    const r = naParceiros(q);
+    assert.equal(r.originDesc, "[SCORE: 72] João Seletto");
+    assert.equal(r.fields.bb_campaign_name, undefined);
+  }
+  t.mock.timers.setTime(Date.parse("2026-11-01T09:00:00-03:00"));
+  assert.equal(naParceiros("?source=joao-seletto&cupom=SELETTO200").originDesc, "[SCORE: 72] João Seletto");
+});

@@ -16,6 +16,8 @@ interface FormSectionProps {
   originDesc?: string;
   /** Source identifier para tracking (ex: lp_v4) */
   source?: string;
+  /** Texto do botão depois do envio (o cupom do parceiro diz "cupom guardado"). */
+  ctaEnviado?: string;
 }
 
 // Perguntas 1 a 4 — contato. As 5 a 8 vêm do <PerguntasQualificacao> (formulário
@@ -40,6 +42,7 @@ export function FormSection({
   originId,
   originDesc,
   source,
+  ctaEnviado = "✓ RECEBEMOS SEU CONTATO!",
 }: FormSectionProps) {
   const {
     formData,
@@ -213,7 +216,7 @@ export function FormSection({
                     </>
                   ) : submitted ? (
                     <>
-                      ✓ RECEBEMOS SEU CONTATO!
+                      {ctaEnviado}
                     </>
                   ) : (
                     <>
