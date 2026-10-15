@@ -37,7 +37,7 @@ function ParceirosContent() {
         <HeroPartnerSection onCtaClick={scrollToForm} source={source} cupom={cupom} />
         <FormSection
           title={`Garanta a sua oferta exclusiva: cupom ${cupom.codigo}`}
-          description={`Preencha os dados da sua barbearia. Um consultor do BestBarbers fala com você no WhatsApp e aplica R$${CUPOM_VALOR} de desconto na sua 1ª mensalidade.\n\nO cupom vale até ${CUPOM_VALIDO_ATE_TEXTO}.`}
+          description={`Preencha os dados da sua barbearia. Um consultor do BestBarbers fala com você no WhatsApp e aplica R$${CUPOM_VALOR} de desconto na 1ª mensalidade do seu app próprio.\n\nO cupom vale até ${CUPOM_VALIDO_ATE_TEXTO}.`}
           ctaText={`GARANTIR MEU CUPOM DE R$${CUPOM_VALOR}`}
           ctaEnviado="✓ CUPOM GUARDADO! O CONSULTOR VAI FALAR COM VOCÊ"
         />
