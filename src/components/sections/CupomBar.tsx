@@ -5,44 +5,66 @@ import { Ticket, ArrowRight } from "lucide-react";
 import { CUPOM_VALIDO_ATE_TEXTO, CUPOM_VALOR, type CupomParceiro } from "@/lib/cupom-parceiro";
 
 /**
- * Barra verde do cupom do parceiro (out/26): fixa no rodapé da tela enquanto a pessoa lê a página, para o cupom não
- * sair de vista. Some quando o formulário aparece na tela (não cobre o botão de enviar) e leva ao formulário no clique.
+ * Cartão verde do cupom do parceiro (out/26), fixo no rodapé da tela enquanto a pessoa lê a página. Pedido do André
+ * (15/Out/26): "tem que ser bem mais chamativo" — o código grande, o valor e um botão que pulsa. Leva ao formulário no
+ * clique.
  */
 export function CupomBar({ cupom, onCtaClick }: { cupom: CupomParceiro; onCtaClick: () => void }) {
+  // Aparece quando o topo (que já mostra o cupom) sai da tela; some quando o formulário aparece. Assim a 1ª tela fica
+  // limpa e o cartão sobe na rolagem, sem cobrir o botão do topo nem o de enviar.
+  const [heroNaTela, setHeroNaTela] = useState(true);
   const [formNaTela, setFormNaTela] = useState(false);
   useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") { setHeroNaTela(false); return; }
+    const hero = document.getElementById("cupom-hero");
     const form = document.getElementById("form-section");
-    if (!form || typeof IntersectionObserver === "undefined") return;
-    const obs = new IntersectionObserver(([e]) => setFormNaTela(e.isIntersecting), { threshold: 0.15 });
-    obs.observe(form);
+    const obs = new IntersectionObserver((entradas) => {
+      for (const e of entradas) {
+        if (e.target === hero) setHeroNaTela(e.isIntersecting);
+        if (e.target === form) setFormNaTela(e.isIntersecting);
+      }
+    }, { threshold: 0.05 });
+    if (hero) obs.observe(hero); else setHeroNaTela(false);
+    if (form) obs.observe(form);
     return () => obs.disconnect();
   }, []);
+  const escondido = heroNaTela || formNaTela;
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-40 transition-transform duration-300 ${formNaTela ? "translate-y-full" : "translate-y-0"}`}
-      style={{ background: "linear-gradient(135deg, #029912, #02ab15)", paddingBottom: "env(safe-area-inset-bottom, 0px)", boxShadow: "0 -6px 24px rgba(2,171,21,0.35)" }}
+      className={`fixed inset-x-0 bottom-0 z-40 px-3 md:px-6 transition-transform duration-300 ${escondido ? "translate-y-[140%]" : "translate-y-0"}`}
+      style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 12px)" }}
       role="region"
       aria-label={`Cupom ${cupom.codigo} ativado`}
     >
-      <div className="container-custom flex items-center justify-between gap-3 py-3">
-        <div className="flex items-center gap-3 min-w-0 text-white">
-          <Ticket className="w-5 h-5 md:w-6 md:h-6 flex-none" />
-          <p className="leading-tight font-semibold min-w-0" style={{ fontFamily: "var(--font-montserrat)" }}>
-            <span className="block sm:inline text-[14px] md:text-[15px]">Cupom <b className="font-extrabold tracking-wide">{cupom.codigo}</b><span className="hidden sm:inline"> ativado</span></span>
-            <span className="hidden sm:inline text-[15px]">: R${CUPOM_VALOR} de desconto na 1ª mensalidade, até {CUPOM_VALIDO_ATE_TEXTO}</span>
-            <span className="block sm:hidden text-[12px] opacity-90">R${CUPOM_VALOR} off na 1ª mensalidade</span>
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={onCtaClick}
-          className="flex-none flex items-center gap-2 rounded-full bg-white px-4 py-2 text-[13px] font-extrabold text-[#028a10] hover:scale-[1.03] transition-transform"
-          style={{ fontFamily: "var(--font-montserrat)" }}
-        >
-          <span className="hidden sm:inline">Usar agora</span><span className="sm:hidden">Usar</span> <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
+      <button
+        type="button"
+        onClick={onCtaClick}
+        className="cupom-cartao mx-auto flex w-full max-w-3xl items-center gap-3 md:gap-5 rounded-2xl border-2 border-dashed border-white/60 px-4 py-3.5 md:px-6 md:py-4 text-left text-white"
+        style={{ background: "linear-gradient(135deg, #02a114, #04c41a)", boxShadow: "0 12px 40px rgba(2,171,21,0.55), 0 0 0 4px rgba(4,196,26,0.18)", fontFamily: "var(--font-montserrat)" }}
+      >
+        <span className="flex h-12 w-12 md:h-14 md:w-14 flex-none items-center justify-center rounded-full bg-white/20">
+          <Ticket className="h-7 w-7 md:h-8 md:w-8" />
+        </span>
+        <span className="flex min-w-0 flex-1 flex-col">
+          <span className="text-[11px] md:text-xs font-bold uppercase tracking-[0.18em] opacity-90">Cupom ativado</span>
+          <span className="text-[24px] md:text-[30px] font-extrabold leading-none tracking-wide">{cupom.codigo}</span>
+          <span className="mt-1 text-[13px] md:text-[15px] font-semibold leading-tight">
+            R${CUPOM_VALOR} off no seu app próprio<span className="hidden md:inline"> · até {CUPOM_VALIDO_ATE_TEXTO}</span>
+          </span>
+        </span>
+        <span className="cupom-botao flex flex-none items-center gap-1.5 rounded-xl bg-white px-4 py-3 md:px-6 md:py-3.5 text-[14px] md:text-[16px] font-extrabold uppercase text-[#028a10]">
+          Usar <span className="hidden sm:inline">cupom</span> <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
+        </span>
+      </button>
+      <style jsx>{`
+        @keyframes cupom-pulso {
+          0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55); }
+          50% { transform: scale(1.04); box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); }
+        }
+        .cupom-botao { animation: cupom-pulso 1.8s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .cupom-botao { animation: none; } }
+      `}</style>
     </div>
   );
 }
