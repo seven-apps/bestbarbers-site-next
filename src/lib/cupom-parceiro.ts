@@ -27,6 +27,13 @@ export interface CupomParceiro {
   odesc: string;
   /** "da" para parceira; o padrão é "do" ("o cupom do João Seletto", "o cupom da Thaís D'Antunes"). */
   artigo?: "do" | "da";
+  /**
+   * O link NORMAL do parceiro (sem ?cupom=) também abre o modo cupom, até a validade: o middleware redireciona
+   * `/parceiros?source=<slug>` (ou `?origin=<originId>` sem source) para o mesmo link com o cupom. Para quem já
+   * imprimiu o link antigo. Araújo Salviano: cartão de visita pronto com o link normal, evento na semana de 16/Out/26
+   * (pedido do André).
+   */
+  linkNormalComCupom?: boolean;
 }
 
 export const CUPOM_VALOR = 200;
@@ -41,7 +48,7 @@ export const CUPONS_PARCEIROS: ReadonlyArray<CupomParceiro> = [
   { codigo: "JORGIN200", slug: "jorgin", parceiro: "Jorgin", originId: 120001454, odesc: "Jorgin" },
   { codigo: "SANTIAGO200", slug: "santiago", parceiro: "Santiago", originId: 120000842, odesc: "Santiago" },
   { codigo: "GUAPO200", slug: "rafael-guapo", parceiro: "Rafael Guapo", originId: 120003783, odesc: "Rafael Guapo" },
-  { codigo: "ARAUJO200", slug: "araujo-salviano", parceiro: "Araújo Salviano", originId: 120001037, odesc: "Araújo Salviano" },
+  { codigo: "ARAUJO200", slug: "araujo-salviano", parceiro: "Araújo Salviano", originId: 120001037, odesc: "Araújo Salviano", linkNormalComCupom: true },
   { codigo: "VITTOR200", slug: "vittor-pallace", parceiro: "Vittor Manoel", originId: 120004061, odesc: "Vittor Manoel (Pallace Barbearia)" },
   { codigo: "IGOR200", slug: "igor-bezerra", parceiro: "Igor Bezerra", originId: 120001060, odesc: "Igor Bezerra" },
   { codigo: "ESTEVAO200", slug: "bruno-estevao", parceiro: "Bruno Estêvão", originId: 120001038, odesc: "Bruno Estêvão" },
@@ -84,6 +91,28 @@ export function cupomDaUrl(p: { cupom?: string | null; source?: string | null },
 export function caminhoDoCupom(c: CupomParceiro): string {
   const q = new URLSearchParams({ source: c.slug, origin: String(c.originId), odesc: c.odesc, cupom: c.codigo });
   return `/parceiros?${q.toString()}`;
+}
+
+/**
+ * O cupom para onde o link NORMAL do parceiro deve levar (`linkNormalComCupom`), ou null. Só sem `?cupom=` na URL
+ * (com ele, inclusive inválido, quem decide é `cupomDaUrl`, e o redirecionamento nunca entra em laço) e só dentro da
+ * validade. O parceiro sai do `source`; sem `source`, do `origin` (o link curto do gerador).
+ */
+export function cupomDoLinkNormal(busca: URLSearchParams, agora: Date = new Date()): CupomParceiro | null {
+  if (busca.has("cupom") || agora.getTime() > Date.parse(CUPOM_VALIDO_ATE)) return null;
+  const source = (busca.get("source") ?? "").trim().toLowerCase();
+  const origin = (busca.get("origin") ?? "").trim();
+  return CUPONS_PARCEIROS.find((c) => c.linkNormalComCupom && (source ? source === c.slug : origin === String(c.originId))) ?? null;
+}
+
+/** A busca do link normal com o cupom: guarda o que veio (UTMs, fbclid) e completa slug, origem, nome e cupom. */
+export function buscaComCupom(busca: URLSearchParams, c: CupomParceiro): URLSearchParams {
+  const q = new URLSearchParams(busca);
+  q.set("source", c.slug);
+  q.set("origin", String(c.originId));
+  if (!q.get("odesc")) q.set("odesc", c.odesc);
+  q.set("cupom", c.codigo);
+  return q;
 }
 
 /** "do João Seletto" / "da Thaís D'Antunes". */

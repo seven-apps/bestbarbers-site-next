@@ -1,13 +1,25 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { COOKIE_AB_CLUBE, DIAS_COOKIE_AB, bracoDoVisitante, bracoForcado, ehBracoSorteado, rotaDoBraco } from "@/lib/ab-clube";
+import { buscaComCupom, cupomDoLinkNormal } from "@/lib/cupom-parceiro";
 
 /**
- * Split do A/B de página de `/clube/[peca]` (regra e motivo em `src/lib/ab-clube.ts`).
- * REWRITE, nunca redirect: o navegador continua em `/clube/<slug>?<query inteira>` — o `clone()`
+ * Split do A/B de página de `/clube/[peca]` (regra e motivo em `src/lib/ab-clube.ts`) e, em `/parceiros`, o link
+ * normal que abre o cupom (`cupomDoLinkNormal` em `src/lib/cupom-parceiro.ts`).
+ * No /clube, REWRITE, nunca redirect: o navegador continua em `/clube/<slug>?<query inteira>` — o `clone()`
  * do `nextUrl` troca só o `pathname`, então UTMs, `?origin=`, url_tags e `fbclid` chegam
  * intactos à página servida, e o pixel dispara com a URL do anúncio.
  */
 export function middleware(req: NextRequest) {
+  // `/parceiros`: o link NORMAL de quem tem `linkNormalComCupom` (o cartão do Araújo, out/26) vai para o mesmo link com
+  // o cupom. REDIRECT (307), não rewrite: a página, o formulário e a atribuição leem o `?cupom=` da URL do navegador.
+  if (req.nextUrl.pathname === "/parceiros") {
+    const cupom = cupomDoLinkNormal(req.nextUrl.searchParams);
+    if (!cupom) return NextResponse.next();
+    const url = req.nextUrl.clone();
+    url.search = buscaComCupom(req.nextUrl.searchParams, cupom).toString();
+    return NextResponse.redirect(url, 307);
+  }
+
   const slug = req.nextUrl.pathname.replace(/^\/clube\//, "").replace(/\/+$/, "");
   // `?ab=curta|longa|cena` força o braço (QA do time e revisão do André). Braço em sorteio vira o
   // cookie do visitante; `cena` (fora do sorteio) é servido sem gravar cookie.
@@ -32,4 +44,4 @@ export function middleware(req: NextRequest) {
   return res;
 }
 
-export const config = { matcher: "/clube/:peca" };
+export const config = { matcher: ["/clube/:peca", "/parceiros"] };
