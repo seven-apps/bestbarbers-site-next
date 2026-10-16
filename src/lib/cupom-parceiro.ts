@@ -10,6 +10,8 @@
  * Um cupom digitado à mão na URL (ou de outro parceiro, ou vencido) cai na página normal, sem desconto.
  * Os códigos e a lista dos 22 vieram do André em 15/Out/26; a origem de cada um foi conferida ao vivo no
  * Ploomes no mesmo dia (todas existem). A foto do Isaac Arts entrou no herói em 15/Out/26 (recorte enviado pelo André).
+ * O 23º, Henrique Santos (STB Barbearia, STB200), entrou na noite de 15/Out/26 com a origem 120004148, criada no mesmo
+ * dia; sem foto no herói até chegar o recorte (o slug sem imagem cai no herói padrão).
  */
 
 export interface CupomParceiro {
@@ -57,6 +59,7 @@ export const CUPONS_PARCEIROS: ReadonlyArray<CupomParceiro> = [
   { codigo: "THAIS200", slug: "thais-dantunes", parceiro: "Thaís D'Antunes", originId: 40215957, odesc: "Thais D'Antunes", artigo: "da" },
   { codigo: "LUCAS200", slug: "lucas-start", parceiro: "Lucas Alexandre", originId: 120004062, odesc: "Lucas Alexandre (Start Barbearia)" },
   { codigo: "AUX200", slug: "jefferson-aux", parceiro: "Jefferson Xavier", originId: 120004060, odesc: "Jefferson Xavier (AUX Barbearia)" },
+  { codigo: "STB200", slug: "henrique-santos", parceiro: "Henrique Santos", originId: 120004148, odesc: "Henrique Santos (STB Barbearia)" },
 ];
 
 /** O cupom pelo código (sem diferenciar maiúsculas), só dentro da validade. */

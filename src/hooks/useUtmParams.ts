@@ -172,6 +172,7 @@ export const useUtmParams = () => {
       "jefferson-aux": 120004060,
       "vittor-pallace": 120004061,
       "lucas-start": 120004062,
+      "henrique-santos": 120004148,
       // Spotify → /podcast?desc=<temporada>.<episodio>. SEM entrada no descMap:
       // a descrição (temporada + episódio) vem dinâmica via utm_desc (PodcastAttribution).
       podcast: 120001484,
@@ -225,6 +226,8 @@ export const useUtmParams = () => {
         "LP - Vittor Manoel (Pallace Barbearia) - Programa de indicações",
       "lucas-start":
         "LP - Lucas Alexandre (Start Barbearia) - Programa de indicações",
+      "henrique-santos":
+        "LP - Henrique Santos (STB Barbearia) - Programa de indicações",
       instabio: "Instagram - Link da bio",
     }),
     []

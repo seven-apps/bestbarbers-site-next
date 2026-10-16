@@ -5,10 +5,10 @@ import { CUPONS_PARCEIROS, acharCupom, cupomDaUrl, caminhoDoCupom, mensagemLucas
 const DENTRO = new Date("2026-10-20T12:00:00-03:00");
 const DEPOIS = new Date("2026-11-01T00:00:01-03:00");
 
-test("os 22 cupons de 15/Out/26: códigos, slugs e origens únicos", () => {
-  assert.equal(CUPONS_PARCEIROS.length, 22);
+test("os 23 cupons de 15/Out/26: códigos, slugs e origens únicos", () => {
+  assert.equal(CUPONS_PARCEIROS.length, 23);
   for (const campo of ["codigo", "slug", "originId"] as const) {
-    assert.equal(new Set(CUPONS_PARCEIROS.map((c) => c[campo])).size, 22, `${campo} repetido`);
+    assert.equal(new Set(CUPONS_PARCEIROS.map((c) => c[campo])).size, 23, `${campo} repetido`);
   }
   assert.ok(CUPONS_PARCEIROS.every((c) => /^[A-Z]+200$/.test(c.codigo)));
 });
