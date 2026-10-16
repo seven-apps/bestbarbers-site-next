@@ -37,6 +37,7 @@ import jeffersonAuxImg from "@/app/parceiros/assets/jefferson-aux.png";
 import vittorPallaceImg from "@/app/parceiros/assets/vittor-pallace.png";
 import lucasStartImg from "@/app/parceiros/assets/lucas-start.png";
 import isaacArtsImg from "@/app/parceiros/assets/isaac-arts.png";
+import henriqueSantosImg from "@/app/parceiros/assets/henrique-santos.png";
 
 
 interface HeroPartnerSectionProps {
@@ -99,6 +100,7 @@ export function HeroPartnerSection({
     "vittor-pallace": vittorPallaceImg,
     "lucas-start": lucasStartImg,
     "isaac-arts": isaacArtsImg,
+    "henrique-santos": henriqueSantosImg,
   }), []);
 
   // Slug desconhecido OU banido cai no herói genérico — fallback, nunca erro.
@@ -140,7 +142,8 @@ export function HeroPartnerSection({
                 </ul>
                 <div className="rounded-2xl border-2 border-dashed px-6 py-3 text-center" style={{ borderColor: "#121212" }}>
                   <span className="block text-[11px] font-bold tracking-widest text-neutral-bg2/70">SEU CUPOM</span>
-                  <span className="block text-3xl md:text-4xl font-extrabold tracking-wider text-neutral-bg2">{cupom.codigo}</span>
+                  {/* Código com mais de 12 letras (HENRIQUESTB200) desce para text-2xl no celular: no text-3xl a caixa passava da tela de 360px. */}
+                  <span className={`block ${cupom.codigo.length > 12 ? "text-2xl" : "text-3xl"} md:text-4xl font-extrabold tracking-wider text-neutral-bg2`}>{cupom.codigo}</span>
                 </div>
                 <Button
                   onClick={onCtaClick}

@@ -7,6 +7,8 @@ import { CUPOM_VALIDO_ATE_TEXTO, CUPOM_VALOR, type CupomParceiro } from "@/lib/c
  * Faixa verde do cupom do parceiro (out/26), colada embaixo do menu e fixa com ele: o cupom fica na tela o tempo todo.
  * Pedido do André (15/Out/26): "o verde dá a sensação de que está ganhando". Um brilho corre pelo verde e o botão
  * pulsa; o clique leva ao formulário. Vai na prop `faixa` do Navbar.
+ * No celular (< 640px) a 1ª linha é só o código: "SELETTO200 ATIVADO" já encostava no botão em 390px, e o
+ * "THECHAMPS200 ATIVADO" ou o "HENRIQUESTB200 ATIVADO" passavam por baixo dele (medido em 15/Out/26).
  */
 export function CupomBar({ cupom, onCtaClick }: { cupom: CupomParceiro; onCtaClick: () => void }) {
   return (
@@ -24,7 +26,7 @@ export function CupomBar({ cupom, onCtaClick }: { cupom: CupomParceiro; onCtaCli
         <span className="flex min-w-0 items-center gap-2.5 md:gap-3">
           <Ticket className="h-6 w-6 md:h-7 md:w-7 flex-none" strokeWidth={2.4} />
           <span className="flex min-w-0 flex-col text-left leading-tight md:flex-row md:items-baseline md:gap-3">
-            <span className="text-[16px] md:text-[19px] font-extrabold tracking-wide whitespace-nowrap"><span className="hidden md:inline">CUPOM </span>{cupom.codigo} ATIVADO</span>
+            <span className="text-[16px] md:text-[19px] font-extrabold tracking-wide whitespace-nowrap"><span className="hidden md:inline">CUPOM </span>{cupom.codigo}<span className="hidden sm:inline"> ATIVADO</span></span>
             <span className="text-[12.5px] md:text-[15px] font-semibold opacity-95">
               R${CUPOM_VALOR} off no<span className="hidden md:inline"> seu</span> app próprio<span className="hidden md:inline"> · até {CUPOM_VALIDO_ATE_TEXTO}</span>
             </span>
