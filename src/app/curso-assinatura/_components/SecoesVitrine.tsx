@@ -6,17 +6,20 @@ import {
   AULAS,
   CAMINHO_AREA,
   MOSTRAR_CONTA_DO_ANO,
-  NOME_DO_CURSO,
   ROTULOS_DO_PLANO,
   TEXTOS_VITRINE,
 } from "@/content/curso-assinatura";
 import { minutosTotais } from "@/lib/curso";
 import { BotaoAmarelo, COR, ThumbAula, TituloSecao, rotuloDaAula } from "./Primitivos";
 import { VideoBoasVindas } from "./VideoBoasVindas";
+import { FaixaGratis, VERDE_GRATIS } from "./FaixaGratis";
 
 const T = TEXTOS_VITRINE;
 
-/** Barra fixa no padrão da /clube: logo, "já sou aluno" e o botão que leva ao formulário. */
+/**
+ * Barra fixa no padrão da /clube: logo, "já sou aluno" e o botão que leva ao formulário. Embaixo, colada e
+ * fixa com ela, a faixa verde do curso grátis (17/Out/26).
+ */
 export function NavbarCurso({ onCta }: { onCta: () => void }) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#121212]/95 backdrop-blur-md border-b border-white/5">
@@ -44,6 +47,7 @@ export function NavbarCurso({ onCta }: { onCta: () => void }) {
           </button>
         </div>
       </div>
+      <FaixaGratis onCta={onCta} />
     </nav>
   );
 }
@@ -77,7 +81,8 @@ export function HeroiCurso({ onCta, temLink }: { onCta: () => void; temLink: boo
   const total = minutosTotais(AULAS.map((a) => a.duracao));
   const destaques = [T.heroi.destaqueDuracao(total), ...T.heroi.destaques];
   return (
-    <section className="relative overflow-hidden pt-28 md:pt-36 pb-12 md:pb-20" style={{ backgroundColor: COR.escuro }}>
+    // O topo soma o menu e a faixa verde, os dois fixos.
+    <section className="relative overflow-hidden pt-[164px] md:pt-[196px] pb-12 md:pb-20" style={{ backgroundColor: COR.escuro }}>
       <div
         aria-hidden
         className="absolute -top-24 -right-24 w-[420px] h-[420px] rounded-full opacity-[0.12] pointer-events-none"
@@ -86,13 +91,19 @@ export function HeroiCurso({ onCta, temLink }: { onCta: () => void; temLink: boo
       <div className="container-custom relative">
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
           <div className="w-full lg:w-[52%] flex flex-col items-center lg:items-start gap-5">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#ffaf02]/40 bg-[#ffaf02]/10 text-[12px] font-bold uppercase tracking-wide" style={{ color: COR.amarelo }}>
-              {NOME_DO_CURSO}
+            <span className="inline-flex items-center gap-2 px-3 min-[390px]:px-3.5 py-1.5 rounded-full border border-[#ffaf02]/40 bg-[#ffaf02]/10 text-[11px] min-[390px]:text-[12px] font-bold uppercase tracking-wide whitespace-nowrap" style={{ color: COR.amarelo }}>
+              {T.heroi.selo}
             </span>
             <h1 className="text-[28px] md:text-[40px] lg:text-[42px] font-extrabold leading-[1.15] text-white text-center lg:text-left text-balance">
               {T.heroi.titulo} <span style={{ color: COR.amarelo }}>{T.heroi.destaque}</span>
             </h1>
-            <p className="text-base md:text-lg font-medium leading-snug text-white/80 text-center lg:text-left max-w-xl">{T.heroi.frase}</p>
+            <p className="text-base md:text-lg font-medium leading-snug text-white/80 text-center lg:text-left max-w-xl">
+              {T.heroi.frase.antes}{" "}
+              <strong className="font-extrabold" style={{ color: VERDE_GRATIS.claro }}>
+                {T.heroi.frase.destaque}
+              </strong>{" "}
+              {T.heroi.frase.depois}
+            </p>
             {/* Celular: o vídeo logo depois da frase. No desktop, ele fica no cartão da direita. */}
             <div className="w-full max-w-xl lg:hidden">
               <VideoBoasVindas />

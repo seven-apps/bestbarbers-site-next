@@ -67,7 +67,8 @@ export function VitrineCurso() {
       <LevaCurso />
       {/* Prova da /clube (pedido do André, 06/Out): 1.200+ barbearias e os 3 parceiros falando. */}
       <ProvaV2 />
-      <section id="formulario" className="relative py-14 md:py-20 overflow-hidden" style={{ background: "#0a0a0a" }}>
+      {/* scroll-mt: a altura da faixa verde, somada ao scroll-pt do <html> (84/94px, só o menu); o formulário para colado embaixo da faixa. */}
+      <section id="formulario" className="relative py-14 md:py-20 overflow-hidden scroll-mt-[43px] md:scroll-mt-[48px]" style={{ background: "#0a0a0a" }}>
         <div
           aria-hidden
           className="absolute top-[20%] left-[-10%] w-[50%] h-[50%] rounded-full opacity-[0.06] pointer-events-none"

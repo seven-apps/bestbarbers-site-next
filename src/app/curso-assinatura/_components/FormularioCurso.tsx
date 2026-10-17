@@ -25,6 +25,7 @@ import {
   type CorpoInscricao,
 } from "@/lib/curso-api";
 import { COR, TituloSecao } from "./Primitivos";
+import { SeloGratis } from "./FaixaGratis";
 
 const T = TEXTOS_VITRINE.formulario;
 
@@ -114,6 +115,7 @@ export function FormularioCurso() {
     <div className="relative w-full max-w-lg mx-auto rounded-3xl overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.5)]">
       <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #ebad04, #f5c842, #ebad04)" }} />
       <div className="px-5 md:px-9 py-8 md:py-10 flex flex-col gap-5">
+        <SeloGratis>{T.selo}</SeloGratis>
         <TituloSecao titulo={T.titulo} destaque={T.destaque} />
         <p className="text-center text-[14px] md:text-[15px] text-[#4a4a4a]">{T.frase}</p>
 
