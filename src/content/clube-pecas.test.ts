@@ -253,11 +253,20 @@ test("A/B de página (ciclo 1): sorteio curta × longa por cookie; cena fora do 
       assert.ok(existsSync(join(RAIZ_SRC, "..", "public", "images", "clube", "cena", `${slug}-${f}`)), `${slug}-${f}`);
     }
   }
-  // O middleware usa a regra pura e faz REWRITE, nunca redirect (a URL é o predicado da Meta).
+  // O middleware usa a regra pura e faz REWRITE, nunca redirect (a URL é o predicado da Meta). Desde 16/Out/26 ele também
+  // atende `/parceiros` (o link normal do Araújo vai para o cupom, por redirect): esse bloco vem antes e sempre retorna,
+  // e a trava vale inteira para o resto, que é o /clube.
   const mw = ler("middleware.ts");
-  assert.match(mw, /NextResponse\.rewrite/);
-  assert.doesNotMatch(mw, /NextResponse\.redirect/);
-  assert.match(mw, /matcher:\s*"\/clube\/:peca"/);
-  assert.match(mw, /url\.pathname = destino/, "o rewrite troca só o pathname: a query inteira segue");
-  assert.doesNotMatch(mw, /url\.search\s*=|searchParams\.(set|delete)/, "o middleware não mexe na query");
+  const inicioClube = mw.indexOf("\n  const slug = ");
+  const inicioParceiros = mw.indexOf('if (req.nextUrl.pathname === "/parceiros")');
+  assert.ok(inicioParceiros > 0 && inicioParceiros < inicioClube, "o bloco do /parceiros vem antes do /clube");
+  const parceiros = mw.slice(inicioParceiros, inicioClube);
+  assert.match(parceiros, /return NextResponse\.next\(\)/, "o /parceiros sem cupom a aplicar segue sem tocar em nada");
+  assert.match(parceiros, /return NextResponse\.redirect\(url, 307\)/, "o /parceiros sempre retorna antes do /clube");
+  const clube = mw.slice(inicioClube);
+  assert.match(clube, /NextResponse\.rewrite/);
+  assert.doesNotMatch(clube, /NextResponse\.redirect/);
+  assert.match(mw, /matcher:\s*\[\s*"\/clube\/:peca"/);
+  assert.match(clube, /url\.pathname = destino/, "o rewrite troca só o pathname: a query inteira segue");
+  assert.doesNotMatch(clube, /url\.search\s*=|searchParams\.(set|delete)/, "o /clube não mexe na query");
 });

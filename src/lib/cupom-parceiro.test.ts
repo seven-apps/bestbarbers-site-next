@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { CUPONS_PARCEIROS, acharCupom, cupomDaUrl, caminhoDoCupom, mensagemLucasDoCupom, doParceiro } from "./cupom-parceiro.ts";
+import { CUPONS_PARCEIROS, acharCupom, cupomDaUrl, caminhoDoCupom, mensagemLucasDoCupom, doParceiro, cupomDoLinkNormal, buscaComCupom } from "./cupom-parceiro.ts";
 
 const DENTRO = new Date("2026-10-20T12:00:00-03:00");
 const DEPOIS = new Date("2026-11-01T00:00:01-03:00");
@@ -35,4 +35,27 @@ test("o link longo carrega slug, origem, nome e cupom", () => {
   assert.equal(doParceiro(c), "da Thaís D'Antunes");
   assert.match(mensagemLucasDoCupom(c), /^Oi! Vim pelo cupom THAIS200, da Thaís D'Antunes\./);
   assert.equal(doParceiro(acharCupom("JORGIN200", DENTRO)!), "do Jorgin");
+});
+
+test("o link normal do Araújo abre o cupom; o dos outros parceiros, não", () => {
+  const q = (s: string) => new URLSearchParams(s);
+  assert.equal(cupomDoLinkNormal(q("source=araujo-salviano"), DENTRO)?.codigo, "ARAUJO200");
+  assert.equal(cupomDoLinkNormal(q("source=Araujo-Salviano&origin=120001037&odesc=Ara%C3%BAjo%20Salviano"), DENTRO)?.codigo, "ARAUJO200");
+  assert.equal(cupomDoLinkNormal(q("origin=120001037"), DENTRO)?.codigo, "ARAUJO200");
+  assert.equal(cupomDoLinkNormal(q("source=joao-seletto"), DENTRO), null);
+  assert.equal(cupomDoLinkNormal(q(""), DENTRO), null);
+  // já com ?cupom= (válido ou não) não redireciona: sem laço, e cupom de outro parceiro continua sem valer
+  assert.equal(cupomDoLinkNormal(q("source=araujo-salviano&cupom=ARAUJO200"), DENTRO), null);
+  assert.equal(cupomDoLinkNormal(q("source=araujo-salviano&cupom="), DENTRO), null);
+  assert.equal(cupomDoLinkNormal(q("source=araujo-salviano"), DEPOIS), null);
+  assert.deepEqual(CUPONS_PARCEIROS.filter((c) => c.linkNormalComCupom).map((c) => c.slug), ["araujo-salviano"]);
+});
+
+test("o redirecionamento guarda as UTMs e completa o link do cupom", () => {
+  const c = acharCupom("ARAUJO200", DENTRO)!;
+  const r = buscaComCupom(new URLSearchParams("source=araujo-salviano&utm_source=cartao&fbclid=x"), c);
+  assert.deepEqual(Object.fromEntries(r), {
+    source: "araujo-salviano", utm_source: "cartao", fbclid: "x", origin: "120001037", odesc: "Araújo Salviano", cupom: "ARAUJO200",
+  });
+  assert.equal(cupomDaUrl({ cupom: r.get("cupom"), source: r.get("source") }, DENTRO)?.codigo, "ARAUJO200");
 });
