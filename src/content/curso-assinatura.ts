@@ -149,29 +149,49 @@ export const VIDEO_BOAS_VINDAS = { youtubeId: "x6MTIWRLQ4Q", duracao: "1:22" } a
 
 export const TEXTOS_VITRINE = {
   seo: {
-    titulo: `${NOME_DO_CURSO}: como montar a assinatura da sua barbearia | BestBarbers`,
+    titulo: `Curso gratuito ${NOME_DO_CURSO}: como montar a assinatura da sua barbearia | BestBarbers`,
     descricao:
-      "6 aulas curtas, a partir do que as barbearias clientes do BestBarbers já aplicam: quanto cobrar, como cobrar todo mês, como pagar o barbeiro e como lançar a assinatura na sua barbearia.",
+      "Curso gratuito em 6 aulas curtas, a partir do que as barbearias clientes do BestBarbers já aplicam: quanto cobrar, como cobrar todo mês, como pagar o barbeiro e como lançar a assinatura na sua barbearia.",
+  },
+  /**
+   * Faixa verde fixa embaixo do menu (17/Out/26). Pedido do André: "deixar muito escancarado que é de graça",
+   * com a tag verde da página dos parceiros e o texto "curso gratuito, preencha o formulário e garanta seu acesso".
+   */
+  faixa: {
+    titulo: "CURSO 100% GRATUITO",
+    frase: "Preencha o formulário e garanta seu acesso",
+    fraseCelular: "Preencha e garanta seu acesso",
+    botao: "GARANTIR MEU ACESSO",
   },
   navbar: {
-    botao: "QUERO ASSISTIR ÀS AULAS",
-    botaoCelular: "Assistir às aulas",
+    botao: "QUERO MEU ACESSO GRATUITO",
+    botaoCelular: "Acesso grátis",
     // Texto novo: o "já sou aluno" do contrato (§4.5) leva à área, que pede o link se preciso.
     jaSouAluno: "Já sou aluno",
   },
   heroi: {
+    /** O mesmo selo do anúncio estático aprovado (12/Out/26): quem clica no anúncio cai na mesma tela. */
+    selo: `CURSO GRÁTIS · ${NOME_DO_CURSO}`,
     titulo: "Como montar a assinatura da sua barbearia",
     destaque: "em 6 aulas curtas",
-    frase:
-      "O André Rangel, dono do BestBarbers, ensina quanto cobrar, como pagar o barbeiro e como lançar a assinatura, a partir do que as barbearias clientes do BestBarbers já aplicam no dia a dia.",
+    /**
+     * O subtítulo do anúncio, com as palavras do André (12/Out/26) e o "GRATUITA" em destaque. Substitui o
+     * "O André Rangel, dono do BestBarbers, ensina…" (postura vetada: a autoridade é dos clientes).
+     */
+    frase: {
+      antes: "O BestBarbers preparou para você de forma",
+      destaque: "GRATUITA",
+      depois: "esse conteúdo com base nas estratégias que os nossos clientes têm aplicado para implementar a assinatura.",
+    },
     /** A duração total sai da soma das constantes (`null` se faltar alguma). */
     destaqueDuracao: (minutosTotais: number | null) =>
       minutosTotais === null ? "6 aulas curtas" : `6 aulas curtas, cerca de ${minutosTotais} minutos no total`,
     destaques: [
       "Uma ficha embaixo de cada aula, para anotar os números da sua barbearia",
       "No fim, o seu plano de assinatura montado numa tela só",
+      "As aulas abrem na hora, logo depois do cadastro",
     ],
-    botao: "QUERO ASSISTIR ÀS AULAS",
+    botao: "QUERO MEU ACESSO GRATUITO",
     /** Texto novo (09/Out/26): o selo do vídeo de boas-vindas e o rótulo do botão de play. */
     video: "Boas-vindas ao curso",
   },
@@ -179,7 +199,7 @@ export const TEXTOS_VITRINE = {
     titulo: "As 6 aulas",
     destaque: "na ordem em que você monta a assinatura",
     rotuloAula: (n: number) => `Aula ${n}`,
-    botao: "QUERO ASSISTIR ÀS AULAS",
+    botao: "QUERO MEU ACESSO GRATUITO",
   },
   leva: {
     titulo: "No fim do curso,",
@@ -194,8 +214,10 @@ export const TEXTOS_VITRINE = {
     ],
   },
   formulario: {
+    /** Selo verde em cima do título (17/Out/26): o "grátis" chega até o formulário. */
+    selo: "100% GRATUITO",
     titulo: "Preencha o formulário",
-    destaque: "e assista às 6 aulas agora",
+    destaque: "e garanta seu acesso gratuito",
     frase: "O acesso abre nesta tela, logo depois do cadastro. O link do curso também chega no seu e-mail.",
     campos: {
       nome: { rotulo: "Seu nome", exemplo: "Ex: João Silva" },
@@ -206,7 +228,7 @@ export const TEXTOS_VITRINE = {
       },
       barbearia: { rotulo: "Nome da sua barbearia", exemplo: "Ex: Barbearia do João" },
     },
-    botao: "QUERO ASSISTIR ÀS AULAS",
+    botao: "QUERO MEU ACESSO GRATUITO",
     enviando: "Liberando o seu acesso…",
     erro: "Não foi possível enviar agora. Confira os dados e tente de novo.",
     // Texto do contrato (§2.3): a inscrição falhou depois do cadastro feito.

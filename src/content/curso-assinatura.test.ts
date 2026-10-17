@@ -69,11 +69,23 @@ test("copy: 'clube' só no botão de migração já aprovado", () => {
   assert.deepEqual([...new Set(comClube)], ["QUERO MIGRAR MEU CLUBE DE ASSINATURAS"]);
 });
 
-test("copy: nenhuma objeção plantada nem promessa de preço", () => {
+// "Grátis" é a oferta, não uma objeção: o anúncio aprovado diz "CURSO GRÁTIS" e "GRATUITA" (12/Out/26), e o
+// André pediu o grátis escancarado na página (17/Out/26). Até ali este teste barrava "grátis", "gratuito" e
+// "garant", e por isso a página nunca disse que o curso é de graça.
+test("copy: nenhuma objeção plantada nem promessa de garantia", () => {
   for (const t of TEXTOS) {
-    assert.doesNotMatch(t, /gr[áa]tis|gratuit|sem compromisso|sem senha|n[ãa]o [ée] venda/i, t);
-    assert.doesNotMatch(t, /garant/i, t);
+    assert.doesNotMatch(t, /sem compromisso|sem senha|sem pegadinha|n[ãa]o [ée] venda/i, t);
+    assert.doesNotMatch(t, /garanti[ad]/i, t);
   }
+});
+
+test("vitrine: o grátis aparece na faixa, no selo do herói, no subtítulo, no formulário e no SEO", () => {
+  const T = TEXTOS_VITRINE;
+  const gratis = /gr[áa]tis|gratuit/i;
+  for (const t of [T.faixa.titulo, T.heroi.selo, T.heroi.frase.destaque, T.formulario.selo, T.formulario.destaque, T.seo.titulo, T.seo.descricao]) {
+    assert.match(t, gratis, t);
+  }
+  assert.doesNotMatch(Object.values(T.heroi.frase).join(" "), /ensina/i);
 });
 
 test("copy: o código do aluno nunca vai escrito à mão (o código acrescenta '(aluno <codigo>)')", () => {
