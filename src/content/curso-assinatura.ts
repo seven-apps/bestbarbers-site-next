@@ -39,11 +39,18 @@ export function ehAreaDoAluno(pathname: string): boolean {
   return pathname === CAMINHO_AREA || pathname.startsWith(`${CAMINHO_AREA}/`);
 }
 
+/** Id da origem "Curso Assinatura na Prática" no Ploomes (bloco D da estrutura). */
+export const ORIGEM_PLOOMES_CURSO = 120004129;
+
 /**
- * Id da origem "Curso de assinatura" no Ploomes (bloco D da estrutura). `null` enquanto a origem
- * não existe: vale a UTM e, sem UTM, o padrão do site (40210426), como no modal.
+ * A origem do cadastro na página do curso (pedido do André, 19/Out/26): sempre a do curso, venha
+ * do anúncio, do link postado ou sem rastro. Se veio de anúncio, quem diz é o card (id do anúncio,
+ * UTM, campanha), não a origem. A exceção é o link de parceiro com a origem dele na URL
+ * (`?origin=`, gerado pelo OS): continua creditando o parceiro, por causa da comissão.
  */
-export const ORIGEM_PLOOMES_CURSO: number | null = 120004129;
+export function origemDoCadastroNoCurso(origemDaUrl: string | null | undefined): number {
+  return origemDaUrl && /^\d+$/.test(origemDaUrl) ? Number(origemDaUrl) : ORIGEM_PLOOMES_CURSO;
+}
 /** Descrição da campanha no tráfego sem UTM. Estável: não muda quando o nome do curso mudar. */
 export const ORIGEM_DESC_CURSO = "LP - Curso de assinatura";
 /** `source` do `useLeadForm` (relatórios da BBAI e `lp_version` do dataLayer). */

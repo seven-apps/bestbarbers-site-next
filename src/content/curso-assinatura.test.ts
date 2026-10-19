@@ -11,6 +11,7 @@ import {
   CAMINHO_AREA,
   CAMINHO_VITRINE,
   NOME_DO_CURSO,
+  ORIGEM_PLOOMES_CURSO,
   ROTULOS_DO_PLANO,
   SLUG_CURSO,
   TEXTOS_AREA,
@@ -18,6 +19,7 @@ import {
   TEXTOS_PENDENTES_DE_APROVACAO,
   TEXTOS_VITRINE,
   ehAreaDoAluno,
+  origemDoCadastroNoCurso,
 } from "./curso-assinatura.ts";
 import { segundosDaDuracao } from "../lib/curso.ts";
 
@@ -103,4 +105,16 @@ test("a guarda do layout usa o mesmo caminho da área", async () => {
   const guardas = layout.match(/location\.pathname\.startsWith\('([^']+)'\)/g) ?? [];
   assert.equal(guardas.length, 2, "GTM e pixel: as duas guardas");
   for (const g of guardas) assert.ok(g.includes(`'${CAMINHO_AREA}'`), g);
+});
+
+test("a origem do cadastro é sempre a do curso; só o link de parceiro mantém a dele (19/Out/26)", () => {
+  assert.equal(ORIGEM_PLOOMES_CURSO, 120004129);
+  // Anúncio (UTM da Meta, sem ?origin=), link postado e visita sem rastro: a do curso.
+  assert.equal(origemDoCadastroNoCurso(null), 120004129);
+  assert.equal(origemDoCadastroNoCurso(undefined), 120004129);
+  assert.equal(origemDoCadastroNoCurso(""), 120004129);
+  // Link de parceiro gerado pelo OS (?origin=<id>): a comissão é dele.
+  assert.equal(origemDoCadastroNoCurso("120001037"), 120001037);
+  // Lixo na URL não vira origem.
+  assert.equal(origemDoCadastroNoCurso("12abc"), 120004129);
 });
