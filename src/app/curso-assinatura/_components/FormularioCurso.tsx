@@ -11,6 +11,7 @@ import {
   EMAIL_OBRIGATORIO_NO_CURSO,
   ORIGEM_DESC_CURSO,
   ORIGEM_PLOOMES_CURSO,
+  origemDoCadastroNoCurso,
   SOURCE_CURSO,
   TEXTOS_VITRINE,
 } from "@/content/curso-assinatura";
@@ -28,9 +29,6 @@ import { COR, TituloSecao } from "./Primitivos";
 import { SeloGratis } from "./FaixaGratis";
 
 const T = TEXTOS_VITRINE.formulario;
-
-/** Origem padrão do site no Ploomes ("chegou sem rastro de campanha"), a mesma do modal. */
-const SITE_ORIGIN_ID = 40210426;
 
 // Perguntas 1 a 4 (contato), na ordem decidida em todas as portas: dono → WhatsApp → e-mail →
 // barbearia. As 5 a 8 vêm do <PerguntasQualificacao>, iguais em todo o site.
@@ -62,12 +60,14 @@ export function FormularioCurso() {
   const { getUtmParams, getOriginMapping } = useUtmParams();
   const [montado, setMontado] = useState(false);
   useEffect(() => setMontado(true), []);
-  // A UTM vence; sem UTM, a origem do curso (quando existir) e, por fim, a do site. Só depois de
-  // montar, como nos outros formulários (o servidor não conhece a URL do anúncio).
-  const origem = useMemo(
-    () => (montado ? getOriginMapping(getUtmParams()) : { originId: null, originDesc: null }),
-    [montado, getOriginMapping, getUtmParams],
-  );
+  // A origem é sempre a do curso, com ou sem anúncio (`origemDoCadastroNoCurso`); só o link de
+  // parceiro mantém a dele. A descrição segue a UTM. Só depois de montar, como nos outros
+  // formulários (o servidor não conhece a URL do anúncio).
+  const origem = useMemo(() => {
+    if (!montado) return { originId: null, originDesc: null };
+    const utm = getUtmParams();
+    return { originId: origemDoCadastroNoCurso(utm.origin), originDesc: getOriginMapping(utm).originDesc };
+  }, [montado, getOriginMapping, getUtmParams]);
 
   const [fase, setFase] = useState<Fase>("formulario");
 
@@ -98,7 +98,7 @@ export function FormularioCurso() {
 
   const { formData, isSubmitting, submitted, submitError, isDedupChecking, handleInputChange, handleSubmit } = useLeadForm({
     source: SOURCE_CURSO,
-    originId: origem.originId ?? ORIGEM_PLOOMES_CURSO ?? SITE_ORIGIN_ID,
+    originId: origem.originId ?? ORIGEM_PLOOMES_CURSO,
     originDesc: origem.originDesc || ORIGEM_DESC_CURSO,
     // A área do aluno é a entrega: o lead < 60 ganha só o botão do Lucas, nunca sai da página sozinho.
     lucasSoBotao: true,
