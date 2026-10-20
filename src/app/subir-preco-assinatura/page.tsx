@@ -204,17 +204,17 @@ export default function SubirPrecoAssinaturaPage() {
                 className="text-white leading-[1.08] mb-5"
                 style={{ fontFamily: "var(--font-vollkorn)", fontWeight: 800, fontSize: "clamp(30px, 5vw, 52px)" }}
               >
-                Seu clube lotou. Isso não é sucesso —{" "}
+                Seu clube lotou?{" "}
                 <span style={{ color: AMBER }}>
-                  é o mercado te dizendo que o preço está baixo.
+                  Isso quer dizer que já está na hora de reajustar o seu preço.
                 </span>
               </h1>
 
               <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
-                O guia grátis{" "}
-                <strong className="text-white">Como subir o preço da assinatura sem perder assinante</strong>{" "}
-                traz o termômetro, a ordem do reajuste, a frase pra equipe e a mensagem pro assinante —
-                passo a passo, sem perder a base.
+                Guia gratuito:{" "}
+                <strong className="text-white">Como subir o preço da assinatura sem perder assinante</strong>.
+                O termômetro que diz a hora, a ordem do reajuste, a frase pra equipe e a mensagem pro
+                assinante — passo a passo, sem perder a base.
               </p>
 
               {/* prova rápida inline */}
