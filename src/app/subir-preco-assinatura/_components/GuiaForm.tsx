@@ -29,8 +29,7 @@ import { ArrowRight, FileText, Users2, Gift } from "lucide-react";
 // filtrável pela descrição (SUBIR_PRECO_ORIGIN_DESC), pelo source
 // 'lp_guia_subir_preco_assinatura' e pelo bb_lp_version 'subir-preco-assinatura'
 // (derivado do pathname em lead-attribution.ts).
-// TODO: trocar pela origem dedicada quando o André criar no Ploomes
-const SUBIR_PRECO_ORIGIN_ID = 40210173;
+const SUBIR_PRECO_ORIGIN_ID = 120004154; // origem dedicada "Guia Subir Preço da Assinatura" (criada no Ploomes em 20/Out/26)
 const SUBIR_PRECO_ORIGIN_DESC = "LP Subir Preço da Assinatura - Guia Reajuste";
 
 // A régua do score vive em `src/lib/lead-score.ts` (com teste) e as perguntas 5 a 8
