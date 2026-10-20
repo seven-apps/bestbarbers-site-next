@@ -23,7 +23,9 @@ export type IscaId =
   | "cadeira-cheia"
   | "do-zero-a-assinatura"
   | "assinante-por-indicacao"
-  | "subir-preco-assinatura";
+  | "subir-preco-assinatura"
+  | "barbearia-rodar-sem-voce"
+  | "vender-mais-pro-mesmo-cliente";
 
 export interface Isca {
   /** Nome do guia, como aparece no h1 ("Seu guia {titulo} está aqui"). */
@@ -133,6 +135,35 @@ export const ISCAS: Record<IscaId, Isca> = {
       "Olá!%20Baixei%20o%20guia%20Como%20subir%20o%20preço%20da%20assinatura%20e%20quero%20ver%20como%20o%20app%20mostra%20a%20ocupação%20por%20barbeiro%20e%20o%20reajuste%20do%20plano.",
     pixelId: "Guia Subir Preço da Assinatura",
   },
+  /*
+   * Quinta e sexta iscas (20/Out/2026) — guias longos do catálogo (#16 e #17). SSOT:
+   * bestbarbers-ai/data/iscas/ebooks.json → `barbearia-rodar-sem-voce` (28 páginas) e
+   * `vender-mais-pro-mesmo-cliente` (30 páginas). LPs: /rodar-sem-voce e /vender-mais-pro-mesmo-cliente.
+   */
+  "barbearia-rodar-sem-voce": {
+    titulo: "Passo a passo pra sua barbearia rodar sem você",
+    palavraDestaque: "rodar sem você",
+    pdf: "/guia-barbearia-rodar-sem-voce.pdf",
+    subtitulo:
+      "Comece pelo Capítulo 1: o perfil que você contrata é o filtro de toda vaga daqui pra frente.",
+    consultor:
+      "Quer ver como o BestBarbers organiza a comissão por profissional e o relatório de atendimentos que sustenta a reunião trimestral? Um consultor te mostra numa conversa rápida de 15 min, sem compromisso.",
+    whatsapp:
+      "Olá!%20Baixei%20o%20guia%20Rodar%20Sem%20Você%20e%20quero%20ver%20como%20o%20app%20organiza%20a%20comissão%20por%20profissional%20e%20o%20relatório%20de%20atendimentos.",
+    pixelId: "Guia Rodar Sem Você",
+  },
+  "vender-mais-pro-mesmo-cliente": {
+    titulo: "Como vender mais pro mesmo cliente na sua barbearia",
+    palavraDestaque: "pro mesmo cliente",
+    pdf: "/guia-vender-mais-pro-mesmo-cliente.pdf",
+    subtitulo:
+      "Comece pelo Capítulo 1: a conta de atendidos por vendidos, por barbeiro, mostra onde está o dinheiro parado.",
+    consultor:
+      "Quer ver como o BestBarbers organiza a comissão por profissional e o relatório de atendimentos que alimenta essa conta? Um consultor te mostra numa conversa rápida de 15 min, sem compromisso.",
+    whatsapp:
+      "Olá!%20Baixei%20o%20guia%20Vender%20Mais%20pro%20Mesmo%20Cliente%20e%20quero%20ver%20como%20o%20app%20mostra%20os%20atendimentos%20e%20a%20comissão%20por%20profissional.",
+    pixelId: "Guia Vender Mais pro Mesmo Cliente",
+  },
 };
 
 /** Isca servida quando a /obrigado é aberta sem `?isca=` (ou com um id desconhecido). */
@@ -162,6 +193,8 @@ const APELIDOS_ISCA: Record<string, IscaId> = {
   "assinatura-do-zero": "do-zero-a-assinatura",
   // Slug do título inteiro (brief da campanha, 16/Out/2026) escrito como se fosse id.
   "subir-preco-assinatura-sem-perder-assinante": "subir-preco-assinatura",
+  // Slug da rota do guia #16 (brief, 16/Out/2026) escrito como se fosse id.
+  "rodar-sem-voce": "barbearia-rodar-sem-voce",
 };
 
 /**
