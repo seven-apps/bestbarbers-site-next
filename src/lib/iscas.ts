@@ -22,7 +22,8 @@
 export type IscaId =
   | "cadeira-cheia"
   | "do-zero-a-assinatura"
-  | "assinante-por-indicacao";
+  | "assinante-por-indicacao"
+  | "subir-preco-assinatura";
 
 export interface Isca {
   /** Nome do guia, como aparece no h1 ("Seu guia {titulo} está aqui"). */
@@ -111,6 +112,27 @@ export const ISCAS: Record<IscaId, Isca> = {
       "Olá!%20Baixei%20o%20guia%20Assinante%20por%20Indicação%20e%20quero%20ver%20como%20o%20app%20registra%20o%20convidado%20e%20fecha%20a%20comissão%20do%20barbeiro.",
     pixelId: "Guia Assinante por Indicação",
   },
+  /*
+   * Quarta isca (20/Out/2026) — a CONTINUAÇÃO do Assinatura do Zero, pra quem já roda
+   * clube. SSOT do conteúdo: bestbarbers-ai/data/iscas/ebooks.json →
+   * `subir-preco-assinatura` (28 páginas, 12 capítulos) e
+   * docs/operacional/ebook-subir-preco-assinatura.md. LP: /subir-preco-assinatura.
+   *
+   * O id canônico é o slug curto `subir-preco-assinatura` (rota, pixel, source e
+   * bb_lp_version); o nome comercial inteiro escrito como id resolve pelo apelido.
+   */
+  "subir-preco-assinatura": {
+    titulo: "Como subir o preço da assinatura sem perder assinante",
+    palavraDestaque: "sem perder assinante",
+    pdf: "/guia-subir-preco-assinatura.pdf",
+    subtitulo:
+      "Comece pelo “Capítulo 1 — O termômetro do clube”: sem medir, você não sabe se já é hora de reajustar.",
+    consultor:
+      "Quer ver o Relatório de Frequência e a ocupação por barbeiro que fazem essa conta pra você? Um consultor da BestBarbers te mostra numa conversa rápida de 15 min, sem compromisso.",
+    whatsapp:
+      "Olá!%20Baixei%20o%20guia%20Como%20subir%20o%20preço%20da%20assinatura%20e%20quero%20ver%20como%20o%20app%20mostra%20a%20ocupação%20por%20barbeiro%20e%20o%20reajuste%20do%20plano.",
+    pixelId: "Guia Subir Preço da Assinatura",
+  },
 };
 
 /** Isca servida quando a /obrigado é aberta sem `?isca=` (ou com um id desconhecido). */
@@ -138,6 +160,8 @@ export function ehIscaId(v: string): v is IscaId {
 const APELIDOS_ISCA: Record<string, IscaId> = {
   // Nome definitivo do guia (decisão do André, 01/Set/2026) usado como se fosse id.
   "assinatura-do-zero": "do-zero-a-assinatura",
+  // Slug do título inteiro (brief da campanha, 16/Out/2026) escrito como se fosse id.
+  "subir-preco-assinatura-sem-perder-assinante": "subir-preco-assinatura",
 };
 
 /**
