@@ -25,7 +25,8 @@ export type IscaId =
   | "assinante-por-indicacao"
   | "subir-preco-assinatura"
   | "barbearia-rodar-sem-voce"
-  | "vender-mais-pro-mesmo-cliente";
+  | "vender-mais-pro-mesmo-cliente"
+  | "comissao-barbeiro-assinatura";
 
 export interface Isca {
   /** Nome do guia, como aparece no h1 ("Seu guia {titulo} está aqui"). */
@@ -163,6 +164,22 @@ export const ISCAS: Record<IscaId, Isca> = {
     whatsapp:
       "Olá!%20Baixei%20o%20guia%20Vender%20Mais%20pro%20Mesmo%20Cliente%20e%20quero%20ver%20como%20o%20app%20mostra%20os%20atendimentos%20e%20a%20comissão%20por%20profissional.",
     pixelId: "Guia Vender Mais pro Mesmo Cliente",
+  },
+  /*
+   * Sétima isca (20/Out/2026) — guia longo #20. SSOT: bestbarbers-ai/data/iscas/ebooks.json →
+   * `comissao-barbeiro-assinatura` (22 páginas, 8 capítulos). LP: /comissao-barbeiro-assinatura.
+   */
+  "comissao-barbeiro-assinatura": {
+    titulo: "Como pagar a comissão do barbeiro na assinatura",
+    palavraDestaque: "a comissão do barbeiro",
+    pdf: "/guia-comissao-barbeiro-assinatura.pdf",
+    subtitulo:
+      "Comece pelo Capítulo 1: a conta por mês é a que fecha a dúvida do barbeiro antes de ele perguntar.",
+    consultor:
+      "Quer ver onde ficam o percentual do pote e a pontuação de cada serviço no plano de assinatura, e como o rateio sai no fechamento? Um consultor te mostra numa conversa rápida de 15 min, sem compromisso.",
+    whatsapp:
+      "Olá!%20Baixei%20o%20guia%20Comissão%20do%20Barbeiro%20na%20Assinatura%20e%20quero%20ver%20como%20o%20app%20divide%20o%20pote%20da%20equipe%20no%20fechamento.",
+    pixelId: "Guia Comissão do Barbeiro na Assinatura",
   },
 };
 
