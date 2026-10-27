@@ -38,6 +38,7 @@ import vittorPallaceImg from "@/app/parceiros/assets/vittor-pallace.png";
 import lucasStartImg from "@/app/parceiros/assets/lucas-start.png";
 import isaacArtsImg from "@/app/parceiros/assets/isaac-arts.png";
 import henriqueSantosImg from "@/app/parceiros/assets/henrique-santos.png";
+import { BOTAO_AMARELO, BOTAO_PRETO, CLASSE_BOTAO_CHAMADA, SetaDoBotao } from "@/components/ui/botao-chamada";
 
 
 interface HeroPartnerSectionProps {
@@ -147,8 +148,8 @@ export function HeroPartnerSection({
                 </div>
                 <Button
                   onClick={onCtaClick}
-                  className="text-sm font-bold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
-                  style={{ backgroundColor: "#121212", color: "#ffaf02" }}
+                  className={CLASSE_BOTAO_CHAMADA}
+                  style={BOTAO_PRETO}
                 >
                   QUERO MEU APP COM DESCONTO
                 </Button>
@@ -173,12 +174,13 @@ export function HeroPartnerSection({
                 style={{ backgroundColor: "#121212", color: "#ffaf02" }}
               >
                 {hero.cta.text}
+                <SetaDoBotao />
               </Button>
             ) : (
               <Button
                 asChild
-                className="text-sm font-bold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
-                style={{ backgroundColor: "#121212", color: "#ffaf02" }}
+                className={CLASSE_BOTAO_CHAMADA}
+                style={BOTAO_PRETO}
               >
                 <Link
                   href={hero.cta.href}
@@ -186,6 +188,7 @@ export function HeroPartnerSection({
                   rel="noopener noreferrer"
                 >
                   {hero.cta.text}
+                <SetaDoBotao />
                 </Link>
               </Button>
             )}

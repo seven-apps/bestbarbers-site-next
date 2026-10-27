@@ -38,7 +38,7 @@ export const clubeV2Content = {
       highlight: "Passo a passo",
       main: " para ter o clube de assinaturas no app próprio personalizado da sua barbearia",
     },
-    cta: "QUERO ASSINATURA NA MINHA BARBEARIA",
+    cta: "Quero assinatura na minha barbearia",
   },
 
   // ===== 1. HERÓI =====
@@ -56,7 +56,7 @@ export const clubeV2Content = {
       "Bloqueio de quem está com o pagamento atrasado",
       "Nota fiscal emitida em cada cobrança",
     ],
-    cta: { text: "QUERO ASSINATURA\nNA MINHA BARBEARIA" },
+    cta: { text: "Quero assinatura na minha barbearia" },
     // Mesma foto dos cinco parceiros da home e da /clube: acervo que não se troca.
     image: homeContent.hero.image,
   },
@@ -112,7 +112,7 @@ export const clubeV2Content = {
       "Relatório de frequência de cada assinante",
       "Nota fiscal emitida em cada cobrança",
     ],
-    cta: "QUERO ASSINATURA NA MINHA BARBEARIA",
+    cta: "Quero assinatura na minha barbearia",
     image: {
       // A mesma arte da seção de assinaturas da home (pedido do André, 28/Set).
       src: "/images/gerenciamento-de-assinaturas.png",
@@ -130,7 +130,7 @@ export const clubeV2Content = {
       "O assinante cadastra o cartão no primeiro acesso ao app",
       "Você não perde nenhum assinante na mudança",
     ],
-    cta: "QUERO MIGRAR MEU CLUBE DE ASSINATURAS",
+    cta: "Quero migrar meu clube de assinaturas",
     image: {
       src: "/images/clube/cena/sem-caderno-faixa.webp",
       alt: "Caderno de controle rabiscado ao lado do celular com a lista de assinantes e o vencimento de cada um",
@@ -151,7 +151,7 @@ export const clubeV2Content = {
       "Um especialista monta o clube com você",
       "Gerente de contas dedicado desde o primeiro dia",
     ],
-    cta: "QUERO AJUDA PARA PRECIFICAR MINHA ASSINATURA",
+    cta: "Quero ajuda para precificar minha assinatura",
     image: {
       src: "/images/clube-v2/tabela-precificacao.webp",
       alt: "Tabela de precificação do BestBarbers calculando a mensalidade recomendada do clube, a margem da barbearia e o ganho do barbeiro",
@@ -169,7 +169,7 @@ export const clubeV2Content = {
       "O sistema controla o uso de cada assinante",
       "O assinante marca um horário de cada vez",
     ],
-    cta: "QUERO ASSINATURA NA MINHA BARBEARIA",
+    cta: "Quero assinatura na minha barbearia",
     image: {
       // Tela INTEIRA do sistema, dentro de um notebook (André, 28/Set). A lista de planos da
       // conta de demonstração vai desfocada, como no estático do mesmo tema.
@@ -191,7 +191,7 @@ export const clubeV2Content = {
       "Integração com a prefeitura da sua cidade",
       "PDF e XML prontos para o seu contador",
     ],
-    cta: "QUERO ASSINATURA NA MINHA BARBEARIA",
+    cta: "Quero assinatura na minha barbearia",
     image: {
       src: "/images/Nota-fiscal_1.webp",
       alt: "Emissão automática de nota fiscal a cada cobrança de assinatura no BestBarbers",
@@ -209,7 +209,7 @@ export const clubeV2Content = {
       "Notificações ilimitadas, sem custo adicional",
       "Chegam com a logo da sua barbearia, como as do iFood e do Nubank",
     ],
-    cta: "QUERO ASSINATURA NA MINHA BARBEARIA",
+    cta: "Quero assinatura na minha barbearia",
     image: {
       src: "/images/notifications-app-proprio.webp",
       alt: "Notificações do app da barbearia chegando no celular do cliente com a logo da barbearia",

@@ -75,7 +75,7 @@ export const homeContent = {
       },
     ],
     cta: {
-      text: "QUERO UM APP PRÓPRIO",
+      text: "Quero meu Aplicativo Próprio",
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Assinatura",
     },
     image: {
@@ -110,7 +110,7 @@ export const homeContent = {
       },
     ],
     cta: {
-      text: "QUERO UM APP PRÓPRIO",
+      text: "Quero meu Aplicativo Próprio",
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Nota-fiscal",
     },
     image: {
@@ -178,7 +178,7 @@ export const homeContent = {
       },
     ],
     cta: {
-      text: "QUERO UM APP PRÓPRIO",
+      text: "Quero meu Aplicativo Próprio",
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Funcionalidades",
     },
   },
@@ -195,7 +195,7 @@ export const homeContent = {
       "Após o pagamento, seu cliente pode fazer o seu próximo agendamento, tudo de forma autônoma",
     ],
     cta: {
-      text: "QUERO UM APP PRÓPRIO\n+ TOTEM DE AUTOATENDIMENTO",
+      text: "Quero meu app + totem de autoatendimento",
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Totem",
     },
     image: {
@@ -230,7 +230,7 @@ export const homeContent = {
       },
     ],
     cta: {
-      text: "QUERO UM APP PRÓPRIO",
+      text: "Quero meu Aplicativo Próprio",
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Notificacoes",
     },
     // DEPENDÊNCIA RESOLVIDA (19/Set/26, 19h41): a arte chegou e foi conferida no pixel —
@@ -263,7 +263,7 @@ export const homeContent = {
       main: " barbearias\nativaram o modo Best!",
     },
     cta: {
-      text: "QUERO UM APP PRÓPRIO",
+      text: "Quero meu Aplicativo Próprio",
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Clientes",
     },
     logos: [
@@ -316,7 +316,7 @@ export const homeContent = {
       },
     ],
     cta: {
-      text: "QUERO UM APP PRÓPRIO",
+      text: "Quero meu Aplicativo Próprio",
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Passos",
     },
     image: {
@@ -337,7 +337,7 @@ export const homeContent = {
     description:
       "Também temos o Plano Básico BestBarbers!\nGestão de agenda + Gestão financeira da sua barbearia!",
     cta: {
-      text: "QUERO O PLANO BÁSICO PARA COMEÇAR",
+      text: "Quero o plano básico para começar",
       href: "https://adm.bestbarbers.app/cadastro",
     },
     image: {

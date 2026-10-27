@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { clubeV2Content } from "@/content/clube-v2";
 import { Checklist } from "@/components/clube-v2/Checklist";
+import { BOTAO_AMARELO, BOTAO_PRETO, CLASSE_BOTAO_CHAMADA, SetaDoBotao } from "@/components/ui/botao-chamada";
 
 interface HeroV2Props {
   onCtaClick: () => void;
@@ -39,10 +40,11 @@ export function HeroV2({ onCtaClick }: HeroV2Props) {
 
             <Button
               onClick={onCtaClick}
-              className="min-h-[44px] h-auto w-full sm:w-auto text-sm font-bold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
-              style={{ backgroundColor: "#121212", color: "#ffaf02" }}
+              className={CLASSE_BOTAO_CHAMADA}
+              style={BOTAO_PRETO}
             >
               {hero.cta.text}
+                <SetaDoBotao />
             </Button>
           </div>
 

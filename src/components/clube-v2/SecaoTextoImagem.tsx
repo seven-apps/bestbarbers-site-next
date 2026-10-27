@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Checklist } from "@/components/clube-v2/Checklist";
 import { MockupNotebook } from "@/components/clube-v2/MockupNotebook";
+import { BOTAO_AMARELO, BOTAO_PRETO, CLASSE_BOTAO_CHAMADA, SetaDoBotao } from "@/components/ui/botao-chamada";
 
 interface ImagemDaSecao {
   src: string;
@@ -83,10 +84,11 @@ export function SecaoTextoImagem({
 
             <Button
               onClick={onCtaClick}
-              className="min-h-[44px] h-auto w-full sm:w-auto text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl whitespace-normal text-center"
-              style={{ backgroundColor: "#ffaf02", color: "#121212" }}
+              className={CLASSE_BOTAO_CHAMADA}
+              style={BOTAO_AMARELO}
             >
               {cta}
+                <SetaDoBotao cor="#121212" />
             </Button>
           </div>
 

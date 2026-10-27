@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
+import { BOTAO_AMARELO, BOTAO_PRETO, CLASSE_BOTAO_CHAMADA, SetaDoBotao } from "@/components/ui/botao-chamada";
 
 interface InvoicesSectionProps {
   onCtaClick?: () => void;
@@ -43,16 +44,17 @@ export function InvoicesSection({ onCtaClick }: InvoicesSectionProps) {
             {onCtaClick ? (
               <Button
                 onClick={onCtaClick}
-                className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
-                style={{ backgroundColor: "#ffaf02", color: "#121212" }}
+                className={`${CLASSE_BOTAO_CHAMADA} mt-6`}
+                style={BOTAO_AMARELO}
               >
                 {invoices.cta.text}
+                <SetaDoBotao cor="#121212" />
               </Button>
             ) : (
               <Button
                 asChild
-                className="btn-primary text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors hover:bg-primary-hover mt-6"
-                style={{ backgroundColor: "#ffaf02", color: "#121212" }}
+                className={`${CLASSE_BOTAO_CHAMADA} mt-6`}
+                style={BOTAO_AMARELO}
               >
                 <Link
                   href={invoices.cta.href}
@@ -60,6 +62,7 @@ export function InvoicesSection({ onCtaClick }: InvoicesSectionProps) {
                   rel="noopener noreferrer"
                 >
                   {invoices.cta.text}
+                <SetaDoBotao cor="#121212" />
                 </Link>
               </Button>
             )}

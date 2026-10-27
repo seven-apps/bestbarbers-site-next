@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
+import { BOTAO_AMARELO, BOTAO_PRETO, CLASSE_BOTAO_CHAMADA, SetaDoBotao } from "@/components/ui/botao-chamada";
 
 interface NotificationsSectionProps {
   onCtaClick?: () => void;
@@ -55,16 +56,17 @@ export function NotificationsSection({
             {onCtaClick ? (
               <Button
                 onClick={onCtaClick}
-                className="btn-primary bg-white text-neutral-bg2 hover:bg-neutral-card-grey text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors mt-6"
-                style={{ backgroundColor: "#121212", color: "#ffaf02" }}
+                className={`${CLASSE_BOTAO_CHAMADA} mt-6`}
+                style={BOTAO_PRETO}
               >
                 {notifications.cta.text}
+                <SetaDoBotao />
               </Button>
             ) : (
               <Button
                 asChild
-                className="btn-primary bg-white text-neutral-bg2 hover:bg-neutral-card-grey text-sm font-bold leading-tight px-6 md:px-8 py-4 md:py-5 rounded-2xl transition-colors mt-6"
-                style={{ backgroundColor: "#121212", color: "#ffaf02" }}
+                className={`${CLASSE_BOTAO_CHAMADA} mt-6`}
+                style={BOTAO_PRETO}
               >
                 <Link
                   href={notifications.cta.href}
@@ -72,6 +74,7 @@ export function NotificationsSection({
                   rel="noopener noreferrer"
                 >
                   {notifications.cta.text}
+                <SetaDoBotao />
                 </Link>
               </Button>
             )}

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { clubeContent } from "@/content/clube";
 import { clubeV2Content } from "@/content/clube-v2";
+import { BOTAO_AMARELO, BOTAO_PRETO, CLASSE_BOTAO_CHAMADA, SetaDoBotao } from "@/components/ui/botao-chamada";
 
 interface PassosV2Props {
   onCtaClick: () => void;
@@ -83,10 +84,11 @@ export function PassosV2({ onCtaClick }: PassosV2Props) {
           <div className="mt-0">
             <Button
               onClick={onCtaClick}
-              className="min-h-[44px] h-auto btn-primary text-xs font-bold leading-tight px-4 md:px-6 py-3 md:py-4 rounded-2xl transition-colors hover:bg-primary-hover whitespace-normal text-center"
-              style={{ backgroundColor: "#ffaf02", color: "#121212" }}
+              className={CLASSE_BOTAO_CHAMADA}
+              style={BOTAO_AMARELO}
             >
               {clubeV2Content.passos.cta}
+                <SetaDoBotao cor="#121212" />
             </Button>
           </div>
         </div>
