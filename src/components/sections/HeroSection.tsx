@@ -1,7 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { homeContent } from "@/content/home";
+
+/**
+ * Botão do herói com cara de botão (André, 27/Out/26): uma linha, letra normal e maior, seta, sombra e altura de
+ * toque; no celular quase da largura da tela. `h-auto` porque o Button do shadcn fixa a altura e esmagava o texto.
+ */
+const CLASSE_BOTAO =
+  "h-auto w-full max-w-sm lg:w-auto inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-base font-extrabold shadow-[0_10px_28px_rgba(0,0,0,0.28)] transition-transform hover:scale-[1.02] active:scale-[0.98]";
+const ESTILO_BOTAO = { backgroundColor: "#121212", color: "#ffffff" } as const;
 
 interface HeroSectionProps {
   onCtaClick?: () => void;
@@ -33,16 +42,17 @@ export function HeroSection({ onCtaClick }: HeroSectionProps) {
             {onCtaClick ? (
               <Button
                 onClick={onCtaClick}
-                className="text-sm font-bold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
-                style={{ backgroundColor: "#121212", color: "#ffaf02" }}
+                className={CLASSE_BOTAO}
+                style={ESTILO_BOTAO}
               >
                 {hero.cta.text}
+                <ArrowRight className="w-5 h-5" style={{ color: "#ffaf02" }} />
               </Button>
             ) : (
               <Button
                 asChild
-                className="text-sm font-bold leading-tight px-8 py-5 rounded-2xl whitespace-pre-line text-center"
-                style={{ backgroundColor: "#121212", color: "#ffaf02" }}
+                className={CLASSE_BOTAO}
+                style={ESTILO_BOTAO}
               >
                 <Link
                   href={hero.cta.href}
@@ -50,6 +60,7 @@ export function HeroSection({ onCtaClick }: HeroSectionProps) {
                   rel="noopener noreferrer"
                 >
                   {hero.cta.text}
+                  <ArrowRight className="w-5 h-5" style={{ color: "#ffaf02" }} />
                 </Link>
               </Button>
             )}

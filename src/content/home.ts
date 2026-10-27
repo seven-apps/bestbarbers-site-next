@@ -34,7 +34,8 @@ export const homeContent = {
     description:
       "Impulsione o seu negócio com um App Próprio na marca da sua barbearia — agenda, clube de assinaturas, comissões e financeiro no mesmo sistema.",
     cta: {
-      text: "QUERO UM APP PRÓPRIO\nPARA MINHA BARBEARIA",
+      // Botão do herói numa linha só (André, 27/Out/26: o de duas linhas em caixa alta "não tinha cara de botão").
+      text: "Quero meu Aplicativo Próprio",
       href: "https://www.bestbarbers.app/form?source=site&desc=[Site]BT-Hero",
     },
     // RESTAURADA em 24/Set/26 por decisão do André: a foto dos cinco parceiros voltou.
