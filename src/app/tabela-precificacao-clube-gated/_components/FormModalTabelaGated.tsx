@@ -22,9 +22,9 @@ interface Props {
 // dentro do <PerguntasQualificacao>: formulário único em todas as portas
 // (André, 14/Set/26). As opções saíram daqui e moram em `@/lib/lead-score`.
 const formFields = [
-  { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
-  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "(11) 99999-9999", type: "tel" },
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
+  { name: "ownerName", label: "Nome do Dono", placeholder: "Seu nome", type: "text" },
+  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "Seu WhatsApp com DDD", type: "tel" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Nome da barbearia", type: "text" },
 ];
 
 // Origem dedicada da LP no Ploomes: "Site - Tabela de Precificação de Clubes"
@@ -263,12 +263,12 @@ export function FormModalTabelaGated({ isOpen, onClose, onSuccess }: Props) {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4 w-full">
+          <form onSubmit={handleSubmit} className="space-y-3 w-full">
             {visibleFields.map((field) => (
               <div key={field.name} className="space-y-1.5">
                 <label
                   htmlFor={`${idFormulario}-${field.name}`}
-                  className="block font-semibold text-[13px] leading-[20px]"
+                  className="sr-only"
                   style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
                 >
                   {field.label}
@@ -283,7 +283,7 @@ export function FormModalTabelaGated({ isOpen, onClose, onSuccess }: Props) {
                   // E-mail é o único campo opcional: deixar em branco NUNCA pode barrar
                   // o envio (useLeadForm só valida o formato quando há algo digitado).
                   required={field.name !== "email"}
-                  className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
+                  className="w-full rounded-xl px-4 py-3 font-medium text-[15px] transition-all duration-200 outline-none"
                   style={{
                     background: "#f5f5f5",
                     border: "1.5px solid #e0e0e0",

@@ -78,7 +78,7 @@ export function PerguntasQualificacao({
   onChange,
   erros = {},
   variante = "claro",
-  className = "space-y-4",
+  className = "space-y-3",
   quantas = 2,
   classeItem = "",
 }: PerguntasQualificacaoProps) {
@@ -109,11 +109,11 @@ export function PerguntasQualificacao({
     return (
       <fieldset
         key={campo}
-        className={`space-y-2 ${classeItem}`.trim()}
+        className={`space-y-1.5 ${classeItem}`.trim()}
         aria-invalid={temErro || undefined}
         aria-describedby={temErro ? `${id}-erro` : undefined}
       >
-        <legend className="block font-semibold text-[13px] leading-[20px] mb-2" style={{ color: tema.rotulo, fontFamily: FONTE }}>
+        <legend className="block font-semibold text-[13px] leading-[18px] mb-1.5" style={{ color: tema.rotulo, fontFamily: FONTE }}>
           {rotulo}
         </legend>
         <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${colunas}, minmax(0, 1fr))` }}>
@@ -130,8 +130,8 @@ export function PerguntasQualificacao({
                 key={opcao}
                 className={
                   lista
-                    ? "flex items-center gap-3 text-left rounded-xl px-4 py-3.5 font-semibold text-[15px] leading-[20px] cursor-pointer transition-all duration-200 select-none focus-within:outline-none"
-                    : "flex items-center justify-center text-center rounded-xl px-2 py-3 font-semibold text-[14px] leading-[18px] cursor-pointer transition-all duration-200 select-none focus-within:outline-none"
+                    ? "flex items-center gap-3 text-left rounded-xl px-4 py-2.5 font-semibold text-[14px] leading-[18px] cursor-pointer transition-all duration-200 select-none focus-within:outline-none"
+                    : "flex items-center justify-center text-center rounded-xl px-2 py-2.5 font-semibold text-[14px] leading-[18px] cursor-pointer transition-all duration-200 select-none focus-within:outline-none"
                 }
                 style={estilo}
                 onFocusCapture={(e) => { e.currentTarget.style.boxShadow = `0 0 0 3px ${DOURADO}33`; }}
@@ -151,8 +151,8 @@ export function PerguntasQualificacao({
                     aria-hidden="true"
                     className="flex-none rounded-full flex items-center justify-center"
                     style={{
-                      width: 18,
-                      height: 18,
+                      width: 16,
+                      height: 16,
                       border: `2px solid ${ativo ? tema.textoAtivo : tema.borda}`,
                     }}
                   >
@@ -179,7 +179,7 @@ export function PerguntasQualificacao({
   const perguntas = [
     grupo({
       campo: "employeeCount",
-      rotulo: "Quantas pessoas trabalham na sua barbearia?",
+      rotulo: "Quantas pessoas trabalham na barbearia?",
       opcoes: EQUIPE_OPCOES_V3,
       rotuloDaOpcao: (o) => ROTULOS_EQUIPE_V3[o as keyof typeof ROTULOS_EQUIPE_V3] ?? o,
       mensagemErro: MSG_EQUIPE,
@@ -188,7 +188,7 @@ export function PerguntasQualificacao({
     }),
     grupo({
       campo: "startWhen",
-      rotulo: "Quando você quer implementar a BestBarbers na sua barbearia?",
+      rotulo: "Quando quer implementar a BestBarbers?",
       opcoes: QUANDO_NA_TELA,
       rotuloDaOpcao: (o) => ROTULOS_QUANDO[o as keyof typeof ROTULOS_QUANDO] ?? o,
       mensagemErro: MSG_QUANDO,

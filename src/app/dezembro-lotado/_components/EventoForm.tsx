@@ -20,9 +20,9 @@ const EVENTO_ORIGIN_DESC = "LP Dezembro Lotado - 25 vagas app";
 // Perguntas 1 a 4 — contato. As 5 a 8 (faturamento, sistema, clube e profissionais)
 // vêm do <PerguntasQualificacao>, igual em todas as portas (André, 14/Set/26).
 const formFields = [
-  { name: "ownerName", label: "Seu nome", placeholder: "Ex: João Silva", type: "text" },
-  { name: "whatsapp", label: "Seu WhatsApp", placeholder: "(31) 99999-9999", type: "tel" },
-  { name: "barbershopName", label: "Nome da sua barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
+  { name: "ownerName", label: "Seu nome", placeholder: "Seu nome", type: "text" },
+  { name: "whatsapp", label: "Seu WhatsApp", placeholder: "Seu WhatsApp com DDD", type: "tel" },
+  { name: "barbershopName", label: "Nome da sua barbearia", placeholder: "Nome da barbearia", type: "text" },
 ];
 
 export function EventoForm() {
@@ -152,10 +152,10 @@ export function EventoForm() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4 w-full">
+        <form onSubmit={handleSubmit} className="space-y-3 w-full">
           {formFields.map((field) => (
             <div key={field.name} className="space-y-1.5">
-              <label htmlFor={`${idFormulario}-${field.name}`} className="block font-semibold text-[13px] leading-[20px]" style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}>
+              <label htmlFor={`${idFormulario}-${field.name}`} className="sr-only" style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}>
                 {field.label}
               </label>
               <input
@@ -166,7 +166,7 @@ export function EventoForm() {
                 onChange={handleInputChange}
                 placeholder={field.placeholder}
                 required={field.name !== "email"}
-                className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
+                className="w-full rounded-xl px-4 py-3 font-medium text-[15px] transition-all duration-200 outline-none"
                 style={{ background: "#f5f5f5", border: "1.5px solid #e0e0e0", color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
                 onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
                 onBlur={(e) => { e.currentTarget.style.borderColor = "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}

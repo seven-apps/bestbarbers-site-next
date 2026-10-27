@@ -8,7 +8,7 @@ import { AvisoPrivacidade } from "@/components/forms/AvisoPrivacidade";
 import { errosDeQualificacao } from "@/lib/qualificacao";
 import { hrefObrigado } from "@/lib/iscas";
 import { NUMEROS_OFICIAIS } from "@/lib/numeros-oficiais";
-import { ArrowRight, FileText, Users2, Gift } from "lucide-react";
+import { ArrowRight, FileText, Gift } from "lucide-react";
 
 // CLONE do form da /assinante-por-indicacao (que clonou o da /do-zero-a-assinatura, que
 // clonou o da /cadeira-cheia).
@@ -41,12 +41,12 @@ const COMISSAO_ORIGIN_DESC = "LP Comissão do Barbeiro na Assinatura - Guia Equi
 // pergunta 7 do canônico ("Você tem clube de assinaturas na sua barbearia hoje?",
 // clubStatus) — nenhum campo novo entra aqui, a coorte se lê por esse campo.
 const formFields = [
-  { name: "ownerName", label: "Seu nome", placeholder: "Ex: João Silva", type: "text" },
-  { name: "whatsapp", label: "Seu WhatsApp", placeholder: "(11) 99999-9999", type: "tel" },
+  { name: "ownerName", label: "Seu nome", placeholder: "Seu nome", type: "text" },
+  { name: "whatsapp", label: "Seu WhatsApp", placeholder: "Seu WhatsApp com DDD", type: "tel" },
   // E-mail OPCIONAL e sem promessa de entrega: o guia é baixado na tela seguinte, não
   // enviado. OPCIONAL COM MOTIVO, não "opcional" seco — é o formato que mede 95,9% de
   // preenchimento aqui; sem o motivo a taxa cai.
-  { name: "barbershopName", label: "Nome da sua barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
+  { name: "barbershopName", label: "Nome da sua barbearia", placeholder: "Nome da barbearia", type: "text" },
 ];
 
 export function GuiaForm() {
@@ -111,7 +111,7 @@ export function GuiaForm() {
 
       <div className="px-6 md:px-8 py-8 md:py-10 flex flex-col items-center">
         {/* Selo GUIA GRÁTIS */}
-        <div className="flex justify-center mb-5">
+        <div className="flex justify-center mb-3">
           <span
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold uppercase tracking-wide"
             style={{
@@ -139,32 +139,11 @@ export function GuiaForm() {
           <span style={{ color: "#ebad04" }}>a comissão do barbeiro</span> na assinatura
         </h2>
         <p
-          className="text-center text-sm mb-6"
+          className="text-center text-sm mb-5"
           style={{ color: "#1e1e1e", opacity: 0.7, fontFamily: "var(--font-montserrat)" }}
         >
-          Preencha e o download do PDF abre na tela seguinte.
+          O PDF abre na tela seguinte.
         </p>
-
-        {/* Trust badges */}
-        <div className="flex justify-center gap-6 mb-6 w-full">
-          {/*
-            FATO de entrega, não "100% gratuito" com escudo (a regra veta ancorar objeção,
-            e o "grátis" já está dito no badge da página). "28 páginas" é a contagem real do
-            PDF entregue (data/iscas/ebooks.json → comissao-barbeiro-assinatura).
-          */}
-          <div className="flex items-center gap-1.5">
-            <FileText className="w-4 h-4" style={{ color: "#ebad04" }} />
-            <span className="text-xs font-medium" style={{ color: "#1e1e1e", opacity: 0.7, fontFamily: "var(--font-montserrat)" }}>
-              22 páginas · download na hora
-            </span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Users2 className="w-4 h-4" style={{ color: "#ebad04" }} fill="currentColor" />
-            <span className="text-xs font-medium" style={{ color: "#1e1e1e", opacity: 0.7, fontFamily: "var(--font-montserrat)" }}>
-              {NUMEROS_OFICIAIS.barbearias.texto} barbearias
-            </span>
-          </div>
-        </div>
 
         {submitError && (
           <div className="w-full rounded-xl p-4 mb-5 border" style={{ background: "rgba(239,68,68,0.08)", borderColor: "rgba(239,68,68,0.3)" }}>
@@ -174,10 +153,10 @@ export function GuiaForm() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4 w-full">
+        <form onSubmit={handleSubmit} className="space-y-3 w-full">
           {formFields.map((field) => (
             <div key={field.name} className="space-y-1.5">
-              <label htmlFor={`${idFormulario}-${field.name}`} className="block font-semibold text-[13px] leading-[20px]" style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}>
+              <label htmlFor={`${idFormulario}-${field.name}`} className="sr-only" style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}>
                 {field.label}
               </label>
               <input
@@ -188,7 +167,7 @@ export function GuiaForm() {
                 onChange={handleInputChange}
                 placeholder={field.placeholder}
                 required={field.name !== "email"}
-                className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
+                className="w-full rounded-xl px-4 py-3 font-medium text-[15px] transition-all duration-200 outline-none"
                 style={{ background: "#f5f5f5", border: "1.5px solid #e0e0e0", color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
                 onFocus={(e) => { e.currentTarget.style.borderColor = "#ebad04"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)"; }}
                 onBlur={(e) => { e.currentTarget.style.borderColor = "#e0e0e0"; e.currentTarget.style.boxShadow = "none"; }}

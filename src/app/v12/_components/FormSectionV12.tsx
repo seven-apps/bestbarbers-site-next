@@ -14,8 +14,8 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 // interessa" SAIU — a pergunta de clube ocupa o lugar dele na pontuação.
 // A ordem decidida é dono → WhatsApp → e-mail → barbearia.
 const formFields = [
-  { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
-  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "(11) 99999-9999", type: "tel" },
+  { name: "ownerName", label: "Nome do Dono", placeholder: "Seu nome", type: "text" },
+  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "Seu WhatsApp com DDD", type: "tel" },
   // E-MAIL: houve uma IDA e uma VOLTA. Quem ler isto daqui a seis meses precisa das duas.
   //
   // REMOVIDO (OP400, 15/Jun/26): fricção pura — o canal de contato é o WhatsApp e o campo
@@ -29,7 +29,7 @@ const formFields = [
   // e-mail. Vai para o campo NATIVO Email do Contact.
   //
   // Fica no PASSO 1 (ver STEP1_FIELDS): é a única tela por onde 100% de quem envia passa.
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Nome da barbearia", type: "text" },
 ];
 
 function getFormHeading(utmContent: string | null) {
@@ -287,7 +287,7 @@ export function FormSectionV12() {
           </div>
 
           {/* Form fields */}
-          <form onSubmit={handleSubmit} className="space-y-4 w-full">
+          <form onSubmit={handleSubmit} className="space-y-3 w-full">
             {visibleFields.map((field, index) => (
               <div
                 key={field.name}
@@ -296,7 +296,7 @@ export function FormSectionV12() {
               >
                 <label
                   htmlFor={`${idFormulario}-${field.name}`}
-                  className="block font-semibold text-[13px] leading-[20px]"
+                  className="sr-only"
                   style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
                 >
                   {field.label}
@@ -317,7 +317,7 @@ export function FormSectionV12() {
                         // o envio (useLeadForm só valida o formato quando há algo digitado).
                         required={field.name !== "email"}
                         aria-invalid={fieldHasError || undefined}
-                        className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 outline-none"
+                        className="w-full rounded-xl px-4 py-3 font-medium text-[15px] transition-all duration-200 outline-none"
                         style={{
                           background: "#f5f5f5",
                           border: `1.5px solid ${fieldHasError ? "#dc2626" : "#e0e0e0"}`,

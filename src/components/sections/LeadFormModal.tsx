@@ -70,11 +70,11 @@ function campoDoAviso(aviso: string | null | undefined): CampoForm | null {
 // vêm do <PerguntasQualificacao>, igual em todas as portas (André, 14/Set/26).
 // A ORDEM é a decidida: dono → WhatsApp → e-mail (opcional) → barbearia.
 const formFields = [
-  { name: "ownerName", label: "Nome do Dono", placeholder: "Ex: João Silva", type: "text" },
-  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "(11) 99999-9999", type: "tel" },
+  { name: "ownerName", label: "Nome do Dono", placeholder: "Seu nome", type: "text" },
+  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "Seu WhatsApp com DDD", type: "tel" },
   // E-mail OPCIONAL COM MOTIVO — o rótulo medido nas LPs (95,9% de preenchimento) e o
   // único campo sem `required`: vazio nunca pode barrar ninguém.
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Nome da barbearia", type: "text" },
 ];
 
 const SITE_ORIGIN_ID = 40210426;
@@ -318,14 +318,14 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
           )}
 
           {/* Formulario */}
-          <form ref={formRef} onSubmit={aoEnviar} noValidate={progressivo} className="space-y-4">
+          <form ref={formRef} onSubmit={aoEnviar} noValidate={progressivo} className="space-y-3">
             {progressivo &&
               CAMPOS_DE_CONTATO_PROGRESSIVO.filter((field) => ETAPA_DO_CAMPO[field.name] <= etapa).map((field) => (
                 <div
                   key={field.name}
                   className={`space-y-1.5 ${ETAPA_DO_CAMPO[field.name] > ETAPA_INICIAL ? "bb-revelar" : ""}`.trim()}
                 >
-                  <label htmlFor={`modal-${field.name}`} className="block font-semibold text-[13px] md:text-[14px] text-white/90">
+                  <label htmlFor={`modal-${field.name}`} className="sr-only">
                     {field.label}
                   </label>
                   <input
@@ -339,7 +339,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                     required={field.name !== "email"}
                     aria-invalid={campoComAviso === field.name || undefined}
                     aria-describedby={campoComAviso === field.name ? `modal-${field.name}-aviso` : undefined}
-                    className={`w-full bg-[#1a1d25] border-2 rounded-xl px-4 py-3.5 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 ${
+                    className={`w-full bg-[#1a1d25] border-2 rounded-xl px-4 py-3 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 ${
                       campoComAviso === field.name ? "border-red-400" : "border-[#2a2d35] hover:border-[#3a3d45]"
                     }`}
                   />
@@ -353,7 +353,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
 
             {!progressivo && formFields.map((field) => (
               <div key={field.name} className="space-y-1.5">
-                <label htmlFor={`modal-${field.name}`} className="block font-semibold text-[13px] md:text-[14px] text-white/90">
+                <label htmlFor={`modal-${field.name}`} className="sr-only">
                   {field.label}
                 </label>
                 <input
@@ -364,7 +364,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                   onChange={handleInputChange}
                   placeholder={field.placeholder}
                   required={field.name !== "email"}
-                  className="w-full bg-[#1a1d25] border-2 border-[#2a2d35] rounded-xl px-4 py-3.5 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45]"
+                  className="w-full bg-[#1a1d25] border-2 border-[#2a2d35] rounded-xl px-4 py-3 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45]"
                 />
               </div>
             ))}

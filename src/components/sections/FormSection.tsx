@@ -23,9 +23,9 @@ interface FormSectionProps {
 // Perguntas 1 a 4 — contato. As 5 a 8 vêm do <PerguntasQualificacao> (formulário
 // único, André 14/Set/26). Ordem decidida: dono → WhatsApp → e-mail → barbearia.
 const formFields = [
-  { name: "ownerName", label: "Nome do Dono", placeholder: "Digite o nome do dono da barbearia", type: "text" },
-  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "Celular - whatsapp do dono da barbearia", type: "tel" },
-  { name: "barbershopName", label: "Nome da Barbearia", placeholder: "Digite o nome da sua barbearia", type: "text" },
+  { name: "ownerName", label: "Nome do Dono", placeholder: "Seu nome", type: "text" },
+  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "Seu WhatsApp com DDD", type: "tel" },
+  { name: "barbershopName", label: "Nome da Barbearia", placeholder: "Nome da barbearia", type: "text" },
 ];
 
 const trustBadges = [
@@ -167,7 +167,7 @@ export function FormSection({
               >
                 <label
                   htmlFor={`form-section-${field.name}`}
-                  className="block font-bold text-[11px] md:text-xs uppercase tracking-widest text-white/50"
+                  className="sr-only"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                 >
                   {field.label}
