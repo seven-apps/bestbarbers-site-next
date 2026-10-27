@@ -7,7 +7,7 @@ import { PerguntasQualificacao } from "@/components/forms/PerguntasQualificacao"
 import { AvisoPrivacidade } from "@/components/forms/AvisoPrivacidade";
 import { errosDeQualificacao } from "@/lib/qualificacao";
 import { hrefObrigado } from "@/lib/iscas";
-import { ArrowRight, ShieldCheck, Gift } from "lucide-react";
+import { ArrowRight, Gift } from "lucide-react";
 
 // ORIGEM DEDICADA DO COORTE (ver needsHumanReview) ----------------------------------
 // PLACEHOLDER SEGURO: reusa a origem "Tráfego Pago" (ads, 40210173) como default.
@@ -31,12 +31,12 @@ const CADEIRA_CHEIA_ORIGIN_DESC = "LP Cadeira Cheia - Guia Reativação";
 // do dono ali nascia de uma economia de fricção que o formulário único encerrou — e
 // enchia o Contact.Name do Ploomes com o nome da pessoa no lugar do da casa.
 const formFields = [
-  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text" },
-  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel" },
+  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text", autoComplete: "name" },
+  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel", autoComplete: "tel-national" },
   // E-mail OPCIONAL e sem promessa de entrega: o guia é baixado na tela seguinte, não
   // enviado. OPCIONAL COM MOTIVO, não "opcional" seco — é o formato que mede 95,9% de
   // preenchimento aqui; sem o motivo a taxa cai.
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text", autoComplete: "organization" },
 ];
 
 export function GuiaForm() {
@@ -152,6 +152,7 @@ export function GuiaForm() {
                 id={`${idFormulario}-${field.name}`}
                 type={field.type}
                 name={field.name}
+                autoComplete={field.autoComplete}
                 value={formData[field.name as keyof typeof formData]}
                 onChange={handleInputChange}
                 placeholder={field.placeholder}
@@ -204,13 +205,6 @@ export function GuiaForm() {
 
           <AvisoPrivacidade />
 
-          <p
-            className="text-center text-[10px] uppercase tracking-wider mt-2 flex items-center justify-center gap-1.5"
-            style={{ color: "#1e1e1e", opacity: 0.55, fontFamily: "var(--font-montserrat)" }}
-          >
-            <ShieldCheck className="w-3 h-3" fill="currentColor" />
-            Seus dados estão seguros
-          </p>
         </form>
       </div>
 

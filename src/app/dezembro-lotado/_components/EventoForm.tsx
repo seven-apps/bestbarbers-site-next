@@ -20,9 +20,9 @@ const EVENTO_ORIGIN_DESC = "LP Dezembro Lotado - 25 vagas app";
 // Perguntas 1 a 4 — contato. As 5 a 8 (faturamento, sistema, clube e profissionais)
 // vêm do <PerguntasQualificacao>, igual em todas as portas (André, 14/Set/26).
 const formFields = [
-  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text" },
-  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel" },
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text" },
+  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text", autoComplete: "name" },
+  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel", autoComplete: "tel-national" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text", autoComplete: "organization" },
 ];
 
 export function EventoForm() {
@@ -162,6 +162,7 @@ export function EventoForm() {
                 id={`${idFormulario}-${field.name}`}
                 type={field.type}
                 name={field.name}
+                autoComplete={field.autoComplete}
                 value={formData[field.name as keyof typeof formData]}
                 onChange={handleInputChange}
                 placeholder={field.placeholder}
@@ -211,13 +212,6 @@ export function EventoForm() {
 
           <AvisoPrivacidade />
 
-          <p
-            className="text-center text-[10px] uppercase tracking-wider mt-2 flex items-center justify-center gap-1.5"
-            style={{ color: "#1e1e1e", opacity: 0.55, fontFamily: "var(--font-montserrat)" }}
-          >
-            <ShieldCheck className="w-3 h-3" fill="currentColor" />
-            Seus dados estão seguros
-          </p>
         </form>
       </div>
 

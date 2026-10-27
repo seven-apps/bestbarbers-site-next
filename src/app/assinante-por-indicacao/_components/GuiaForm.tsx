@@ -38,12 +38,12 @@ const INDICACAO_ORIGIN_DESC = "LP Assinante por Indicação - Guia Indicação";
 // profissionais) vêm do <PerguntasQualificacao>, idêntico em todas as portas
 // (André, 14/Set/26).
 const formFields = [
-  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text" },
-  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel" },
+  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text", autoComplete: "name" },
+  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel", autoComplete: "tel-national" },
   // E-mail OPCIONAL e sem promessa de entrega: o guia é baixado na tela seguinte, não
   // enviado. OPCIONAL COM MOTIVO, não "opcional" seco — é o formato que mede 95,9% de
   // preenchimento aqui; sem o motivo a taxa cai.
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text", autoComplete: "organization" },
 ];
 
 export function GuiaForm() {
@@ -158,6 +158,7 @@ export function GuiaForm() {
                 id={`${idFormulario}-${field.name}`}
                 type={field.type}
                 name={field.name}
+                autoComplete={field.autoComplete}
                 value={formData[field.name as keyof typeof formData]}
                 onChange={handleInputChange}
                 placeholder={field.placeholder}

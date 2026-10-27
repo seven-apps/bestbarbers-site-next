@@ -25,7 +25,7 @@ import { PerguntasQualificacao } from "@/components/forms/PerguntasQualificacao"
 import { AvisoPrivacidade } from "@/components/forms/AvisoPrivacidade";
 import { errosDeQualificacao, MSG_CLUBE, MSG_FATURAMENTO, MSG_PROFISSIONAIS, MSG_SISTEMA } from "@/lib/qualificacao";
 import { MSG_EMAIL_INVALIDO } from "@/lib/form-passo1";
-import { X, ArrowRight, Shield } from "lucide-react";
+import { X, ArrowRight } from "lucide-react";
 
 interface LeadFormModalProps {
   isOpen: boolean;
@@ -70,11 +70,11 @@ function campoDoAviso(aviso: string | null | undefined): CampoForm | null {
 // vêm do <PerguntasQualificacao>, igual em todas as portas (André, 14/Set/26).
 // A ORDEM é a decidida: dono → WhatsApp → e-mail (opcional) → barbearia.
 const formFields = [
-  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text" },
-  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel" },
+  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text", autoComplete: "name" },
+  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel", autoComplete: "tel-national" },
   // E-mail OPCIONAL COM MOTIVO — o rótulo medido nas LPs (95,9% de preenchimento) e o
   // único campo sem `required`: vazio nunca pode barrar ninguém.
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text", autoComplete: "organization" },
 ];
 
 const SITE_ORIGIN_ID = 40210426;
@@ -296,18 +296,19 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
               {TEXTOS_DO_MODAL_PROGRESSIVO.titulo.depois}
             </h2>
           ) : (
-            <h2 className="font-extrabold text-[22px] leading-[30px] md:text-[28px] md:leading-[36px] text-white text-center mb-2">
-              Tenha um{" "}
+            // Revisão de UI/UX do André (27/Out/26): título em 2 linhas, com folga para o X de fechar.
+            <h2 className="font-extrabold text-[22px] leading-[29px] md:text-[28px] md:leading-[36px] text-white text-center text-balance mb-1.5 px-8">
+              Seu{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffaf02] to-[#ffc233]">
-                Aplicativo Próprio Personalizado
+                app próprio
               </span>
-              {" "}da sua barbearia!
+              , com a marca da sua barbearia
             </h2>
           )}
 
           {/* Subtitulo */}
-          <p className="text-gray-400 text-sm md:text-base text-center mb-6">
-            Preencha o formulário abaixo e receba uma oferta exclusiva.
+          <p className="text-gray-400 text-sm md:text-base text-center mb-5">
+            A gente te chama no WhatsApp.
           </p>
 
           {/* Erro */}
@@ -340,7 +341,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                     aria-invalid={campoComAviso === field.name || undefined}
                     aria-describedby={campoComAviso === field.name ? `modal-${field.name}-aviso` : undefined}
                     className={`w-full bg-[#1a1d25] border-2 rounded-xl px-4 py-3 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 ${
-                      campoComAviso === field.name ? "border-red-400" : "border-[#2a2d35] hover:border-[#3a3d45]"
+                      campoComAviso === field.name ? "border-red-400" : "border-[#454a56] hover:border-[#5a606e]"
                     }`}
                   />
                   {campoComAviso === field.name && (
@@ -360,11 +361,12 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                   id={`modal-${field.name}`}
                   type={field.type}
                   name={field.name}
+                autoComplete={field.autoComplete}
                   value={formData[field.name as keyof typeof formData]}
                   onChange={handleInputChange}
                   placeholder={field.placeholder}
                   required={field.name !== "email"}
-                  className="w-full bg-[#1a1d25] border-2 border-[#2a2d35] rounded-xl px-4 py-3 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#3a3d45]"
+                  className="w-full bg-[#1a1d25] border-2 border-[#454a56] rounded-xl px-4 py-3 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#5a606e]"
                 />
               </div>
             ))}
@@ -383,7 +385,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
               <button
                 type="submit"
                 disabled={isSubmitting || submitted}
-                className="w-full bg-[#ffaf02] text-[#121212] font-extrabold text-[14px] md:text-[15px] px-6 py-4 rounded-full hover:bg-[#e69f00] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-[0_4px_20px_rgba(255,175,2,0.3)] hover:shadow-[0_8px_30px_rgba(255,175,2,0.4)] hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full bg-[#ffaf02] text-[#121212] font-extrabold text-[16px] md:text-[17px] px-6 py-4 rounded-full hover:bg-[#e69f00] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-[0_4px_20px_rgba(255,175,2,0.3)] hover:shadow-[0_8px_30px_rgba(255,175,2,0.4)] hover:scale-[1.02] active:scale-[0.98]"
               >
                 {isSubmitting ? (
                   <>
@@ -396,7 +398,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                   </>
                 ) : (
                   <>
-                    {progressivo ? TEXTOS_DO_MODAL_PROGRESSIVO.botao : "QUERO UM APP PERSONALIZADO!"}
+                    {progressivo ? TEXTOS_DO_MODAL_PROGRESSIVO.botao : "Quero meu app"}
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}
@@ -405,10 +407,6 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
 
             <AvisoPrivacidade variante="escuro" />
 
-            <p className="text-center text-gray-500 text-xs flex items-center justify-center gap-1.5">
-              <Shield className="w-3.5 h-3.5" />
-              Seus dados estão seguros e não serão compartilhados
-            </p>
           </form>
         </div>
       </div>

@@ -40,12 +40,12 @@ const DO_ZERO_ORIGIN_DESC = "LP Assinatura do Zero - Guia Clube";
 // do dono ali nascia de uma economia de fricção que o formulário único encerrou — e
 // enchia o Contact.Name do Ploomes com o nome da pessoa no lugar do da casa.
 const formFields = [
-  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text" },
-  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel" },
+  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text", autoComplete: "name" },
+  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel", autoComplete: "tel-national" },
   // E-mail OPCIONAL e sem promessa de entrega: o guia é baixado na tela seguinte, não
   // enviado. OPCIONAL COM MOTIVO, não "opcional" seco — é o formato que mede 95,9% de
   // preenchimento aqui; sem o motivo a taxa cai.
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text", autoComplete: "organization" },
 ];
 
 export function GuiaForm() {
@@ -161,6 +161,7 @@ export function GuiaForm() {
                 id={`${idFormulario}-${field.name}`}
                 type={field.type}
                 name={field.name}
+                autoComplete={field.autoComplete}
                 value={formData[field.name as keyof typeof formData]}
                 onChange={handleInputChange}
                 placeholder={field.placeholder}

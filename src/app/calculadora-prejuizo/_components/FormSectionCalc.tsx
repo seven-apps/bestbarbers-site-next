@@ -14,9 +14,9 @@ import { PUBLICOS } from "./benchmarks";
 // dentro do <PerguntasQualificacao>: formulário único em todas as portas
 // (André, 14/Set/26). As opções saíram daqui e moram em `@/lib/lead-score`.
 const formFields = [
-  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text" },
-  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel" },
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text" },
+  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text", autoComplete: "name" },
+  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel", autoComplete: "tel-national" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text", autoComplete: "organization" },
 ];
 
 function getFormHeading(utmContent: string | null) {
@@ -223,6 +223,7 @@ export function FormSectionCalc() {
                   id={`${idFormulario}-${field.name}`}
                   type={field.type}
                   name={field.name}
+                  autoComplete={field.autoComplete}
                   value={formData[field.name as keyof typeof formData]}
                   onChange={handleInputChange}
                   placeholder={field.placeholder}

@@ -184,7 +184,7 @@ export function FormularioCurso() {
             </button>
           </div>
 
-          <AvisoPrivacidade />
+          <AvisoPrivacidade comEmail />
         </form>
       </div>
     </div>

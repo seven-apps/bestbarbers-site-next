@@ -23,9 +23,9 @@ interface FormSectionProps {
 // Perguntas 1 a 4 — contato. As 5 a 8 vêm do <PerguntasQualificacao> (formulário
 // único, André 14/Set/26). Ordem decidida: dono → WhatsApp → e-mail → barbearia.
 const formFields = [
-  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text" },
-  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel" },
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text" },
+  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text", autoComplete: "name" },
+  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel", autoComplete: "tel-national" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text", autoComplete: "organization" },
 ];
 
 const trustBadges = [
@@ -176,6 +176,7 @@ export function FormSection({
                   id={`form-section-${field.name}`}
                   type={field.type}
                   name={field.name}
+                autoComplete={field.autoComplete}
                   value={formData[field.name as keyof typeof formData]}
                   onChange={handleInputChange}
                   placeholder={field.placeholder}

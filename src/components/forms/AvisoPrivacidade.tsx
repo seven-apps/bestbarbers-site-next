@@ -8,7 +8,13 @@ import Link from "next/link";
  * voltar, muda-se UMA linha e as dez portas mudam juntas.
  */
 export const TEXTO_AVISO_PRIVACIDADE =
-  "Ao enviar, você autoriza a BestBarbers a falar com você por WhatsApp e e-mail.";
+  "Seus dados ficam seguros. Ao enviar, você autoriza a BestBarbers a falar com você pelo WhatsApp.";
+/**
+ * Formulário v3 (27/Out/26): o e-mail saiu do formulário, então o aviso fala só de WhatsApp e absorve a linha
+ * "Seus dados estão seguros" que vinha embaixo. A página do curso continua pedindo e usando e-mail: ela passa `comEmail`.
+ */
+export const TEXTO_AVISO_PRIVACIDADE_COM_EMAIL =
+  "Seus dados ficam seguros. Ao enviar, você autoriza a BestBarbers a falar com você por WhatsApp e e-mail.";
 
 export const ROTA_POLITICA_PRIVACIDADE = "/politica-de-privacidade";
 
@@ -29,12 +35,15 @@ interface AvisoPrivacidadeProps {
    * Padrão `false`: nenhuma das dez portas que já usam este componente muda.
    */
   somenteLink?: boolean;
+  /** A página pede e usa e-mail (o curso): o aviso cita o e-mail também. */
+  comEmail?: boolean;
   className?: string;
 }
 
 export function AvisoPrivacidade({
   variante = "claro",
   somenteLink = false,
+  comEmail = false,
   className = "",
 }: AvisoPrivacidadeProps) {
   const cor = variante === "claro" ? "rgba(30,30,30,0.6)" : "rgba(255,255,255,0.45)";
@@ -63,7 +72,7 @@ export function AvisoPrivacidade({
       className={`text-center text-[11px] leading-[16px] mt-3 ${className}`}
       style={{ color: cor, fontFamily: "var(--font-montserrat)" }}
     >
-      {TEXTO_AVISO_PRIVACIDADE}{" "}
+      {comEmail ? TEXTO_AVISO_PRIVACIDADE_COM_EMAIL : TEXTO_AVISO_PRIVACIDADE}{" "}
       <Link
         href={ROTA_POLITICA_PRIVACIDADE}
         target="_blank"

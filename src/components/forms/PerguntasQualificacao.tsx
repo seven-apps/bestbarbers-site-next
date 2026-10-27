@@ -63,7 +63,8 @@ const TEMA: Record<VarianteQualificacao, {
   escuro: {
     rotulo: "rgba(255,255,255,0.9)",
     fundo: "rgba(255,255,255,0.04)",
-    borda: "rgba(255,255,255,0.14)",
+    // Borda mais clara no escuro (27/Out/26): o campo escuro sobre o fundo escuro sumia.
+    borda: "rgba(255,255,255,0.26)",
     texto: "#ffffff",
     erro: "#f87171",
     fundoAtivo: "#ebad04",
