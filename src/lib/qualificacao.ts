@@ -11,7 +11,7 @@
  */
 
 export const MSG_EQUIPE = 'Diga quantas pessoas trabalham na barbearia';
-export const MSG_QUANDO = 'Diga quando você quer começar';
+export const MSG_QUANDO = 'Diga quando você quer implementar';
 
 /** Formulário v2 (até 27/Out/26) — não são mais exigidas. */
 export const MSG_FATURAMENTO = 'Faturamento médio é obrigatório';

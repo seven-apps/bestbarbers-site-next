@@ -59,6 +59,18 @@ export type Quando = (typeof QUANDO_OPCOES)[number];
 export const QUANDO_QUENTE: Quando = "Este mês";
 
 /**
+ * Como o "quando" aparece na TELA (André, 27/Out/26, revisão no celular): a pergunta vira "Quando você quer implementar
+ * a BestBarbers na sua barbearia?" e as respostas sobem de intenção, de cima para baixo, uma por linha. O VALOR gravado
+ * no CRM não muda (`QUANDO_OPCOES`, as opções do `bb_quando`): só o rótulo e a ordem.
+ */
+export const QUANDO_NA_TELA: readonly Quando[] = ["Só estou conhecendo", "Nos próximos 3 meses", "Este mês"];
+export const ROTULOS_QUANDO: Record<Quando, string> = {
+  "Só estou conhecendo": "Quero conhecer melhor primeiro",
+  "Nos próximos 3 meses": "Nos próximos 3 meses",
+  "Este mês": "Quero implementar agora",
+};
+
+/**
  * Equipe em 1 toque. O VALOR gravado usa o vocabulário que o CRM e os leitores já conhecem
  * ("2 a 4 colaboradores"); o rótulo na tela é curto (`ROTULOS_EQUIPE_V3`).
  */

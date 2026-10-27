@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * PERGUNTAS DE QUALIFICAÇÃO do formulário — equipe · quando quer começar (formulário v3, 27/Out/26).
+ * PERGUNTAS DE QUALIFICAÇÃO do formulário — equipe · quando quer implementar (formulário v3, 27/Out/26).
  *
  * Porta do lead v3 (André e João, 27/Out/26; bestbarbers-ai/docs/operacional/porta-do-lead-v3-plano.md): o
  * formulário fica com nome, WhatsApp, barbearia e estas DUAS perguntas de 1 toque. Faturamento, sistema e clube
@@ -17,7 +17,7 @@
  */
 
 import { useId, type ChangeEvent, type CSSProperties } from "react";
-import { EQUIPE_OPCOES_V3, QUANDO_OPCOES, ROTULOS_EQUIPE_V3 } from "@/lib/lead-score";
+import { EQUIPE_OPCOES_V3, QUANDO_NA_TELA, ROTULOS_EQUIPE_V3, ROTULOS_QUANDO } from "@/lib/lead-score";
 import { MSG_EQUIPE, MSG_QUANDO, type ErrosQualificacao } from "@/lib/qualificacao";
 
 export interface ValoresQualificacao {
@@ -101,8 +101,10 @@ export function PerguntasQualificacao({
     rotuloDaOpcao?: (opcao: string) => string;
     mensagemErro: string;
     temErro: boolean;
+    /** 1 = LISTA (uma opção por linha, com a bolinha à esquerda): para rótulos longos, que no celular quebrariam em 3 linhas. */
     colunas: number;
   }) => {
+    const lista = colunas === 1;
     const id = `${prefixo}-${campo}`;
     return (
       <fieldset
@@ -126,7 +128,11 @@ export function PerguntasQualificacao({
             return (
               <label
                 key={opcao}
-                className="flex items-center justify-center text-center rounded-xl px-2 py-3 font-semibold text-[14px] leading-[18px] cursor-pointer transition-all duration-200 select-none focus-within:outline-none"
+                className={
+                  lista
+                    ? "flex items-center gap-3 text-left rounded-xl px-4 py-3.5 font-semibold text-[15px] leading-[20px] cursor-pointer transition-all duration-200 select-none focus-within:outline-none"
+                    : "flex items-center justify-center text-center rounded-xl px-2 py-3 font-semibold text-[14px] leading-[18px] cursor-pointer transition-all duration-200 select-none focus-within:outline-none"
+                }
                 style={estilo}
                 onFocusCapture={(e) => { e.currentTarget.style.boxShadow = `0 0 0 3px ${DOURADO}33`; }}
                 onBlurCapture={(e) => { e.currentTarget.style.boxShadow = "none"; }}
@@ -140,7 +146,20 @@ export function PerguntasQualificacao({
                   required
                   className="sr-only"
                 />
-                {rotuloDaOpcao ? rotuloDaOpcao(opcao) : opcao}
+                {lista && (
+                  <span
+                    aria-hidden="true"
+                    className="flex-none rounded-full flex items-center justify-center"
+                    style={{
+                      width: 18,
+                      height: 18,
+                      border: `2px solid ${ativo ? tema.textoAtivo : tema.borda}`,
+                    }}
+                  >
+                    {ativo && <span className="rounded-full" style={{ width: 8, height: 8, background: tema.textoAtivo }} />}
+                  </span>
+                )}
+                <span className="min-w-0">{rotuloDaOpcao ? rotuloDaOpcao(opcao) : opcao}</span>
               </label>
             );
           })}
@@ -169,11 +188,12 @@ export function PerguntasQualificacao({
     }),
     grupo({
       campo: "startWhen",
-      rotulo: "Quando você quer começar?",
-      opcoes: QUANDO_OPCOES,
+      rotulo: "Quando você quer implementar a BestBarbers na sua barbearia?",
+      opcoes: QUANDO_NA_TELA,
+      rotuloDaOpcao: (o) => ROTULOS_QUANDO[o as keyof typeof ROTULOS_QUANDO] ?? o,
       mensagemErro: MSG_QUANDO,
       temErro: Boolean(erros.startWhen),
-      colunas: 3,
+      colunas: 1,
     }),
   ];
 
