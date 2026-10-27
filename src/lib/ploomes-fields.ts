@@ -50,7 +50,19 @@ export const PLOOMES_CONTACT_FIELDS = {
 export const PLOOMES_CONTACT_OPTION_FIELDS = {
   bb_clube:   'contact_3096505C-EF47-409E-ABF9-C57B93CF3B45',
   bb_sistema: 'contact_13FDA381-E6D5-42ED-9379-D97E2A5CCFAA',
+  /** Formulário v3 (27/Out/26): "Quando quer começar?" (FieldId 120017016, tabela 12003188). */
+  bb_quando:  'contact_C7B3BB78-461C-43B6-A9BB-641C523D473D',
 } as const;
+
+/**
+ * Id da opção de `bb_quando` (tabela 12003188), criada em 27/Out/26 por
+ * bestbarbers-ai/scripts/ploomes/setup-fields-quando.ts. Textos = `QUANDO_OPCOES` de src/lib/lead-score.ts.
+ */
+export const PLOOMES_OPCOES_QUANDO: Record<string, number> = {
+  'Este mês': 1200427120,
+  'Nos próximos 3 meses': 1200427121,
+  'Só estou conhecendo': 1200427122,
+};
 
 /** Id da opção de `bb_clube` (tabela 12002995). */
 export const PLOOMES_OPCOES_CLUBE: Record<string, number> = {

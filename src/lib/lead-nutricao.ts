@@ -39,6 +39,21 @@ export function abaixoDoCorte(nota: number | null | undefined): boolean {
   return typeof nota === "number" && Number.isFinite(nota) && Math.trunc(nota) < CORTE_NOTA_LUCAS;
 }
 
+/** A resposta do "quando" que vai direto ao SDR (espelho de `QUANDO_QUENTE` em src/lib/lead-score.ts). */
+const QUANDO_QUENTE = "Este mês";
+const QUANDO_OPCOES: readonly string[] = ["Este mês", "Nos próximos 3 meses", "Só estou conhecendo"];
+
+/**
+ * O lead vai ao Lucas? Formulário v3 (porta do lead, 27/Out/26): decide o "quando" — "Este mês" vai ao SDR, o resto
+ * ao Lucas (quem não escrever em 5 min passa ao SDR pelo OS). Sem "quando": a régua antiga, nota abaixo de 60.
+ * Mesma regra de `vaiAoLucas` em bestbarbers-ai/lib/integrations/ploomes-fields.ts.
+ */
+export function vaiAoLucas(input: { quando?: string | null; nota: number | null | undefined }): boolean {
+  const quando = (input.quando ?? "").trim();
+  if (QUANDO_OPCOES.includes(quando)) return quando !== QUANDO_QUENTE;
+  return abaixoDoCorte(input.nota);
+}
+
 /** Só dígitos, e só no formato 55 + DDD + número. Fora disso é "sem número" (string vazia). */
 export function numeroValidoDoLucas(numero: string): string {
   const digitos = numero.replace(/\D/g, "");
@@ -56,9 +71,11 @@ export function caminhoDoLead(input: {
   telefoneExiste: boolean;
   nota: number | null | undefined;
   numeroLucas: string;
+  /** Formulário v3: "Quando quer começar?". Presente, decide no lugar da nota. */
+  quando?: string | null;
 }): CaminhoDoLead {
   if (input.telefoneExiste) return "recadastro";
-  if (abaixoDoCorte(input.nota) && numeroValidoDoLucas(input.numeroLucas)) return "lucas";
+  if (vaiAoLucas({ quando: input.quando, nota: input.nota }) && numeroValidoDoLucas(input.numeroLucas)) return "lucas";
   return "sdr";
 }
 
@@ -66,8 +83,8 @@ export function caminhoDoLead(input: {
  * O recadastro pede a Nutrição? Nota < 60 e o desvio ligado (número válido do Lucas). As exceções
  * (venda aberta no Fechamento, falha) são do OS, que devolve onde o card ficou.
  */
-export function pedeNutricaoNoRecadastro(input: { nota: number | null | undefined; numeroLucas: string }): boolean {
-  return abaixoDoCorte(input.nota) && numeroValidoDoLucas(input.numeroLucas) !== "";
+export function pedeNutricaoNoRecadastro(input: { nota: number | null | undefined; numeroLucas: string; quando?: string | null }): boolean {
+  return vaiAoLucas({ quando: input.quando, nota: input.nota }) && numeroValidoDoLucas(input.numeroLucas) !== "";
 }
 
 /** O card do recadastro está no pipe do Lucas? Então o lead vai ao WhatsApp dele com este código. */
@@ -92,6 +109,8 @@ export interface CorpoNutricao {
     colaboradores?: string;
     clube?: string;
     sistema?: string;
+    /** Formulário v3: "Quando quer começar?" → `bb_quando` do card (decide a rota no OS). */
+    quando?: string;
     leadScore: number;
     atribuicao: LeadAttributionFields;
   };
@@ -110,6 +129,7 @@ export function corpoDaNutricao(input: {
   colaboradores?: string;
   clube?: string;
   sistema?: string;
+  quando?: string;
 }): CorpoNutricao {
   const { OriginId, ...contato } = input.contato;
   return {
@@ -120,6 +140,7 @@ export function corpoDaNutricao(input: {
       ...(input.colaboradores ? { colaboradores: input.colaboradores } : {}),
       ...(input.clube ? { clube: input.clube } : {}),
       ...(input.sistema ? { sistema: input.sistema } : {}),
+      ...(input.quando ? { quando: input.quando } : {}),
       leadScore: Math.trunc(input.nota),
       atribuicao: input.atribuicao.fields,
     },

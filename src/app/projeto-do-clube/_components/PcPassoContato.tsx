@@ -110,16 +110,7 @@ const CAMPOS: readonly CampoSpec[] = [
     inputMode: "tel",
     obrigatorio: true,
   },
-  {
-    nome: "email",
-    rotulo: "Seu e-mail (opcional)",
-    ajuda: "Apenas para quem quiser receber o resumo por esse canal.",
-    tipo: "email",
-    placeholder: "Ex: joao@email.com",
-    autoComplete: "email",
-    inputMode: "email",
-    obrigatorio: false,
-  },
+  // Formulário v3 (27/Out/26): o e-mail opcional saiu da tela (nome, WhatsApp, barbearia, equipe e "quando").
   {
     nome: "barbershopName",
     rotulo: "Nome da barbearia",

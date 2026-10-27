@@ -21,15 +21,21 @@ import { DESVIO_NOTA_60_LIGADO, MENSAGEM_PADRAO_LUCAS, MENSAGENS_LUCAS, NUMERO_W
 import { cupomDaUrl, mensagemLucasDoCupom } from '@/lib/cupom-parceiro';
 import { MSG_EMAIL_OBRIGATORIO, validarEmailOpcional } from '@/lib/form-passo1';
 import { montarCadastroConcluido, type CadastroConcluido, type CaminhoFeito } from '@/lib/cadastro-concluido';
-import { calcularScoreV2, interesseLegado, temEquipe } from '@/lib/lead-score';
-import { MSG_CLUBE, MSG_FATURAMENTO, MSG_PROFISSIONAIS, MSG_SISTEMA } from '@/lib/qualificacao';
+import { calcularScoreV3, interesseLegado, temEquipe } from '@/lib/lead-score';
+import { MSG_EQUIPE, MSG_QUANDO } from '@/lib/qualificacao';
 import { portaDoLead } from '@/lib/tracking/porta';
 import { varianteVista } from '@/lib/ab-clube';
 
 export type { CadastroConcluido } from '@/lib/cadastro-concluido';
 
 /**
- * Formulário ÚNICO de 8 perguntas (André, 14/Set/26): dono · WhatsApp · e-mail
+ * FORMULÁRIO v3 — porta do lead (André e João, 27/Out/26; bestbarbers-ai/docs/operacional/porta-do-lead-v3-plano.md):
+ * dono · WhatsApp · barbearia · equipe (1 toque) · quando quer começar (1 toque). O e-mail segue opcional (só o curso
+ * exige). Faturamento, sistema e clube SAÍRAM da tela: os campos continuam no tipo porque páginas como o projeto do
+ * clube pré-preenchem o clube pela situação da página, e quem preencher continua gravando no CRM. A ROTA do lead sai
+ * do "quando": "Este mês" vai direto ao SDR; o resto vai ao WhatsApp do Lucas (lib/lead-nutricao.ts).
+ *
+ * Histórico — formulário ÚNICO de 8 perguntas (André, 14/Set/26): dono · WhatsApp · e-mail
  * (opcional) · barbearia · faturamento · sistema · clube · profissionais.
  *
  * `interestedTool` ("qual ferramenta mais te interessa") SAIU: a pergunta 7 (clube)
@@ -49,6 +55,8 @@ export interface FormData {
   clubStatus: string;
   /** Pergunta 6 — sistema usado hoje (lista fechada; "Utilizo outro" cobre o resto). */
   currentSystem: string;
+  /** Formulário v3 — "Quando quer começar?" (`QUANDO_OPCOES`). Decide a rota do lead. */
+  startWhen: string;
 }
 
 export interface UseLeadFormOptions {
@@ -117,7 +125,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     monthlyRevenue: '',
     employeeCount: '',
     clubStatus: '',
-    currentSystem: ''
+    currentSystem: '',
+    startWhen: ''
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -209,20 +218,13 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     if (!isValidPhone(formData.whatsapp)) {
       return 'WhatsApp deve ter formato válido';
     }
-    // Perguntas 5 a 8 obrigatórias em TODAS as portas (André, 14/Set/26) — antes o
-    // faturamento era opt-in por LP (`requireMonthlyRevenue`) e quem esquecia a flag
-    // deixava o lead entrar sem a resposta que mais pesa no score, em silêncio.
-    if (!formData.monthlyRevenue?.trim()) {
-      return MSG_FATURAMENTO;
-    }
-    if (!formData.currentSystem?.trim()) {
-      return MSG_SISTEMA;
-    }
-    if (!formData.clubStatus?.trim()) {
-      return MSG_CLUBE;
-    }
+    // Formulário v3 (27/Out/26): as DUAS perguntas de 1 toque são obrigatórias em todas as portas.
+    // O "quando" decide a rota do lead; sem ele não há para onde mandar.
     if (!formData.employeeCount?.trim()) {
-      return MSG_PROFISSIONAIS;
+      return MSG_EQUIPE;
+    }
+    if (!formData.startWhen?.trim()) {
+      return MSG_QUANDO;
     }
     return null;
   }, [formData, isValidPhone, emailObrigatorio]);
@@ -259,15 +261,12 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         ? cachedDedup
         : await resolveDedup(formData.whatsapp);
 
-      // 2. LEAD SCORE v2 — a fórmula vive em src/lib/lead-score.ts (com teste), não aqui.
-      // Devolve `null` quando falta faturamento, clube ou profissionais: ausência de
-      // resposta NUNCA vira 0, porque 0 é uma nota válida da escala e confundir as duas
-      // coisas transformaria "não respondeu" em "respondeu mal" em todo leitor do CRM.
-      const leadScore = calcularScoreV2({
-        faturamento: formData.monthlyRevenue,
-        clube: formData.clubStatus,
-        profissionais: formData.employeeCount,
-        sistema: formData.currentSystem,
+      // 2. LEAD SCORE v3 (27/Out/26) — a fórmula vive em src/lib/lead-score.ts (com teste), não aqui:
+      // "quando" (Este mês = 70, o piso do ICP) + equipe. Devolve `null` sem o "quando": ausência de
+      // resposta NUNCA vira 0. O número vai no mesmo `bb_lead_score` e no mesmo `[SCORE: n]`.
+      const leadScore = calcularScoreV3({
+        quando: formData.startWhen,
+        equipe: formData.employeeCount,
       });
       // `[Interesse: ...]` do CRM e `interested_tool` das tags: traduzidos da pergunta 7.
       const interestedTool = interesseLegado(formData.clubStatus);
@@ -362,6 +361,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
             interested_tool: interestedTool,
             club_status: formData.clubStatus,
             current_system: formData.currentSystem,
+            // Formulário v3: o "quando" (decide a rota do lead).
+            start_when: formData.startWhen,
             lead_score: leadScore,
             lp_version: source,
             // Braço do A/B de página (`lib/ab-clube.ts`), o mesmo que vai no `bb_lp_version`
@@ -388,17 +389,19 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         whatsapp: formData.whatsapp,
         monthlyRevenue: formData.monthlyRevenue || undefined,
         employeeCount: formData.employeeCount,
-        clubStatus: formData.clubStatus,
-        currentSystem: formData.currentSystem,
+        clubStatus: formData.clubStatus || undefined,
+        currentSystem: formData.currentSystem || undefined,
+        startWhen: formData.startWhen || undefined,
         // `undefined` = a LP não calculou score → o campo do CRM fica VAZIO, nunca 0.
         leadScore: leadScore ?? undefined,
         leadEventId,
       };
       // Três caminhos (src/lib/lead-nutricao.ts): telefone conhecido → recadastro; contato novo
-      // com nota < 60 → tenta o Lucas (ADR-035, 06/Out/26); o resto → o caminho de sempre.
+      // que NÃO marcou "Este mês" → tenta o Lucas (porta do lead v3, 27/Out/26; o OS passa ao SDR
+      // quem não escrever em 5 min); "Este mês" → o caminho de sempre, direto ao rodízio do SDR.
       // Desvio desligado = número vazio: o lead < 60 segue o caminho de sempre.
       const numeroLucas = DESVIO_NOTA_60_LIGADO ? NUMERO_WHATSAPP_LUCAS : '';
-      const caminho = caminhoDoLead({ telefoneExiste: dedup.exists, nota: leadScore, numeroLucas });
+      const caminho = caminhoDoLead({ telefoneExiste: dedup.exists, nota: leadScore, numeroLucas, quando: formData.startWhen });
       // Card criado no pipe de nutrição: o lead vai para o WhatsApp do Lucas no fim do submit.
       let dealIdLucas: number | null = null;
       // O que de fato rodou, para o `onSuccess` (`CadastroConcluido`): o curso inscreve com isso.
@@ -418,12 +421,13 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
           colaboradores: formData.employeeCount || undefined,
           clube: formData.clubStatus || undefined,
           sistema: formData.currentSystem || undefined,
+          quando: formData.startWhen || undefined,
           // Sem isto o e-mail digitado num recadastro morria no caminho (o contato já
           // existe, então ninguém escrevia o campo). O backend só PREENCHE contato sem
           // e-mail — nunca sobrescreve o que o CRM já tem.
           email: ploomesData.email,
           // Recadastro < 60 também vai ao Lucas (emenda de 10/Out/26 ao ADR-035): o OS decide o pipe.
-          nutricao: pedeNutricaoNoRecadastro({ nota: leadScore, numeroLucas }),
+          nutricao: pedeNutricaoNoRecadastro({ nota: leadScore, numeroLucas, quando: formData.startWhen }),
         });
 
         if (!recadastro.ok) {
@@ -448,8 +452,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
               corpoDaNutricao({
                 contato: buildContactPayload(ploomesData),
                 atribuicao: buildAttribution(ploomesData),
-                // `lucas` só nasce com nota numérica abaixo do corte (caminhoDoLead).
+                // `lucas` só nasce com o "quando" respondido (nota v3 sempre numérica) ou nota < 60 (caminhoDoLead).
                 nota: leadScore as number,
+                quando: formData.startWhen || undefined,
                 faturamento: formData.monthlyRevenue || undefined,
                 colaboradores: formData.employeeCount || undefined,
                 clube: formData.clubStatus || undefined,
@@ -552,6 +557,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
         interested_tool: interestedTool,
         club_status: formData.clubStatus,
         current_system: formData.currentSystem,
+        start_when: formData.startWhen,
         // Booleano ao lado do `employee_count` cru: torna o filtro do Events Manager trivial
         // e permite ler o A/B por SEGMENTO (quanto do 'Lead' de cada célula tinha equipe),
         // não só pela contagem do evento novo. Vai em TODOS os eventos, inclusive `false`.
@@ -682,7 +688,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       monthlyRevenue: '',
       employeeCount: '',
       clubStatus: '',
-      currentSystem: ''
+      currentSystem: '',
+      startWhen: ''
     });
     setSubmitError(null);
   }, []);

@@ -1,45 +1,28 @@
 "use client";
 
 /**
- * PERGUNTAS 5 a 8 do formulário — faturamento · sistema atual · clube · profissionais.
+ * PERGUNTAS DE QUALIFICAÇÃO do formulário — equipe · quando quer começar (formulário v3, 27/Out/26).
  *
- * Fonte ÚNICA das quatro perguntas em TODAS as portas (decisão do André, 14/Set/26:
- * o formulário é igual em todo lugar). Antes cada LP carregava a sua cópia dos
- * `<select>`, e as opções derivavam umas das outras até o score deixar de comparar.
- * As opções vêm de `@/lib/lead-score` — o MESMO módulo que pontua —, então uma opção
- * nova nunca pode existir na tela sem existir na régua.
+ * Porta do lead v3 (André e João, 27/Out/26; bestbarbers-ai/docs/operacional/porta-do-lead-v3-plano.md): o
+ * formulário fica com nome, WhatsApp, barbearia e estas DUAS perguntas de 1 toque. Faturamento, sistema e clube
+ * saíram (o SDR e o Lucas perguntam na conversa). O "quando" decide a rota: "Este mês" vai direto ao SDR; o resto
+ * vai ao WhatsApp do Lucas.
  *
- * As quatro perguntas usam o MESMO seletor (André, 14/Set/26: "quero a pergunta do clube
- * igual os demais seletores"). A versão anterior trazia a 7 em cartões de rádio e foi
- * reprovada por ele. Ressalva que fica registrada: duas opções da 7 começam com a mesma
- * frase ("Já tenho o clube de assinaturas…") e a diferença mora no fim — num `<select>`
- * estreito o fim é o que some. Se isso aparecer na prática, a saída é encurtar o RÓTULO
- * mantendo o valor gravado, nunca voltar ao cartão sem ele pedir.
+ * Fonte ÚNICA das perguntas em TODAS as portas (decisão de 14/Set/26 que continua valendo: o formulário é igual em
+ * todo lugar). As opções vêm de `@/lib/lead-score` — o MESMO módulo que pontua.
  *
- * Emite eventos de mudança nativos (`name`/`value`), então o `handleInputChange` do
- * `useLeadForm` continua sendo o único dono do estado.
+ * Cada opção é um `<input type="radio">` de verdade com o rótulo pintado de botão: o `onChange` nativo entrega
+ * `name`/`value`, então o `handleInputChange` do `useLeadForm` continua sendo o único dono do estado, e o teclado e
+ * o leitor de tela funcionam sem código a mais.
  */
 
 import { useId, type ChangeEvent, type CSSProperties } from "react";
-import {
-  CLUBE_OPCOES,
-  FATURAMENTO_OPCOES,
-  PROFISSIONAIS_OPCOES,
-  SISTEMA_OPCOES,
-} from "@/lib/lead-score";
-import {
-  MSG_CLUBE,
-  MSG_FATURAMENTO,
-  MSG_PROFISSIONAIS,
-  MSG_SISTEMA,
-  type ErrosQualificacao,
-} from "@/lib/qualificacao";
+import { EQUIPE_OPCOES_V3, QUANDO_OPCOES, ROTULOS_EQUIPE_V3 } from "@/lib/lead-score";
+import { MSG_EQUIPE, MSG_QUANDO, type ErrosQualificacao } from "@/lib/qualificacao";
 
 export interface ValoresQualificacao {
-  monthlyRevenue: string;
-  currentSystem: string;
-  clubStatus: string;
   employeeCount: string;
+  startWhen: string;
 }
 
 /** Cartão branco das LPs (v12, guias, calculadoras) × cartão escuro (modal, /v4, /parceiros). */
@@ -52,11 +35,7 @@ export interface PerguntasQualificacaoProps {
   variante?: VarianteQualificacao;
   /** Classe do contêiner — os formulários usam para herdar o espaçamento do `<form>`. */
   className?: string;
-  /**
-   * Quantas das quatro perguntas mostrar, na ordem fixa (faturamento → sistema → clube →
-   * profissionais). Só o formulário progressivo do modal passa isto (`lib/form-progressivo.ts`);
-   * sem a prop saem as quatro, como em todos os outros formulários.
-   */
+  /** Quantas das perguntas mostrar, na ordem fixa (equipe → quando). Sem a prop saem as duas. */
   quantas?: number;
   /** Classe de cada pergunta — o formulário progressivo usa para animar a entrada. */
   classeItem?: string;
@@ -64,30 +43,30 @@ export interface PerguntasQualificacaoProps {
 
 const TEMA: Record<VarianteQualificacao, {
   rotulo: string;
-  ajuda: string;
   fundo: string;
   borda: string;
   texto: string;
   erro: string;
-  fundoOpcao: string;
+  fundoAtivo: string;
+  textoAtivo: string;
 }> = {
   claro: {
     rotulo: "#1e1e1e",
-    ajuda: "rgba(30,30,30,0.6)",
     fundo: "#f5f5f5",
     borda: "#e0e0e0",
     texto: "#1e1e1e",
     erro: "#dc2626",
-    fundoOpcao: "#ffffff",
+    fundoAtivo: "#1e1e1e",
+    textoAtivo: "#ffffff",
   },
   escuro: {
     rotulo: "rgba(255,255,255,0.9)",
-    ajuda: "rgba(255,255,255,0.45)",
     fundo: "rgba(255,255,255,0.04)",
     borda: "rgba(255,255,255,0.14)",
     texto: "#ffffff",
     erro: "#f87171",
-    fundoOpcao: "#1a1d25",
+    fundoAtivo: "#ebad04",
+    textoAtivo: "#1a1d25",
   },
 };
 
@@ -100,129 +79,101 @@ export function PerguntasQualificacao({
   erros = {},
   variante = "claro",
   className = "space-y-4",
-  quantas = 4,
+  quantas = 2,
   classeItem = "",
 }: PerguntasQualificacaoProps) {
   const tema = TEMA[variante];
   const prefixo = useId();
 
-  const estiloRotulo: CSSProperties = {
-    color: tema.rotulo,
-    fontFamily: FONTE,
-  };
-  const estiloAjuda: CSSProperties = {
-    color: tema.ajuda,
-    fontFamily: FONTE,
-  };
-
-  const estiloCampo = (temErro: boolean): CSSProperties => ({
-    background: tema.fundo,
-    border: `1.5px solid ${temErro ? tema.erro : tema.borda}`,
-    color: tema.texto,
-    fontFamily: FONTE,
-  });
-
-  /**
-   * FUNÇÃO, não componente: declarar um componente dentro do render faria o React
-   * ver um tipo novo a cada tecla digitada e remontar o `<select>`, perdendo o foco.
-   * Chamada direta devolve o mesmo elemento sem trocar a identidade da árvore.
-   */
-  const campoSelecao = ({
+  /** FUNÇÃO, não componente: declarar componente dentro do render remontaria os inputs a cada tecla. */
+  const grupo = ({
     campo,
     rotulo,
-    ajuda,
     opcoes,
+    rotuloDaOpcao,
     mensagemErro,
     temErro,
+    colunas,
   }: {
     campo: keyof ValoresQualificacao;
     rotulo: string;
-    ajuda?: string;
     opcoes: readonly string[];
+    rotuloDaOpcao?: (opcao: string) => string;
     mensagemErro: string;
     temErro: boolean;
+    colunas: number;
   }) => {
     const id = `${prefixo}-${campo}`;
     return (
-      <div key={campo} className={`space-y-1.5 ${classeItem}`.trim()}>
-        <label htmlFor={id} className="block font-semibold text-[13px] leading-[20px]" style={estiloRotulo}>
+      <fieldset
+        key={campo}
+        className={`space-y-2 ${classeItem}`.trim()}
+        aria-invalid={temErro || undefined}
+        aria-describedby={temErro ? `${id}-erro` : undefined}
+      >
+        <legend className="block font-semibold text-[13px] leading-[20px] mb-2" style={{ color: tema.rotulo, fontFamily: FONTE }}>
           {rotulo}
-        </label>
-        {ajuda && (
-          <p className="text-[12px] leading-[16px]" style={estiloAjuda}>
-            {ajuda}
-          </p>
-        )}
-        <select
-          id={id}
-          name={campo}
-          value={valores[campo]}
-          onChange={onChange}
-          required
-          aria-invalid={temErro || undefined}
-          aria-describedby={temErro ? `${id}-erro` : undefined}
-          className="w-full rounded-xl px-4 py-3.5 font-medium text-[15px] transition-all duration-200 appearance-none cursor-pointer outline-none"
-          style={estiloCampo(temErro)}
-          onFocus={(e) => {
-            e.currentTarget.style.borderColor = DOURADO;
-            e.currentTarget.style.boxShadow = "0 0 0 3px rgba(235,173,4,0.15)";
-          }}
-          onBlur={(e) => {
-            e.currentTarget.style.borderColor = temErro ? tema.erro : tema.borda;
-            e.currentTarget.style.boxShadow = "none";
-          }}
-        >
-          <option value="" disabled style={{ background: tema.fundoOpcao, color: tema.texto }}>
-            Selecione
-          </option>
-          {opcoes.map((opcao) => (
-            <option key={opcao} value={opcao} style={{ background: tema.fundoOpcao, color: tema.texto }}>
-              {opcao}
-            </option>
-          ))}
-        </select>
+        </legend>
+        <div className="grid gap-2" style={{ gridTemplateColumns: `repeat(${colunas}, minmax(0, 1fr))` }}>
+          {opcoes.map((opcao) => {
+            const ativo = valores[campo] === opcao;
+            const estilo: CSSProperties = {
+              background: ativo ? tema.fundoAtivo : tema.fundo,
+              color: ativo ? tema.textoAtivo : tema.texto,
+              border: `1.5px solid ${ativo ? tema.fundoAtivo : temErro ? tema.erro : tema.borda}`,
+              fontFamily: FONTE,
+            };
+            return (
+              <label
+                key={opcao}
+                className="flex items-center justify-center text-center rounded-xl px-2 py-3 font-semibold text-[14px] leading-[18px] cursor-pointer transition-all duration-200 select-none focus-within:outline-none"
+                style={estilo}
+                onFocusCapture={(e) => { e.currentTarget.style.boxShadow = `0 0 0 3px ${DOURADO}33`; }}
+                onBlurCapture={(e) => { e.currentTarget.style.boxShadow = "none"; }}
+              >
+                <input
+                  type="radio"
+                  name={campo}
+                  value={opcao}
+                  checked={ativo}
+                  onChange={onChange}
+                  required
+                  className="sr-only"
+                />
+                {rotuloDaOpcao ? rotuloDaOpcao(opcao) : opcao}
+              </label>
+            );
+          })}
+        </div>
         {temErro && (
           <p id={`${id}-erro`} className="text-xs font-medium" style={{ color: tema.erro, fontFamily: FONTE }}>
             {mensagemErro}
           </p>
         )}
-      </div>
+      </fieldset>
     );
   };
 
-  // Nenhuma pergunta na tela = nenhum contêiner: um `<div>` vazio ainda ocuparia o
-  // espaçamento do `<form>` (space-y) e deixaria um buraco acima do botão.
+  // Nenhuma pergunta na tela = nenhum contêiner (um `<div>` vazio ainda ocuparia o espaçamento do `<form>`).
   if (quantas <= 0) return null;
 
   const perguntas = [
-    campoSelecao({
-      campo: "monthlyRevenue",
-      rotulo: "Qual o faturamento médio da sua barbearia?",
-      ajuda: "Por mês, somando todos os profissionais",
-      opcoes: FATURAMENTO_OPCOES,
-      mensagemErro: MSG_FATURAMENTO,
-      temErro: Boolean(erros.monthlyRevenue),
-    }),
-    campoSelecao({
-      campo: "currentSystem",
-      rotulo: "Você já utiliza algum sistema para a sua barbearia hoje?",
-      opcoes: SISTEMA_OPCOES,
-      mensagemErro: MSG_SISTEMA,
-      temErro: Boolean(erros.currentSystem),
-    }),
-    campoSelecao({
-      campo: "clubStatus",
-      rotulo: "Você tem clube de assinaturas na sua barbearia hoje?",
-      opcoes: CLUBE_OPCOES,
-      mensagemErro: MSG_CLUBE,
-      temErro: Boolean(erros.clubStatus),
-    }),
-    campoSelecao({
+    grupo({
       campo: "employeeCount",
-      rotulo: "Quantos profissionais trabalham na sua barbearia?",
-      opcoes: PROFISSIONAIS_OPCOES,
-      mensagemErro: MSG_PROFISSIONAIS,
+      rotulo: "Quantas pessoas trabalham na sua barbearia?",
+      opcoes: EQUIPE_OPCOES_V3,
+      rotuloDaOpcao: (o) => ROTULOS_EQUIPE_V3[o as keyof typeof ROTULOS_EQUIPE_V3] ?? o,
+      mensagemErro: MSG_EQUIPE,
       temErro: Boolean(erros.employeeCount),
+      colunas: 3,
+    }),
+    grupo({
+      campo: "startWhen",
+      rotulo: "Quando você quer começar?",
+      opcoes: QUANDO_OPCOES,
+      mensagemErro: MSG_QUANDO,
+      temErro: Boolean(erros.startWhen),
+      colunas: 3,
     }),
   ];
 

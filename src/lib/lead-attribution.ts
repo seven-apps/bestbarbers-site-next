@@ -56,6 +56,8 @@ export interface BuildLeadAttributionInput {
   originDesc: string | null;
   leadScore?: number;
   leadEventId?: string;
+  /** Formulário v3 (27/Out/26): "Quando quer começar?" — vai como `[QUANDO: …]` na descrição, à vista do SDR. */
+  quando?: string;
 }
 
 /**
@@ -170,6 +172,9 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   const cupom = cupomDaUrl({ cupom: param("cupom"), source: param("source") });
   let prefixo = "";
   if (leadScore !== undefined) prefixo = `[SCORE: ${leadScore}] `;
+  // Porta do lead v3 (27/Out/26): o "quando" vai no texto também, porque o campo `bb_quando` só chega ao card da
+  // Qualificação depois que a automação do Ploomes o espelhar (mapeamento feito na interface).
+  if (input.quando) prefixo += `[QUANDO: ${input.quando}] `;
   if (cupom) prefixo += `[CUPOM: ${cupom.codigo}] `;
   if (prefixo) originDesc = `${prefixo}${originDesc ?? ""}`.trim();
 

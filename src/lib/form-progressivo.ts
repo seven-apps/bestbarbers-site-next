@@ -32,8 +32,13 @@ export const PARAM_FORM = "form";
 export const BRACOS_FORM = ["atual", "progressivo"] as const;
 export type BracoForm = (typeof BRACOS_FORM)[number];
 
-/** Os braços que o sorteio distribui HOJE. Mudar aqui é mudar o teste. */
-export const BRACOS_FORM_NO_SORTEIO: readonly BracoForm[] = ["atual", "progressivo"];
+/**
+ * Os braços que o sorteio distribui HOJE. Mudar aqui é mudar o teste.
+ * 27/Out/26 (porta do lead v3): o formulário caiu para 5 campos (2 deles de 1 toque), e o progressivo, que revelava
+ * as 4 perguntas do v2 em etapas, perdeu o objeto. O teste acabou: todo mundo vê o `atual`; quem tinha o cookie do
+ * `progressivo` cai no sorteio de novo, que só tem o `atual`.
+ */
+export const BRACOS_FORM_NO_SORTEIO: readonly BracoForm[] = ["atual"];
 
 export function ehBracoForm(valor: unknown): valor is BracoForm {
   return typeof valor === "string" && (BRACOS_FORM as readonly string[]).includes(valor);

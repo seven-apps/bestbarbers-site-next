@@ -129,15 +129,30 @@ test('temEquipe: campo vazio NÃO é equipe — ausência de resposta nunca vira
   assert.equal(temEquipe(undefined), false);
 });
 
-test('temEquipe: vocabulário legado e número livre não viram equipe por acidente', () => {
-  // Os três vocabulários convivem HOJE no mesmo useLeadForm: FormSectionV11 manda
-  // "2 a 4 colaboradores", FormSectionV5/MultiStepForm mandam número livre ("4"). São os
-  // mesmos valores que calcularScoreV2 já recusa pontuar (score null) — coerência, não
-  // rigidez: nas LPs legadas o evento simplesmente não nasce, como o QualifiedLead60.
-  for (const legado of ['2 a 4 colaboradores', '5 ou mais colaboradores', '4', '2', 'sou apenas eu']) {
+test('temEquipe: número livre e caixa errada não viram equipe por acidente', () => {
+  // Número livre ("4", das LPs mortas V5/MultiStepForm) e texto fora da tabela não disparam o evento.
+  for (const legado of ['4', '2', 'sou apenas eu', '2 A 4 COLABORADORES']) {
     assert.equal(temEquipe(legado), false, legado);
-    assert.equal(calcularScoreV2({ faturamento: 'Acima de R$ 30.000', clube: QUER_CLUBE, profissionais: legado }), null, legado);
   }
+  // O v2 continua recusando pontuar as faixas do v1/v3 (elas não são faixas do v2).
+  for (const v1 of ['2 a 4 colaboradores', '5 ou mais colaboradores']) {
+    assert.equal(calcularScoreV2({ faturamento: 'Acima de R$ 30.000', clube: QUER_CLUBE, profissionais: v1 }), null, v1);
+  }
+});
+
+test('formulário v3 (27/Out/26): as 3 faixas de 1 toque e a nota pelo "quando"', () => {
+  const { calcularScoreV3 } = modulo as typeof import('./lead-score');
+  // As faixas do v3 usam o vocabulário que o CRM já conhece; "2 a 4" e "5 ou mais" SÃO equipe.
+  assert.equal(temEquipe('Sou apenas eu'), false);
+  assert.equal(temEquipe('2 a 4 colaboradores'), true);
+  assert.equal(temEquipe('5 ou mais colaboradores'), true);
+  // "Este mês" vale o piso do ICP (70) e a equipe soma; sem "quando" não há nota.
+  assert.equal(calcularScoreV3({ quando: 'Este mês', equipe: 'Sou apenas eu' }), 70);
+  assert.equal(calcularScoreV3({ quando: 'Este mês', equipe: '5 ou mais colaboradores' }), 90);
+  assert.equal(calcularScoreV3({ quando: 'Nos próximos 3 meses', equipe: '2 a 4 colaboradores' }), 60);
+  assert.equal(calcularScoreV3({ quando: 'Só estou conhecendo', equipe: 'Sou apenas eu' }), 15);
+  assert.equal(calcularScoreV3({ equipe: '2 a 4 colaboradores' }), null);
+  assert.equal(calcularScoreV3({ quando: 'constructor' }), null);
 });
 
 test('temEquipe: chave herdada de Object.prototype não vira equipe', () => {

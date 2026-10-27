@@ -7,6 +7,7 @@ import {
   PLOOMES_LEGACY_FIELDS,
   PLOOMES_OPCOES_CLUBE,
   PLOOMES_OPCOES_SISTEMA,
+  PLOOMES_OPCOES_QUANDO,
 } from '@/lib/ploomes-fields';
 import { buildLeadAttribution, type LeadAttribution } from '@/lib/lead-attribution';
 import { idDoContatoCriado } from '@/lib/cadastro-concluido';
@@ -22,6 +23,8 @@ export interface PloomesContactData {
   clubStatus?: string;
   /** Pergunta 6 — sistema usado hoje. */
   currentSystem?: string;
+  /** Formulário v3 (27/Out/26) — "Quando quer começar?" → `bb_quando` (opção) e `[QUANDO: …]` na descrição. */
+  startWhen?: string;
   leadScore?: number;
   /** Meta CAPI / Pixel event ID compartilhado entre browser e server (deduplicação) */
   leadEventId?: string;
@@ -101,6 +104,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       originDesc: customOriginDesc ?? utmMapping.originDesc,
       leadScore: data.leadScore,
       leadEventId: data.leadEventId,
+      quando: data.startWhen,
     });
   }, [getUtmParams, getOriginMapping, customOriginId, customOriginDesc]);
 
@@ -143,6 +147,14 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     }
     if (idSistema) {
       bbProps.push({ FieldKey: PLOOMES_CONTACT_OPTION_FIELDS.bb_sistema, IntegerValue: idSistema });
+    }
+    // Formulário v3: "Quando quer começar?" (opção pré-cadastrada, mesmo padrão do clube e do sistema).
+    const idQuando = data.startWhen ? PLOOMES_OPCOES_QUANDO[data.startWhen] : undefined;
+    if (data.startWhen && !idQuando) {
+      console.warn('[Ploomes] opção de "quando" sem Id na tabela do CRM:', data.startWhen);
+    }
+    if (idQuando) {
+      bbProps.push({ FieldKey: PLOOMES_CONTACT_OPTION_FIELDS.bb_quando, IntegerValue: idQuando });
     }
 
     const ploomesData = {

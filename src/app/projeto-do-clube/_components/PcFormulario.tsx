@@ -57,13 +57,7 @@ import { useRouter } from "next/navigation";
 import { useLeadForm, useUtmParams } from "@/hooks";
 import { AvisoPrivacidade } from "@/components/forms/AvisoPrivacidade";
 import { CLUBE_OPCOES } from "@/lib/lead-score";
-import {
-  MSG_CLUBE,
-  MSG_FATURAMENTO,
-  MSG_PROFISSIONAIS,
-  MSG_SISTEMA,
-  errosDeQualificacao,
-} from "@/lib/qualificacao";
+import { MSG_EQUIPE, MSG_QUANDO, errosDeQualificacao } from "@/lib/qualificacao";
 import { usePcEventos } from "./pc-eventos";
 import { pcHrefCom } from "./pc-link";
 import { PC_BLOCOS, PC_ROTULO_CONTEXTO } from "./pc-copy";
@@ -256,20 +250,14 @@ export function PcFormulario({
    * (comparação exata em `errosDeQualificacao` pinta o campo certo).
    */
   const continuar = useCallback(() => {
-    if (!formData.monthlyRevenue) {
-      setSubmitError(MSG_FATURAMENTO);
-      return;
-    }
-    if (!formData.currentSystem) {
-      setSubmitError(MSG_SISTEMA);
-      return;
-    }
-    if (!formData.clubStatus) {
-      setSubmitError(MSG_CLUBE);
-      return;
-    }
+    // Formulário v3 (27/Out/26): o passo 1 tem as duas perguntas de 1 toque (equipe e "quando"). A situação do clube
+    // continua pré-preenchida pela página (vai ao CRM), mas não é mais pergunta na tela.
     if (!formData.employeeCount) {
-      setSubmitError(MSG_PROFISSIONAIS);
+      setSubmitError(MSG_EQUIPE);
+      return;
+    }
+    if (!formData.startWhen) {
+      setSubmitError(MSG_QUANDO);
       return;
     }
     setSubmitError(null);
@@ -280,10 +268,8 @@ export function PcFormulario({
       eventos.formIniciado();
     }
   }, [
-    formData.monthlyRevenue,
-    formData.currentSystem,
-    formData.clubStatus,
     formData.employeeCount,
+    formData.startWhen,
     setSubmitError,
     eventos,
   ]);
@@ -315,11 +301,7 @@ export function PcFormulario({
    */
   useEffect(() => {
     if (passo !== 2 || !submitError) return;
-    const ehDeContexto =
-      submitError === MSG_FATURAMENTO ||
-      submitError === MSG_SISTEMA ||
-      submitError === MSG_CLUBE ||
-      submitError === MSG_PROFISSIONAIS;
+    const ehDeContexto = submitError === MSG_EQUIPE || submitError === MSG_QUANDO;
     if (!ehDeContexto) return;
     setAnimar(true);
     setPasso(1);

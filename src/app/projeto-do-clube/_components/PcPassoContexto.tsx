@@ -80,7 +80,7 @@ export function PcPassoContexto({
   tituloId,
   erroGeral = null,
   rotuloBotao = "Continuar para pedir contato",
-  titulo = "Como está seu clube hoje?",
+  titulo = "Duas perguntas rápidas sobre a sua barbearia",
   tituloOculto = false,
   semNotaSituacao = false,
   animar = false,
@@ -94,16 +94,11 @@ export function PcPassoContexto({
     if (animar) tituloRef.current?.focus();
   }, [animar]);
 
-  const temAlgumErroDeCampo =
-    Boolean(erros.monthlyRevenue) ||
-    Boolean(erros.currentSystem) ||
-    Boolean(erros.clubStatus) ||
-    Boolean(erros.employeeCount);
+  const temAlgumErroDeCampo = Boolean(erros.employeeCount) || Boolean(erros.startWhen);
 
-  // A situação só é "herdada" enquanto ninguém a trocou. Depois da troca a nota
-  // sai da tela — ela explica o pré-preenchimento, não decora o campo.
-  const situacaoHerdada =
-    Boolean(clubStatusInicial) && valores.clubStatus === clubStatusInicial;
+  // Formulário v3 (27/Out/26): a situação do clube segue pré-preenchida pela página e vai ao CRM, mas não é mais
+  // pergunta na tela — a nota «Já marcamos a situação…» explicava um campo que saiu, então não aparece.
+  const situacaoHerdada = false && Boolean(clubStatusInicial);
 
   return (
     <div className={`${estilos.passo} ${animar ? estilos.passoEntraAtras : ""}`}>

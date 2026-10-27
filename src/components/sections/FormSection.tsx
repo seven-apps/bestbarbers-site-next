@@ -25,7 +25,6 @@ interface FormSectionProps {
 const formFields = [
   { name: "ownerName", label: "Nome do Dono", placeholder: "Digite o nome do dono da barbearia", type: "text" },
   { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "Celular - whatsapp do dono da barbearia", type: "tel" },
-  { name: "email", label: "Seu e-mail (opcional, pra gente falar com você depois)", placeholder: "Digite seu melhor e-mail", type: "email" },
   { name: "barbershopName", label: "Nome da Barbearia", placeholder: "Digite o nome da sua barbearia", type: "text" },
 ];
 

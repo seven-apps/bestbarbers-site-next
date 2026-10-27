@@ -28,6 +28,8 @@ export interface RecadastroInput {
   clube?: string;
   /** Pergunta 6 do formulário v2 — sistema usado hoje. */
   sistema?: string;
+  /** Formulário v3 (27/Out/26) — "Quando quer começar?". O OS decide o pipe por ele. */
+  quando?: string;
   /**
    * E-mail digitado no formulário (opcional). No recadastro não nasce contato novo,
    * então o endereço só chega ao CRM se vier por aqui — o backend o grava no contato
@@ -91,6 +93,7 @@ export async function criarCardRecadastro(
         // o recadastro entra sem eles — e nada quebra por causa disso.
         ...(input.clube ? { clube: input.clube } : {}),
         ...(input.sistema ? { sistema: input.sistema } : {}),
+        ...(input.quando ? { quando: input.quando } : {}),
         ...(input.email?.trim() ? { email: input.email.trim().toLowerCase() } : {}),
         // Score numérico → bb_lead_score do card (o backend traduz para a FieldKey do deal).
         ...(typeof input.atribuicao.leadScore === 'number' ? { leadScore: Math.trunc(input.atribuicao.leadScore) } : {}),

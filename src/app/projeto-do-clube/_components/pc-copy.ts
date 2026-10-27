@@ -104,10 +104,11 @@ export const PC_ABERTURAS: Record<PcSituacao, PcAbertura> = {
  * operação que ele ainda não tem.
  */
 export const PC_ROTULO_CONTEXTO: Record<PcSituacao, string> = {
-  geral: "Como está seu clube hoje?",
-  manual: "Como está seu clube hoje?",
-  migracao: "Como seu clube funciona hoje?",
-  abertura: "Como você está planejando o clube?",
+  // Formulário v3 (27/Out/26): o passo 1 pergunta equipe e "quando quer começar"; a situação do clube vem da página.
+  geral: "Duas perguntas rápidas sobre a sua barbearia",
+  manual: "Duas perguntas rápidas sobre a sua barbearia",
+  migracao: "Duas perguntas rápidas sobre a sua barbearia",
+  abertura: "Duas perguntas rápidas sobre a sua barbearia",
 };
 
 /**

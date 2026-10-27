@@ -25,6 +25,7 @@ import {
   mensagemDaPagina,
   numeroValidoDoLucas,
   pedeNutricaoNoRecadastro,
+  vaiAoLucas,
   type CorpoNutricao,
   type ResultadoNutricao,
 } from "./lead-nutricao.ts";
@@ -358,4 +359,37 @@ test("dealIdDoLucasNoRecadastro: só o card que o OS pôs na Nutrição leva ao 
   assert.equal(dealIdDoLucasNoRecadastro({ ok: true, dealId: 1203126573 }), null, "OS antigo, sem pipe = Qualificação");
   assert.equal(dealIdDoLucasNoRecadastro({ ok: true, pipe: "nutricao" }), null);
   assert.equal(dealIdDoLucasNoRecadastro({ ok: false, pipe: "nutricao", dealId: 1 }), null);
+});
+
+// ─── Porta do lead v3 (27/Out/26): a rota sai do "quando", não da nota ───────────────────────────────
+
+const LUCAS_OK = "553172183568";
+
+test('v3: "Este mês" vai direto ao SDR, mesmo com nota alta; o resto vai ao Lucas, mesmo com nota ≥ 60', () => {
+  assert.equal(vaiAoLucas({ quando: "Este mês", nota: 90 }), false);
+  assert.equal(vaiAoLucas({ quando: "Nos próximos 3 meses", nota: 65 }), true);
+  assert.equal(vaiAoLucas({ quando: "Só estou conhecendo", nota: 15 }), true);
+  assert.equal(caminhoDoLead({ telefoneExiste: false, nota: 85, numeroLucas: LUCAS_OK, quando: "Este mês" }), "sdr");
+  assert.equal(caminhoDoLead({ telefoneExiste: false, nota: 65, numeroLucas: LUCAS_OK, quando: "Nos próximos 3 meses" }), "lucas");
+  assert.equal(caminhoDoLead({ telefoneExiste: true, nota: 15, numeroLucas: LUCAS_OK, quando: "Só estou conhecendo" }), "recadastro");
+});
+
+test('v3: sem número do Lucas, ninguém vai ao Lucas; sem "quando", vale a régua antiga (< 60)', () => {
+  assert.equal(caminhoDoLead({ telefoneExiste: false, nota: 15, numeroLucas: "", quando: "Só estou conhecendo" }), "sdr");
+  assert.equal(vaiAoLucas({ quando: "", nota: 59 }), true);
+  assert.equal(vaiAoLucas({ nota: 60 }), false);
+  assert.equal(pedeNutricaoNoRecadastro({ nota: 85, numeroLucas: LUCAS_OK, quando: "Nos próximos 3 meses" }), true);
+  assert.equal(pedeNutricaoNoRecadastro({ nota: 15, numeroLucas: LUCAS_OK, quando: "Este mês" }), false);
+});
+
+test('v3: o corpo da nutrição leva o "quando" ao card', () => {
+  const corpo = corpoDaNutricao({
+    contato: { Name: "Barbearia X", Phones: [{ PhoneNumber: "(31) 99999-0000" }], OtherProperties: [] },
+    atribuicao: { originId: null, originDesc: "[SCORE: 60] [QUANDO: Nos próximos 3 meses] Site", fields: {} },
+    nota: 60,
+    colaboradores: "2 a 4 colaboradores",
+    quando: "Nos próximos 3 meses",
+  });
+  assert.equal(corpo.card.quando, "Nos próximos 3 meses");
+  assert.equal(corpo.card.leadScore, 60);
 });

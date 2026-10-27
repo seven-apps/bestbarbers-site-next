@@ -46,6 +46,57 @@ export const PROFISSIONAIS_OPCOES = [
   '5 ou mais profissionais',
 ] as const;
 
+/**
+ * FORMULÁRIO v3 — porta do lead (André e João, 27/Out/26; bestbarbers-ai/docs/operacional/porta-do-lead-v3-plano.md).
+ * O formulário fica com nome, WhatsApp, barbearia, equipe e "quando quer começar", as duas últimas em 1 toque.
+ * Faturamento, sistema e clube saem (o SDR e o Lucas perguntam na conversa). A ROTA do lead sai do "quando"
+ * ("Este mês" → SDR direto; o resto → WhatsApp do Lucas, que passa ao SDR se o lead não escrever em 5 min).
+ * Espelho de bestbarbers-ai/lib/integrations/lead-score.ts: mudou lá, muda aqui.
+ */
+export const QUANDO_OPCOES = ["Este mês", "Nos próximos 3 meses", "Só estou conhecendo"] as const;
+export type Quando = (typeof QUANDO_OPCOES)[number];
+/** A resposta que vai direto ao SDR. */
+export const QUANDO_QUENTE: Quando = "Este mês";
+
+/**
+ * Equipe em 1 toque. O VALOR gravado usa o vocabulário que o CRM e os leitores já conhecem
+ * ("2 a 4 colaboradores"); o rótulo na tela é curto (`ROTULOS_EQUIPE_V3`).
+ */
+export const EQUIPE_OPCOES_V3 = ["Sou apenas eu", "2 a 4 colaboradores", "5 ou mais colaboradores"] as const;
+export type EquipeV3 = (typeof EQUIPE_OPCOES_V3)[number];
+export const ROTULOS_EQUIPE_V3: Record<EquipeV3, string> = {
+  "Sou apenas eu": "Só eu",
+  "2 a 4 colaboradores": "2 a 4",
+  "5 ou mais colaboradores": "5 ou mais",
+};
+
+const PONTOS_QUANDO: Record<Quando, number> = {
+  "Este mês": 70,
+  "Nos próximos 3 meses": 45,
+  "Só estou conhecendo": 15,
+};
+const PONTOS_EQUIPE_V3: Record<EquipeV3, number> = {
+  "Sou apenas eu": 0,
+  "2 a 4 colaboradores": 15,
+  "5 ou mais colaboradores": 20,
+};
+
+/**
+ * Score v3 (15 a 90): "Este mês" vale o piso do ICP (70) e a equipe soma. null quando falta o "quando" — sem
+ * resposta não é nota zero. Mesma fórmula de `calcularScoreV3` no OS.
+ */
+export function calcularScoreV3(r: { quando?: string; equipe?: string }): number | null {
+  const quando = r.quando as Quando | undefined;
+  if (!quando || !Object.hasOwn(PONTOS_QUANDO, quando)) return null;
+  const equipe = r.equipe as EquipeV3 | undefined;
+  return PONTOS_QUANDO[quando] + (equipe && Object.hasOwn(PONTOS_EQUIPE_V3, equipe) ? PONTOS_EQUIPE_V3[equipe] : 0);
+}
+
+/** O lead respondeu o "quando" (formulário v3)? */
+export function ehRespostaV3(quando?: string | null): boolean {
+  return (QUANDO_OPCOES as readonly string[]).includes((quando ?? "").trim());
+}
+
 export type Faturamento = (typeof FATURAMENTO_OPCOES)[number];
 export type SituacaoClube = (typeof CLUBE_OPCOES)[number];
 export type SistemaAtual = (typeof SISTEMA_OPCOES)[number];
@@ -117,8 +168,16 @@ export const EQUIPE_POR_OPCAO: Record<Profissionais, boolean> = {
  * (a assinatura mente, o runtime não). Exótico, mas este helper existe exatamente para
  * garantir que desconhecido nunca vira true, e "quase sempre" não serve como garantia.
  */
+/** Formulário v3 (27/Out/26): as 3 faixas de 1 toque. Mesmo gate exaustivo do `EQUIPE_POR_OPCAO`. */
+export const EQUIPE_POR_OPCAO_V3: Record<EquipeV3, boolean> = {
+  "Sou apenas eu": false,
+  "2 a 4 colaboradores": true,
+  "5 ou mais colaboradores": true,
+};
+
 export function temEquipe(profissionais?: string): boolean {
   if (!profissionais) return false;
+  if (Object.hasOwn(EQUIPE_POR_OPCAO_V3, profissionais)) return EQUIPE_POR_OPCAO_V3[profissionais as EquipeV3];
   return Object.hasOwn(EQUIPE_POR_OPCAO, profissionais)
     ? EQUIPE_POR_OPCAO[profissionais as Profissionais]
     : false;

@@ -22,7 +22,6 @@ const EVENTO_ORIGIN_DESC = "LP Dezembro Lotado - 25 vagas app";
 const formFields = [
   { name: "ownerName", label: "Seu nome", placeholder: "Ex: João Silva", type: "text" },
   { name: "whatsapp", label: "Seu WhatsApp", placeholder: "(31) 99999-9999", type: "tel" },
-  { name: "email", label: "Seu e-mail (opcional, pra gente falar com você depois)", placeholder: "Ex: joao@email.com", type: "email" },
   { name: "barbershopName", label: "Nome da sua barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
 ];
 

@@ -121,15 +121,14 @@ test("rótulos do André: dono da barbearia por extenso, barbearia antes do e-ma
   ]);
 });
 
-test("sorteio 50/50; cookie válido vence; lixo ressorteia", () => {
-  assert.equal(fp.bracoDoForm(undefined, 0), "atual");
-  assert.equal(fp.bracoDoForm(undefined, 0.499), "atual");
-  assert.equal(fp.bracoDoForm(undefined, 0.5), "progressivo");
-  assert.equal(fp.bracoDoForm(undefined, 0.999), "progressivo");
-  assert.equal(fp.bracoDoForm(undefined, 1), "progressivo", "sorteio fora da faixa não estoura o índice");
-  assert.equal(fp.bracoDoForm("progressivo", 0.1), "progressivo");
+test("teste encerrado em 27/Out/26: o sorteio só tem o atual, e o cookie do progressivo volta para ele", () => {
+  // Porta do lead v3: com 5 campos (2 de 1 toque), o progressivo perdeu o objeto.
+  assert.deepEqual([...fp.BRACOS_FORM_NO_SORTEIO], ["atual"]);
+  for (const sorteio of [0, 0.499, 0.5, 0.999, 1]) assert.equal(fp.bracoDoForm(undefined, sorteio), "atual");
+  assert.equal(fp.bracoDoForm("progressivo", 0.1), "atual");
   assert.equal(fp.bracoDoForm("atual", 0.9), "atual");
-  assert.equal(fp.bracoDoForm("lixo", 0.9), "progressivo");
+  assert.equal(fp.bracoDoForm("lixo", 0.9), "atual");
+  // O link forçado (?form=progressivo) continua existindo para quem precisar rever o formulário antigo.
   assert.equal(fp.bracoFormForcado("progressivo"), "progressivo");
   assert.equal(fp.bracoFormForcado("outro"), undefined);
 });
@@ -183,6 +182,6 @@ test("o braço de controle é o formulário de sempre: rótulos e ordem intocado
   const i = modal.indexOf("const formFields = [");
   const bloco = modal.slice(i, modal.indexOf("];", i));
   const nomes = [...bloco.matchAll(/name: "(\w+)"/g)].map((m) => m[1]);
-  assert.deepEqual(nomes, ["ownerName", "whatsapp", "email", "barbershopName"]);
-  assert.match(bloco, /label: "Seu e-mail \(opcional, pra gente falar com você depois\)"/);
+  // Formulário v3 (27/Out/26): o e-mail opcional saiu; ficam dono, WhatsApp e barbearia (+ equipe e "quando").
+  assert.deepEqual(nomes, ["ownerName", "whatsapp", "barbershopName"]);
 });

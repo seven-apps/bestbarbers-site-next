@@ -29,7 +29,6 @@ const formFields = [
   // e-mail. Vai para o campo NATIVO Email do Contact.
   //
   // Fica no PASSO 1 (ver STEP1_FIELDS): é a única tela por onde 100% de quem envia passa.
-  { name: "email", label: "Seu e-mail (opcional, pra gente falar com você depois)", placeholder: "Ex: joao@email.com", type: "email" },
   { name: "barbershopName", label: "Nome da barbearia", placeholder: "Ex: Barbearia do João", type: "text" },
 ];
 
