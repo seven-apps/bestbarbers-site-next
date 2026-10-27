@@ -17,7 +17,7 @@
  */
 
 import { useId, type ChangeEvent, type CSSProperties } from "react";
-import { EQUIPE_OPCOES_V3, QUANDO_NA_TELA, ROTULOS_EQUIPE_V3, ROTULOS_QUANDO } from "@/lib/lead-score";
+import { EQUIPE_OPCOES_V3, QUANDO_NA_TELA, QUANDO_QUENTE, ROTULOS_EQUIPE_V3, ROTULOS_QUANDO } from "@/lib/lead-score";
 import { MSG_EQUIPE, MSG_QUANDO, type ErrosQualificacao } from "@/lib/qualificacao";
 
 export interface ValoresQualificacao {
@@ -96,6 +96,7 @@ export function PerguntasQualificacao({
     mensagemErro,
     temErro,
     colunas,
+    destaque,
   }: {
     campo: keyof ValoresQualificacao;
     rotulo: string;
@@ -105,6 +106,8 @@ export function PerguntasQualificacao({
     temErro: boolean;
     /** 1 = LISTA (uma opção por linha, com a bolinha à esquerda): para rótulos longos, que no celular quebrariam em 3 linhas. */
     colunas: number;
+    /** Opção em NEGRITO (André, 27/Out/26: "Quero implementar agora!"). */
+    destaque?: string;
   }) => {
     const lista = colunas === 1;
     const id = `${prefixo}-${campo}`;
@@ -132,7 +135,7 @@ export function PerguntasQualificacao({
                 key={opcao}
                 className={
                   lista
-                    ? "flex items-center gap-3 text-left rounded-xl px-4 py-2.5 font-semibold text-[14px] leading-[18px] cursor-pointer transition-all duration-200 select-none focus-within:outline-none"
+                    ? `flex items-center gap-3 text-left rounded-xl px-4 py-2.5 ${opcao === destaque ? "font-extrabold" : "font-medium"} text-[14px] leading-[18px] cursor-pointer transition-all duration-200 select-none focus-within:outline-none`
                     : "flex items-center justify-center text-center rounded-xl px-2 py-2.5 font-semibold text-[14px] leading-[18px] cursor-pointer transition-all duration-200 select-none focus-within:outline-none"
                 }
                 style={estilo}
@@ -196,6 +199,7 @@ export function PerguntasQualificacao({
       mensagemErro: MSG_QUANDO,
       temErro: Boolean(erros.startWhen),
       colunas: 1,
+      destaque: QUANDO_QUENTE,
     }),
   ];
 

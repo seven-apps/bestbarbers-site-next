@@ -398,7 +398,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                   </>
                 ) : (
                   <>
-                    {progressivo ? TEXTOS_DO_MODAL_PROGRESSIVO.botao : "Quero meu app"}
+                    {progressivo ? TEXTOS_DO_MODAL_PROGRESSIVO.botao : "Quero o app da minha barbearia"}
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}
