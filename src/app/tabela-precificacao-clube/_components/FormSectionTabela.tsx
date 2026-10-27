@@ -14,9 +14,9 @@ import { REAIS } from "./benchmarks";
 // dentro do <PerguntasQualificacao>: formulário único em todas as portas
 // (André, 14/Set/26). As opções saíram daqui e moram em `@/lib/lead-score`.
 const formFields = [
-  { name: "ownerName", label: "Nome do Dono", placeholder: "Seu nome", type: "text" },
-  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "Seu WhatsApp com DDD", type: "tel" },
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Nome da barbearia", type: "text" },
+  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text" },
+  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text" },
 ];
 
 // Origem dedicada da LP no Ploomes: "Site - Tabela de Precificação de Clubes"
@@ -232,7 +232,7 @@ export function FormSectionTabela() {
               >
                 <label
                   htmlFor={`${idFormulario}-${field.name}`}
-                  className="sr-only"
+                  className="block font-semibold text-[13px] leading-[20px]"
                   style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}
                 >
                   {field.label}

@@ -38,12 +38,12 @@ const INDICACAO_ORIGIN_DESC = "LP Assinante por Indicação - Guia Indicação";
 // profissionais) vêm do <PerguntasQualificacao>, idêntico em todas as portas
 // (André, 14/Set/26).
 const formFields = [
-  { name: "ownerName", label: "Seu nome", placeholder: "Seu nome", type: "text" },
-  { name: "whatsapp", label: "Seu WhatsApp", placeholder: "Seu WhatsApp com DDD", type: "tel" },
+  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text" },
+  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel" },
   // E-mail OPCIONAL e sem promessa de entrega: o guia é baixado na tela seguinte, não
   // enviado. OPCIONAL COM MOTIVO, não "opcional" seco — é o formato que mede 95,9% de
   // preenchimento aqui; sem o motivo a taxa cai.
-  { name: "barbershopName", label: "Nome da sua barbearia", placeholder: "Nome da barbearia", type: "text" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text" },
 ];
 
 export function GuiaForm() {
@@ -150,8 +150,8 @@ export function GuiaForm() {
 
         <form onSubmit={handleSubmit} className="space-y-3 w-full">
           {formFields.map((field) => (
-            <div key={field.name} className="space-y-1.5">
-              <label htmlFor={`${idFormulario}-${field.name}`} className="sr-only" style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}>
+            <div key={field.name} className="space-y-1">
+              <label htmlFor={`${idFormulario}-${field.name}`} className="block font-semibold text-[13px] leading-[20px]" style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}>
                 {field.label}
               </label>
               <input

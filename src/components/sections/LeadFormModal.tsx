@@ -70,11 +70,11 @@ function campoDoAviso(aviso: string | null | undefined): CampoForm | null {
 // vêm do <PerguntasQualificacao>, igual em todas as portas (André, 14/Set/26).
 // A ORDEM é a decidida: dono → WhatsApp → e-mail (opcional) → barbearia.
 const formFields = [
-  { name: "ownerName", label: "Nome do Dono", placeholder: "Seu nome", type: "text" },
-  { name: "whatsapp", label: "WhatsApp do Dono", placeholder: "Seu WhatsApp com DDD", type: "tel" },
+  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text" },
+  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel" },
   // E-mail OPCIONAL COM MOTIVO — o rótulo medido nas LPs (95,9% de preenchimento) e o
   // único campo sem `required`: vazio nunca pode barrar ninguém.
-  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Nome da barbearia", type: "text" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text" },
 ];
 
 const SITE_ORIGIN_ID = 40210426;
@@ -325,7 +325,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                   key={field.name}
                   className={`space-y-1.5 ${ETAPA_DO_CAMPO[field.name] > ETAPA_INICIAL ? "bb-revelar" : ""}`.trim()}
                 >
-                  <label htmlFor={`modal-${field.name}`} className="sr-only">
+                  <label htmlFor={`modal-${field.name}`} className="block font-semibold text-[13px] md:text-[14px] text-white/90">
                     {field.label}
                   </label>
                   <input
@@ -352,8 +352,8 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
               ))}
 
             {!progressivo && formFields.map((field) => (
-              <div key={field.name} className="space-y-1.5">
-                <label htmlFor={`modal-${field.name}`} className="sr-only">
+              <div key={field.name} className="space-y-1">
+                <label htmlFor={`modal-${field.name}`} className="block font-semibold text-[13px] md:text-[14px] text-white/90">
                   {field.label}
                 </label>
                 <input

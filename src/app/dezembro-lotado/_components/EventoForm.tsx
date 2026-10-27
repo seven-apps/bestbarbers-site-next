@@ -20,9 +20,9 @@ const EVENTO_ORIGIN_DESC = "LP Dezembro Lotado - 25 vagas app";
 // Perguntas 1 a 4 — contato. As 5 a 8 (faturamento, sistema, clube e profissionais)
 // vêm do <PerguntasQualificacao>, igual em todas as portas (André, 14/Set/26).
 const formFields = [
-  { name: "ownerName", label: "Seu nome", placeholder: "Seu nome", type: "text" },
-  { name: "whatsapp", label: "Seu WhatsApp", placeholder: "Seu WhatsApp com DDD", type: "tel" },
-  { name: "barbershopName", label: "Nome da sua barbearia", placeholder: "Nome da barbearia", type: "text" },
+  { name: "ownerName", label: "Seu nome", placeholder: "João Silva", type: "text" },
+  { name: "whatsapp", label: "Seu WhatsApp com DDD", placeholder: "(11) 99999-9999", type: "tel" },
+  { name: "barbershopName", label: "Nome da barbearia", placeholder: "Barbearia do João", type: "text" },
 ];
 
 export function EventoForm() {
@@ -154,8 +154,8 @@ export function EventoForm() {
 
         <form onSubmit={handleSubmit} className="space-y-3 w-full">
           {formFields.map((field) => (
-            <div key={field.name} className="space-y-1.5">
-              <label htmlFor={`${idFormulario}-${field.name}`} className="sr-only" style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}>
+            <div key={field.name} className="space-y-1">
+              <label htmlFor={`${idFormulario}-${field.name}`} className="block font-semibold text-[13px] leading-[20px]" style={{ color: "#1e1e1e", fontFamily: "var(--font-montserrat)" }}>
                 {field.label}
               </label>
               <input
