@@ -60,10 +60,10 @@ export const QUANDO_QUENTE: Quando = "Este mês";
 
 /**
  * Como o "quando" aparece na TELA (André, 27/Out/26, revisão no celular): a pergunta vira "Quando você quer implementar
- * a BestBarbers na sua barbearia?" e as respostas sobem de intenção, de cima para baixo, uma por linha. O VALOR gravado
+ * a BestBarbers na sua barbearia?", uma resposta por linha, com "Quero implementar agora!" em primeiro (pedido dele). O VALOR gravado
  * no CRM não muda (`QUANDO_OPCOES`, as opções do `bb_quando`): só o rótulo e a ordem.
  */
-export const QUANDO_NA_TELA: readonly Quando[] = ["Só estou conhecendo", "Nos próximos 3 meses", "Este mês"];
+export const QUANDO_NA_TELA: readonly Quando[] = ["Este mês", "Nos próximos 3 meses", "Só estou conhecendo"];
 export const ROTULOS_QUANDO: Record<Quando, string> = {
   "Só estou conhecendo": "Ainda preciso conhecer melhor",
   "Nos próximos 3 meses": "Daqui uns 3 meses",
