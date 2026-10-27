@@ -56,8 +56,9 @@ const TEMA: Record<VarianteQualificacao, {
     borda: "#e0e0e0",
     texto: "#1e1e1e",
     erro: "#dc2626",
-    fundoAtivo: "#1e1e1e",
-    textoAtivo: "#ffffff",
+    // Selecionado em amarelo da marca com texto preto (André, 27/Out/26), igual ao tema escuro.
+    fundoAtivo: "#ebad04",
+    textoAtivo: "#1e1e1e",
   },
   escuro: {
     rotulo: "rgba(255,255,255,0.9)",

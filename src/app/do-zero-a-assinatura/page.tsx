@@ -144,7 +144,7 @@ export default function DoZeroAAssinaturaPage() {
         <div className="container-custom relative z-10">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
             {/* Copy do hero */}
-            <div>
+            <div className="text-center lg:text-left">
               {/*
                 Badge no formato do canon: FORMATO GRÁTIS · ESFORÇO. "20 minutos" é a
                 palavra do próprio guia (primeira linha do Capítulo 1) e a contagem real
@@ -165,7 +165,7 @@ export default function DoZeroAAssinaturaPage() {
                 <span style={{ color: AMBER }}>na ordem certa.</span>
               </h1>
 
-              <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
+              <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
                 <strong className="text-white">Assinatura do Zero</strong> é um guia rápido, de graça —
                 20 minutos de leitura: como desenhar o plano, quanto cobrar, o que dizer pra equipe antes de
                 anunciar, como vender na cadeira, os 12 erros que derrubam o clube e o que esperar do mês 1
@@ -173,7 +173,7 @@ export default function DoZeroAAssinaturaPage() {
               </p>
 
               {/* prova rápida inline */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/60">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-3 text-sm text-white/60">
                 <span className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full" style={{ background: AMBER }} />
                   +1.200 barbearias usam a BestBarbers

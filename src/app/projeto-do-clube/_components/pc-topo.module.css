@@ -138,6 +138,18 @@
   line-height: var(--pc-lh-normal);
 }
 
+/* Celular (herói em uma coluna): texto centralizado, como o topo das outras páginas do site (André, 27/Out/26). */
+@media (max-width: 899px) {
+  .heroiTexto {
+    align-items: center;
+    text-align: center;
+    margin-inline: auto;
+  }
+  .acoes { justify-content: center; }
+  .notaPreco { margin-inline: auto; }
+  .ancorasNoHeroi { justify-content: center; }
+}
+
 /* =================== ARTEFATO E MECANISMO DO CLUBE =================== */
 
 .heroiArtefato {

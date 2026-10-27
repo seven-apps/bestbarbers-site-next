@@ -154,7 +154,7 @@ export default function AssinantePorIndicacaoPage() {
         <div className="container-custom relative z-10">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
             {/* Copy do hero */}
-            <div>
+            <div className="text-center lg:text-left">
               {/*
                 Badge no formato do canon: FORMATO GRÁTIS · ESFORÇO. "6 passos" é o
                 método inteiro do guia (Passo 1 ao Passo 6) — não é número de páginas
@@ -177,13 +177,13 @@ export default function AssinantePorIndicacaoPage() {
                 </span>
               </h1>
 
-              <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
+              <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
                 O guia grátis <strong className="text-white">Assinante por Indicação</strong> traz o passo a
                 passo pra transformar a cadeira em canal de cliente novo — sem gastar com anúncio.
               </p>
 
               {/* prova rápida inline */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/60">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-3 text-sm text-white/60">
                 <span className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full" style={{ background: AMBER }} />
                   {NUMEROS_OFICIAIS.barbearias.texto} {NUMEROS_OFICIAIS.barbearias.rotulo}

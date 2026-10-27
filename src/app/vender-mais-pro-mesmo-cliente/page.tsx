@@ -166,7 +166,7 @@ export default function VenderMaisMesmoClientePage() {
         <div className="container-custom relative z-10">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
             {/* Copy do hero */}
-            <div>
+            <div className="text-center lg:text-left">
               {/*
                 Badge no formato do canon: FORMATO GRÁTIS · ESFORÇO. "12 capítulos" é o
                 método inteiro do guia (Capítulo 1 ao 12) — não é número de páginas nem
@@ -189,7 +189,7 @@ export default function VenderMaisMesmoClientePage() {
                 </span>
               </h1>
 
-              <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
+              <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
                 Guia gratuito:{" "}
                 <strong className="text-white">Como vender mais pro mesmo cliente na sua barbearia</strong>.
                 A métrica que ninguém mede, a ordem certa de lançar extra, o preço pelo custo real e o quadro por
@@ -197,7 +197,7 @@ export default function VenderMaisMesmoClientePage() {
               </p>
 
               {/* prova rápida inline */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/60">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-3 text-sm text-white/60">
                 <span className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full" style={{ background: AMBER }} />
                   {NUMEROS_OFICIAIS.barbearias.texto} {NUMEROS_OFICIAIS.barbearias.rotulo}

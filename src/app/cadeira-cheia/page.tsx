@@ -110,7 +110,7 @@ export default function CadeiraCheiaPage() {
         <div className="container-custom relative z-10">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
             {/* Copy do hero */}
-            <div>
+            <div className="text-center lg:text-left">
               <span
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full border text-xs font-bold uppercase tracking-wide mb-6"
                 style={{ background: "rgba(235,173,4,0.1)", borderColor: "rgba(235,173,4,0.35)", color: AMBER }}
@@ -126,13 +126,13 @@ export default function CadeiraCheiaPage() {
                 <span style={{ color: AMBER }}>Só não chamou ele de volta ainda.</span>
               </h1>
 
-              <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-xl">
+              <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
                 O guia grátis <strong className="text-white">Cadeira Cheia</strong> traz o passo a passo pra encher
                 a cadeira de novo — chamando de volta, com um clique seu, quem já foi seu freguês.
               </p>
 
               {/* prova rápida inline */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-white/60">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-3 text-sm text-white/60">
                 <span className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full" style={{ background: AMBER }} />
                   +1.200 barbearias usam a BestBarbers
