@@ -56,8 +56,8 @@ const TEMA: Record<VarianteQualificacao, {
     borda: "#e0e0e0",
     texto: "#1e1e1e",
     erro: "#dc2626",
-    // Selecionado em amarelo da marca com texto preto (André, 27/Out/26), igual ao tema escuro.
-    fundoAtivo: "#ebad04",
+    // Selecionado no MESMO amarelo do botão de envio (#ffaf02), com texto preto (André, 27/Out/26).
+    fundoAtivo: "#ffaf02",
     textoAtivo: "#1e1e1e",
   },
   escuro: {
@@ -67,7 +67,7 @@ const TEMA: Record<VarianteQualificacao, {
     borda: "rgba(255,255,255,0.26)",
     texto: "#ffffff",
     erro: "#f87171",
-    fundoAtivo: "#ebad04",
+    fundoAtivo: "#ffaf02",
     textoAtivo: "#1a1d25",
   },
 };

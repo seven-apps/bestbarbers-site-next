@@ -292,7 +292,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
           {progressivo ? (
             <h2 className="font-extrabold text-[20px] leading-[28px] md:text-[26px] md:leading-[34px] text-[#1e1e1e] text-center text-balance mb-2 px-6 md:px-4">
               {TEXTOS_DO_MODAL_PROGRESSIVO.titulo.antes}
-              <span className="text-[#ebad04]">
+              <span className="text-[#ffaf02]">
                 {TEXTOS_DO_MODAL_PROGRESSIVO.titulo.destaque}
               </span>
               {TEXTOS_DO_MODAL_PROGRESSIVO.titulo.depois}
@@ -301,7 +301,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
             // Revisão de UI/UX do André (27/Out/26): título em 2 linhas, com folga para o X de fechar.
             <h2 className="font-extrabold text-[22px] leading-[29px] md:text-[28px] md:leading-[36px] text-[#1e1e1e] text-center text-balance mb-1.5 px-8">
               Tenha um{" "}
-              <span className="text-[#ebad04]">Aplicativo Próprio</span>{" "}
+              <span className="text-[#ffaf02]">Aplicativo Próprio</span>{" "}
               com a marca da sua barbearia
             </h2>
           )}
