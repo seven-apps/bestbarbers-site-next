@@ -179,7 +179,7 @@ export function PerguntasQualificacao({
   const perguntas = [
     grupo({
       campo: "employeeCount",
-      rotulo: "Quantas pessoas trabalham na barbearia?",
+      rotulo: "Quantos barbeiros tem na sua barbearia?",
       opcoes: EQUIPE_OPCOES_V3,
       rotuloDaOpcao: (o) => ROTULOS_EQUIPE_V3[o as keyof typeof ROTULOS_EQUIPE_V3] ?? o,
       mensagemErro: MSG_EQUIPE,

@@ -65,9 +65,9 @@ export const QUANDO_QUENTE: Quando = "Este mês";
  */
 export const QUANDO_NA_TELA: readonly Quando[] = ["Só estou conhecendo", "Nos próximos 3 meses", "Este mês"];
 export const ROTULOS_QUANDO: Record<Quando, string> = {
-  "Só estou conhecendo": "Quero conhecer melhor",
-  "Nos próximos 3 meses": "Nos próximos 3 meses",
-  "Este mês": "Quero implementar agora",
+  "Só estou conhecendo": "Ainda preciso conhecer melhor",
+  "Nos próximos 3 meses": "Daqui uns 3 meses",
+  "Este mês": "Quero implementar agora!",
 };
 
 /**
