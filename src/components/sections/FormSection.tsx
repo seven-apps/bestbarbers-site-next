@@ -155,19 +155,22 @@ export function FormSection({
 
         {/* Form Card estilo V12 Bento-ish */}
         <div 
-          className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-8 md:p-12 shadow-2xl animate-fade-in-up" 
-          style={{ animationDelay: '0.35s', backdropFilter: "blur(20px)" }}
+          className="bg-white border border-black/5 rounded-[2rem] overflow-hidden shadow-2xl animate-fade-in-up"
+          style={{ animationDelay: '0.35s' }}
         >
-          <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Cartão branco (André, 27/Out/26): o mesmo das outras páginas, com a faixa dourada no topo. */}
+          <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #ebad04, #f5c842, #ebad04)" }} />
+          <div className="p-6 md:p-10">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {formFields.map((field, index) => (
               <div
                 key={field.name}
-                className="space-y-2 animate-fade-in-up"
+                className="space-y-1 animate-fade-in-up"
                 style={{ animationDelay: `${0.4 + index * 0.05}s` }}
               >
                 <label
                   htmlFor={`form-section-${field.name}`}
-                  className="block font-bold text-[11px] md:text-xs uppercase tracking-widest text-white/50"
+                  className="block font-semibold text-[13px] leading-[20px] text-[#1e1e1e]"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                 >
                   {field.label}
@@ -181,22 +184,22 @@ export function FormSection({
                   onChange={handleInputChange}
                   placeholder={field.placeholder}
                   required={field.name !== "email"}
-                  className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-white placeholder-white/20 font-medium text-[15px] transition-all duration-300 outline-none hover:border-white/20 focus:border-[#ebad04]/50 focus:bg-white/[0.05]"
+                  className="w-full bg-[#f5f5f5] border-[1.5px] border-[#e0e0e0] rounded-xl px-4 py-3 text-[#1e1e1e] placeholder-[#1e1e1e]/40 font-medium text-[15px] transition-all duration-300 outline-none hover:border-[#cfcfcf] focus:border-[#ebad04]"
                   style={{ fontFamily: "var(--font-montserrat)" }}
                 />
               </div>
             ))}
 
             <PerguntasQualificacao
-              variante="escuro"
+              variante="claro"
               valores={formData}
               onChange={handleInputChange}
               erros={erros}
-              className="space-y-6"
+              className="space-y-3"
             />
 
             {/* Submit Button */}
-            <div className="pt-6 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
+            <div className="pt-2 animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
               <div className={`rounded-full ${!isSubmitting && !submitted ? 'animate-pulse-glow-green' : ''}`}>
                 <button
                   type="button"
@@ -228,30 +231,10 @@ export function FormSection({
               </div>
             </div>
 
-            <AvisoPrivacidade variante="escuro" />
+            <AvisoPrivacidade variante="claro" />
 
-            {/* Brand Signature estilo V12 */}
-            <div className="text-center mt-8">
-               <span 
-                 className="text-xl md:text-2xl font-bold tracking-tighter"
-                 style={{ 
-                   color: "#ebad04", 
-                   fontFamily: "var(--font-vollkorn)",
-                   textShadow: "0 2px 10px rgba(235,173,4,0.1)"
-                 }}
-               >
-                 BestBarbers
-               </span>
-            </div>
-
-            <p 
-              className="text-center text-white/30 text-[10px] uppercase tracking-widest mt-4 flex items-center justify-center gap-2 animate-fade-in" 
-              style={{ animationDelay: '0.8s', fontFamily: "var(--font-montserrat)" }}
-            >
-              <Shield className="w-3 h-3" fill="currentColor" />
-              Dados 100% Protegidos
-            </p>
           </form>
+          </div>
         </div>
       </div>
 

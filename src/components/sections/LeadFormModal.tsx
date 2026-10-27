@@ -275,46 +275,46 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-fade-in" />
 
       {/* Modal */}
-      <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-[#121212] rounded-2xl md:rounded-3xl border border-gray-800/50 shadow-2xl animate-scale-in">
+      <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-2xl md:rounded-3xl border border-black/5 shadow-2xl animate-scale-in">
+        {/* Fundo branco (André, 27/Out/26): o mesmo cartão claro das outras páginas, com a faixa dourada no topo. */}
+        <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #ebad04, #f5c842, #ebad04)" }} />
         {/* Botao fechar */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+          className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 transition-colors"
           aria-label="Fechar"
         >
-          <X className="w-4 h-4 text-white" />
+          <X className="w-4 h-4 text-[#1e1e1e]" />
         </button>
 
         <div className="p-6 md:p-8">
           {/* Titulo */}
           {progressivo ? (
-            <h2 className="font-extrabold text-[20px] leading-[28px] md:text-[26px] md:leading-[34px] text-white text-center text-balance mb-2 px-6 md:px-4">
+            <h2 className="font-extrabold text-[20px] leading-[28px] md:text-[26px] md:leading-[34px] text-[#1e1e1e] text-center text-balance mb-2 px-6 md:px-4">
               {TEXTOS_DO_MODAL_PROGRESSIVO.titulo.antes}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffaf02] to-[#ffc233]">
+              <span className="text-[#ebad04]">
                 {TEXTOS_DO_MODAL_PROGRESSIVO.titulo.destaque}
               </span>
               {TEXTOS_DO_MODAL_PROGRESSIVO.titulo.depois}
             </h2>
           ) : (
             // Revisão de UI/UX do André (27/Out/26): título em 2 linhas, com folga para o X de fechar.
-            <h2 className="font-extrabold text-[22px] leading-[29px] md:text-[28px] md:leading-[36px] text-white text-center text-balance mb-1.5 px-8">
-              Seu{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffaf02] to-[#ffc233]">
-                app próprio
-              </span>
-              , com a marca da sua barbearia
+            <h2 className="font-extrabold text-[22px] leading-[29px] md:text-[28px] md:leading-[36px] text-[#1e1e1e] text-center text-balance mb-1.5 px-8">
+              Tenha um{" "}
+              <span className="text-[#ebad04]">App Próprio</span>{" "}
+              com a marca da sua barbearia
             </h2>
           )}
 
           {/* Subtitulo */}
-          <p className="text-gray-400 text-sm md:text-base text-center mb-5">
-            A gente te chama no WhatsApp.
+          <p className="text-[#1e1e1e]/60 text-sm md:text-base text-center mb-5">
+            Um especialista te mostra tudo pelo WhatsApp.
           </p>
 
           {/* Erro */}
           {submitError && !campoComAviso && (
             <div ref={erroRef} className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-5">
-              <p className="text-red-400 text-sm font-medium text-center">{submitError}</p>
+              <p className="text-red-600 text-sm font-medium text-center">{submitError}</p>
             </div>
           )}
 
@@ -326,7 +326,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                   key={field.name}
                   className={`space-y-1.5 ${ETAPA_DO_CAMPO[field.name] > ETAPA_INICIAL ? "bb-revelar" : ""}`.trim()}
                 >
-                  <label htmlFor={`modal-${field.name}`} className="block font-semibold text-[13px] md:text-[14px] text-white/90">
+                  <label htmlFor={`modal-${field.name}`} className="block font-semibold text-[13px] md:text-[14px] text-[#1e1e1e]">
                     {field.label}
                   </label>
                   <input
@@ -340,12 +340,12 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                     required={field.name !== "email"}
                     aria-invalid={campoComAviso === field.name || undefined}
                     aria-describedby={campoComAviso === field.name ? `modal-${field.name}-aviso` : undefined}
-                    className={`w-full bg-[#1a1d25] border-2 rounded-xl px-4 py-3 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 ${
-                      campoComAviso === field.name ? "border-red-400" : "border-[#454a56] hover:border-[#5a606e]"
+                    className={`w-full bg-[#f5f5f5] border-2 rounded-xl px-4 py-3 text-[#1e1e1e] placeholder-[#1e1e1e]/40 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 ${
+                      campoComAviso === field.name ? "border-red-400" : "border-[#e0e0e0] hover:border-[#cfcfcf]"
                     }`}
                   />
                   {campoComAviso === field.name && (
-                    <p id={`modal-${field.name}-aviso`} className="text-xs font-medium text-red-400">
+                    <p id={`modal-${field.name}-aviso`} className="text-xs font-medium text-red-600">
                       {submitError}
                     </p>
                   )}
@@ -354,7 +354,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
 
             {!progressivo && formFields.map((field) => (
               <div key={field.name} className="space-y-1">
-                <label htmlFor={`modal-${field.name}`} className="block font-semibold text-[13px] md:text-[14px] text-white/90">
+                <label htmlFor={`modal-${field.name}`} className="block font-semibold text-[13px] md:text-[14px] text-[#1e1e1e]">
                   {field.label}
                 </label>
                 <input
@@ -366,13 +366,13 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                   onChange={handleInputChange}
                   placeholder={field.placeholder}
                   required={field.name !== "email"}
-                  className="w-full bg-[#1a1d25] border-2 border-[#454a56] rounded-xl px-4 py-3 text-white placeholder-gray-500 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#5a606e]"
+                  className="w-full bg-[#f5f5f5] border-2 border-[#e0e0e0] rounded-xl px-4 py-3 text-[#1e1e1e] placeholder-[#1e1e1e]/40 font-medium text-[14px] md:text-[15px] focus:outline-none focus:border-[#ffaf02] focus:shadow-[0_0_0_4px_rgba(255,175,2,0.1)] transition-all duration-300 hover:border-[#5a606e]"
                 />
               </div>
             ))}
 
             <PerguntasQualificacao
-              variante="escuro"
+              variante="claro"
               valores={formData}
               onChange={handleInputChange}
               erros={erros}
@@ -405,7 +405,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
               </button>
             </div>
 
-            <AvisoPrivacidade variante="escuro" />
+            <AvisoPrivacidade variante="claro" />
 
           </form>
         </div>
