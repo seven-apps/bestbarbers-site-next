@@ -2,7 +2,6 @@ import { Vollkorn, Montserrat } from "next/font/google";
 
 const vollkorn = Vollkorn({
   subsets: ["latin"],
-  weight: ["700", "800"],
   variable: "--font-vollkorn",
   display: "swap",
 });
