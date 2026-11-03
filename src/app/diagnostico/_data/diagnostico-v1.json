@@ -1,0 +1,1787 @@
+{
+ "versao": "diagnostico-v1-rascunho",
+ "data": "2026-11-03",
+ "status": "rascunho para validação do André; não publicado; checagem final de produto, voz e coerência em 03/Nov/26",
+ "fontes": {
+  "decisoes": "docs/operacional/marketing-vendas-nov26/estrategia-canais/00-DECISOES.md (O centro; Página v1)",
+  "mapa": "docs/operacional/marketing-vendas-nov26/estrategia-canais/mapa-problemas.md (Com equipe: a lista priorizada; blocos por tema)",
+  "voz": "docs/operacional/marketing-vendas-nov26/estrategia-canais/guia-de-voz.md",
+  "casos": "knowledge/dominio/cases-clube.json (gerado em 20/Out/26)"
+ },
+ "selecao": {
+  "regra": "top 15 da lista priorizada do Com equipe, cobrindo os 5 temas (sem 'abrir')",
+  "troca": {
+   "entra": "p34",
+   "sai": "#23 Cliente mais velho, sem e-mail, não usa app (peso 26)",
+   "porque": "Equipe ficou sem problema no top 15; #34 é o de maior peso de Equipe na lista priorizada (20). #23 e #24 empatam em 26: saiu o #23 porque Agenda tinha 6 e Cliente ficaria com 1, e o #24 já tem o guia Cadeira Cheia no ar."
+  },
+  "troca_2": {
+   "entra": "p20",
+   "sai": "p21",
+   "porque": "Equipe passa de 1 para 2 opções; o #21 em parte reage à nossa oferta",
+   "status": "aprovada pelo André em 03/Nov/26 (\"pro 1 e 2 segue sua recomendação\")"
+  },
+  "p11": "fica, escrito a partir do app que o dono já usa (aprovado pelo André em 03/Nov/26)"
+ },
+ "convencoes": {
+  "placeholders": "{var} nos textos = valor da pergunta ou do cálculo do próprio problema, já formatado",
+  "formatos": {
+   "reais": "R$ 8.000 (sem centavos)",
+   "reais_centavos": "R$ 12,50",
+   "percentual": "40%",
+   "inteiro": "1.234"
+  },
+  "expressoes": "aritmética simples; funções permitidas: ceil, round, max, min (Math.* no JS); percentual entra como inteiro (40) e é dividido por 100 na expressão",
+  "nao_sei": "pergunta com aceita_nao_sei=true (ou opção com valor null) deixa a variável nula; cálculo que depende dela fica nulo; passo com se_nao_sabe troca pelo texto alternativo",
+  "tipos_de_pergunta": {
+   "reais": "campo numérico em R$, inteiro",
+   "reais_centavos": "campo numérico em R$ com centavos",
+   "inteiro": "campo numérico",
+   "percentual": "botões com a opção 'outro' (campo livre)",
+   "escolha": "botões; o valor de cada botão vai para a fórmula"
+  },
+  "ordem_dos_problemas": "dentro de cada tema, por peso (maior primeiro)",
+  "max_var": "a pergunta com max_var não aceita valor acima do de outra pergunta do mesmo problema (ex.: o que cai na conta não passa do valor do plano; os assinantes para lembrar não passam dos assinantes; os novos que vêm pela lista não passam dos novos do mês)",
+  "arredondamento": "conta que aparece em par (parte e resto) arredonda a parte na própria expressão, antes do resto, para a soma bater na tela",
+  "banca": "campo banca em cada problema: resultado da banca do dono de 03/Nov/26 (passou ou reescrito, com o porquê)"
+ },
+ "telas": [
+  {
+   "id": "abertura",
+   "titulo": "Qual é o problema da sua barbearia hoje?",
+   "texto": "Você escolhe o problema, põe 2 ou 3 números seus e recebe um plano de ação feito com eles.",
+   "botao": "Começar"
+  },
+  {
+   "id": "momento",
+   "pergunta": "Hoje a sua barbearia:",
+   "opcoes": [
+    {
+     "id": "vai_abrir",
+     "texto": "Vou abrir",
+     "momento": "Vai abrir"
+    },
+    {
+     "id": "sozinho",
+     "texto": "Trabalho sozinho ou com 1 barbeiro",
+     "momento": "Começando"
+    },
+    {
+     "id": "equipe",
+     "texto": "Tenho equipe",
+     "momento": "Com equipe"
+    },
+    {
+     "id": "unidades",
+     "texto": "Tenho mais de uma unidade",
+     "momento": "Crescendo"
+    }
+   ]
+  },
+  {
+   "id": "tema",
+   "pergunta": "O que mais pega hoje?",
+   "opcoes": [
+    {
+     "id": "assinatura",
+     "texto": "Assinatura",
+     "descricao": "dividir entre os barbeiros, cobrar todo mês, o preço do plano",
+     "pergunta": "Na assinatura, o que mais pega?",
+     "problemas": [
+      "p03",
+      "p05",
+      "p13"
+     ]
+    },
+    {
+     "id": "dinheiro",
+     "texto": "Dinheiro e organização",
+     "descricao": "caderno, um app para cada coisa, faturar mais",
+     "pergunta": "No dinheiro e na organização, o que mais pega?",
+     "problemas": [
+      "p04",
+      "p10",
+      "p18"
+     ]
+    },
+    {
+     "id": "agenda",
+     "texto": "Agenda e atendimento",
+     "descricao": "fila, WhatsApp, dia vazio, o app de marcar",
+     "pergunta": "Na agenda e no atendimento, o que mais pega?",
+     "problemas": [
+      "p09",
+      "p11",
+      "p12",
+      "p16",
+      "p19"
+     ]
+    },
+    {
+     "id": "cliente",
+     "texto": "Cliente",
+     "descricao": "o cliente que sumiu, o atendimento de cada barbeiro",
+     "pergunta": "Com o cliente, o que mais pega?",
+     "problemas": [
+      "p17",
+      "p24"
+     ]
+    },
+    {
+     "id": "equipe",
+     "texto": "Equipe",
+     "descricao": "contratar barbeiro, a comissão do fim do mês",
+     "pergunta": "Na equipe, o que mais pega?",
+     "problemas": [
+      "p20",
+      "p34"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "problema",
+   "pergunta": "por tema (campo 'pergunta' de cada tema)",
+   "outra_coisa": {
+    "opcao": "É outra coisa",
+    "campo": "Conta com as suas palavras:",
+    "placeholder": "Escreve do seu jeito",
+    "obrigatorio": true,
+    "depois": "contato, sem perguntas de número"
+   }
+  },
+  {
+   "id": "numeros",
+   "titulo": "Agora, os seus números",
+   "texto": "Pode ser de cabeça. O plano usa o número que você puser.",
+   "botao": "Continuar",
+   "perguntas": "as do problema escolhido"
+  },
+  {
+   "id": "contato",
+   "titulo": "Pra onde a gente manda o seu plano?",
+   "campos": [
+    {
+     "var": "nome",
+     "rotulo": "Seu nome",
+     "obrigatorio": true
+    },
+    {
+     "var": "whatsapp",
+     "rotulo": "Seu WhatsApp, com DDD",
+     "obrigatorio": true
+    },
+    {
+     "var": "instagram",
+     "rotulo": "@ do Instagram da barbearia (se quiser)",
+     "obrigatorio": false
+    }
+   ],
+   "texto": "O plano aparece aqui na tela e vai também para o seu WhatsApp.",
+   "botao": "Ver o meu plano"
+  },
+  {
+   "id": "plano",
+   "estrutura": [
+    "titulo",
+    "os_seus_numeros",
+    "passos",
+    "onde_o_bestbarbers_entra",
+    "prova",
+    "material",
+    "retorno"
+   ],
+   "rotulos": {
+    "cabecalho": "O seu plano, {nome}",
+    "os_seus_numeros": "Os seus números",
+    "passos": "O plano",
+    "onde_o_bestbarbers_entra": "Onde o BestBarbers entra",
+    "prova": "Quem já fez"
+   },
+   "retorno": "Daqui a 7 dias a gente te pergunta como foi o passo 1."
+  },
+  {
+   "id": "fim_outra_coisa",
+   "titulo": "Recebido, {nome}.",
+   "texto": "Uma pessoa do BestBarbers lê o que você escreveu e te manda um plano no WhatsApp. [prazo: a definir com o João]"
+  }
+ ],
+ "problemas": [
+  {
+   "id": "p03",
+   "mapa": "#3",
+   "peso": 96,
+   "tema": "assinatura",
+   "opcao": "Dividir o dinheiro da assinatura entre os barbeiros",
+   "perguntas": [
+    {
+     "var": "assinatura_mes",
+     "texto": "Quanto a assinatura faturou no mês passado?",
+     "tipo": "reais",
+     "rotulo": "assinatura do mês",
+     "min": 1,
+     "max": 1000000
+    },
+    {
+     "var": "comissao_pct",
+     "texto": "Quanto o barbeiro leva de comissão no corte avulso?",
+     "tipo": "percentual",
+     "rotulo": "comissão %",
+     "opcoes": [
+      {
+       "texto": "30%",
+       "valor": 30
+      },
+      {
+       "texto": "40%",
+       "valor": 40
+      },
+      {
+       "texto": "50%",
+       "valor": 50
+      },
+      {
+       "texto": "60%",
+       "valor": 60
+      },
+      {
+       "texto": "outro",
+       "valor": "livre"
+      }
+     ],
+     "min": 1,
+     "max": 100
+    },
+    {
+     "var": "atend_assin",
+     "texto": "Quantos atendimentos de assinante a barbearia fez no mês passado?",
+     "tipo": "inteiro",
+     "rotulo": "atendimentos de assinante",
+     "min": 1,
+     "max": 50000,
+     "ajuda": "De cabeça: os assinantes × as vezes que cada um vem no mês.",
+     "aceita_nao_sei": true
+    }
+   ],
+   "calculos": [
+    {
+     "var": "pote",
+     "expr": "round(assinatura_mes * comissao_pct / 100)",
+     "formato": "reais",
+     "rotulo": "pote"
+    },
+    {
+     "var": "fica_casa",
+     "expr": "assinatura_mes - pote",
+     "formato": "reais",
+     "rotulo": "fica na barbearia"
+    },
+    {
+     "var": "valor_atend",
+     "expr": "round(pote / atend_assin * 100) / 100",
+     "formato": "reais_centavos",
+     "rotulo": "valor de cada atendimento"
+    }
+   ],
+   "plano": {
+    "titulo": "A assinatura dividida de um jeito que o barbeiro aceita e que sai pronta no fim do mês",
+    "passos": [
+     {
+      "texto": "Amanhã, decida o pote: a parte do que a assinatura faturou que vai para a equipe. Comece perto da comissão que você já paga no avulso: {assinatura_mes} × {comissao_pct} = {pote} por mês para a equipe, e {fica_casa} ficam na barbearia."
+     },
+     {
+      "texto": "Dê pontos a cada serviço pelo tempo de cadeira: corte 40, barba 20, acabamento 10, por exemplo."
+     },
+     {
+      "texto": "No fim do mês, some os pontos de cada barbeiro. A parte dele = os pontos dele ÷ os pontos de todos × {pote}."
+     },
+     {
+      "texto": "Antes de anunciar a regra à equipe, faça a conta que o barbeiro vai fazer. No mês passado, a barbearia fez {atend_assin} atendimentos de assinante: cada um valeu {pote} ÷ {atend_assin} = {valor_atend} para quem atendeu. Ponha ao lado do que ele ganha num corte avulso. Se ficar bem abaixo, ajuste o pote antes de anunciar, não depois da reclamação.",
+      "se_nao_sabe": {
+       "var": "atend_assin",
+       "texto": "Antes de anunciar a regra à equipe, faça a conta que o barbeiro vai fazer: conte os atendimentos de assinante do mês passado e divida os {pote} por esse número. É quanto valeu cada um para quem atendeu. Ponha ao lado do que ele ganha num corte avulso. Se ficar bem abaixo, ajuste o pote antes de anunciar, não depois da reclamação."
+      }
+     },
+     {
+      "texto": "Mostre à equipe, com o mês passado como exemplo, quanto valeu cada ponto: {pote} ÷ os pontos de todos no mês. O assinante corta com quem tiver horário, e acaba o \"esse cliente é meu\". Escreva a regra, ponha a data e revise em 6 meses."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "direto",
+    "texto": "No BestBarbers, você põe no plano a porcentagem do pote e os pontos de cada serviço. No fechamento, o sistema divide por pontos, e cada barbeiro vê no celular o que é dele.",
+    "nota_interna": "White Label + assinatura; confirmado pelo André em 20/Out. Regra diária ou variável não existe. Fala com o dono, nunca com o barbeiro. O passo 4 responde a cena 4 do guia de voz (\"o barbeiro me pergunta quanto ganha em cada corte do plano\", 102 donos)."
+   },
+   "prova": null,
+   "nota_prova": "Tempo poupado [a levantar]. O pote de 38% a 45% é número de curso (FDO) e não entra na tela.",
+   "material": null,
+   "banca": "reescrito — a parte igual (pote ÷ barbeiros) não responde o que o barbeiro pergunta, quanto ganha em cada corte do plano. Entrou o valor de cada atendimento de assinante, para comparar com o avulso antes de anunciar. O pote passou a ser arredondado antes do resto, para a soma bater na tela"
+  },
+  {
+   "id": "p05",
+   "mapa": "#5",
+   "peso": 79,
+   "tema": "assinatura",
+   "opcao": "Cobrar cada assinante, todo mês, na mão",
+   "perguntas": [
+    {
+     "var": "assinantes",
+     "texto": "Quantos assinantes você tem hoje?",
+     "tipo": "inteiro",
+     "rotulo": "assinantes",
+     "min": 1,
+     "max": 5000
+    },
+    {
+     "var": "valor_plano",
+     "texto": "Quanto custa o plano que mais vende?",
+     "tipo": "reais",
+     "rotulo": "valor do plano",
+     "min": 1,
+     "max": 2000
+    },
+    {
+     "var": "lembrar_mes",
+     "texto": "Num mês normal, quantos assinantes você precisa lembrar ou cobrar de novo?",
+     "tipo": "inteiro",
+     "rotulo": "assinantes para lembrar",
+     "min": 0,
+     "max": 5000,
+     "max_var": "assinantes"
+    }
+   ],
+   "calculos": [
+    {
+     "var": "assinatura_mes",
+     "expr": "assinantes * valor_plano",
+     "formato": "reais",
+     "rotulo": "assinatura do mês"
+    },
+    {
+     "var": "valor_lembrar",
+     "expr": "lembrar_mes * valor_plano",
+     "formato": "reais",
+     "rotulo": "valor que depende de você"
+    }
+   ],
+   "plano": {
+    "titulo": "A assinatura cobrada todo mês na mesma data, sem lembrar assinante um por um",
+    "passos": [
+     {
+      "texto": "Amanhã, ponha os {assinantes} assinantes numa lista com o dia em que cada um paga e se tem cartão de crédito. Se cada um vence num dia, você passa o mês inteiro cobrando."
+     },
+     {
+      "texto": "Junte os vencimentos em 1 ou 2 datas (dia 5 e dia 20, por exemplo). Essa troca é sem custo para o assinante; se depois ele pedir outra data, paga a diferença dos dias."
+     },
+     {
+      "texto": "Escreva a regra e mande a todos: a data, o valor ({valor_plano}) e que quem não pagou não marca."
+     },
+     {
+      "texto": "Passe a cobrança para o cartão de crédito em lotes. Comece pelos 10 mais fiéis, que viram exemplo para os outros: o cartão é cadastrado uma vez, ali na cadeira, com alguém da equipe junto. Quem não tem cartão de crédito, decida o caminho dele antes da troca, não no dia. Com todos no cartão, são cobrados perto de {assinantes} × {valor_plano} = {assinatura_mes} por mês, nas datas da regra."
+     },
+     {
+      "texto": "No dia seguinte a cada vencimento, confira só a lista de quem não pagou. Hoje são {lembrar_mes} por mês: {lembrar_mes} × {valor_plano} = {valor_lembrar} que só entram se você for atrás."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "direto",
+    "texto": "No BestBarbers, o assinante cadastra o cartão uma vez, a mensalidade é cobrada todo mês na mesma data, e quem não pagou não marca pelo app até pagar. Na troca, o time importa a sua lista com o vencimento de cada um, e o assinante só cadastra o cartão. O painel mostra quem está em dia, quem venceu e quem cancelou; vender o plano continua com você.",
+    "nota_interna": "White Label + módulo de assinatura, com implantação. Só cartão de crédito (não citar Pix nem boleto na tela). O bloqueio automático pode ser afirmado (André, 22/Set; memória \"o que a assinatura pode e não pode afirmar\"); vale no app, não no WhatsApp nem no totem. A migração com os vencimentos é do time (mapa #48; André, 22/Set: \"migre sem perder nenhum cliente\" é verdade)."
+   },
+   "prova": {
+    "texto": "Uma barbearia de 4 cadeiras em MG foi de 99 para 282 assinantes, e de R$ 9,2 mil para R$ 31,3 mil por mês de assinatura, em 22 meses.",
+    "fonte": "knowledge/dominio/cases-clube.json, bb#13285 (gerado em 20/Out/26; crível, sem bloqueio; caso-âncora do Lucas)"
+   },
+   "material": null,
+   "banca": "reescrito — o passo 4 mandava passar para o cartão sem dizer como: entraram os lotes, o cartão cadastrado na cadeira e o caminho de quem não tem cartão decidido antes. O bloqueio virou \"não marca pelo app\", que é onde ele vale. As contas estavam certas"
+  },
+  {
+   "id": "p13",
+   "mapa": "#13",
+   "peso": 43,
+   "tema": "assinatura",
+   "opcao": "Não sei quanto cobrar no plano",
+   "perguntas": [
+    {
+     "var": "preco_corte",
+     "texto": "Quanto custa o seu corte avulso?",
+     "tipo": "reais",
+     "rotulo": "preço do corte",
+     "min": 10,
+     "max": 500
+    },
+    {
+     "var": "comissao_pct",
+     "texto": "Quanto o barbeiro leva de comissão no corte?",
+     "tipo": "percentual",
+     "rotulo": "comissão %",
+     "opcoes": [
+      {
+       "texto": "30%",
+       "valor": 30
+      },
+      {
+       "texto": "40%",
+       "valor": 40
+      },
+      {
+       "texto": "50%",
+       "valor": 50
+      },
+      {
+       "texto": "60%",
+       "valor": 60
+      },
+      {
+       "texto": "outro",
+       "valor": "livre"
+      }
+     ],
+     "min": 1,
+     "max": 100
+    },
+    {
+     "var": "cortes_plano",
+     "texto": "Quantos cortes por mês você pensa em dar no plano?",
+     "tipo": "escolha",
+     "rotulo": "cortes no plano",
+     "opcoes": [
+      {
+       "texto": "2",
+       "valor": 2
+      },
+      {
+       "texto": "3",
+       "valor": 3
+      },
+      {
+       "texto": "4",
+       "valor": 4
+      },
+      {
+       "texto": "ainda não sei",
+       "valor": 4
+      }
+     ],
+     "ajuda": "\"Ainda não sei\" usa 4, o pior caso."
+    }
+   ],
+   "calculos": [
+    {
+     "var": "teto",
+     "expr": "preco_corte * 2",
+     "formato": "reais",
+     "rotulo": "teto do plano"
+    },
+    {
+     "var": "entra_corte",
+     "expr": "round(teto / cortes_plano * 100) / 100",
+     "formato": "reais_centavos",
+     "rotulo": "entra por corte"
+    },
+    {
+     "var": "barbeiro_corte",
+     "expr": "round(entra_corte * comissao_pct) / 100",
+     "formato": "reais_centavos",
+     "rotulo": "parte do barbeiro por corte"
+    },
+    {
+     "var": "fica_corte",
+     "expr": "entra_corte - barbeiro_corte",
+     "formato": "reais_centavos",
+     "rotulo": "fica por corte"
+    }
+   ],
+   "plano": {
+    "titulo": "Um preço de plano que paga o corte e não lota a sua agenda",
+    "passos": [
+     {
+      "texto": "Amanhã, tire 2 números da agenda. Primeiro, quantas vezes por mês vêm os 30 clientes que mais frequentam: some as visitas deles nos últimos 60 dias e divida por 60 (30 clientes × 2 meses). Depois, numa semana normal, quantos horários ficam vazios em cada dia."
+     },
+     {
+      "texto": "Decida a regra antes do preço: {cortes_plano} cortes por mês, ou só de segunda a quarta. Se o vazio está no começo da semana e o sábado já lota, a regra de dia vem primeiro."
+     },
+     {
+      "texto": "Comece com o plano até o preço de 2 cortes avulsos: 2 × {preco_corte} = até {teto}. Para o cliente, o argumento é pagar uma vez por mês, na mesma data, e ter o horário dele."
+     },
+     {
+      "texto": "Faça a conta do pior caso, o assinante usando todos os cortes: {teto} ÷ {cortes_plano} = {entra_corte} por corte. Tirando a parte do barbeiro ({comissao_pct}), ficam {fica_corte}. Agora divida aluguel + luz + produto do mês pelos cortes do mês: se der mais que {fica_corte}, aperte a regra, não o preço. Quem mais vem é quem mais tem motivo para assinar: se os 30 do passo 1 vêm menos vezes do que a regra deixa, a conta de verdade fica melhor que a do pior caso."
+     },
+     {
+      "texto": "Revise com 3 meses de uso real. Reajuste com 30 dias de aviso e sempre depois de subir o avulso."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "direto",
+    "texto": "No BestBarbers, um especialista desenha com você o preço e a regra do plano, com os seus números, na implantação. A regra fica gravada no plano.",
+    "nota_interna": "White Label (André confirmou em 28/Set). Precificador dentro do produto não existe. Trava: em set, 513 contas ativas estavam sem gerente (F04 §2.6)."
+   },
+   "prova": {
+    "texto": "Uma barbearia de 2 cadeiras em MG foi de R$ 4,1 mil para R$ 11,6 mil por mês de assinatura, em 26 meses.",
+    "fonte": "knowledge/dominio/cases-clube.json, bb#11545 (gerado em 20/Out/26; crível, sem bloqueio)"
+   },
+   "nota_prova": "O teto de 2 cortes é regra de método do curso (FDO); o número de adesão do curso (3 × 35 em cada 100) e o reajuste de R$ 10 saíram da tela. Mínimo R$ 86 e mediana R$ 136 da base são internos.",
+   "material": null,
+   "banca": "reescrito — a conta do passo 1 estava errada: \"as visitas dos últimos 60 dias ÷ 2\" dá as visitas dos 30 juntos, não as de cada um (é ÷ 60). E o número tirado no passo 1 não voltava em passo nenhum; agora volta no passo 4. As contas dos passos 3 e 4 estavam certas"
+  },
+  {
+   "id": "p04",
+   "mapa": "#4",
+   "peso": 85,
+   "tema": "dinheiro",
+   "opcao": "Tudo no caderno, no papel ou de cabeça",
+   "perguntas": [
+    {
+     "var": "atend_dia",
+     "texto": "Quantos atendimentos a barbearia faz num dia normal?",
+     "tipo": "inteiro",
+     "rotulo": "atendimentos por dia",
+     "min": 1,
+     "max": 500
+    },
+    {
+     "var": "dias_mes",
+     "texto": "Quantos dias por mês a barbearia abre?",
+     "tipo": "inteiro",
+     "rotulo": "dias abertos no mês",
+     "min": 1,
+     "max": 31
+    },
+    {
+     "var": "barbeiros",
+     "texto": "Quantos barbeiros você tem?",
+     "tipo": "inteiro",
+     "rotulo": "barbeiros",
+     "min": 1,
+     "max": 30
+    }
+   ],
+   "calculos": [
+    {
+     "var": "atend_mes",
+     "expr": "atend_dia * dias_mes",
+     "formato": "inteiro",
+     "rotulo": "atendimentos do mês"
+    }
+   ],
+   "plano": {
+    "titulo": "A barbearia organizada sem largar a cadeira",
+    "passos": [
+     {
+      "texto": "Amanhã, um lugar só para cada atendimento do dia: barbeiro, serviço, valor e forma de pagamento. Quem atendeu anota na hora, antes do próximo cliente. São perto de {atend_dia} linhas por dia; pode ser uma folha por dia, no balcão, desde que seja uma só."
+     },
+     {
+      "texto": "No fim do dia, some e confira com a gaveta, a maquininha e o Pix. Para a conta fechar, todo Pix cai na chave da barbearia, nunca na do barbeiro. A diferença se acha no mesmo dia, não no fim do mês."
+     },
+     {
+      "texto": "No fim da semana, a comissão dos {barbeiros} barbeiros sai dessas folhas, e não da memória."
+     },
+     {
+      "texto": "No fim do mês, 3 números: atendimentos (perto de {atend_dia} × {dias_mes} = {atend_mes}), faturamento e assinantes. Compare com o mês anterior."
+     },
+     {
+      "texto": "Quando a folha virar rotina, passe para um sistema nesta ordem: agenda, depois comanda, depois fechamento."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "direto",
+    "texto": "No BestBarbers, agenda, comanda, caixa e comissão ficam num lugar só, e o fechamento do dia e de cada barbeiro sai sem conta na mão.",
+    "nota_interna": "Todos os planos; assinatura no White Label. O mesmo faturamento aparece com 4 valores em 4 telas: escolher a tela de referência antes de mostrar (pendente 13). Não dizer DRE, lucro ou margem."
+   },
+   "prova": {
+    "texto": "\"Organizou meu dia de uma forma surreal. Me dá tempo de estudar, de poder trabalhar melhor.\" Um dono que usa o BestBarbers.",
+    "fonte": "guia-de-voz.md, antes e depois, ex. 8 (reel de 14/Jul/26)"
+   },
+   "material": null,
+   "banca": "reescrito — com equipe, a folha só fecha se quem atendeu anota na hora e se o Pix cai na chave da barbearia; sem isso, a conferência do passo 2 não bate. A conta estava certa"
+  },
+  {
+   "id": "p10",
+   "mapa": "#10",
+   "peso": 59,
+   "tema": "dinheiro",
+   "opcao": "Quero faturar mais e não sei onde mexer",
+   "perguntas": [
+    {
+     "var": "atend_mes",
+     "texto": "Quantos atendimentos a barbearia fez no mês passado?",
+     "tipo": "inteiro",
+     "rotulo": "atendimentos do mês",
+     "min": 1,
+     "max": 20000
+    },
+    {
+     "var": "ticket",
+     "texto": "Quanto o cliente gasta, em média, por visita?",
+     "tipo": "reais",
+     "rotulo": "valor médio por visita",
+     "min": 1,
+     "max": 1000,
+     "ajuda": "Se não souber, põe o preço do corte."
+    },
+    {
+     "var": "vazios_semana",
+     "texto": "Numa semana normal, quantos horários ficam vazios, somando todos os barbeiros?",
+     "tipo": "inteiro",
+     "rotulo": "horários vazios por semana",
+     "min": 0,
+     "max": 2000,
+     "ajuda": "De cabeça mesmo."
+    }
+   ],
+   "calculos": [
+    {
+     "var": "fat_aprox",
+     "expr": "atend_mes * ticket",
+     "formato": "reais",
+     "rotulo": "faturamento aproximado"
+    },
+    {
+     "var": "valor_vazio",
+     "expr": "vazios_semana * 4 * ticket",
+     "formato": "reais",
+     "rotulo": "valor da cadeira vazia"
+    },
+    {
+     "var": "fat_cheio",
+     "expr": "fat_aprox + valor_vazio",
+     "formato": "reais",
+     "rotulo": "barbearia cheia"
+    },
+    {
+     "var": "ganho_preco",
+     "expr": "atend_mes * 5",
+     "formato": "reais",
+     "rotulo": "ganho dos R$ 5"
+    }
+   ],
+   "plano": {
+    "titulo": "Faturar mais com a mesma barbearia, começando pelo que entra mais rápido",
+    "passos": [
+     {
+      "texto": "Amanhã, ponha o mês passado no papel: {atend_mes} × {ticket} = perto de {fat_aprox}. Com os {vazios_semana} horários vazios da semana ocupados, seriam mais {vazios_semana} × 4 semanas × {ticket} = {valor_vazio} por mês, {fat_cheio} com a barbearia cheia. É o teto com a equipe de hoje."
+     },
+     {
+      "texto": "Faturar mais vem de 4 lugares. Dois enchem horário: a cadeira vazia e o cliente que não volta. Dois rendem mais no mesmo horário: o gasto por visita e o preço do corte parado."
+     },
+     {
+      "texto": "Dê um valor a cada um. Cadeira vazia: {valor_vazio} por mês (passo 1). Cliente que sumiu: quantos são × {ticket}. Gasto por visita: os extras que não saíram × o preço do extra. Preço: R$ 5 a mais × {atend_mes} = até {ganho_preco} por mês."
+     },
+     {
+      "texto": "Se o preço do corte não sobe há mais de 1 ano, comece por ele: dos 4, é o que entra mais rápido. Cartaz no balcão uma semana antes, com a data, R$ 5 de cada vez. A assinatura sobe só meses depois, com aviso por escrito de 30 dias."
+     },
+     {
+      "texto": "Depois, cuide só do maior dos outros 3 por 90 dias e refaça a conta."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "não entra direto",
+    "texto": "Não entra direto. Os relatórios do BestBarbers mostram horários ocupados, valor médio por atendimento e faturamento por barbeiro, que fazem as contas dos passos 1 e 3. O faturamento não sobe sozinho.",
+    "nota_interna": "Todos os planos. A mediana da base (R$ 16,7 mil por mês com 2 a 4 barbeiros, set/26) só se ele perguntar \"e nas outras?\"."
+   },
+   "prova": null,
+   "nota_prova": "Nada na tela: o dado da base só responde \"e nas outras?\" (guia de voz §5).",
+   "material": null,
+   "banca": "reescrito — o passo 1 pedia uma conta (horários por dia × dias) com números que ele não deu; agora o teto sai dos números dele. E punha os 4 lugares como \"a diferença\" até a barbearia cheia, mas preço e gasto por visita não enchem horário: sobem o teto"
+  },
+  {
+   "id": "p18",
+   "mapa": "#18",
+   "peso": 34,
+   "tema": "dinheiro",
+   "opcao": "Uso um app para a agenda e outro para cobrar; nada conversa",
+   "perguntas": [
+    {
+     "var": "ferramentas",
+     "texto": "Quantos apps, planilhas ou cadernos você usa para tocar a barbearia?",
+     "tipo": "inteiro",
+     "rotulo": "ferramentas",
+     "min": 1,
+     "max": 20
+    },
+    {
+     "var": "custo_ferr",
+     "texto": "Quanto você paga por mês, somando todos?",
+     "tipo": "reais",
+     "rotulo": "custo por mês",
+     "min": 0,
+     "max": 10000
+    },
+    {
+     "var": "horas_semana",
+     "texto": "Quantas horas por semana você passa copiando informação de um para o outro?",
+     "tipo": "inteiro",
+     "rotulo": "horas por semana",
+     "min": 0,
+     "max": 80,
+     "ajuda": "De cabeça mesmo."
+    }
+   ],
+   "calculos": [
+    {
+     "var": "custo_ano",
+     "expr": "custo_ferr * 12",
+     "formato": "reais",
+     "rotulo": "custo no ano"
+    },
+    {
+     "var": "horas_mes",
+     "expr": "horas_semana * 4",
+     "formato": "inteiro",
+     "rotulo": "horas por mês"
+    }
+   ],
+   "plano": {
+    "titulo": "Tudo num lugar só, com o mês inteiro à vista",
+    "passos": [
+     {
+      "texto": "Amanhã, liste as {ferramentas} ferramentas, o que entra em cada uma e quanto custa: {custo_ferr} por mês, {custo_ano} no ano."
+     },
+     {
+      "texto": "Marque onde a mesma informação entra duas vezes: o cliente na agenda e de novo na cobrança, o atendimento na agenda e de novo na conta da comissão. É ali que aparecem o erro e o tempo perdido: hoje, {horas_semana} horas por semana, perto de {horas_mes} por mês."
+     },
+     {
+      "texto": "Até trocar, escolha um lugar como o que vale: a agenda. O que não está na agenda não entra na conta, e a cobrança e a comissão se conferem por ela uma vez por semana, não todo dia."
+     },
+     {
+      "texto": "Se for trocar, leve a lista do passo 2: o sistema novo tem de fazer sozinho cada coisa que hoje você copia. Peça para ver cada uma funcionando antes de contratar, e ponha o preço dele ao lado dos {custo_ferr} e das {horas_mes} horas por mês de hoje."
+     },
+     {
+      "texto": "Troque fora do seu mês mais cheio (em geral, dezembro) e leve antes a lista de clientes e de assinantes, com telefone."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "direto",
+    "texto": "No BestBarbers, agenda, comanda, caixa, comissão e estoque ficam num lugar só, e a assinatura é cobrada no cartão com o módulo de assinatura.",
+    "nota_interna": "Todos os planos; assinatura: White Label + módulo. A integração com maquininha não existe (\"não em 2026\", por escrito): não citar na tela, responder se ele perguntar. Dezembro como pico: memória reference_sazonalidade (medido 02/Nov)."
+   },
+   "prova": null,
+   "nota_prova": "Custo somado na base [a levantar].",
+   "material": null,
+   "banca": "reescrito — listar, somar e comparar era o óbvio; entraram o que fazer até trocar (a agenda como o lugar que vale) e o teste do sistema novo pela lista do que ele copia hoje. As contas estavam certas"
+  },
+  {
+   "id": "p09",
+   "mapa": "#9",
+   "peso": 65,
+   "tema": "agenda",
+   "opcao": "O app de agenda mostra outras barbearias ao meu cliente; quero um com a minha marca",
+   "perguntas": [
+    {
+     "var": "clientes_app",
+     "texto": "Quantos clientes você tem cadastrados no app de hoje?",
+     "tipo": "inteiro",
+     "rotulo": "clientes no app",
+     "min": 0,
+     "max": 50000,
+     "aceita_nao_sei": true
+    },
+    {
+     "var": "novos_mes",
+     "texto": "Quantos clientes novos chegam por mês?",
+     "tipo": "inteiro",
+     "rotulo": "novos por mês",
+     "min": 1,
+     "max": 2000,
+     "ajuda": "De cabeça mesmo."
+    },
+    {
+     "var": "novos_lista",
+     "texto": "Desses, quantos chegam pelo próprio app, vendo a sua barbearia na lista?",
+     "tipo": "inteiro",
+     "rotulo": "novos que vêm pela lista",
+     "min": 0,
+     "max": 2000,
+     "aceita_nao_sei": true,
+     "max_var": "novos_mes"
+    }
+   ],
+   "calculos": [],
+   "plano": {
+    "titulo": "O seu cliente vendo a sua marca, e não a da barbearia vizinha",
+    "passos": [
+     {
+      "texto": "Amanhã, abra o app que você usa como se fosse cliente e conte quantas barbearias aparecem perto da sua. Faça de novo num sábado de agenda cheia, quando o seu horário acaba."
+     },
+     {
+      "texto": "Pare de mandar o cliente para a lista de todas: o link da bio, do status e da mensagem é só o da sua agenda."
+     },
+     {
+      "texto": "Antes de sair da lista, meça o que ela te traz: hoje, {novos_lista} dos {novos_mes} clientes novos do mês chegam por ela. Se é muita gente, tire de lá só o cliente fiel (passo 2) e saia de vez quando a indicação e o Google já trouxerem o cliente novo.",
+      "se_nao_sabe": {
+       "var": "novos_lista",
+       "texto": "Antes de sair da lista, meça o que ela te traz: por 30 dias, pergunte a cada um dos {novos_mes} clientes novos \"como conheceu a barbearia?\". Se muita gente vem pela lista, tire de lá só o cliente fiel (passo 2) e saia de vez quando a indicação e o Google já trouxerem o cliente novo."
+      }
+     },
+     {
+      "texto": "Se for trocar de app, peça antes a lista dos seus {clientes_app} clientes com telefone. O cliente é da barbearia.",
+      "se_nao_sabe": {
+       "var": "clientes_app",
+       "texto": "Se for trocar de app, peça antes a lista de todos os seus clientes com telefone. O cliente é da barbearia."
+      }
+     },
+     {
+      "texto": "Na troca, quem senta na cadeira sai com o app novo no celular: nos primeiros 30 dias, alguém da equipe instala junto com o cliente. Quem vem pelo menos uma vez por mês passa pela cadeira nesse prazo."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "direto",
+    "texto": "No BestBarbers, o app tem o nome, a logo e as cores da sua barbearia nas lojas, e lá dentro só tem a sua barbearia.",
+    "nota_interna": "White Label; o time publica. Não prometer data de app na loja (o prazo de 30 dias não tem medição; o tech cumpre o prazo em 58% das tasks de marca). Os 30 dias do passo 5 são do lado do cliente da barbearia, depois do app no ar, e não prazo nosso."
+   },
+   "prova": null,
+   "nota_prova": "765 barbearias com app próprio é dado agregado da base: só se ele perguntar. Que o app próprio segura o cliente: [a levantar].",
+   "material": null,
+   "banca": "reescrito — o plano parava em pedir a lista; faltava como o cliente fiel passa para o app novo sem se perder: instalar na cadeira por 30 dias. Sem contas para conferir"
+  },
+  {
+   "id": "p11",
+   "mapa": "#11",
+   "peso": 51,
+   "tema": "agenda",
+   "opcao": "No app que uso hoje, o cliente erra a senha e desiste de marcar",
+   "perguntas": [
+    {
+     "var": "sozinhos_10",
+     "texto": "De cada 10 clientes, quantos marcam sozinhos pelo app?",
+     "tipo": "escolha",
+     "rotulo": "de 10, marcam sozinhos",
+     "opcoes": [
+      {
+       "texto": "0",
+       "valor": 0
+      },
+      {
+       "texto": "1",
+       "valor": 1
+      },
+      {
+       "texto": "2",
+       "valor": 2
+      },
+      {
+       "texto": "3",
+       "valor": 3
+      },
+      {
+       "texto": "4",
+       "valor": 4
+      },
+      {
+       "texto": "5",
+       "valor": 5
+      },
+      {
+       "texto": "6",
+       "valor": 6
+      },
+      {
+       "texto": "7",
+       "valor": 7
+      },
+      {
+       "texto": "8",
+       "valor": 8
+      },
+      {
+       "texto": "9",
+       "valor": 9
+      },
+      {
+       "texto": "10",
+       "valor": 10
+      }
+     ]
+    },
+    {
+     "var": "pedidos_dia",
+     "texto": "Quantos pedidos de horário chegam por dia no WhatsApp ou no telefone?",
+     "tipo": "inteiro",
+     "rotulo": "pedidos por dia",
+     "min": 0,
+     "max": 500
+    }
+   ],
+   "calculos": [],
+   "plano": {
+    "titulo": "O cliente marcando sem travar, e você sem virar suporte de app",
+    "passos": [
+     {
+      "texto": "Amanhã, peça a 3 clientes para marcar na sua frente e anote onde cada um trava: baixar, e-mail, senha ou achar o horário."
+     },
+     {
+      "texto": "Na primeira vez, faça junto, na cadeira ou no balcão: cadastro feito com ele e senha salva no celular dele. Daí em diante, ele marca sozinho."
+     },
+     {
+      "texto": "Para quem trava, mande o link que abre no navegador, em vez de pedir para baixar o app."
+     },
+     {
+      "texto": "Deixe o WhatsApp para quem não consegue: a equipe marca por ele, sem cara feia."
+     },
+     {
+      "texto": "Em 30 dias, refaça a conta. Hoje, {sozinhos_10} de 10 marcam sozinhos, e chegam {pedidos_dia} pedidos por dia no WhatsApp ou no telefone: o primeiro número tem de subir, e o segundo, cair."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "em parte",
+    "texto": "No BestBarbers, o link abre no navegador, sem baixar nada, e a equipe marca pelo cliente na agenda do painel. Na primeira vez, o cliente cria um cadastro com senha.",
+    "nota_interna": "Todos os planos. O BestBarbers não elimina a senha: nunca dizer \"sem cadastro\". 12 dos 51 donos são clientes do BestBarbers reclamando do app dele."
+   },
+   "prova": null,
+   "nota_prova": "Quantos desistem no cadastro [a levantar].",
+   "material": null,
+   "banca": "passou — duas perguntas de toque (0 a 10 e um número), plano que se faz no balcão no dia seguinte, e o BestBarbers entra em parte, dizendo a senha da primeira vez"
+  },
+  {
+   "id": "p12",
+   "mapa": "#12",
+   "peso": 45,
+   "tema": "agenda",
+   "opcao": "Aqui é por ordem de chegada: o cliente espera, acumula ou desiste",
+   "perguntas": [
+    {
+     "var": "embora_semana",
+     "texto": "Numa semana, quantos clientes você vê ir embora sem cortar?",
+     "tipo": "inteiro",
+     "rotulo": "vão embora por semana",
+     "min": 0,
+     "max": 500,
+     "ajuda": "De cabeça mesmo."
+    },
+    {
+     "var": "preco_corte",
+     "texto": "Quanto custa o seu corte avulso?",
+     "tipo": "reais",
+     "rotulo": "preço do corte",
+     "min": 10,
+     "max": 500
+    }
+   ],
+   "calculos": [
+    {
+     "var": "valor_embora",
+     "expr": "embora_semana * 4 * preco_corte",
+     "formato": "reais",
+     "rotulo": "o que não entrou no mês"
+    }
+   ],
+   "plano": {
+    "titulo": "Menos cliente indo embora pela espera, sem acabar com a ordem de chegada",
+    "passos": [
+     {
+      "texto": "Amanhã, deixe uma folha no balcão e anote, por hora, quantos chegaram, quantos esperaram mais de 30 minutos e quantos foram embora. Faça isso por uma semana. De cabeça, hoje: {embora_semana} × 4 semanas × {preco_corte} = {valor_embora} por mês que não entrou; a folha mostra o número certo."
+     },
+     {
+      "texto": "Abra horário marcado só nas faixas em que a folha mostrou gente indo embora. No resto do dia, a ordem de chegada continua."
+     },
+     {
+      "texto": "Nessas faixas, separe as cadeiras: uma (ou um barbeiro) só para quem marcou, as outras para a fila. Na mesma cadeira, o misto dá briga: quem está esperando vê o que marcou chegar depois e sentar antes."
+     },
+     {
+      "texto": "Quem chega sem horário ouve a regra e o tempo real de espera (\"tem 25 minutos\"). Quem não tem preferência vai para o primeiro barbeiro livre; quem escolhe espera o dele. Com o tempo dito, ele decide se fica ou volta, e não vai embora calado."
+     },
+     {
+      "texto": "Nos 2 primeiros meses, alguém ensina o cliente a marcar ali na cadeira; para o mais velho, a equipe marca por ele."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "direto, em parte",
+    "texto": "No BestBarbers, quem chega sem horário entra como encaixe na agenda, e o caixa e a comissão do dia fecham sem conta na mão. Nas faixas de horário marcado, o cliente pode marcar sem escolher barbeiro.",
+    "nota_interna": "Todos os planos; existem o agendamento \"sem preferência de barbeiro\" e o encaixe (system-docs/agenda.md §13). O totem com check-in é módulo do White Label (não aceita Pix). Fila digital sem escolher profissional e tempo de espera na tela NÃO existem."
+   },
+   "prova": null,
+   "nota_prova": "A folha do passo 1 é a prova dele. As \"2 a 3 visitas para pegar o hábito\" são de curso e não entram.",
+   "material": null,
+   "banca": "passou — a conta (vão embora × 4 semanas × preço) está certa e vem dita como de cabeça, com a folha para corrigir; a cadeira separada para quem marcou é o que o dono com equipe não acha sozinho"
+  },
+  {
+   "id": "p16",
+   "mapa": "#16",
+   "peso": 37,
+   "tema": "agenda",
+   "opcao": "Não tenho recepcionista: eu ou o barbeiro atendemos, e não sei se contrato uma",
+   "perguntas": [
+    {
+     "var": "custo_recep",
+     "texto": "Quanto custaria uma recepcionista por mês na sua cidade?",
+     "tipo": "reais",
+     "rotulo": "custo da recepcionista",
+     "min": 1,
+     "max": 20000,
+     "ajuda": "Salário e encargos, de cabeça."
+    },
+    {
+     "var": "preco_corte",
+     "texto": "Quanto custa o seu corte avulso?",
+     "tipo": "reais",
+     "rotulo": "preço do corte",
+     "min": 10,
+     "max": 500
+    },
+    {
+     "var": "comissao_pct",
+     "texto": "Quanto o barbeiro leva de comissão no corte?",
+     "tipo": "percentual",
+     "rotulo": "comissão %",
+     "opcoes": [
+      {
+       "texto": "30%",
+       "valor": 30
+      },
+      {
+       "texto": "40%",
+       "valor": 40
+      },
+      {
+       "texto": "50%",
+       "valor": 50
+      },
+      {
+       "texto": "60%",
+       "valor": 60
+      },
+      {
+       "texto": "outro",
+       "valor": "livre"
+      }
+     ],
+     "min": 1,
+     "max": 90
+    }
+   ],
+   "calculos": [
+    {
+     "var": "fica_corte",
+     "expr": "round(preco_corte * (100 - comissao_pct)) / 100",
+     "formato": "reais_centavos",
+     "rotulo": "fica por corte"
+    },
+    {
+     "var": "cortes_recep",
+     "expr": "ceil(custo_recep / fica_corte)",
+     "formato": "inteiro",
+     "rotulo": "cortes que pagam a recepcionista"
+    },
+    {
+     "var": "cortes_semana",
+     "expr": "ceil(cortes_recep / 4)",
+     "formato": "inteiro",
+     "rotulo": "cortes por semana"
+    }
+   ],
+   "plano": {
+    "titulo": "Atender quem escreve e quem chega sem tirar ninguém da cadeira",
+    "passos": [
+     {
+      "texto": "Amanhã, deixe um número só para a barbearia (WhatsApp Business), com a foto e o nome de uma pessoa, não só a logo."
+     },
+     {
+      "texto": "Defina quem olha o celular e quando. Pedido de horário para hoje: entre um cliente e outro, quem acabou o corte responde em 2 minutos. O resto (preço, dúvida, parceria) fica para 3 horários fixos: ao abrir, depois do almoço e no fim da tarde. Fora disso, a mensagem automática manda o link para marcar."
+     },
+     {
+      "texto": "Monte 4 respostas rápidas: horários, preços, endereço e \"marca por aqui: [link]\"."
+     },
+     {
+      "texto": "Quem chega sem horário é recebido pelo barbeiro da primeira cadeira, que diz o tempo de espera e volta ao corte."
+     },
+     {
+      "texto": "Em 30 dias, conte quantos horários entraram pelo link e quantas mensagens ainda pedem horário. Só então decida, com esta conta: de cada corte de {preco_corte}, ficam {fica_corte} na barbearia depois da comissão ({comissao_pct}). Uma recepcionista de {custo_recep} por mês se paga com {cortes_recep} cortes a mais no mês, perto de {cortes_semana} por semana: os que hoje se perdem porque ninguém respondeu a tempo ou porque o barbeiro gasta o horário no balcão."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "direto",
+    "texto": "No BestBarbers, o link de agendamento e o app com a marca da sua barbearia ficam abertos 24 horas: o cliente vê os horários livres e marca sozinho.",
+    "nota_interna": "Link: todos os planos; app com a marca: White Label. Não dizer \"substitui a recepcionista\" nem \"sem cadastro\" (na 1ª vez o cliente cria cadastro com senha). O agente de IA no WhatsApp é módulo que precisa de dev e erra: só se o dono pedir."
+   },
+   "prova": null,
+   "nota_prova": "\"45% dos agendamentos feitos pelo próprio cliente\" é agregado da base (memória project_whatsapp_oficial_out26): só se ele perguntar. Economia de recepção [a levantar].",
+   "material": null,
+   "banca": "reescrito — a conta comparava a recepcionista com o preço cheio do corte, mas da barbearia só fica o que sobra da comissão: ela custa perto do dobro de cortes que a página dizia. A comissão entrou no lugar das mensagens por dia, que o passo 5 já manda contar"
+  },
+  {
+   "id": "p19",
+   "mapa": "#19",
+   "peso": 34,
+   "tema": "agenda",
+   "opcao": "Segunda, terça e quarta a cadeira fica vazia",
+   "perguntas": [
+    {
+     "var": "atend_fraco",
+     "texto": "Quantos atendimentos a barbearia faz num dia fraco, de segunda a quarta?",
+     "tipo": "inteiro",
+     "rotulo": "atendimentos no dia fraco",
+     "min": 1,
+     "max": 500
+    },
+    {
+     "var": "atend_cheio",
+     "texto": "E num dia cheio, na sexta ou no sábado?",
+     "tipo": "inteiro",
+     "rotulo": "atendimentos no dia cheio",
+     "min": 0,
+     "max": 500
+    },
+    {
+     "var": "preco_corte",
+     "texto": "Quanto custa o seu corte avulso?",
+     "tipo": "reais",
+     "rotulo": "preço do corte",
+     "min": 10,
+     "max": 500
+    }
+   ],
+   "calculos": [
+    {
+     "var": "diferenca",
+     "expr": "max(atend_cheio - atend_fraco, 0)",
+     "formato": "inteiro",
+     "rotulo": "diferença por dia"
+    },
+    {
+     "var": "valor_um",
+     "expr": "preco_corte * 12",
+     "formato": "reais",
+     "rotulo": "1 atendimento a mais por dia fraco, no mês"
+    },
+    {
+     "var": "preco_fraco",
+     "expr": "preco_corte - 5",
+     "formato": "reais",
+     "rotulo": "preço do dia fraco"
+    },
+    {
+     "var": "custo_desc",
+     "expr": "atend_fraco * 12 * 5",
+     "formato": "reais",
+     "rotulo": "custo do desconto no mês"
+    },
+    {
+     "var": "paga_mes",
+     "expr": "ceil(custo_desc / preco_fraco)",
+     "formato": "inteiro",
+     "rotulo": "atendimentos que pagam o desconto"
+    },
+    {
+     "var": "paga_dia",
+     "expr": "ceil(paga_mes / 12)",
+     "formato": "inteiro",
+     "rotulo": "por dia fraco"
+    }
+   ],
+   "plano": {
+    "titulo": "O começo da semana com a cadeira ocupada, sem lotar ainda mais o sábado",
+    "passos": [
+     {
+      "texto": "Amanhã, conte os atendimentos de cada dia das últimas 4 semanas. Pelo que você respondeu, o dia fraco faz {atend_cheio} − {atend_fraco} = {diferenca} atendimentos a menos que o cheio. Ele não vai virar sábado, mas cada atendimento a mais em cada dia fraco vale {preco_corte} × 3 dias × 4 semanas = {valor_um} por mês."
+     },
+     {
+      "texto": "Acerte a escala antes de tentar encher: a folga de cada barbeiro cai na segunda, terça ou quarta, e ninguém folga na sexta nem no sábado. O barbeiro parado no dia fraco ganha pouco e desanima; o mesmo barbeiro no sábado fatura."
+     },
+     {
+      "texto": "Dê ao cliente um motivo para vir no dia fraco: o corte R$ 5 mais barato de segunda a quarta ({preco_corte} − R$ 5 = {preco_fraco}), dito na cadeira: \"vem no começo da semana, que sai mais barato\". Faça a conta antes: o desconto vale também para quem já vem, {atend_fraco} × 3 dias × 4 semanas × R$ 5 = {custo_desc} por mês. Ele se paga com {paga_mes} atendimentos a mais no mês, perto de {paga_dia} por dia fraco."
+     },
+     {
+      "texto": "Junto, crie um plano de assinatura que vale só de segunda a quarta, mais barato que o completo: quem assina vem no dia fraco, e o sábado fica para o avulso. Chame os clientes sumidos já oferecendo esses dias, e marque neles os serviços longos (química, visagismo)."
+     },
+     {
+      "texto": "Em 4 semanas, refaça a conta do passo 1. Se cada dia fraco não ganhou pelo menos {paga_dia} atendimentos, o desconto custa mais do que traz: tire o desconto e fique com o plano desses dias."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "direto",
+    "texto": "No BestBarbers, você põe preço menor no serviço por dia da semana e cria um plano de assinatura que vale só de segunda a quarta; o relatório de horários ocupados, por barbeiro e por dia, faz as contas dos passos 1 e 5. A agenda não enche sozinha: quem enche são os passos 3 e 4.",
+    "nota_interna": "Preço por dia (system-docs/servicos.md) e relatório de ocupação (system-docs/relatorios.md §11.2): todos os planos. Plano por dia da semana: White Label + assinatura (CEO, 10/Set). Disparo automático para horário vago não existe."
+   },
+   "prova": {
+    "texto": "Outros donos já fazem isso: plano ou preço menor só de segunda a quarta.",
+    "fonte": "voz dos donos (reunioes/lote-24:53; reunioes/lote-16:66), mapa-problemas.md #19"
+   },
+   "nota_prova": "Ganho de ocupação com o plano por dia [a levantar]. O \"R$ 5 a menos\" é exemplo de alavanca, não dado nosso.",
+   "material": null,
+   "banca": "reescrito — a conta punha o sábado como meta da segunda (a diferença × 3 × o preço, por semana): no exemplo da barbearia A (seção 5), dava perto de R$ 9.700 por mês, 29% de tudo o que ela faturou em outubro, número que dono nenhum acredita. Virou o valor de cada atendimento a mais. E o desconto de R$ 5 vale também para quem já vem: entrou quanto ele custa e com quantos atendimentos a mais se paga, conferido no passo 5"
+  },
+  {
+   "id": "p17",
+   "mapa": "#17",
+   "peso": 36,
+   "tema": "cliente",
+   "opcao": "Cada barbeiro atende de um jeito, e o cliente nem sempre volta",
+   "perguntas": [
+    {
+     "var": "barbeiros",
+     "texto": "Quantos barbeiros você tem?",
+     "tipo": "inteiro",
+     "rotulo": "barbeiros",
+     "min": 1,
+     "max": 30
+    },
+    {
+     "var": "novos_mes",
+     "texto": "Quantos clientes novos chegam por mês?",
+     "tipo": "inteiro",
+     "rotulo": "novos por mês",
+     "min": 1,
+     "max": 2000,
+     "ajuda": "De cabeça mesmo."
+    },
+    {
+     "var": "voltam_10",
+     "texto": "De cada 10 clientes novos, quantos voltam?",
+     "tipo": "escolha",
+     "rotulo": "de 10, voltam",
+     "opcoes": [
+      {
+       "texto": "0",
+       "valor": 0
+      },
+      {
+       "texto": "1",
+       "valor": 1
+      },
+      {
+       "texto": "2",
+       "valor": 2
+      },
+      {
+       "texto": "3",
+       "valor": 3
+      },
+      {
+       "texto": "4",
+       "valor": 4
+      },
+      {
+       "texto": "5",
+       "valor": 5
+      },
+      {
+       "texto": "6",
+       "valor": 6
+      },
+      {
+       "texto": "7",
+       "valor": 7
+      },
+      {
+       "texto": "8",
+       "valor": 8
+      },
+      {
+       "texto": "9",
+       "valor": 9
+      },
+      {
+       "texto": "10",
+       "valor": 10
+      },
+      {
+       "texto": "não sei",
+       "valor": null
+      }
+     ]
+    }
+   ],
+   "calculos": [
+    {
+     "var": "nao_voltam",
+     "expr": "round(novos_mes * (10 - voltam_10) / 10)",
+     "formato": "inteiro",
+     "rotulo": "novos que não voltam"
+    },
+    {
+     "var": "novos_barbeiro",
+     "expr": "round(novos_mes / barbeiros)",
+     "formato": "inteiro",
+     "rotulo": "novos por barbeiro"
+    },
+    {
+     "var": "um_de_10",
+     "expr": "max(round(novos_mes / 10), 1)",
+     "formato": "inteiro",
+     "rotulo": "1 em 10 a mais que volta"
+    }
+   ],
+   "plano": {
+    "titulo": "O cliente com a mesma experiência em qualquer cadeira, e voltando",
+    "passos": [
+     {
+      "texto": "Amanhã, escreva o padrão da cadeira em 6 linhas: chamar pelo nome, cumprimentar quem está em volta, 1 minuto de conversa antes da capa, 1 minuto de consulta (como usa, o que não gosta), fazer o serviço e perguntar no fim se ficou como ele queria. E 3 proibições: celular na mão durante o corte, atraso sem avisar e falar de outro cliente na frente dele."
+     },
+     {
+      "texto": "Escreva o padrão da recepção: atender com o nome da barbearia, dizer o tempo de espera, oferecer água ou café e nunca anunciar em voz alta \"fulano, seu cliente chegou\"."
+     },
+     {
+      "texto": "Treine encenando: você faz, cada um repete, até acertar. Corrija na hora por 30 dias."
+     },
+     {
+      "texto": "Meça pelo cliente que volta: no fim de cada mês, pegue os clientes novos de 2 meses atrás e veja quantos de cada barbeiro voltaram. Pelo que você respondeu, dos {novos_mes} novos do mês, perto de {nao_voltam} não voltam. Cada 1 em 10 a mais que volta são perto de {um_de_10} clientes por mês que ficam, e eles se somam mês a mês. Cada um dos {barbeiros} barbeiros recebe perto de {novos_barbeiro} novos: quem segura mais vira o exemplo; quem segura menos passa um dia ao lado dele.",
+      "se_nao_sabe": {
+       "var": "voltam_10",
+       "texto": "Meça pelo cliente que volta: a partir de amanhã, anote o nome de cada cliente novo e o barbeiro que atendeu. Daqui a 2 meses, veja quantos dos novos do primeiro mês voltaram, barbeiro por barbeiro (perto de {novos_barbeiro} para cada um dos {barbeiros} barbeiros). Cada 1 em 10 a mais que volta são perto de {um_de_10} clientes por mês que ficam. Quem segura mais vira o exemplo; quem segura menos passa um dia ao lado dele."
+      }
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "não entra direto",
+    "texto": "Não entra direto. No BestBarbers, o histórico do cliente mostra o que ele fez da última vez e com quem: ajuda o barbeiro no passo 1 e você na conta do passo 4.",
+    "nota_interna": "Indireto. O método é de curso (FDO Barbearia empresa, aulas 04 a 06; G4 Atendimento, aulas 01 e 03); nada de nome de curso na tela. O \"1 em 10\" é unidade da conta, não meta medida."
+   },
+   "prova": null,
+   "nota_prova": "[a levantar].",
+   "material": null,
+   "banca": "reescrito — a medida não fechava: no fim do mês, o cliente novo da semana passada ainda não teve 60 dias para voltar, então se olha a turma de 2 meses atrás. E a conta parava em quantos não voltam; entrou quanto vale segurar 1 em 10 a mais"
+  },
+  {
+   "id": "p24",
+   "mapa": "#24",
+   "peso": 26,
+   "tema": "cliente",
+   "opcao": "O cliente que vinha sempre sumiu",
+   "perguntas": [
+    {
+     "var": "sumidos",
+     "texto": "Quantos clientes você acha que não vêm há mais de 60 dias?",
+     "tipo": "inteiro",
+     "rotulo": "clientes sumidos",
+     "min": 0,
+     "max": 20000,
+     "aceita_nao_sei": true
+    },
+    {
+     "var": "ticket",
+     "texto": "Quanto o cliente gasta, em média, por visita?",
+     "tipo": "reais",
+     "rotulo": "valor médio por visita",
+     "min": 1,
+     "max": 1000,
+     "ajuda": "Se não souber, põe o preço do corte."
+    }
+   ],
+   "calculos": [
+    {
+     "var": "valor_10",
+     "expr": "10 * ticket",
+     "formato": "reais",
+     "rotulo": "10 que voltam, por mês"
+    },
+    {
+     "var": "dias_chamar",
+     "expr": "ceil(sumidos / 25)",
+     "formato": "inteiro",
+     "rotulo": "dias para chamar todos"
+    }
+   ],
+   "plano": {
+    "titulo": "Saber quem sumiu, chamar de volta e ter esse cliente vindo todo mês",
+    "passos": [
+     {
+      "texto": "Amanhã, puxe a lista de quem não vem há mais de 60 dias (ou há o dobro do intervalo normal dele), com telefone, última visita e barbeiro."
+     },
+     {
+      "texto": "Tire da lista quem saiu com reclamação: com esse, quem fala é você, por telefone."
+     },
+     {
+      "texto": "Mande, de um número com nome e foto de pessoa, só o cumprimento: \"Oi, [nome do cliente], tudo bem? Aqui é [seu nome], da [barbearia].\" Quando ele responder, passe o recado do barbeiro dele: peça antes a cada barbeiro uma linha sobre os clientes dele que estão na lista."
+     },
+     {
+      "texto": "Pergunte o motivo e anote (preço, horário, atendimento, mudou de bairro). Ofereça um horário com prazo, de preferência de segunda a quarta. Cada 10 que voltam e vêm uma vez por mês são 10 × {ticket} = {valor_10} por mês."
+     },
+     {
+      "texto": "No máximo 20 a 30 mensagens por dia: muita mensagem de uma vez pode fazer o WhatsApp bloquear o número. Os seus {sumidos} sumidos levam perto de {dias_chamar} dias. Repita a cada 3 meses.",
+      "se_nao_sabe": {
+       "var": "sumidos",
+       "texto": "No máximo 20 a 30 mensagens por dia: muita mensagem de uma vez pode fazer o WhatsApp bloquear o número. Repita a cada 3 meses."
+      }
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "direto",
+    "texto": "No BestBarbers, o relatório mostra os clientes sumidos pelo último agendamento, e o aviso com a logo da barbearia vai de uma vez para quem tem o app com a sua marca no celular, sem custo por envio. O cliente não volta sozinho: quem chama é você.",
+    "nota_interna": "Relatório: todos os planos; aviso por push: White Label. Trava: o push não chega a todo app; recebem 557 de 630 apps Android e 533 de 628 iOS de clientes ativos (docs/operacional/produto/operacao-tech/board-vivo/propostas/push-86akt966z-2026-11-03.spec.json; card vence 13/Nov). \"20 a 30 mensagens por dia\" é regra de prudência do mapa, sem medição."
+   },
+   "prova": null,
+   "nota_prova": "Quantos voltam depois do aviso [a levantar] (teste 2' não rodado). Os 72 clientes recuperados são de curso e não entram.",
+   "material": {
+    "texto": "As mensagens prontas estão no guia Cadeira Cheia (grátis).",
+    "link": "/cadeira-cheia",
+    "fonte": "docs/operacional/ebook-cadeira-cheia.md (no ar; a página aponta para ele, não refaz)"
+   },
+   "banca": "reescrito — o aviso não vai \"para todos\": chega a quem tem o app no celular, e nem a todo celular (trava na nota interna). O recado do barbeiro passou a ser pedido a ele antes, para ser verdade. As contas estavam certas"
+  },
+  {
+   "id": "p20",
+   "mapa": "#20",
+   "peso": 31,
+   "tema": "equipe",
+   "opcao": "Não acho barbeiro bom para contratar",
+   "perguntas": [
+    {
+     "var": "cortes_dia",
+     "texto": "Com a agenda cheia, quantos cortes um barbeiro seu faz por dia?",
+     "tipo": "inteiro",
+     "rotulo": "cortes por dia, agenda cheia",
+     "min": 1,
+     "max": 40,
+     "ajuda": "De cabeça mesmo."
+    },
+    {
+     "var": "preco_corte",
+     "texto": "Quanto custa o seu corte avulso?",
+     "tipo": "reais",
+     "rotulo": "preço do corte",
+     "min": 10,
+     "max": 500
+    },
+    {
+     "var": "dias_mes",
+     "texto": "Quantos dias por mês a barbearia abre?",
+     "tipo": "inteiro",
+     "rotulo": "dias abertos no mês",
+     "min": 1,
+     "max": 31
+    }
+   ],
+   "calculos": [
+    {
+     "var": "fat_cadeira",
+     "expr": "cortes_dia * preco_corte * dias_mes",
+     "formato": "reais",
+     "rotulo": "a cadeira cheia no mês"
+    }
+   ],
+   "plano": {
+    "titulo": "O barbeiro certo na cadeira, e ficando até a agenda dele encher",
+    "passos": [
+     {
+      "texto": "Amanhã, escreva as 3 coisas de que você não abre mão num barbeiro (por exemplo: pontual, cuida do cliente, aceita encaixe) e as 3 que você não aceita. É com essa lista que você conversa e testa."
+     },
+     {
+      "texto": "Monte o banco de candidatos antes de precisar: um formulário curto, divulgado nos stories toda semana, e contato com o curso de barbeiro da cidade. O aluno que se destaca faz um sábado de teste na casa e aprende no seu padrão."
+     },
+     {
+      "texto": "Selecione em 3 etapas: conversa de 15 minutos; um dia inteiro como assistente na casa, para você ver como ele trata cliente e colega; e um teste prático num modelo que você escolhe."
+     },
+     {
+      "texto": "Antes de fechar, faça a conta com ele: na sua casa, um barbeiro de agenda cheia faz {cortes_dia} cortes por dia, {dias_mes} dias por mês, a {preco_corte} o corte: até {fat_cadeira} por mês. Diga as regras, a comissão e que a agenda do novato leva meses para chegar lá."
+     },
+     {
+      "texto": "Para segurar o bom até a agenda encher, combine por escrito um ganho mínimo nos 3 primeiros meses, com limite de faltas; o formato do acordo é com o contador. Ponha esse mínimo ao lado do que a cadeira faz cheia: cada mês com ela vazia, ou com o barbeiro errado, são até {fat_cadeira} que não entram."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "não entra direto",
+    "texto": "Não entra direto. No BestBarbers, o relatório por barbeiro mostra, mês a mês, quanto o novato atendeu e faturou: você vê quando a agenda dele encheu e se o ganho mínimo ainda faz sentido.",
+    "nota_interna": "Todos os planos com equipe; relatórios por profissional e faturamento por barbeiro (o mesmo recurso citado no #10). Contratar não é recurso do produto: não prometer."
+   },
+   "prova": null,
+   "nota_prova": "[a levantar] na base. O curso (FDO Barbearia empresa, aulas 34 e 46: a rotatividade caiu 80% com o processo; a agenda do novato leva no mínimo 4 meses para render) é número de terceiro e fica fora da tela.",
+   "material": null,
+   "banca": "não passou pela banca deste workflow: escrito pelo Claude Code em 03/Nov a partir do mapa #20 (já reescrito pela banca do mapa), na troca aprovada pelo André"
+  },
+  {
+   "id": "p34",
+   "mapa": "#34",
+   "peso": 20,
+   "tema": "equipe",
+   "opcao": "A comissão fica no caderno e no fim do mês dá diferença",
+   "perguntas": [
+    {
+     "var": "barbeiros",
+     "texto": "Quantos barbeiros você tem?",
+     "tipo": "inteiro",
+     "rotulo": "barbeiros",
+     "min": 1,
+     "max": 30
+    },
+    {
+     "var": "preco_corte",
+     "texto": "Quanto custa o seu corte avulso?",
+     "tipo": "reais",
+     "rotulo": "preço do corte",
+     "min": 10,
+     "max": 500
+    },
+    {
+     "var": "comissao_pct",
+     "texto": "Quanto o barbeiro leva de comissão no corte?",
+     "tipo": "percentual",
+     "rotulo": "comissão %",
+     "opcoes": [
+      {
+       "texto": "30%",
+       "valor": 30
+      },
+      {
+       "texto": "40%",
+       "valor": 40
+      },
+      {
+       "texto": "50%",
+       "valor": 50
+      },
+      {
+       "texto": "60%",
+       "valor": 60
+      },
+      {
+       "texto": "outro",
+       "valor": "livre"
+      }
+     ],
+     "min": 1,
+     "max": 100
+    }
+   ],
+   "calculos": [
+    {
+     "var": "comissao_corte",
+     "expr": "round(preco_corte * comissao_pct) / 100",
+     "formato": "reais_centavos",
+     "rotulo": "comissão do corte"
+    },
+    {
+     "var": "fica_corte",
+     "expr": "preco_corte - comissao_corte",
+     "formato": "reais_centavos",
+     "rotulo": "fica por corte"
+    }
+   ],
+   "plano": {
+    "titulo": "O fechamento dos barbeiros pronto, sem conta de cabeça e sem briga",
+    "passos": [
+     {
+      "texto": "Amanhã, liste tudo o que paga comissão (corte, barba, extras, produto, assinatura) e o percentual de cada um."
+     },
+     {
+      "texto": "Escreva a regra dos casos que dão briga, com data: a taxa do cartão sai antes ou depois? O vale do barbeiro desconta quando?"
+     },
+     {
+      "texto": "Lance cada atendimento na hora, com o nome do barbeiro, e não no fim da semana."
+     },
+     {
+      "texto": "Feche sempre no mesmo dia e mostre a cada um dos {barbeiros} barbeiros a conta dele."
+     },
+     {
+      "texto": "Confira se o percentual cabe no seu preço: de cada corte de {preco_corte}, {comissao_corte} vão para o barbeiro ({comissao_pct}) e {fica_corte} ficam na barbearia. Divida aluguel + luz + produto do mês pelos cortes do mês: se der mais que {fica_corte}, o percentual não cabe no preço."
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "direto",
+    "texto": "No BestBarbers, você cadastra o percentual uma vez; comissão, vales e acerto saem prontos, e cada barbeiro vê o próprio fechamento no celular.",
+    "nota_interna": "Todos os planos com equipe. Não dizer horas economizadas (as \"2 h por semana\" são cenário de copy; F04 §2.2)."
+   },
+   "prova": null,
+   "nota_prova": "Tempo poupado [a levantar]. As faixas de comissão pelo preço do corte são de curso e saíram da tela.",
+   "material": null,
+   "banca": "passou — três perguntas de toque; o passo 2 (a taxa do cartão e o vale, por escrito e com data) é o que acaba a briga do fim do mês; a conta do passo 5 está certa, e a comissão passou a ser arredondada antes do resto"
+  }
+ ],
+ "mensagens": {
+  "whatsapp_plano": {
+   "quando": "logo depois da tela do plano",
+   "assina": "{pessoa}: uma pessoa do time, com nome e foto no número da marca [a definir com o João]",
+   "texto": "Oi, {nome}! Aqui é {pessoa}, do BestBarbers.\nSegue o seu plano para \"{opcao}\": {link_plano}\nComeça assim: {passo_1}\nDaqui a 7 dias eu te pergunto como foi. Se travar antes, é só me responder aqui.",
+   "sem_link": "se a página não gerar link único do plano, {link_plano} sai e os passos 2 a 5 vão por extenso, numerados, depois do passo 1"
+  },
+  "whatsapp_7_dias": {
+   "quando": "7 dias depois do plano",
+   "texto": "Oi, {nome}. {pessoa}, do BestBarbers. Faz 7 dias que você montou o plano para \"{opcao}\". Como foi o passo 1? Responde com o número:\n1. Fiz\n2. Comecei e travei\n3. Ainda não deu",
+   "respostas": {
+    "1": "Boa! Me conta o que deu. O passo 2 é: {passo_2}",
+    "2": "Onde travou? Me conta numa frase que eu te ajudo a destravar.",
+    "3": "Tranquilo. O que atrapalhou? Se ajudar, a gente quebra o passo 1 num pedaço menor."
+   }
+  },
+  "whatsapp_outra_coisa": {
+   "quando": "quando a pessoa do time tiver o plano escrito à mão",
+   "texto": "Oi, {nome}! Aqui é {pessoa}, do BestBarbers. Li o que você escreveu: \"{outra_coisa}\". Montei um plano para isso: {plano_manual}\nDaqui a 7 dias eu te pergunto como foi o passo 1."
+  }
+ },
+ "ploomes": {
+  "origem": {
+   "nome": "Diagnóstico",
+   "existe": false,
+   "conferido": "API do Ploomes, Contacts@Origins, 03/Nov/26: nenhuma origem com 'diagn'",
+   "criar": "POST /api/ploomes/origens (idempotente por nome) ou scripts/ploomes/cadastrar-lead.ts --nova-origem",
+   "avisar": "João: a automação manda o WhatsApp por origem; origem nova sem aviso cai na mensagem padrão"
+  },
+  "rota": "a dos formulários de hoje: telefone novo cria contato e a automação 12000584 abre o card; telefone conhecido abre card de recadastro",
+  "campos": [
+   {
+    "dado": "nome",
+    "campo": "ownerName (contato, contact_DA6F2406-FE50-4EFC-BBB5-A3463435B427)",
+    "existe": true
+   },
+   {
+    "dado": "whatsapp",
+    "campo": "telefone do contato",
+    "existe": true
+   },
+   {
+    "dado": "instagram",
+    "campo": "Instagram (contato, FieldId 120010584, texto)",
+    "existe": true,
+    "conferido": "API, 03/Nov/26"
+   },
+   {
+    "dado": "versao_da_pagina",
+    "campo": "bb_lp_version = 'diagnostico-v1' (contato, texto)",
+    "existe": true
+   },
+   {
+    "dado": "resumo",
+    "campo": "Descrição da Campanha (vira o 120001193 no card): '[Diagnóstico] {momento} · {tema} · {mapa} {opcao} · {numeros}'",
+    "existe": true,
+    "atencao": "o [SCORE:] vive nesse texto; o diagnóstico não pergunta faturamento, então não há score"
+   },
+   {
+    "dado": "momento",
+    "campo": "bb_diag_momento (contato, opções: Vai abrir, Começando, Com equipe, Crescendo)",
+    "existe": false
+   },
+   {
+    "dado": "tema",
+    "campo": "bb_diag_tema (contato, opções: os 5 temas)",
+    "existe": false
+   },
+   {
+    "dado": "problema",
+    "campo": "bb_diag_problema (contato, texto: '#3 Dividir o dinheiro da assinatura entre os barbeiros' ou 'outra coisa')",
+    "existe": false
+   },
+   {
+    "dado": "numeros",
+    "campo": "bb_diag_numeros (contato, texto: 'assinatura_mes=8000; comissao_pct=40; atend_assin=200')",
+    "existe": false
+   },
+   {
+    "dado": "outra_coisa",
+    "campo": "bb_diag_outra (contato, texto livre)",
+    "existe": false
+   }
+  ],
+  "nao_reaproveitar": "Momento Jornada (contato, FieldId 120013013) já existe, mas é outro conceito: conferir antes de usar",
+  "sem_contato": "quem desiste antes do contato não vai ao Ploomes; as respostas ficam só na contagem da página",
+  "em_aberto_com_o_joao": [
+   "em que pipe o card nasce e quem chama (ADR-037: lead do site sem 'Este mês' nasce na Nutrição 120000949; o diagnóstico não faz essa pergunta)",
+   "quem assina e manda o plano e a mensagem do 7º dia",
+   "o prazo de resposta do 'é outra coisa'"
+  ]
+ },
+ "reserva": [
+  {
+   "id": "p21",
+   "mapa": "#21",
+   "peso": 29,
+   "tema": "assinatura",
+   "opcao": "A taxa do cartão come parte do plano",
+   "perguntas": [
+    {
+     "var": "valor_plano",
+     "texto": "Quanto custa o plano que mais vende?",
+     "tipo": "reais",
+     "rotulo": "valor do plano",
+     "min": 1,
+     "max": 2000
+    },
+    {
+     "var": "cai_plano",
+     "texto": "De cada mensalidade, quanto cai na sua conta?",
+     "tipo": "reais_centavos",
+     "rotulo": "cai por mensalidade",
+     "min": 0,
+     "max": 2000,
+     "ajuda": "Olha uma cobrança no extrato. Se não tiver à mão, marca \"não sei\".",
+     "aceita_nao_sei": true,
+     "max_var": "valor_plano"
+    },
+    {
+     "var": "assinantes",
+     "texto": "Quantos assinantes você tem hoje?",
+     "tipo": "inteiro",
+     "rotulo": "assinantes",
+     "min": 1,
+     "max": 5000
+    }
+   ],
+   "calculos": [
+    {
+     "var": "taxa_plano",
+     "expr": "max(round((valor_plano - cai_plano) * 100) / 100, 0)",
+     "formato": "reais_centavos",
+     "rotulo": "taxa por mensalidade"
+    },
+    {
+     "var": "taxa_mes",
+     "expr": "taxa_plano * assinantes",
+     "formato": "reais",
+     "rotulo": "taxa do mês"
+    },
+    {
+     "var": "plano_exato",
+     "expr": "valor_plano + taxa_plano",
+     "formato": "reais_centavos",
+     "rotulo": "plano mais a taxa"
+    },
+    {
+     "var": "plano_com_taxa",
+     "expr": "ceil(valor_plano + taxa_plano)",
+     "formato": "reais",
+     "rotulo": "plano com a taxa"
+    }
+   ],
+   "plano": {
+    "titulo": "Saber quanto cai de verdade e pôr a taxa dentro do preço",
+    "passos": [
+     {
+      "texto": "Amanhã, pegue o extrato de um mês e anote, por forma de pagamento (débito, crédito, Pix, assinatura), quanto entrou e quanto caiu na conta."
+     },
+     {
+      "texto": "Na assinatura, a conta já começa aqui: {valor_plano} − {cai_plano} = {taxa_plano} de taxa por mensalidade; × {assinantes} assinantes = {taxa_mes} por mês. O preço do plano tem de fechar com os {cai_plano}, não com os {valor_plano}.",
+      "se_nao_sabe": {
+       "var": "cai_plano",
+       "texto": "Na assinatura, a conta começa no extrato do passo 1: veja quanto caiu de uma mensalidade de {valor_plano}. A diferença é a taxa de cada uma; vezes os {assinantes} assinantes, é a taxa do mês. O preço do plano tem de fechar com o que cai, não com os {valor_plano}."
+      }
+     },
+     {
+      "texto": "Decida com a equipe, por escrito, se a comissão sai do valor cheio ou do que caiu na conta. Mudar a regra é decisão sua, mas combinada antes."
+     },
+     {
+      "texto": "No avulso, com o extrato do passo 1 na mão, peça à maquininha uma taxa menor ou compare com outra: quanto mais você passa no cartão, mais força tem para negociar. Na assinatura, a taxa é a do sistema que cobra: pergunte quanto é e ponha na conta do passo 2."
+     },
+     {
+      "texto": "Se a taxa ainda pesa, ponha a taxa no preço, no próximo reajuste do plano: {valor_plano} + {taxa_plano} = {plano_exato}. Arredonde para cima: {plano_com_taxa}.",
+      "se_nao_sabe": {
+       "var": "cai_plano",
+       "texto": "Se a taxa ainda pesa, ponha a taxa no preço, no próximo reajuste do plano: {valor_plano} mais a taxa de cada mensalidade, arredondado para cima."
+      }
+     }
+    ]
+   },
+   "bestbarbers": {
+    "entra": "direto, em parte",
+    "texto": "No BestBarbers, você cadastra a taxa de cada forma de pagamento, e a opção \"descontar da comissão\" tira a taxa antes de calcular a comissão. Ela já vem ligada; se a regra do passo 3 for outra, você desliga.",
+    "nota_interna": "Todos os planos (system-docs/meios-de-pagamento.md). Não é dinheiro novo: passa do barbeiro para o dono. A taxa da cobrança da assinatura do BestBarbers é interna e não entra na tela."
+   },
+   "prova": null,
+   "nota_prova": "Taxa média na base [a levantar].",
+   "material": null,
+   "banca": "reescrito — \"quanto cai na conta\" pede o extrato e não se responde com a mão suja: ganhou o \"não sei\", com o passo trocado. O preço com a taxa mostra a soma e o arredondamento; a taxa não fica negativa quando ele digita mais do que o plano. E o texto do BestBarbers falava com quem já é cliente (\"o passo 3 começa conferindo essa opção\")",
+   "motivo": "saiu da v1 na troca pelo #20 (GO do André, 03/Nov/26 ~18h): em parte reage à nossa oferta; volta se a Assinatura pedir"
+  }
+ ]
+}
