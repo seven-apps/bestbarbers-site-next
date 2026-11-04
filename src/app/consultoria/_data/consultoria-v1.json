@@ -1,0 +1,129 @@
+{
+  "versao": "consultoria-v1",
+  "data": "2026-11-04",
+  "status": "GO do André na consultoria on-line gratuita e nas perguntas da ficha (04/Nov/26). Página não publicada: o envio ao Ploomes está desligado.",
+  "fontes": [
+    "protótipo aprovado: bestbarbers-ai, sessão de 04/Nov/26 (scratchpad/mock/consultoria-v1.html)",
+    "travas por objetivo: protótipo, trocar pelo dores-top10.json (bestbarbers-ai/docs/operacional/marketing-vendas-nov26/estrategia-canais/consultoria-v1/dores-top10.json), que ainda não existia quando esta versão foi escrita",
+    "valores gravados no CRM: src/lib/lead-score.ts (EQUIPE_OPCOES_V3, CLUBE_OPCOES, QUANDO_OPCOES)"
+  ],
+  "telas": {
+    "objetivo": {
+      "rotulo": "Consultoria on-line gratuita",
+      "pergunta": "O que você quer resolver primeiro na sua barbearia?",
+      "texto": "São 5 perguntas de toque. O Lucas, do BestBarbers, olha as suas respostas e te chama no WhatsApp com um plano para o seu caso.",
+      "ver_exemplo": "Veja um exemplo ↓"
+    },
+    "exemplo": {
+      "rotulo": "Como é a consultoria",
+      "mensagens": [
+        "Pelo que você marcou: vocês são de 2 a 4 na cadeira, a assinatura já roda, e quem cobra cada assinante, todo mês, é você.",
+        "Isso trava a assinatura de um jeito bem específico: ela só cresce até onde você dá conta de cobrar.",
+        "**O plano para o seu caso:**\n1. Junta os vencimentos em 1 ou 2 datas.\n2. Manda a regra para todos: a data, o valor e que quem não pagou não marca.\n3. Passa a cobrança para o cartão em lotes, começando pelos 10 mais fiéis."
+      ],
+      "rodape": "Exemplo · barbearia de 2 a 4 barbeiros que cobrava a assinatura na mão",
+      "nota_interna": "Exemplo montado a partir de um caso real da Nutrição (14/10). Trocar por um trecho real de consultoria, com autorização do dono, depois das primeiras consultorias."
+    },
+    "quem": {
+      "pergunta": "Quem é você na barbearia?",
+      "porte": "Quantos profissionais cortam aí, contando você?"
+    },
+    "assinatura": { "pergunta": "E a assinatura, hoje?" },
+    "prazo": { "pergunta": "Para quando você quer resolver isso?" },
+    "contato": {
+      "rotulo": "Última etapa",
+      "pergunta": "Para onde o Lucas manda a sua consultoria?",
+      "nome": "Seu nome",
+      "nome_placeholder": "Como você quer ser chamado",
+      "whatsapp": "WhatsApp com DDD",
+      "whatsapp_placeholder": "(00) 00000-0000",
+      "botao": "Começar a minha consultoria",
+      "rodape": "O Lucas é do time do BestBarbers e já vai estar com as suas respostas."
+    },
+    "pronto": {
+      "titulo": "Pronto, {nome}. A sua ficha chegou ao Lucas.",
+      "botao": "Abrir o WhatsApp e começar",
+      "rodape": "Se não der agora, o nosso time te chama no WhatsApp."
+    }
+  },
+  "mensagem_whatsapp": "Oi! Quero começar a minha consultoria.",
+  "objetivos": [
+    { "id": "faturamento", "texto": "Aumentar o faturamento", "icone": "faturamento" },
+    { "id": "assinatura", "texto": "Montar ou crescer a assinatura", "icone": "assinatura" },
+    { "id": "clientes", "texto": "Atrair mais clientes", "icone": "clientes" },
+    { "id": "equipe", "texto": "Organizar a equipe e a comissão", "icone": "equipe" },
+    { "id": "nota", "texto": "Parar de emitir nota na mão", "icone": "nota" }
+  ],
+  "travas": {
+    "fonte": "protótipo, trocar pelo dores-top10.json",
+    "faturamento": {
+      "pergunta": "No faturamento, o que mais trava hoje?",
+      "opcoes": [
+        { "id": "p19", "texto": "Segunda, terça e quarta a cadeira fica vazia" },
+        { "id": "p24", "texto": "O cliente que vinha sempre sumiu" },
+        { "id": "p10", "texto": "Quero faturar mais e não sei onde mexer" },
+        { "id": "p04", "texto": "Tudo no caderno: não sei quanto sobra" },
+        { "id": "outra", "texto": "Outra coisa" }
+      ]
+    },
+    "assinatura": {
+      "pergunta": "Na assinatura, o que mais trava hoje?",
+      "opcoes": [
+        { "id": "p05", "texto": "Cobrar cada assinante, todo mês, na mão", "assinatura_implicita": "mao" },
+        { "id": "p13", "texto": "Não sei quanto cobrar no plano" },
+        { "id": "p03", "texto": "Dividir o dinheiro da assinatura entre os barbeiros" },
+        { "id": "poucos", "texto": "Tenho poucos assinantes" },
+        { "id": "cancela", "texto": "O assinante cancela no segundo mês" },
+        { "id": "outra", "texto": "Outra coisa" }
+      ]
+    },
+    "clientes": {
+      "pergunta": "Para atrair clientes, o que mais trava hoje?",
+      "opcoes": [
+        { "id": "p12", "texto": "Aqui é por ordem de chegada: o cliente espera ou desiste" },
+        { "id": "p09", "texto": "O app de agenda mostra outras barbearias ao meu cliente" },
+        { "id": "p16", "texto": "O cliente marca pelo WhatsApp no meio do corte" },
+        { "id": "bairro", "texto": "Tem concorrência demais no bairro" },
+        { "id": "outra", "texto": "Outra coisa" }
+      ]
+    },
+    "equipe": {
+      "pergunta": "Na equipe, o que mais trava hoje?",
+      "opcoes": [
+        { "id": "p34", "texto": "A comissão fica no caderno e dá diferença" },
+        { "id": "p03", "texto": "Dividir o dinheiro da assinatura entre os barbeiros" },
+        { "id": "p20", "texto": "Não acho barbeiro bom para contratar" },
+        { "id": "p17", "texto": "Cada barbeiro atende de um jeito" },
+        { "id": "outra", "texto": "Outra coisa" }
+      ]
+    },
+    "nota": {
+      "pergunta": "Na nota fiscal, o que mais trava hoje?",
+      "opcoes": [
+        { "id": "nf1", "texto": "O contador cobra e eu emito nota por nota" },
+        { "id": "nf2", "texto": "Ainda não emito e preciso começar" },
+        { "id": "outra", "texto": "Outra coisa" }
+      ]
+    }
+  },
+  "quem": [
+    { "id": "equipe", "texto": "Dono, com equipe" },
+    { "id": "solo", "texto": "Dono, trabalho sozinho" },
+    { "id": "abrir", "texto": "Vou abrir a minha barbearia" },
+    { "id": "barbeiro", "texto": "Sou barbeiro, não sou o dono" }
+  ],
+  "porte": [
+    { "id": "2a4", "texto": "2 a 4" },
+    { "id": "5+", "texto": "5 ou mais" }
+  ],
+  "assinatura": [
+    { "id": "nao", "texto": "Ainda não tenho", "resumo": "ainda não tenho" },
+    { "id": "mao", "texto": "Tenho e cobro na mão ou no Pix", "resumo": "cobro na mão ou no Pix" },
+    { "id": "sistema", "texto": "Tenho, e o sistema cobra sozinho", "resumo": "o sistema cobra" }
+  ],
+  "prazo": [
+    { "id": "mes", "texto": "Este mês" },
+    { "id": "tres", "texto": "Nos próximos 3 meses" },
+    { "id": "entender", "texto": "Por enquanto, só quero entender" }
+  ]
+}
