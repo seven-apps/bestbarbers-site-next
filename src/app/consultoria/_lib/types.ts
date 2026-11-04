@@ -26,8 +26,7 @@ export interface Objetivo extends Opcao {
 
 export interface ConteudoConsultoria {
   telas: {
-    objetivo: { rotulo: string; pergunta: string; texto: string; ver_exemplo: string };
-    exemplo: { rotulo: string; mensagens: string[]; rodape: string };
+    objetivo: { rotulo: string; pergunta: string; texto: string };
     quem: { pergunta: string; porte: string };
     assinatura: { pergunta: string };
     prazo: { pergunta: string };

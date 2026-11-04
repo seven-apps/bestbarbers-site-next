@@ -11,18 +11,7 @@
     "objetivo": {
       "rotulo": "Consultoria on-line gratuita",
       "pergunta": "O que você quer resolver primeiro na sua barbearia?",
-      "texto": "São 5 perguntas de toque. O Lucas, do BestBarbers, olha as suas respostas e te chama no WhatsApp com um plano para o seu caso.",
-      "ver_exemplo": "Veja um exemplo ↓"
-    },
-    "exemplo": {
-      "rotulo": "Como é a consultoria",
-      "mensagens": [
-        "Pelo que você marcou: vocês são de 2 a 4 na cadeira, a assinatura já roda, e quem cobra cada assinante, todo mês, é você.",
-        "Isso trava a assinatura de um jeito bem específico: ela só cresce até onde você dá conta de cobrar.",
-        "**O plano para o seu caso:**\n1. Junta os vencimentos em 1 ou 2 datas.\n2. Manda a regra para todos: a data, o valor e que quem não pagou não marca.\n3. Passa a cobrança para o cartão em lotes, começando pelos 10 mais fiéis."
-      ],
-      "rodape": "Exemplo · barbearia de 2 a 4 barbeiros que cobrava a assinatura na mão",
-      "nota_interna": "Exemplo montado a partir de um caso real da Nutrição (14/10). Trocar por um trecho real de consultoria, com autorização do dono, depois das primeiras consultorias."
+      "texto": "São 5 perguntas de toque. O Lucas, do BestBarbers, olha as suas respostas e te chama no WhatsApp com um plano para o seu caso."
     },
     "quem": {
       "pergunta": "Quem é você na barbearia?",

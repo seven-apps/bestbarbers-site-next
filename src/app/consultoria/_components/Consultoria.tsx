@@ -32,16 +32,6 @@ function mascaraTelefone(valor: string) {
 }
 
 /** "**negrito**" na primeira linha vira <strong>; o resto quebra linha como no WhatsApp. */
-function Bolha({ texto }: { texto: string }) {
-  const [primeira, ...resto] = texto.split("\n");
-  const negrito = primeira.match(/^\*\*(.+)\*\*$/);
-  return (
-    <div className={styles.bolha}>
-      {negrito ? <strong>{negrito[1]}</strong> : primeira}
-      {resto.map((linha, i) => <span key={i}><br />{linha}</span>)}
-    </div>
-  );
-}
 
 export function Consultoria(conteudo: ConteudoConsultoria) {
   const { telas } = conteudo;
@@ -156,16 +146,8 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
           {tela === "objetivo" && <>
             <p className={styles.rotulo}>{telas.objetivo.rotulo}</p>
             <h1 tabIndex={-1}>{telas.objetivo.pergunta}</h1>
-            <p className={styles.texto}>
-              {telas.objetivo.texto}{" "}
-              <a className={styles.verExemplo} href="#exemplo" onClick={(e) => { e.preventDefault(); document.getElementById("exemplo")?.scrollIntoView({ behavior: "smooth" }); }}>{telas.objetivo.ver_exemplo}</a>
-            </p>
+            <p className={styles.texto}>{telas.objetivo.texto}</p>
             <div className={styles.opcoes}>{conteudo.objetivos.map((o) => opcao("objetivo", o, ICONES[o.icone]))}</div>
-            <section id="exemplo" className={styles.exemplo} aria-label={telas.exemplo.rotulo}>
-              <p className={styles.exemploRotulo}>{telas.exemplo.rotulo}</p>
-              <div className={styles.conversa}>{telas.exemplo.mensagens.map((m, i) => <Bolha key={i} texto={m} />)}</div>
-              <p className={styles.exemploRodape}>{telas.exemplo.rodape}</p>
-            </section>
           </>}
 
           {tela === "trava" && trava && <>
