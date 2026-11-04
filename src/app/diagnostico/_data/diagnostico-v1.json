@@ -303,7 +303,7 @@
       }
      },
      {
-      "texto": "Mostre à equipe, com o mês passado como exemplo, quanto valeu cada ponto: {pote} ÷ os pontos de todos no mês. O assinante corta com quem tiver horário, e acaba o \"esse cliente é meu\". Escreva a regra, ponha a data e revise em 6 meses."
+      "texto": "Mostre à equipe, com o mês passado como exemplo, quanto valeu cada ponto: {pote} ÷ os pontos de todos no mês. O assinante corta com quem tiver horário, e cada barbeiro recebe pelos pontos do que atendeu. Escreva a regra, ponha a data e revise em 6 meses."
      }
     ]
    },

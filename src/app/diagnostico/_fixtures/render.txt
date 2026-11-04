@@ -4,21 +4,21 @@
 2. Dê pontos a cada serviço pelo tempo de cadeira: corte 40, barba 20, acabamento 10, por exemplo.
 3. No fim do mês, some os pontos de cada barbeiro. A parte dele = os pontos dele ÷ os pontos de todos × R$ 3.946.
 4. Antes de anunciar a regra à equipe, faça a conta que o barbeiro vai fazer. No mês passado, a barbearia fez 228 atendimentos de assinante: cada um valeu R$ 3.946 ÷ 228 = R$ 17,31 para quem atendeu. Ponha ao lado do que ele ganha num corte avulso. Se ficar bem abaixo, ajuste o pote antes de anunciar, não depois da reclamação.
-5. Mostre à equipe, com o mês passado como exemplo, quanto valeu cada ponto: R$ 3.946 ÷ os pontos de todos no mês. O assinante corta com quem tiver horário, e acaba o "esse cliente é meu". Escreva a regra, ponha a data e revise em 6 meses.
+5. Mostre à equipe, com o mês passado como exemplo, quanto valeu cada ponto: R$ 3.946 ÷ os pontos de todos no mês. O assinante corta com quem tiver horário, e cada barbeiro recebe pelos pontos do que atendeu. Escreva a regra, ponha a data e revise em 6 meses.
 
 === p03 #3 · B · {"assinatura_mes":14768,"comissao_pct":50,"atend_assin":320}
 1. Amanhã, decida o pote: a parte do que a assinatura faturou que vai para a equipe. Comece perto da comissão que você já paga no avulso: R$ 14.768 × 50% = R$ 7.384 por mês para a equipe, e R$ 7.384 ficam na barbearia.
 2. Dê pontos a cada serviço pelo tempo de cadeira: corte 40, barba 20, acabamento 10, por exemplo.
 3. No fim do mês, some os pontos de cada barbeiro. A parte dele = os pontos dele ÷ os pontos de todos × R$ 7.384.
 4. Antes de anunciar a regra à equipe, faça a conta que o barbeiro vai fazer. No mês passado, a barbearia fez 320 atendimentos de assinante: cada um valeu R$ 7.384 ÷ 320 = R$ 23,08 para quem atendeu. Ponha ao lado do que ele ganha num corte avulso. Se ficar bem abaixo, ajuste o pote antes de anunciar, não depois da reclamação.
-5. Mostre à equipe, com o mês passado como exemplo, quanto valeu cada ponto: R$ 7.384 ÷ os pontos de todos no mês. O assinante corta com quem tiver horário, e acaba o "esse cliente é meu". Escreva a regra, ponha a data e revise em 6 meses.
+5. Mostre à equipe, com o mês passado como exemplo, quanto valeu cada ponto: R$ 7.384 ÷ os pontos de todos no mês. O assinante corta com quem tiver horário, e cada barbeiro recebe pelos pontos do que atendeu. Escreva a regra, ponha a data e revise em 6 meses.
 
 === p03 #3 · N · {"assinatura_mes":9864,"comissao_pct":40,"atend_assin":null}
 1. Amanhã, decida o pote: a parte do que a assinatura faturou que vai para a equipe. Comece perto da comissão que você já paga no avulso: R$ 9.864 × 40% = R$ 3.946 por mês para a equipe, e R$ 5.918 ficam na barbearia.
 2. Dê pontos a cada serviço pelo tempo de cadeira: corte 40, barba 20, acabamento 10, por exemplo.
 3. No fim do mês, some os pontos de cada barbeiro. A parte dele = os pontos dele ÷ os pontos de todos × R$ 3.946.
 4. Antes de anunciar a regra à equipe, faça a conta que o barbeiro vai fazer: conte os atendimentos de assinante do mês passado e divida os R$ 3.946 por esse número. É quanto valeu cada um para quem atendeu. Ponha ao lado do que ele ganha num corte avulso. Se ficar bem abaixo, ajuste o pote antes de anunciar, não depois da reclamação.
-5. Mostre à equipe, com o mês passado como exemplo, quanto valeu cada ponto: R$ 3.946 ÷ os pontos de todos no mês. O assinante corta com quem tiver horário, e acaba o "esse cliente é meu". Escreva a regra, ponha a data e revise em 6 meses.
+5. Mostre à equipe, com o mês passado como exemplo, quanto valeu cada ponto: R$ 3.946 ÷ os pontos de todos no mês. O assinante corta com quem tiver horário, e cada barbeiro recebe pelos pontos do que atendeu. Escreva a regra, ponha a data e revise em 6 meses.
 
 === p05 #5 · A · {"assinantes":114,"valor_plano":86,"lembrar_mes":30}
 1. Amanhã, ponha os 114 assinantes numa lista com o dia em que cada um paga e se tem cartão de crédito. Se cada um vence num dia, você passa o mês inteiro cobrando.
