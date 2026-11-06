@@ -83,12 +83,15 @@ interface UseLeadFormOptions {
   onError?: (error: Error) => void; // Callback de erro
   redirectToWhatsApp?: boolean;     // Redirecionar para WhatsApp (padrão: false)
   lucasSoBotao?: boolean;           // Lead < 60 no Lucas: só o botão do WhatsApp, sem abrir sozinho (padrão: false)
+  curso?: boolean;                  // Formulário do curso: chave própria do desvio ao Lucas (padrão: false)
 }
 ```
 
-**Lead com nota < 60 (ADR-035):** contato novo abaixo do corte vai para a rota do OS
-`/api/ploomes/lead-nutricao` e, com o card criado, para o WhatsApp do Lucas (`src/lib/lead-nutricao.ts`,
-textos e número em `src/content/lucas-whatsapp.ts`). Qualquer falha cai no caminho de sempre.
+**Desvio ao Lucas (ADR-035, ADR-037; desligado pelo ADR-038 em 06/Nov/26):** com a chave `DESVIO_DO_LUCAS`
+(`src/content/lucas-whatsapp.ts`) ligada, o contato novo que não marcou "Este mês" vai para a rota do OS
+`/api/ploomes/lead-nutricao` e, com o card criado, para o WhatsApp do Lucas (`src/lib/lead-nutricao.ts`).
+Desligada (hoje, para todo o site; o curso tem chave própria), todo lead segue o caminho do "Este mês", na
+Qualificação. Qualquer falha da rota também cai no caminho de sempre.
 
 ### 2. `usePhoneMask`
 

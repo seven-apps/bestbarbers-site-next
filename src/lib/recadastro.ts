@@ -42,6 +42,8 @@ export interface RecadastroInput {
    * ou fica na Qualificação (venda aberta no Fechamento, falha) e devolve `pipe: "qualificacao"`.
    */
   nutricao?: boolean;
+  /** O cadastro é do curso de assinatura: no OS, o curso tem chave própria do desvio ao Lucas (ADR-038). */
+  curso?: boolean;
 }
 
 export interface RecadastroResultado {
@@ -94,6 +96,7 @@ export async function criarCardRecadastro(
         ...(input.clube ? { clube: input.clube } : {}),
         ...(input.sistema ? { sistema: input.sistema } : {}),
         ...(input.quando ? { quando: input.quando } : {}),
+        ...(input.curso ? { curso: true } : {}),
         ...(input.email?.trim() ? { email: input.email.trim().toLowerCase() } : {}),
         // Score numérico → bb_lead_score do card (o backend traduz para a FieldKey do deal).
         ...(typeof input.atribuicao.leadScore === 'number' ? { leadScore: Math.trunc(input.atribuicao.leadScore) } : {}),
