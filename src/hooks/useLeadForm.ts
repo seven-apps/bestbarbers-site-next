@@ -15,9 +15,10 @@ import {
   linkDoAppWhatsAppLucas,
   linkDoWhatsAppLucas,
   mensagemDaPagina,
+  numeroDoDesvio,
   pedeNutricaoNoRecadastro,
 } from '@/lib/lead-nutricao';
-import { DESVIO_NOTA_60_LIGADO, MENSAGEM_PADRAO_LUCAS, MENSAGENS_LUCAS, NUMERO_WHATSAPP_LUCAS } from '@/content/lucas-whatsapp';
+import { DESVIO_DO_LUCAS, MENSAGEM_PADRAO_LUCAS, MENSAGENS_LUCAS, NUMERO_WHATSAPP_LUCAS } from '@/content/lucas-whatsapp';
 import { cupomDaUrl, mensagemLucasDoCupom } from '@/lib/cupom-parceiro';
 import { MSG_EMAIL_OBRIGATORIO, validarEmailOpcional } from '@/lib/form-passo1';
 import { montarCadastroConcluido, type CadastroConcluido, type CaminhoFeito } from '@/lib/cadastro-concluido';
@@ -87,6 +88,11 @@ export interface UseLeadFormOptions {
    */
   lucasSoBotao?: boolean;
   /**
+   * O formulário é do curso de assinatura. O curso tem chave própria no desvio ao Lucas (`DESVIO_DO_LUCAS.curso`,
+   * ADR-038) e manda a marca `curso` ao OS, que confere a mesma chave do lado dele. Padrão `false`: o resto do site.
+   */
+  curso?: boolean;
+  /**
    * E-mail OBRIGATÓRIO nesta página. Padrão `false`: em todo o site o e-mail continua opcional.
    * Só a página do curso de assinatura liga (o link do curso e os e-mails dependem dele).
    */
@@ -114,6 +120,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     source = 'lp_v5',
     marcadorEvento,
     lucasSoBotao = false,
+    curso = false,
     emailObrigatorio = false,
   } = options;
 
@@ -399,8 +406,9 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
       // Três caminhos (src/lib/lead-nutricao.ts): telefone conhecido → recadastro; contato novo
       // que NÃO marcou "Este mês" → tenta o Lucas (porta do lead v3, 27/Out/26; o OS passa ao SDR
       // quem não escrever em 5 min); "Este mês" → o caminho de sempre, direto ao rodízio do SDR.
-      // Desvio desligado = número vazio: o lead < 60 segue o caminho de sempre.
-      const numeroLucas = DESVIO_NOTA_60_LIGADO ? NUMERO_WHATSAPP_LUCAS : '';
+      // Desvio desligado (ADR-038, 06/Nov/26: o lead do site está desligado; o curso tem a chave dele) = número vazio:
+      // todo lead segue o caminho do "Este mês", na Qualificação, e a tela do WhatsApp do Lucas não abre.
+      const numeroLucas = numeroDoDesvio({ curso, numero: NUMERO_WHATSAPP_LUCAS, chave: DESVIO_DO_LUCAS });
       const caminho = caminhoDoLead({ telefoneExiste: dedup.exists, nota: leadScore, numeroLucas, quando: formData.startWhen });
       // Card criado no pipe de nutrição: o lead vai para o WhatsApp do Lucas no fim do submit.
       let dealIdLucas: number | null = null;
@@ -428,6 +436,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
           email: ploomesData.email,
           // Recadastro < 60 também vai ao Lucas (emenda de 10/Out/26 ao ADR-035): o OS decide o pipe.
           nutricao: pedeNutricaoNoRecadastro({ nota: leadScore, numeroLucas, quando: formData.startWhen }),
+          curso,
         });
 
         if (!recadastro.ok) {
@@ -459,6 +468,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
                 colaboradores: formData.employeeCount || undefined,
                 clube: formData.clubStatus || undefined,
                 sistema: formData.currentSystem || undefined,
+                curso,
               }),
             ),
           () => submitLead(ploomesData),
@@ -677,6 +687,7 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
     source,
     marcadorEvento,
     lucasSoBotao,
+    curso,
   ]);
 
   const resetForm = useCallback(() => {

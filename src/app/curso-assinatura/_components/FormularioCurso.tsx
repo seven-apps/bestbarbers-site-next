@@ -102,6 +102,8 @@ export function FormularioCurso() {
     originDesc: origem.originDesc || ORIGEM_DESC_CURSO,
     // A área do aluno é a entrega: o lead < 60 ganha só o botão do Lucas, nunca sai da página sozinho.
     lucasSoBotao: true,
+    // Regra própria do curso no desvio ao Lucas (ADR-038): chave `DESVIO_DO_LUCAS.curso`, conferida também no OS.
+    curso: true,
     emailObrigatorio: EMAIL_OBRIGATORIO_NO_CURSO,
     onSuccess: (cadastro) => void aposCadastro(cadastro),
     onError: (error) => console.error("Erro ao enviar formulário:", error),
