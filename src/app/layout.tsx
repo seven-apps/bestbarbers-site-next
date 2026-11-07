@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { ConversaComLucas } from "@/components/ConversaComLucas";
+import { AbPaginaDataLayer } from "@/components/AbPaginaDataLayer";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -175,6 +176,8 @@ export default function RootLayout({
         {children}
         {/* Lead < 60 → WhatsApp do Lucas (lib/lead-nutricao.ts); inerte até o formulário chamar */}
         <ConversaComLucas />
+        {/* Braço do `/ir/<teste>` ao GTM (lib/ab-pagina.ts); inerte fora do teste */}
+        {!localPreview && <AbPaginaDataLayer />}
       </body>
     </html>
   );

@@ -218,3 +218,27 @@ test("cupom de outro parceiro, inventado ou vencido: nada de cupom no card", (t)
   t.mock.timers.setTime(Date.parse("2026-11-01T09:00:00-03:00"));
   assert.equal(naParceiros("?source=joao-seletto&cupom=SELETTO200").originDesc, "[SCORE: 72] João Seletto");
 });
+
+// ————— /ir/<teste>: o sorteio do endereço fixo (`ab-pagina.ts`, 07/Nov/26) —————
+
+test("/ir/<teste>: o braço vai ao bb_lp_version e ao 1º segmento da descrição; o anúncio continua no card", () => {
+  const meta =
+    "?utm_source=facebook&fase=MORNO&campanha=MORNO-AB-NOV26&publico=A-CLUBE&ad=CLUBE-DAVID&creative=CLUBE-DAVID" +
+    "&campaign_id=120239999999990001&adset_id=120239999999990002&ad_id=120239999999990003&fbclid=F";
+  const home = comRota("/", meta + "&bb_ab=ir-clube-home");
+  assert.equal(home.fields.bb_lp_version, "ir-clube-home");
+  assert.equal(home.fields.bb_ad_id, "120239999999990003");
+  assert.equal(home.fields.bb_campaign_name, "MORNO-AB-NOV26");
+  assert.equal(home.fields.bb_campaign_id, "120239999999990001");
+  assert.match(home.originDesc ?? "", /^ir-clube-home \| MORNO \| MORNO-AB-NOV26 \| A-CLUBE \| CLUBE-DAVID \| CLUBE-DAVID \|/);
+
+  assert.equal(comRota("/clube", meta + "&bb_ab=ir-clube-assunto").fields.bb_lp_version, "ir-clube-assunto");
+  assert.equal(comRota("/agente-ia-whatsapp", meta + "&bb_ab=ir-agente-ia-assunto").fields.bb_lp_version, "ir-agente-ia-assunto");
+  assert.equal(comRota("/", meta + "&bb_ab=ir-agente-ia-home").fields.bb_lp_version, "ir-agente-ia-home");
+});
+
+test("/ir/<teste>: sem o bb_ab, ou com ele na página errada, o bb_lp_version segue a regra de sempre", () => {
+  assert.equal(comRota("/", "?utm_source=facebook").fields.bb_lp_version, "home");
+  assert.equal(comRota("/clube", "?bb_ab=ir-clube-home").fields.bb_lp_version, "clube");
+  assert.equal(comRota("/cadeira-cheia", "?bb_ab=ir-clube-assunto").fields.bb_lp_version, "cadeira-cheia");
+});
