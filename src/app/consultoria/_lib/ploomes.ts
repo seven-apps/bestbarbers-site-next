@@ -1,21 +1,16 @@
-// Fonte: protótipo aprovado da consultoria (04/Nov/26). Os valores gravados no CRM são os do formulário v3
-// (src/lib/lead-score.ts), para a rota da ADR-037 e o placar de vendas lerem a ficha como leem hoje.
-import {
-  PLOOMES_CONTACT_FIELDS,
-  PLOOMES_CONTACT_INT_FIELDS,
-  PLOOMES_CONTACT_OPTION_FIELDS,
-  PLOOMES_LEGACY_FIELDS,
-  PLOOMES_OPCOES_CLUBE,
-  PLOOMES_OPCOES_QUANDO,
-} from "../../../lib/ploomes-fields.ts";
+// Fonte: bestbarbers-ai/docs/operacional/marketing-vendas-nov26/estrategia-canais/consultoria-v2/05-contrato-site-os.md
+// (o que o site grava e o que a ficha do SDR lê). Os valores do CRM são os do formulário v3 (src/lib/lead-score.ts),
+// para o placar de vendas e a nota do lead lerem a ficha como leem hoje. Rota: ADR-038, todo lead do site na Qualificação.
 import { calcularScoreV3, type EquipeV3, type Quando, type SituacaoClube } from "../../../lib/lead-score.ts";
-import { corpoDaNutricao, vaiAoLucas, type ContatoDoSite } from "../../../lib/lead-nutricao.ts";
-import type { LeadAttribution } from "../../../lib/lead-attribution";
-import type { ConteudoConsultoria, Respostas } from "./types.ts";
+import type { PloomesContactData } from "../../../hooks/usePloomesAPI";
+import { distanciaNoCard, faixaDaMeta, faixaDeHoje } from "./plano.ts";
+import type { ConteudoConsultoria, Horario, Respostas } from "./types.ts";
 
-/** Desligado até o João alinhar a origem, a rota (Lucas × SDR) e o recadastro. Ligar exige teste novo. */
-export const ENVIO_PLOOMES_ATIVO = false;
-export const LP_VERSION = "consultoria-v1";
+/** Ligado em 07/Nov/26 com o GO do André ("bora lançar o diagnóstico sem o vídeo"). */
+export const ENVIO_PLOOMES_ATIVO = true;
+/** O braço do teste: na v1 no ar só existe o texto; o vídeo entra como `consultoria-v2-video`. */
+export const BRACO = "texto";
+export const LP_VERSION = `consultoria-v2-${BRACO}`;
 
 /** Equipe nas faixas que o placar de vendas entende (`perfil-comprador.ts`, no bestbarbers-ai). */
 export function equipeDoCRM(r: Respostas): EquipeV3 | undefined {
@@ -44,85 +39,99 @@ export function quandoDoCRM(r: Respostas): Quando | undefined {
   return undefined;
 }
 
+/** As 7 faixas da ficha juntadas nas 4 do formulário v2 (`FormSectionV11.tsx`), no mesmo campo de faturamento. */
+export const FATURAMENTO_DO_CRM: Record<string, string> = {
+  ate2: "Até R$ 2.000",
+  "2a5": "R$ 2.000 a R$ 10.000",
+  "5a10": "R$ 2.000 a R$ 10.000",
+  "10a20": "De R$ 10.000 a R$ 30.000",
+  "20a30": "De R$ 10.000 a R$ 30.000",
+  "30a60": "Acima de R$ 30.000",
+  "60+": "Acima de R$ 30.000",
+};
+
+export function faturamentoDoCRM(r: Respostas): string | undefined {
+  return r.faturamento ? FATURAMENTO_DO_CRM[r.faturamento] : undefined;
+}
+
+export function notaDoLead(r: Respostas): number | null {
+  return calcularScoreV3({ quando: quandoDoCRM(r), equipe: equipeDoCRM(r) });
+}
+
+/** O texto livre perde `·`, `[`, `]` e as quebras de linha, e fica em até 200 caracteres (contrato §1). */
+export function limparTextoLivre(texto: string): string {
+  return texto.replace(/[·\[\]"]/g, " ").replace(/\s+/g, " ").trim().slice(0, 200);
+}
+
 function texto(lista: { id: string; texto: string }[] | undefined, id?: string) {
   return lista?.find((item) => item.id === id)?.texto ?? "";
 }
 
-/** A ficha em uma linha, para a descrição da campanha: é o que o Lucas e o SDR leem no card. */
-export function resumoDaFicha(conteudo: ConteudoConsultoria, r: Respostas): string {
-  const partes = [
-    `Objetivo: ${texto(conteudo.objetivos, r.objetivo)}`,
-    `Trava: ${texto(r.objetivo ? conteudo.travas[r.objetivo]?.opcoes : undefined, r.trava)}`,
-    `Quem: ${texto(conteudo.quem, r.quem)}${r.porte ? ` (${texto(conteudo.porte, r.porte)})` : ""}`,
-    ...(r.assinatura ? [`Assinatura: ${texto(conteudo.assinatura, r.assinatura)}`] : []),
-    `Prazo: ${texto(conteudo.prazo, r.prazo)}`,
+/**
+ * A ficha em uma linha, para a Descrição da Campanha (a automação copia para o campo 120001193 do card).
+ * Formato do contrato: `[Consultoria] Chave: valor · Chave: valor`; parte sem resposta sai inteira.
+ */
+export function resumoDaFicha(conteudo: ConteudoConsultoria, r: Respostas, enderecoDoPlano: string): string {
+  const trava = r.trava === "outra"
+    ? (r.outra?.trim() ? `Outra coisa: "${limparTextoLivre(r.outra)}"` : "Outra coisa")
+    : texto(r.objetivo ? conteudo.travas[r.objetivo]?.opcoes : undefined, r.trava);
+  const quem = texto(conteudo.quem, r.quem);
+  const porte = r.porte ? texto(conteudo.porte, r.porte) : "";
+  const partes: Array<[string, string | undefined | null]> = [
+    ["Objetivo", texto(conteudo.objetivos, r.objetivo)],
+    ["Trava", trava],
+    ["Quem", quem && porte ? `${quem} (${porte})` : quem],
+    ["Assinatura", r.quem === "barbeiro" ? "" : texto(conteudo.assinatura, r.assinatura)],
+    ["Faturamento", faixaDeHoje(conteudo, r)?.texto],
+    ["Meta", faixaDaMeta(conteudo, r)?.texto],
+    ["Distância", distanciaNoCard(conteudo, r)],
+    ["Prazo", texto(conteudo.prazo, r.prazo)],
+    ["Braço", BRACO],
+    ["Plano", enderecoDoPlano],
   ];
-  return `[Consultoria] ${partes.join(" · ")}`;
+  return `[Consultoria] ${partes.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join(" · ")}`;
 }
 
-export interface ContatoDigitado {
-  name: string;
+/**
+ * O contato no formato do formulário de hoje (`usePloomesAPI`): o nome digitado é o nome do contato (a ficha não
+ * pergunta a barbearia), a linha da consultoria vai no fim da descrição e o `bb_lp_version` é o da consultoria.
+ */
+export function dadosDoContato(input: {
+  nome: string;
   whatsapp: string;
-}
-
-/** Contato no formato do formulário de hoje (`ContatoDoSite`), sem importar os hooks que fazem requisições. */
-export function montarContato(input: {
-  contato: ContatoDigitado;
   respostas: Respostas;
   conteudo: ConteudoConsultoria;
-  originId?: number | null;
-}): ContatoDoSite {
-  const { contato, respostas: r, conteudo } = input;
-  const equipe = equipeDoCRM(r);
-  const clube = clubeDoCRM(r);
-  const quando = quandoDoCRM(r);
-  const nota = calcularScoreV3({ quando, equipe });
+  enderecoDoPlano: string;
+  leadEventId: string;
+}): PloomesContactData {
+  const { respostas: r } = input;
+  const nome = input.nome.trim();
+  const nota = notaDoLead(r);
   return {
-    Name: contato.name.trim(),
-    OriginId: input.originId ?? null,
-    Phones: [{ PhoneNumber: contato.whatsapp.replace(/\D/g, ""), TypeId: 2, CountryId: 0 }],
-    OtherProperties: [
-      { FieldKey: PLOOMES_LEGACY_FIELDS.ownerName, StringValue: contato.name.trim() },
-      { FieldKey: PLOOMES_CONTACT_FIELDS.bb_lp_version, StringValue: LP_VERSION },
-      { FieldKey: PLOOMES_LEGACY_FIELDS.campaignDescStr, StringValue: resumoDaFicha(conteudo, r) },
-      ...(equipe ? [{ FieldKey: PLOOMES_LEGACY_FIELDS.employeeCount, StringValue: equipe }] : []),
-      ...(clube ? [{ FieldKey: PLOOMES_CONTACT_OPTION_FIELDS.bb_clube, IntegerValue: PLOOMES_OPCOES_CLUBE[clube] }] : []),
-      ...(quando ? [{ FieldKey: PLOOMES_CONTACT_OPTION_FIELDS.bb_quando, IntegerValue: PLOOMES_OPCOES_QUANDO[quando] }] : []),
-      ...(nota !== null ? [{ FieldKey: PLOOMES_CONTACT_INT_FIELDS.bb_lead_score, IntegerValue: nota }] : []),
-    ],
+    barbershopName: nome,
+    ownerName: nome,
+    whatsapp: input.whatsapp,
+    monthlyRevenue: faturamentoDoCRM(r),
+    employeeCount: equipeDoCRM(r) ?? "",
+    clubStatus: clubeDoCRM(r),
+    startWhen: quandoDoCRM(r),
+    leadScore: nota ?? undefined,
+    leadEventId: input.leadEventId,
+    descricaoExtra: resumoDaFicha(input.conteudo, r, input.enderecoDoPlano),
+    lpVersion: LP_VERSION,
   };
 }
 
-/** Quem atende: "Este mês" vai ao SDR; o resto, ao Lucas (mesma regra do formulário v3, `vaiAoLucas`). */
-export function rotaDoLead(r: Respostas): "lucas" | "sdr" {
-  const quando = quandoDoCRM(r);
-  return vaiAoLucas({ quando, nota: calcularScoreV3({ quando, equipe: equipeDoCRM(r) }) }) ? "lucas" : "sdr";
+/** A anotação do horário no contato (contrato §2). */
+export function anotacaoDoHorario(horario: Horario): string {
+  return `[Consultoria] Horário escolhido: ${horario.quando}`;
 }
 
-/** Corpo da rota da Nutrição do OS, com os mesmos campos do card que o formulário de hoje manda. */
-export function montarCorpoNutricao(contato: ContatoDoSite, r: Respostas, atribuicao: LeadAttribution) {
-  const equipe = equipeDoCRM(r);
-  const quando = quandoDoCRM(r);
-  return corpoDaNutricao({
-    contato,
-    atribuicao,
-    nota: calcularScoreV3({ quando, equipe }) ?? 0,
-    colaboradores: equipe,
-    clube: clubeDoCRM(r),
-    quando,
-  });
+/** O que a página do plano guarda na sessão para gravar o horário no contato certo. */
+export interface CadastroDaSessao {
+  contactId: number | null;
+  dealId: number | null;
+  leadEventId: string;
 }
 
-let pendente: ContatoDoSite | null = null;
-
-export function contatoPendente() {
-  return pendente;
-}
-
-export function guardarLocalmente(contato: ContatoDoSite) {
-  if (ENVIO_PLOOMES_ATIVO) throw new Error("O envio depende da origem, da rota e do recadastro alinhados com o João.");
-  pendente = contato;
-  if (process.env.NODE_ENV === "development") {
-    console.info("[Consultoria] Envio desligado; contato guardado apenas em memória.", contato);
-  }
-}
+export const CHAVE_DA_SESSAO = "bb:consultoria:cadastro";

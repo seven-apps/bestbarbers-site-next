@@ -1,20 +1,30 @@
 "use client";
 
-// Fonte: protótipo aprovado da consultoria on-line gratuita (04/Nov/26); conteúdo em ../_data/consultoria-v1.json.
+// Fonte: ficha aprovada da consultoria (04/Nov/26) + faturamento e meta (S21, 07/Nov/26); conteúdo em ../_data/consultoria-v2.json.
+// No fim, a navegação é completa até /consultoria/plano: é o `page_view` dessa página que mede o fim no GA4.
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
-import { Check, ChevronLeft, FileText, MessageCircle, Repeat, TrendingUp, UserPlus, Users } from "lucide-react";
-import { validateContact } from "../../diagnostico/_lib/validation";
-import { escolher, objetivoDaUrl, perguntasDoFluxo, progresso, proximaTela, pulaAssinatura, telaRespondida } from "../_lib/flow";
-import { guardarLocalmente, montarContato } from "../_lib/ploomes";
-import { linkDaConsultoria } from "../_lib/whatsapp";
+import { ArrowLeftRight, ChevronLeft, FileText, Repeat, TrendingUp, UserPlus, Users } from "lucide-react";
+import { usePloomesAPI } from "@/hooks/usePloomesAPI";
+import { useMetaPixel } from "@/hooks/useMetaPixel";
+import { criarCardRecadastro } from "@/lib/recadastro";
+import { temEquipe } from "@/lib/lead-score";
+import { mascaraTelefone, validarContato } from "../_lib/contato";
+import { comTeto, empurrar, enviarCapi } from "../_lib/eventos";
+import { escolher, objetivoDaUrl, perguntasDoFluxo, progresso, proximaTela, telaRespondida } from "../_lib/flow";
+import { enderecoDoPlano, opcoesDaMeta } from "../_lib/plano";
+import {
+  CHAVE_DA_SESSAO, LP_VERSION, clubeDoCRM, dadosDoContato, equipeDoCRM, faturamentoDoCRM, notaDoLead, quandoDoCRM,
+  type CadastroDaSessao,
+} from "../_lib/ploomes";
 import type { ConteudoConsultoria, Opcao, Respostas, Tela } from "../_lib/types";
 import styles from "../consultoria.module.css";
 
 const ICONES: Record<string, ReactNode> = {
   faturamento: <TrendingUp aria-hidden="true" />,
   assinatura: <Repeat aria-hidden="true" />,
+  troca: <ArrowLeftRight aria-hidden="true" />,
   clientes: <UserPlus aria-hidden="true" />,
   equipe: <Users aria-hidden="true" />,
   nota: <FileText aria-hidden="true" />,
@@ -22,16 +32,6 @@ const ICONES: Record<string, ReactNode> = {
 
 /** Pausa entre o toque e a próxima tela: a pessoa vê a opção marcada antes de a tela trocar. */
 const PAUSA_MS = 220;
-
-function mascaraTelefone(valor: string) {
-  const d = valor.replace(/\D/g, "").slice(0, 11);
-  if (d.length <= 2) return d;
-  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
-  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
-  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
-}
-
-/** "**negrito**" na primeira linha vira <strong>; o resto quebra linha como no WhatsApp. */
 
 export function Consultoria(conteudo: ConteudoConsultoria) {
   const { telas } = conteudo;
@@ -41,8 +41,13 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
   const [veioDoAnuncio, setVeioDoAnuncio] = useState(false);
   const [contato, setContato] = useState({ name: "", whatsapp: "" });
   const [erros, setErros] = useState<Record<string, string>>({});
+  const [enviando, setEnviando] = useState(false);
+  const [erroEnvio, setErroEnvio] = useState<string | null>(null);
   const avancando = useRef(false);
+  const comecou = useRef(false);
   const corpo = useRef<HTMLDivElement>(null);
+  const { submitLead, checkPhoneExists, buildAttribution } = usePloomesAPI();
+  const { trackLead, trackQualifiedLead, trackQualifiedLead60, trackNonCatalogEvent } = useMetaPixel();
 
   useEffect(() => {
     const objetivo = objetivoDaUrl(window.location.search, conteudo);
@@ -55,9 +60,16 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
 
   useEffect(() => {
     corpo.current?.querySelector<HTMLElement>("h1")?.focus({ preventScroll: true });
-    corpo.current?.scrollTo({ top: 0 });
     window.scrollTo({ top: 0, behavior: "instant" });
   }, [tela]);
+
+  /** O 1º toque é o início medido: uma vez por visita. */
+  function marcarInicio(primeira: string) {
+    if (comecou.current) return;
+    comecou.current = true;
+    empurrar("consultoria_inicio", { lp_version: LP_VERSION, primeira_resposta: primeira });
+    void trackNonCatalogEvent("ConsultoriaInicio", { content_name: "Consultoria", lp_version: LP_VERSION });
+  }
 
   function irPara(proxima: Tela) {
     setHistorico((h) => [...h, tela]);
@@ -66,7 +78,7 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
   }
 
   function voltar() {
-    if (!historico.length || avancando.current) return;
+    if (!historico.length || avancando.current || enviando) return;
     setTela(historico[historico.length - 1]);
     setHistorico((h) => h.slice(0, -1));
     setErros({});
@@ -75,6 +87,7 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
   /** Um toque = uma escolha. A trava `avancando` impede que dois toques rápidos pulem duas telas. */
   function tocar(chave: keyof Respostas, valor: string) {
     if (avancando.current) return;
+    marcarInicio(`${chave}:${valor}`);
     const novo = escolher(conteudo, r, chave, valor);
     setR(novo);
     if (!telaRespondida(tela, novo)) return;
@@ -87,16 +100,98 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
     }, PAUSA_MS);
   }
 
-  function enviar(evento: FormEvent) {
+  async function enviar(evento: FormEvent) {
     evento.preventDefault();
-    const encontrados = validateContact({ ...contato, instagram: "" });
+    if (enviando) return;
+    const encontrados = validarContato(contato);
     setErros(encontrados);
+    setErroEnvio(null);
     if (Object.keys(encontrados).length) {
       requestAnimationFrame(() => corpo.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus());
       return;
     }
-    guardarLocalmente(montarContato({ contato, respostas: r, conteudo }));
-    irPara("pronto");
+    setEnviando(true);
+
+    const nome = contato.name.trim();
+    const iniciais = nome.split(/\s+/).map((n) => n[0]).join("").toLowerCase();
+    const leadEventId = `${Date.now()}-${iniciais}`;
+    const plano = enderecoDoPlano(r, nome);
+    const dados = dadosDoContato({ nome, whatsapp: contato.whatsapp, respostas: r, conteudo, enderecoDoPlano: plano, leadEventId });
+
+    // Telefone conhecido → card novo na Qualificação para o contato que já existe (recadastro, o mesmo do formulário);
+    // telefone novo → contato novo pela chave do site, e a automação abre o card na Qualificação (ADR-038).
+    let cadastro: CadastroDaSessao | null = null;
+    try {
+      const existe = await checkPhoneExists(contato.whatsapp);
+      if (existe) {
+        const recadastro = await criarCardRecadastro({
+          phone: contato.whatsapp,
+          barbershopName: nome,
+          atribuicao: buildAttribution(dados),
+          faturamento: faturamentoDoCRM(r),
+          colaboradores: equipeDoCRM(r),
+          clube: clubeDoCRM(r),
+          quando: quandoDoCRM(r),
+        });
+        if (!recadastro.ok) throw new Error(`recadastro: ${recadastro.motivo ?? "falhou"}`);
+        cadastro = { contactId: recadastro.contactId ?? null, dealId: recadastro.dealId ?? null, leadEventId };
+      } else {
+        const { contactId } = await submitLead(dados);
+        cadastro = { contactId, dealId: null, leadEventId };
+      }
+    } catch (erro) {
+      console.error("[Consultoria] O cadastro no Ploomes falhou:", erro);
+      setErroEnvio(telas.contato.erro);
+      setEnviando(false);
+      return;
+    }
+
+    // Meta: Lead em todo envio válido (o conjunto da consultoria otimiza Lead), mais as medições da casa.
+    const nota = notaDoLead(r);
+    // `content_name` fica o padrão do formulário ("BestBarbers Lead Form"): conversão personalizada que casa por ele não
+    // perde a consultoria. Quem separa é o `lp_version`.
+    const pixel = {
+      lp_version: LP_VERSION,
+      ...(dados.monthlyRevenue && { monthly_revenue: dados.monthlyRevenue }),
+      ...(dados.employeeCount && { employee_count: dados.employeeCount }),
+      ...(nota !== null && { lead_score: nota }),
+    };
+    const pessoa = { telefone: contato.whatsapp, nome };
+    const disparos: Promise<void>[] = [trackLead(pixel, leadEventId)];
+    enviarCapi("Lead", leadEventId, pessoa);
+    if (nota !== null && nota >= 30) {
+      disparos.push(trackQualifiedLead(pixel, `${leadEventId}-q`));
+      enviarCapi("QualifiedLead", `${leadEventId}-q`, pessoa);
+    }
+    if (nota !== null && nota >= 60) {
+      disparos.push(trackQualifiedLead60(pixel, `${leadEventId}-q60`));
+      enviarCapi("QualifiedLead60", `${leadEventId}-q60`, pessoa);
+    }
+    if (dados.employeeCount && temEquipe(dados.employeeCount)) {
+      disparos.push(trackNonCatalogEvent("LeadComEquipe", pixel, `${leadEventId}-eq`));
+      enviarCapi("LeadComEquipe", `${leadEventId}-eq`, pessoa);
+    }
+    empurrar("consultoria_fim", {
+      event_id: leadEventId,
+      lp_version: LP_VERSION,
+      objetivo: r.objetivo,
+      trava: r.trava,
+      faturamento: r.faturamento,
+      meta: r.meta,
+      prazo: r.prazo,
+      lead_score: nota,
+      recadastro: cadastro.dealId !== null,
+    });
+
+    try {
+      sessionStorage.setItem(CHAVE_DA_SESSAO, JSON.stringify({ ...cadastro, outra: r.outra ?? "" }));
+    } catch {
+      // Sem a sessão, a página do plano abre sem o bloco do horário: o card já está criado.
+    }
+    await comTeto(Promise.all(disparos), 1500);
+    const destino = new URL(plano);
+    destino.searchParams.set("de", "ficha");
+    window.location.assign(`${window.location.origin}${destino.pathname}${destino.search}`);
   }
 
   function opcao(chave: keyof Respostas, item: Opcao, icone?: ReactNode, discreta = false) {
@@ -116,15 +211,6 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
   const passo = numero > 0 ? <p className={styles.passo}>Pergunta {numero} de {perguntas.length}</p> : null;
   const objetivo = conteudo.objetivos.find((o) => o.id === r.objetivo);
   const trava = r.objetivo ? conteudo.travas[r.objetivo] : undefined;
-  const nome = contato.name.trim().split(/\s+/)[0] || "";
-  const link = linkDaConsultoria(conteudo.mensagem_whatsapp, null);
-  const resumo = [
-    objetivo?.texto,
-    trava?.opcoes.find((o) => o.id === r.trava)?.texto,
-    r.quem ? `${conteudo.quem.find((o) => o.id === r.quem)?.texto}${r.porte ? ` · ${conteudo.porte.find((o) => o.id === r.porte)?.texto}` : ""}` : "",
-    r.assinatura && !pulaAssinatura(conteudo, r) ? `Assinatura: ${conteudo.assinatura.find((o) => o.id === r.assinatura)?.resumo}` : "",
-    conteudo.prazo.find((o) => o.id === r.prazo)?.texto,
-  ].filter(Boolean);
 
   return (
     <main className={styles.pagina}>
@@ -132,7 +218,7 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
         <header className={styles.topo}>
           <div className={styles.linha}>
             <Image src="/images/Logo-BestBarbers-branco_2.webp" alt="BestBarbers" width={200} height={41} className={styles.logo} priority />
-            {historico.length > 0 && tela !== "pronto" && (
+            {historico.length > 0 && (
               <button type="button" className={styles.voltar} onClick={voltar}><ChevronLeft aria-hidden="true" />Voltar</button>
             )}
           </div>
@@ -155,6 +241,17 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
             {passo}
             <h1 tabIndex={-1}>{trava.pergunta}</h1>
             <div className={styles.opcoes}>{trava.opcoes.map((o) => opcao("trava", o, undefined, o.id === "outra"))}</div>
+            {r.trava === "outra" && (
+              <div className={styles.subpergunta}>
+                <label htmlFor="consultoria-outra">{telas.outra.rotulo}</label>
+                <textarea id="consultoria-outra" className={styles.campo} rows={3} maxLength={200}
+                  placeholder={telas.outra.placeholder} value={r.outra ?? ""}
+                  onChange={(e) => setR((atual) => ({ ...atual, outra: e.target.value }))} />
+                <button type="button" className={styles.principal} onClick={() => irPara(proximaTela(conteudo, "trava", r))}>
+                  {telas.outra.botao}
+                </button>
+              </div>
+            )}
           </>}
 
           {tela === "quem" && <>
@@ -175,6 +272,20 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
             <div className={styles.opcoes}>{conteudo.assinatura.map((o) => opcao("assinatura", o))}</div>
           </>}
 
+          {tela === "faturamento" && <>
+            {passo}
+            <h1 tabIndex={-1}>{telas.faturamento.pergunta}</h1>
+            <p className={styles.texto}>{telas.faturamento.linha}</p>
+            <div className={styles.opcoes}>{conteudo.faixas_hoje.map((o) => opcao("faturamento", o))}</div>
+          </>}
+
+          {tela === "meta" && <>
+            {passo}
+            <h1 tabIndex={-1}>{r.quem === "abrir" ? telas.meta.pergunta_abrir : telas.meta.pergunta}</h1>
+            <p className={styles.texto}>{telas.meta.linha}</p>
+            <div className={styles.opcoes}>{opcoesDaMeta(conteudo, r).map((o) => opcao("meta", o))}</div>
+          </>}
+
           {tela === "prazo" && <>
             {passo}
             <h1 tabIndex={-1}>{telas.prazo.pergunta}</h1>
@@ -186,7 +297,7 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
             <h1 tabIndex={-1}>{telas.contato.pergunta}</h1>
             <form className={styles.form} noValidate onSubmit={enviar}>
               <label htmlFor="consultoria-nome">{telas.contato.nome}</label>
-              <input id="consultoria-nome" name="name" autoComplete="name" placeholder={telas.contato.nome_placeholder}
+              <input id="consultoria-nome" name="name" autoComplete="given-name" placeholder={telas.contato.nome_placeholder}
                 value={contato.name} aria-invalid={Boolean(erros.nome)} aria-describedby={erros.nome ? "erro-nome" : undefined}
                 onChange={(e) => setContato((c) => ({ ...c, name: e.target.value }))} />
               {erros.nome && <p id="erro-nome" className={styles.erro} role="alert">{erros.nome}</p>}
@@ -196,17 +307,12 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
                 aria-invalid={Boolean(erros.whatsapp)} aria-describedby={erros.whatsapp ? "erro-whatsapp" : undefined}
                 onChange={(e) => setContato((c) => ({ ...c, whatsapp: mascaraTelefone(e.target.value) }))} />
               {erros.whatsapp && <p id="erro-whatsapp" className={styles.erro} role="alert">{erros.whatsapp}</p>}
-              <button type="submit" className={styles.principal}>{telas.contato.botao}</button>
+              {erroEnvio && <p className={styles.erro} role="alert">{erroEnvio}</p>}
+              <button type="submit" className={styles.principal} disabled={enviando} aria-busy={enviando}>
+                {enviando ? telas.contato.enviando : telas.contato.botao}
+              </button>
             </form>
             <p className={styles.miudo}>{telas.contato.rodape}</p>
-          </>}
-
-          {tela === "pronto" && <>
-            <div className={styles.ok}><Check aria-hidden="true" /></div>
-            <h1 tabIndex={-1}>{telas.pronto.titulo.replace("{nome}", nome)}</h1>
-            <ul className={styles.resumo}>{resumo.map((item) => <li key={item}>{item}</li>)}</ul>
-            {link && <a className={styles.whatsapp} href={link} target="_blank" rel="noopener noreferrer"><MessageCircle aria-hidden="true" />{telas.pronto.botao}</a>}
-            <p className={styles.miudo}>{telas.pronto.rodape}</p>
           </>}
         </div>
       </div>

@@ -1,8 +1,8 @@
-// Fonte: protótipo aprovado da consultoria on-line gratuita (04/Nov/26). Fora do índice até o GO de publicar.
+// Fonte: ficha da consultoria on-line gratuita (04/Nov/26), no ar em 07/Nov/26. Fora do índice: a página é de campanha.
 import type { Metadata } from "next";
 
 const titulo = "Consultoria on-line gratuita para a sua barbearia";
-const descricao = "Responda 5 perguntas de toque e receba no WhatsApp um plano para o seu caso.";
+const descricao = "Responda 7 perguntas de toque e receba na hora o seu plano: a distância até a sua meta e o primeiro passo.";
 
 export const metadata: Metadata = {
   title: titulo,

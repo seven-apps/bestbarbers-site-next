@@ -1,19 +1,21 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { PLOOMES_CONTACT_FIELDS, PLOOMES_CONTACT_INT_FIELDS, PLOOMES_CONTACT_OPTION_FIELDS, PLOOMES_LEGACY_FIELDS, PLOOMES_OPCOES_CLUBE, PLOOMES_OPCOES_QUANDO } from "../../../lib/ploomes-fields.ts";
 import { CLUBE_OPCOES, EQUIPE_OPCOES_V3, QUANDO_OPCOES } from "../../../lib/lead-score.ts";
-import { clubeDoCRM, ENVIO_PLOOMES_ATIVO, equipeDoCRM, guardarLocalmente, montarContato, montarCorpoNutricao, quandoDoCRM, resumoDaFicha, rotaDoLead } from "./ploomes.ts";
-import { linkDaConsultoria } from "./whatsapp.ts";
+import { PLOOMES_OPCOES_CLUBE, PLOOMES_OPCOES_QUANDO } from "../../../lib/ploomes-fields.ts";
+import {
+  ENVIO_PLOOMES_ATIVO, FATURAMENTO_DO_CRM, LP_VERSION, anotacaoDoHorario, clubeDoCRM, dadosDoContato, equipeDoCRM,
+  limparTextoLivre, quandoDoCRM, resumoDaFicha,
+} from "./ploomes.ts";
+import { enderecoDoPlano } from "./plano.ts";
 import type { ConteudoConsultoria, Respostas } from "./types.ts";
 
-const conteudo = JSON.parse(readFileSync(new URL("../_data/consultoria-v1.json", import.meta.url), "utf8")) as ConteudoConsultoria;
-const caso: Respostas = { objetivo: "assinatura", trava: "p05", quem: "equipe", porte: "2a4", assinatura: "mao", prazo: "tres" };
-const propriedade = (contato: ReturnType<typeof montarContato>, chave: string) => contato.OtherProperties.find((p) => p.FieldKey === chave);
+const conteudo = JSON.parse(readFileSync(new URL("../_data/consultoria-v2.json", import.meta.url), "utf8")) as ConteudoConsultoria;
+const caso: Respostas = { objetivo: "assinatura", trava: "p05", quem: "equipe", porte: "2a4", assinatura: "mao", faturamento: "10a20", meta: "30a60", prazo: "mes" };
 
-test("O envio ao Ploomes está desligado e guardar não envia nada", () => {
-  assert.equal(ENVIO_PLOOMES_ATIVO, false);
-  assert.doesNotThrow(() => guardarLocalmente(montarContato({ contato: { name: "Teste", whatsapp: "(31) 99999-0000" }, respostas: caso, conteudo })));
+test("O envio está ligado e a versão da página é a do braço do texto", () => {
+  assert.equal(ENVIO_PLOOMES_ATIVO, true);
+  assert.equal(LP_VERSION, "consultoria-v2-texto");
 });
 
 test("Equipe, assinatura e prazo saem no vocabulário que o CRM e o placar já leem", () => {
@@ -21,59 +23,61 @@ test("Equipe, assinatura e prazo saem no vocabulário que o CRM e o placar já l
   assert.equal(equipeDoCRM({ quem: "equipe", porte: "2a4" }), "2 a 4 colaboradores");
   assert.equal(equipeDoCRM({ quem: "equipe", porte: "5+" }), "5 ou mais colaboradores");
   assert.equal(equipeDoCRM({ quem: "abrir" }), undefined);
-  assert.equal(equipeDoCRM({ quem: "barbeiro" }), undefined);
   for (const quem of ["solo", "equipe"]) for (const porte of ["2a4", "5+"]) {
     const valor = equipeDoCRM({ quem, porte });
     if (valor) assert.ok((EQUIPE_OPCOES_V3 as readonly string[]).includes(valor));
   }
   for (const assinatura of ["nao", "mao", "sistema"]) for (const objetivo of ["assinatura", "faturamento"]) {
-    assert.ok((CLUBE_OPCOES as readonly string[]).includes(clubeDoCRM({ assinatura, objetivo })!));
+    const clube = clubeDoCRM({ assinatura, objetivo })!;
+    assert.ok((CLUBE_OPCOES as readonly string[]).includes(clube));
+    assert.ok(PLOOMES_OPCOES_CLUBE[clube], clube);
   }
-  for (const prazo of ["mes", "tres", "entender"]) assert.ok((QUANDO_OPCOES as readonly string[]).includes(quandoDoCRM({ prazo })!));
+  for (const prazo of ["mes", "tres", "entender"]) {
+    const quando = quandoDoCRM({ prazo })!;
+    assert.ok((QUANDO_OPCOES as readonly string[]).includes(quando));
+    assert.ok(PLOOMES_OPCOES_QUANDO[quando], quando);
+  }
 });
 
-test("O contato leva a versão da página, a ficha na descrição e os campos da rota", () => {
-  const contato = montarContato({ contato: { name: " Rafael ", whatsapp: "(31) 99999-0000" }, respostas: caso, conteudo });
-  assert.equal(contato.Name, "Rafael");
-  assert.deepEqual(contato.Phones, [{ PhoneNumber: "31999990000", TypeId: 2, CountryId: 0 }]);
-  assert.deepEqual(propriedade(contato, PLOOMES_CONTACT_FIELDS.bb_lp_version), { FieldKey: PLOOMES_CONTACT_FIELDS.bb_lp_version, StringValue: "consultoria-v1" });
-  assert.deepEqual(propriedade(contato, PLOOMES_LEGACY_FIELDS.employeeCount), { FieldKey: PLOOMES_LEGACY_FIELDS.employeeCount, StringValue: "2 a 4 colaboradores" });
-  assert.deepEqual(propriedade(contato, PLOOMES_CONTACT_OPTION_FIELDS.bb_clube), { FieldKey: PLOOMES_CONTACT_OPTION_FIELDS.bb_clube, IntegerValue: PLOOMES_OPCOES_CLUBE["Já tenho o clube, mas gerencio manualmente"] });
-  assert.deepEqual(propriedade(contato, PLOOMES_CONTACT_OPTION_FIELDS.bb_quando), { FieldKey: PLOOMES_CONTACT_OPTION_FIELDS.bb_quando, IntegerValue: PLOOMES_OPCOES_QUANDO["Nos próximos 3 meses"] });
-  assert.deepEqual(propriedade(contato, PLOOMES_CONTACT_INT_FIELDS.bb_lead_score), { FieldKey: PLOOMES_CONTACT_INT_FIELDS.bb_lead_score, IntegerValue: 60 });
-  assert.equal(
-    (propriedade(contato, PLOOMES_LEGACY_FIELDS.campaignDescStr) as { StringValue: string }).StringValue,
-    "[Consultoria] Objetivo: Montar ou crescer a assinatura · Trava: Cobrar cada assinante, todo mês, na mão · Quem: Dono, com equipe (2 a 4) · Assinatura: Tenho e cobro na mão ou no Pix · Prazo: Nos próximos 3 meses",
-  );
+test("As 7 faixas da ficha caem nas 4 do formulário v2, sem buraco", () => {
+  const v2 = ["Até R$ 2.000", "R$ 2.000 a R$ 10.000", "De R$ 10.000 a R$ 30.000", "Acima de R$ 30.000"];
+  for (const faixa of conteudo.faixas_hoje) assert.ok(v2.includes(FATURAMENTO_DO_CRM[faixa.id]), faixa.id);
 });
 
-test("Quem não declarou equipe nem assinatura não ganha valor inventado", () => {
-  const contato = montarContato({ contato: { name: "Ana", whatsapp: "11988887777" }, respostas: { objetivo: "equipe", trava: "p20", quem: "barbeiro", prazo: "entender" }, conteudo });
-  assert.equal(propriedade(contato, PLOOMES_LEGACY_FIELDS.employeeCount), undefined);
-  assert.equal(propriedade(contato, PLOOMES_CONTACT_OPTION_FIELDS.bb_clube), undefined);
-  assert.ok(!resumoDaFicha(conteudo, { objetivo: "equipe", trava: "p20", quem: "barbeiro", prazo: "entender" }).includes("Assinatura"));
+test("A linha do card segue o contrato: chaves na ordem, partes vazias fora, o plano no fim", () => {
+  const plano = enderecoDoPlano(caso, "Rafael");
+  const linha = resumoDaFicha(conteudo, caso, plano);
+  assert.equal(linha,
+    "[Consultoria] Objetivo: Montar ou crescer a assinatura · Trava: Cobrar cada assinante, todo mês, na mão · " +
+    "Quem: Dono, com equipe (2 a 4) · Assinatura: Tenho e cobro na mão ou no Pix · Faturamento: R$ 10 a 20 mil · " +
+    "Meta: R$ 30 a 60 mil · Distância: cerca de +R$ 30 mil por mês · Prazo: Este mês · Braço: texto · " +
+    `Plano: ${plano}`);
+  const barbeiro = resumoDaFicha(conteudo, { objetivo: "clientes", trava: "p08", quem: "barbeiro", prazo: "entender" }, plano);
+  assert.equal(/Assinatura:|Faturamento:|Meta:|Distância:/.test(barbeiro), false);
 });
 
-test("Rota igual à do formulário v3: \"Este mês\" vai ao SDR, o resto ao Lucas", () => {
-  assert.equal(rotaDoLead({ ...caso, prazo: "mes" }), "sdr");
-  assert.equal(rotaDoLead({ ...caso, prazo: "tres" }), "lucas");
-  assert.equal(rotaDoLead({ ...caso, prazo: "entender" }), "lucas");
+test("\"Outra coisa\" vai com a frase do dono, limpa e com até 200 caracteres", () => {
+  const r: Respostas = { objetivo: "troca", trava: "outra", outra: "o sistema · trava [sempre]\nno sábado", quem: "solo", prazo: "tres" };
+  const linha = resumoDaFicha(conteudo, r, "https://x");
+  assert.match(linha, /Trava: Outra coisa: "o sistema trava sempre no sábado"/);
+  assert.equal(limparTextoLivre("a".repeat(300)).length, 200);
 });
 
-test("O corpo da Nutrição leva equipe, assinatura e prazo para o card", () => {
-  const contato = montarContato({ contato: { name: "Rafael", whatsapp: "31999990000" }, respostas: caso, conteudo });
-  const corpo = montarCorpoNutricao(contato, caso, { originId: null, originDesc: null, fields: {} });
-  assert.equal(corpo.card.colaboradores, "2 a 4 colaboradores");
-  assert.equal(corpo.card.clube, "Já tenho o clube, mas gerencio manualmente");
-  assert.equal(corpo.card.quando, "Nos próximos 3 meses");
-  assert.equal(corpo.card.leadScore, 60);
-  assert.equal("OriginId" in corpo.contato, false);
+test("O contato leva a linha no fim da descrição, a versão, o faturamento do CRM e a nota", () => {
+  const plano = enderecoDoPlano(caso, "Rafael");
+  const dados = dadosDoContato({ nome: " Rafael Souza ", whatsapp: "(31) 99999-0000", respostas: caso, conteudo, enderecoDoPlano: plano, leadEventId: "1-rs" });
+  assert.equal(dados.barbershopName, "Rafael Souza");
+  assert.equal(dados.ownerName, "Rafael Souza");
+  assert.equal(dados.monthlyRevenue, "De R$ 10.000 a R$ 30.000");
+  assert.equal(dados.employeeCount, "2 a 4 colaboradores");
+  assert.equal(dados.startWhen, "Este mês");
+  assert.equal(dados.lpVersion, "consultoria-v2-texto");
+  assert.equal(dados.leadEventId, "1-rs");
+  assert.equal(typeof dados.leadScore, "number");
+  assert.ok(dados.descricaoExtra?.startsWith("[Consultoria] "));
 });
 
-test("O botão do WhatsApp usa o número do Lucas e a mensagem da consultoria", () => {
-  const numero = "5531999990000";
-  assert.equal(linkDaConsultoria("Oi! Quero começar a minha consultoria.", null, numero),
-    "https://wa.me/5531999990000?text=Oi!%20Quero%20come%C3%A7ar%20a%20minha%20consultoria.");
-  assert.match(linkDaConsultoria("Oi!", 123, numero)!, /\(c%C3%B3d\.%20123\)$/);
-  assert.equal(linkDaConsultoria("Oi!", null, ""), null);
+test("A anotação do horário segue o contrato", () => {
+  assert.equal(anotacaoDoHorario(conteudo.horarios[1]), "[Consultoria] Horário escolhido: amanhã de manhã");
+  assert.deepEqual(conteudo.horarios.map((h) => h.quando), ["hoje até as 18h", "amanhã de manhã", "amanhã à tarde", "prefiro por mensagem"]);
 });

@@ -28,6 +28,13 @@ export interface PloomesContactData {
   leadScore?: number;
   /** Meta CAPI / Pixel event ID compartilhado entre browser e server (deduplicação) */
   leadEventId?: string;
+  /**
+   * Trecho que vai no FIM da Descrição da Campanha, depois da atribuição (que, com os 8 segmentos do anúncio,
+   * ignora o `originDesc` da página). A consultoria manda a linha `[Consultoria] …` (contrato 05-contrato-site-os.md).
+   */
+  descricaoExtra?: string;
+  /** Sobrescreve o `bb_lp_version` tirado do caminho da página (ex.: `consultoria-v2-texto`). */
+  lpVersion?: string;
 }
 
 export interface PloomesAPIResponse {
@@ -98,7 +105,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
   const buildAttribution = useCallback((data: PloomesContactData): LeadAttribution => {
     const utmParams = getUtmParams();
     const utmMapping = getOriginMapping(utmParams);
-    return buildLeadAttribution({
+    const atribuicao = buildLeadAttribution({
       utmParams,
       originId: customOriginId ?? utmMapping.originId,
       originDesc: customOriginDesc ?? utmMapping.originDesc,
@@ -106,6 +113,11 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       leadEventId: data.leadEventId,
       quando: data.startWhen,
     });
+    if (data.lpVersion) atribuicao.fields = { ...atribuicao.fields, bb_lp_version: data.lpVersion };
+    if (data.descricaoExtra) {
+      atribuicao.originDesc = [atribuicao.originDesc, data.descricaoExtra].filter(Boolean).join(' ');
+    }
+    return atribuicao;
   }, [getUtmParams, getOriginMapping, customOriginId, customOriginDesc]);
 
   /**
@@ -308,9 +320,36 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
     }
   }, [createContact]);
 
+  /**
+   * Anotação (registro) no contato e, quando já se sabe, no card. A consultoria grava o horário escolhido
+   * (contrato 05-contrato-site-os.md §2). Devolve o id do registro; lança em erro HTTP para quem chama avisar.
+   */
+  const createInteractionRecord = useCallback(async (input: { contactId: number; dealId?: number | null; content: string }): Promise<number | null> => {
+    const response = await fetch(`${PLOOMES_BASE_URL}/InteractionRecords`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'user-key': PLOOMES_API_KEY
+      },
+      body: JSON.stringify({
+        ContactId: input.contactId,
+        ...(input.dealId ? { DealId: input.dealId } : {}),
+        TypeId: 1,
+        Content: input.content,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error(`Erro ao criar registro no Ploomes: ${response.status} - ${await response.text()}`);
+    }
+    const data = await response.json();
+    return idDoContatoCriado(data);
+  }, []);
+
   return {
     createContact,
     createDeal,
+    createInteractionRecord,
     checkPhoneExists,
     buildAttribution,
     buildContactPayload,
