@@ -90,8 +90,8 @@ interface UseLeadFormOptions {
 **Desvio ao Lucas (ADR-035, ADR-037; desligado pelo ADR-038 em 06/Nov/26):** com a chave `DESVIO_DO_LUCAS`
 (`src/content/lucas-whatsapp.ts`) ligada, o contato novo que não marcou "Este mês" vai para a rota do OS
 `/api/ploomes/lead-nutricao` e, com o card criado, para o WhatsApp do Lucas (`src/lib/lead-nutricao.ts`).
-Desligada (hoje, para todo o site; o curso tem chave própria), todo lead segue o caminho do "Este mês", na
-Qualificação. Qualquer falha da rota também cai no caminho de sempre.
+Desligada (hoje, para todo o site e, desde 07/Nov, também para o curso, que tem chave própria), todo lead segue o
+caminho do "Este mês", na Qualificação. Qualquer falha da rota também cai no caminho de sempre.
 
 ### 2. `usePhoneMask`
 

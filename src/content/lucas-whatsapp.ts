@@ -25,14 +25,16 @@ export const NUMERO_WHATSAPP_LUCAS: string = "553172183568";
  * - `leadNovo`: todas as páginas do site (LPs, guias, calculadoras, tabela, projeto, clube, home). Desligada, o lead
  *   segue o caminho do "Este mês": contato pela chave do site → automação do card na Qualificação → rodízio de SDR.
  *   A rota da nutrição nem é chamada, o recadastro não pede a Nutrição e a tela do WhatsApp do Lucas não abre.
- * - `curso`: o curso de assinatura, que tem regra própria (Nutrição + passagem ao SDR pelo sinal do aluno).
+ * - `curso`: o curso de assinatura. Desligada em 07/Nov/26 ("Pode mandar sim o lead do curso de assinatura para
+ *   qualificação"): o curso também vai à Qualificação. Ligada, volta a regra dele (Nutrição + passagem ao SDR pelo sinal
+ *   do aluno).
  *
  * Religar = trocar o valor e publicar. O OS tem o espelho (`DESVIO_DO_LUCAS` em lib/integrations/ploomes-fields.ts):
  * basta um dos dois lados desligado para o lead ir à Qualificação.
  */
 export const DESVIO_DO_LUCAS: Readonly<{ leadNovo: boolean; curso: boolean }> = Object.freeze({
   leadNovo: false,
-  curso: true,
+  curso: false,
 });
 
 /**

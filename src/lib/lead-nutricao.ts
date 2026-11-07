@@ -2,7 +2,7 @@
  * NUTRIÇÃO — lead com nota < 60 vai para o WhatsApp do Lucas, não para a fila do SDR.
  *
  * DESLIGADO em 06/Nov/26 (ADR-038 no bestbarbers-ai): a chave `DESVIO_DO_LUCAS` (src/content/lucas-whatsapp.ts) manda
- * todo lead do site à Qualificação pelo caminho do "Este mês"; o curso tem chave própria. O código abaixo fica vivo
+ * todo lead do site à Qualificação pelo caminho do "Este mês"; o curso também, desde 07/Nov. O código abaixo fica vivo
  * para religar: `numeroDoDesvio` devolve o número vazio e o resto já tratava "sem número" como "vai ao SDR".
  *
  * Emenda de 10/Out/26 (André): o RECADASTRO com nota < 60 também vai ao Lucas — o primeiro contato

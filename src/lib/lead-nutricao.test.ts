@@ -402,8 +402,10 @@ test('v3: o corpo da nutrição leva o "quando" ao card', () => {
 
 const QUANDO_FRIOS = ["Nos próximos 3 meses", "Só estou conhecendo"] as const;
 
-test("ADR-038: a chave de produção desliga o Lucas para todo o site (o curso tem a chave dele)", () => {
+test("ADR-038: a chave de produção desliga o Lucas para todo o site, curso incluído (07/Nov)", () => {
   assert.equal(DESVIO_DO_LUCAS.leadNovo, false, "o lead do site voltou ao Lucas: é decisão do André (ADR-038)");
+  assert.equal(DESVIO_DO_LUCAS.curso, false, "o curso voltou ao Lucas: é decisão do André (ADR-038, 07/Nov)");
+  assert.equal(numeroDoDesvio({ curso: true, numero: NUMERO_WHATSAPP_LUCAS, chave: DESVIO_DO_LUCAS }), "");
   assert.ok(Object.isFrozen(DESVIO_DO_LUCAS), "a chave não muda em tempo de execução");
   const numeroLucas = numeroDoDesvio({ curso: false, numero: NUMERO_WHATSAPP_LUCAS, chave: DESVIO_DO_LUCAS });
   assert.equal(numeroLucas, "");
