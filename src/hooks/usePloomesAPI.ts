@@ -29,8 +29,9 @@ export interface PloomesContactData {
   /** Meta CAPI / Pixel event ID compartilhado entre browser e server (deduplicação) */
   leadEventId?: string;
   /**
-   * Trecho que vai no FIM da Descrição da Campanha, depois da atribuição (que, com os 8 segmentos do anúncio,
-   * ignora o `originDesc` da página). A consultoria manda a linha `[Consultoria] …` (contrato 05-contrato-site-os.md).
+   * Trecho da página na Descrição da Campanha, logo depois dos prefixos `[SCORE]`/`[QUANDO]`/`[CUPOM]` e antes da
+   * atribuição: o campo corta em 250 caracteres (medido em 07/Nov/26), e a atribuição inteira já vive nos campos bb_*.
+   * A consultoria manda `[Consultoria] Trava: … · Faturamento: … · Meta: …`.
    */
   descricaoExtra?: string;
   /** Sobrescreve o `bb_lp_version` tirado do caminho da página (ex.: `consultoria-v2-texto`). */
@@ -64,6 +65,12 @@ function buildPhonePredicate(phone: string): string {
   return firstChunk.length >= 4
     ? `contains(p/PhoneNumber, '${last4}') and contains(p/PhoneNumber, '${firstChunk}')`
     : `contains(p/PhoneNumber, '${last4}')`;
+}
+
+/** Põe o trecho da página depois dos prefixos entre colchetes do começo da descrição e antes do resto. */
+export function comTrechoDaPagina(descricao: string | null, trecho: string): string {
+  const [, prefixos = '', resto = ''] = (descricao ?? '').match(/^((?:\[[^\]]*\]\s*)*)([\s\S]*)$/) ?? [];
+  return [prefixos.trim(), trecho, resto.trim()].filter(Boolean).join(' ');
 }
 
 /**
@@ -114,9 +121,7 @@ export const usePloomesAPI = (options: UsePloomesAPIOptions = {}) => {
       quando: data.startWhen,
     });
     if (data.lpVersion) atribuicao.fields = { ...atribuicao.fields, bb_lp_version: data.lpVersion };
-    if (data.descricaoExtra) {
-      atribuicao.originDesc = [atribuicao.originDesc, data.descricaoExtra].filter(Boolean).join(' ');
-    }
+    if (data.descricaoExtra) atribuicao.originDesc = comTrechoDaPagina(atribuicao.originDesc, data.descricaoExtra);
     return atribuicao;
   }, [getUtmParams, getOriginMapping, customOriginId, customOriginDesc]);
 

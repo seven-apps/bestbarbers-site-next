@@ -92,6 +92,26 @@ export function resumoDaFicha(conteudo: ConteudoConsultoria, r: Respostas, ender
   return `[Consultoria] ${partes.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join(" · ")}`;
 }
 
+/** O campo de texto do Ploomes guarda até 250 caracteres e corta o resto em silêncio (medido no card 1203299999, 07/Nov/26). */
+export const LIMITE_DO_CAMPO = 250;
+
+/**
+ * A versão curta para a Descrição da Campanha: só o que o SDR precisa ver no card e cabe no campo. Entra logo depois
+ * de `[SCORE]`/`[QUANDO]`, antes da atribuição (que pode ser cortada: os campos bb_* guardam a atribuição inteira).
+ * A linha completa do contrato vai numa anotação no contato (`resumoDaFicha`).
+ */
+export function resumoCurto(conteudo: ConteudoConsultoria, r: Respostas): string {
+  const trava = r.trava === "outra"
+    ? (r.outra?.trim() ? `Outra coisa: "${limparTextoLivre(r.outra).slice(0, 60)}"` : "Outra coisa")
+    : texto(r.objetivo ? conteudo.travas[r.objetivo]?.opcoes : undefined, r.trava);
+  const partes: Array<[string, string | undefined]> = [
+    ["Trava", trava],
+    ["Faturamento", faixaDeHoje(conteudo, r)?.texto],
+    ["Meta", faixaDaMeta(conteudo, r)?.texto],
+  ];
+  return `[Consultoria] ${partes.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join(" · ")} · Plano nas anotações`;
+}
+
 /**
  * O contato no formato do formulário de hoje (`usePloomesAPI`): o nome digitado é o nome do contato (a ficha não
  * pergunta a barbearia), a linha da consultoria vai no fim da descrição e o `bb_lp_version` é o da consultoria.
@@ -117,7 +137,7 @@ export function dadosDoContato(input: {
     startWhen: quandoDoCRM(r),
     leadScore: nota ?? undefined,
     leadEventId: input.leadEventId,
-    descricaoExtra: resumoDaFicha(input.conteudo, r, input.enderecoDoPlano),
+    descricaoExtra: resumoCurto(input.conteudo, r),
     lpVersion: LP_VERSION,
   };
 }

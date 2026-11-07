@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { CLUBE_OPCOES, EQUIPE_OPCOES_V3, QUANDO_OPCOES } from "../../../lib/lead-score.ts";
 import { PLOOMES_OPCOES_CLUBE, PLOOMES_OPCOES_QUANDO } from "../../../lib/ploomes-fields.ts";
 import {
-  ENVIO_PLOOMES_ATIVO, FATURAMENTO_DO_CRM, LP_VERSION, anotacaoDoHorario, clubeDoCRM, dadosDoContato, equipeDoCRM,
+  ENVIO_PLOOMES_ATIVO, FATURAMENTO_DO_CRM, LIMITE_DO_CAMPO, LP_VERSION, anotacaoDoHorario, resumoCurto, clubeDoCRM, dadosDoContato, equipeDoCRM,
   limparTextoLivre, quandoDoCRM, resumoDaFicha,
 } from "./ploomes.ts";
 import { enderecoDoPlano } from "./plano.ts";
@@ -74,7 +74,17 @@ test("O contato leva a linha no fim da descrição, a versão, o faturamento do 
   assert.equal(dados.lpVersion, "consultoria-v2-texto");
   assert.equal(dados.leadEventId, "1-rs");
   assert.equal(typeof dados.leadScore, "number");
-  assert.ok(dados.descricaoExtra?.startsWith("[Consultoria] "));
+  assert.equal(dados.descricaoExtra, "[Consultoria] Trava: Cobrar cada assinante, todo mês, na mão · Faturamento: R$ 10 a 20 mil · Meta: R$ 30 a 60 mil · Plano nas anotações");
+});
+
+test("A versão curta cabe no campo de 250 caracteres com os prefixos mais longos, em toda trava", () => {
+  const prefixos = "[SCORE: 100] [QUANDO: Nos próximos 3 meses] [CUPOM: PARCEIRO-XXXXXXXX] ";
+  for (const [objetivo, { opcoes }] of Object.entries(conteudo.travas).filter(([k]) => k !== "fonte")) {
+    for (const opcao of opcoes) {
+      const curto = resumoCurto(conteudo, { objetivo, trava: opcao.id, outra: "x".repeat(300), faturamento: "60+", meta: "100+" });
+      assert.ok((prefixos + curto).length <= LIMITE_DO_CAMPO, `${objetivo}/${opcao.id}: ${(prefixos + curto).length}`);
+    }
+  }
 });
 
 test("A anotação do horário segue o contrato", () => {

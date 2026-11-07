@@ -16,7 +16,7 @@ import { escolher, objetivoDaUrl, perguntasDoFluxo, progresso, proximaTela, tela
 import { enderecoDoPlano, opcoesDaMeta } from "../_lib/plano";
 import {
   CHAVE_DA_SESSAO, LP_VERSION, clubeDoCRM, dadosDoContato, equipeDoCRM, faturamentoDoCRM, notaDoLead, quandoDoCRM,
-  type CadastroDaSessao,
+  resumoDaFicha, type CadastroDaSessao,
 } from "../_lib/ploomes";
 import type { ConteudoConsultoria, Opcao, Respostas, Tela } from "../_lib/types";
 import styles from "../consultoria.module.css";
@@ -46,7 +46,7 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
   const avancando = useRef(false);
   const comecou = useRef(false);
   const corpo = useRef<HTMLDivElement>(null);
-  const { submitLead, checkPhoneExists, buildAttribution } = usePloomesAPI();
+  const { submitLead, checkPhoneExists, buildAttribution, createInteractionRecord } = usePloomesAPI();
   const { trackLead, trackQualifiedLead, trackQualifiedLead60, trackNonCatalogEvent } = useMetaPixel();
 
   useEffect(() => {
@@ -144,6 +144,16 @@ export function Consultoria(conteudo: ConteudoConsultoria) {
       setErroEnvio(telas.contato.erro);
       setEnviando(false);
       return;
+    }
+
+    // A linha completa do contrato (com a distância, o prazo e o link do plano) não cabe nos 250 caracteres da descrição:
+    // vai numa anotação no contato (e no card, no recadastro), que o SDR vê na linha do tempo.
+    if (cadastro.contactId) {
+      try {
+        await comTeto(createInteractionRecord({ contactId: cadastro.contactId, dealId: cadastro.dealId, content: resumoDaFicha(conteudo, r, plano) }), 4000);
+      } catch (erro) {
+        console.error("[Consultoria] A anotação da ficha não foi gravada no Ploomes:", erro);
+      }
     }
 
     // Meta: Lead em todo envio válido (o conjunto da consultoria otimiza Lead), mais as medições da casa.
