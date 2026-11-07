@@ -1,0 +1,550 @@
+{
+  "versao": "v2-texto",
+  "data": "2026-11-07",
+  "status": "no ar (07/Nov/26, GO do André: \"bora lançar o diagnóstico sem o vídeo\"); braço só texto",
+  "fontes": [
+    "protótipo aprovado: bestbarbers-ai, sessão de 04/Nov/26 (scratchpad/mock/consultoria-v1.html)",
+    "travas por objetivo: protótipo, trocar pelo dores-top10.json (bestbarbers-ai/docs/operacional/marketing-vendas-nov26/estrategia-canais/consultoria-v1/dores-top10.json), que ainda não existia quando esta versão foi escrita",
+    "valores gravados no CRM: src/lib/lead-score.ts (EQUIPE_OPCOES_V3, CLUBE_OPCOES, QUANDO_OPCOES)",
+    "bestbarbers-ai/docs/operacional/marketing-vendas-nov26/estrategia-canais/consultoria-v2/02-plano.md (§3.1 e §3.2) e 05-contrato-site-os.md (07/Nov/26)"
+  ],
+  "telas": {
+    "objetivo": {
+      "rotulo": "Consultoria on-line gratuita",
+      "pergunta": "O que você quer resolver primeiro na sua barbearia?",
+      "texto": "São 7 perguntas de toque. No fim, o seu plano aparece na tela: a distância até a sua meta e o primeiro passo para fazer amanhã."
+    },
+    "quem": {
+      "pergunta": "Quem é você na barbearia?",
+      "porte": "Quantos profissionais cortam aí, contando você?"
+    },
+    "assinatura": {
+      "pergunta": "E a assinatura, hoje?"
+    },
+    "prazo": {
+      "pergunta": "Para quando você quer resolver isso?"
+    },
+    "contato": {
+      "rotulo": "Última etapa",
+      "pergunta": "O seu plano sai na próxima tela. Em nome de quem?",
+      "nome": "Seu nome",
+      "nome_placeholder": "Como você quer ser chamado",
+      "whatsapp": "WhatsApp com DDD",
+      "whatsapp_placeholder": "(00) 00000-0000",
+      "botao": "Ver o meu plano",
+      "rodape": "O nosso time recebe as suas respostas e usa o seu WhatsApp só para falar do seu plano.",
+      "enviando": "Montando o seu plano…",
+      "erro": "Não conseguimos registrar agora. Confira o WhatsApp e tente de novo."
+    },
+    "pronto": {
+      "rotulo": "O seu plano",
+      "titulo": "{nome}, o seu plano",
+      "distancia_titulo": "A distância",
+      "distancia_meio": "pelo meio das faixas que você marcou",
+      "passo_titulo": "O passo 1, para amanhã",
+      "horario_titulo": "Quer montar o resto com a gente?",
+      "horario_texto": "Os próximos passos o nosso time monta com você, numa ligação. Quando fica melhor?",
+      "horario_ok": "Combinado: o nosso time te liga {quando}.",
+      "horario_ok_mensagem": "Combinado: o nosso time te chama no WhatsApp.",
+      "horario_erro": "Não conseguimos registrar o horário. O nosso time te chama no WhatsApp do mesmo jeito.",
+      "sem_cadastro": "O nosso time já está com o seu plano e te chama no WhatsApp para montar o resto com você.",
+      "refazer": "Refazer a consultoria"
+    },
+    "faturamento": {
+      "pergunta": "Quanto a barbearia fatura por mês, hoje?",
+      "linha": "É para o plano partir do seu tamanho."
+    },
+    "meta": {
+      "pergunta": "E quanto de faturamento você quer alcançar por mês, daqui a 1 ano?",
+      "linha": "O plano mostra o caminho de um para o outro.",
+      "pergunta_abrir": "Quanto você quer faturar por mês, daqui a 1 ano?"
+    },
+    "outra": {
+      "rotulo": "Conte em uma frase o que trava (opcional)",
+      "placeholder": "Ex.: o barbeiro falta e eu perco o dia",
+      "botao": "Continuar"
+    }
+  },
+  "objetivos": [
+    {
+      "id": "faturamento",
+      "texto": "Aumentar o faturamento",
+      "icone": "faturamento"
+    },
+    {
+      "id": "assinatura",
+      "texto": "Montar ou crescer a assinatura",
+      "icone": "assinatura"
+    },
+    {
+      "id": "troca",
+      "texto": "Trocar de sistema",
+      "icone": "troca"
+    },
+    {
+      "id": "clientes",
+      "texto": "Atrair mais clientes",
+      "icone": "clientes"
+    },
+    {
+      "id": "equipe",
+      "texto": "Organizar a barbearia, a equipe e a comissão",
+      "icone": "equipe"
+    },
+    {
+      "id": "nota",
+      "texto": "Parar de emitir nota na mão",
+      "icone": "nota"
+    }
+  ],
+  "travas": {
+    "fonte": "docs/operacional/marketing-vendas-nov26/estrategia-canais/consultoria-v1/dores-top10.json (04/Nov/26)",
+    "faturamento": {
+      "pergunta": "No faturamento, o que mais trava hoje?",
+      "opcoes": [
+        {
+          "id": "p10",
+          "texto": "Quero faturar mais e não sei onde mexer"
+        },
+        {
+          "id": "p19",
+          "texto": "Segunda, terça e quarta a cadeira fica vazia"
+        },
+        {
+          "id": "p24",
+          "texto": "O cliente que vinha sempre sumiu"
+        },
+        {
+          "id": "p04",
+          "texto": "Tudo no caderno, no papel ou de cabeça"
+        },
+        {
+          "id": "p06",
+          "texto": "São muitos problemas, não sei qual atacar"
+        },
+        {
+          "id": "outra",
+          "texto": "Outra coisa"
+        }
+      ]
+    },
+    "assinatura": {
+      "pergunta": "Na assinatura, o que mais trava hoje?",
+      "opcoes": [
+        {
+          "id": "p05",
+          "texto": "Cobrar cada assinante, todo mês, na mão",
+          "assinatura_implicita": "mao"
+        },
+        {
+          "id": "p03",
+          "texto": "Dividir o dinheiro da assinatura entre os barbeiros"
+        },
+        {
+          "id": "p13",
+          "texto": "Não sei quanto cobrar no plano"
+        },
+        {
+          "id": "p26",
+          "texto": "Quero começar e não sei como funciona"
+        },
+        {
+          "id": "p40",
+          "texto": "O assinante enrola e muda a data"
+        },
+        {
+          "id": "outra",
+          "texto": "Outra coisa"
+        }
+      ]
+    },
+    "clientes": {
+      "pergunta": "Para atrair clientes, o que mais trava hoje?",
+      "opcoes": [
+        {
+          "id": "p08",
+          "texto": "Cliente novo não chega"
+        },
+        {
+          "id": "p14",
+          "texto": "Posto no Instagram e cliente não vem"
+        },
+        {
+          "id": "p12",
+          "texto": "Ordem de chegada: o cliente espera ou desiste"
+        },
+        {
+          "id": "p09",
+          "texto": "O app mostra outras barbearias ao meu cliente"
+        },
+        {
+          "id": "p22",
+          "texto": "Divulgar gastando pouco"
+        },
+        {
+          "id": "outra",
+          "texto": "Outra coisa"
+        }
+      ]
+    },
+    "equipe": {
+      "pergunta": "Na equipe, o que mais trava hoje?",
+      "opcoes": [
+        {
+          "id": "p03",
+          "texto": "Dividir o dinheiro da assinatura entre os barbeiros"
+        },
+        {
+          "id": "p34",
+          "texto": "A comissão fica no caderno e dá diferença"
+        },
+        {
+          "id": "p04",
+          "texto": "Tudo no caderno, no papel ou de cabeça"
+        },
+        {
+          "id": "p20",
+          "texto": "Não acho barbeiro bom para contratar"
+        },
+        {
+          "id": "p17",
+          "texto": "Cada barbeiro atende de um jeito"
+        },
+        {
+          "id": "outra",
+          "texto": "Outra coisa"
+        }
+      ]
+    },
+    "nota": {
+      "pergunta": "Na nota fiscal, o que mais trava hoje?",
+      "opcoes": [
+        {
+          "id": "nota-na-mao",
+          "texto": "Emito nota por nota, na mão"
+        },
+        {
+          "id": "nota-nao-emite",
+          "texto": "O contador pede nota e eu não emito"
+        },
+        {
+          "id": "outra",
+          "texto": "Outra coisa"
+        }
+      ]
+    },
+    "troca": {
+      "pergunta": "Na troca de sistema, o que mais trava hoje?",
+      "opcoes": [
+        {
+          "id": "t-cobranca",
+          "texto": "A cobrança da assinatura falha, mesmo com o cartão em dia",
+          "assinatura_implicita": "sistema"
+        },
+        {
+          "id": "t-vitrine",
+          "texto": "O app mostra outras barbearias ao meu cliente"
+        },
+        {
+          "id": "t-nota",
+          "texto": "Preciso emitir nota e o sistema não faz"
+        },
+        {
+          "id": "t-medo",
+          "texto": "Tenho medo de perder assinante na troca"
+        },
+        {
+          "id": "outra",
+          "texto": "Outra coisa"
+        }
+      ]
+    }
+  },
+  "quem": [
+    {
+      "id": "equipe",
+      "texto": "Dono, com equipe"
+    },
+    {
+      "id": "solo",
+      "texto": "Dono, trabalho sozinho"
+    },
+    {
+      "id": "abrir",
+      "texto": "Vou abrir a minha barbearia"
+    },
+    {
+      "id": "barbeiro",
+      "texto": "Sou barbeiro, não sou o dono"
+    }
+  ],
+  "porte": [
+    {
+      "id": "2a4",
+      "texto": "2 a 4"
+    },
+    {
+      "id": "5+",
+      "texto": "5 ou mais"
+    }
+  ],
+  "assinatura": [
+    {
+      "id": "nao",
+      "texto": "Ainda não tenho",
+      "resumo": "ainda não tenho"
+    },
+    {
+      "id": "mao",
+      "texto": "Tenho e cobro na mão ou no Pix",
+      "resumo": "cobro na mão ou no Pix"
+    },
+    {
+      "id": "sistema",
+      "texto": "Tenho, e o sistema cobra sozinho",
+      "resumo": "o sistema cobra"
+    }
+  ],
+  "prazo": [
+    {
+      "id": "mes",
+      "texto": "Este mês"
+    },
+    {
+      "id": "tres",
+      "texto": "Nos próximos 3 meses"
+    },
+    {
+      "id": "entender",
+      "texto": "Por enquanto, só quero entender"
+    }
+  ],
+  "faixas_hoje": [
+    {
+      "id": "ate2",
+      "texto": "Até R$ 2 mil",
+      "min": 0,
+      "max": 2000
+    },
+    {
+      "id": "2a5",
+      "texto": "R$ 2 a 5 mil",
+      "min": 2000,
+      "max": 5000
+    },
+    {
+      "id": "5a10",
+      "texto": "R$ 5 a 10 mil",
+      "min": 5000,
+      "max": 10000
+    },
+    {
+      "id": "10a20",
+      "texto": "R$ 10 a 20 mil",
+      "min": 10000,
+      "max": 20000
+    },
+    {
+      "id": "20a30",
+      "texto": "R$ 20 a 30 mil",
+      "min": 20000,
+      "max": 30000
+    },
+    {
+      "id": "30a60",
+      "texto": "R$ 30 a 60 mil",
+      "min": 30000,
+      "max": 60000
+    },
+    {
+      "id": "60+",
+      "texto": "Mais de R$ 60 mil",
+      "min": 60000,
+      "max": null
+    }
+  ],
+  "faixas_meta": [
+    {
+      "id": "2a5",
+      "texto": "R$ 2 a 5 mil",
+      "min": 2000,
+      "max": 5000
+    },
+    {
+      "id": "5a10",
+      "texto": "R$ 5 a 10 mil",
+      "min": 5000,
+      "max": 10000
+    },
+    {
+      "id": "10a20",
+      "texto": "R$ 10 a 20 mil",
+      "min": 10000,
+      "max": 20000
+    },
+    {
+      "id": "20a30",
+      "texto": "R$ 20 a 30 mil",
+      "min": 20000,
+      "max": 30000
+    },
+    {
+      "id": "30a60",
+      "texto": "R$ 30 a 60 mil",
+      "min": 30000,
+      "max": 60000
+    },
+    {
+      "id": "60a100",
+      "texto": "R$ 60 a 100 mil",
+      "min": 60000,
+      "max": 100000
+    },
+    {
+      "id": "100+",
+      "texto": "Mais de R$ 100 mil",
+      "min": 100000,
+      "max": null
+    }
+  ],
+  "horarios": [
+    {
+      "id": "hoje",
+      "texto": "Hoje, até as 18h",
+      "quando": "hoje até as 18h"
+    },
+    {
+      "id": "manha",
+      "texto": "Amanhã de manhã",
+      "quando": "amanhã de manhã"
+    },
+    {
+      "id": "tarde",
+      "texto": "Amanhã à tarde",
+      "quando": "amanhã à tarde"
+    },
+    {
+      "id": "mensagem",
+      "texto": "Prefiro por mensagem",
+      "quando": "prefiro por mensagem"
+    }
+  ],
+  "planos": {
+    "fonte": "bestbarbers-ai/docs/operacional/marketing-vendas-nov26/estrategia-canais/consultoria-v1/dores-top10.json (o 1º passo de cada dor, sem as variáveis da conversa) e consultoria-v2/04-roteiros-12nov.md (troca e caderno); as dores sem plano escrito ganharam o 1º passo em 07/Nov/26",
+    "alavancas": {
+      "assinatura": "Com um plano de R$ 100 por mês, cada R$ 10 mil a mais por mês são 100 assinantes. (R$ 100 é só um exemplo, e não uma recomendação de preço.)",
+      "caderno": "A meta só anda quando o número é medido: sem saber quanto entra por dia, não dá para saber se você está chegando."
+    },
+    "por_trava": {
+      "p10": {
+        "titulo": "Faturar mais com a mesma barbearia, começando pelo que entra mais rápido",
+        "passo1": "Amanhã, faça a conta da barbearia cheia: horários por dia de cada barbeiro × dias de trabalho no mês × valor médio por atendimento. A diferença para o que entrou no mês mostra onde mexer: cadeira vazia, cliente que não volta ou pouco gasto por visita."
+      },
+      "p19": {
+        "titulo": "A cadeira cheia também no começo da semana",
+        "passo1": "Amanhã, conte numa semana normal quantos horários ficam vazios de segunda a quarta, por barbeiro. Com o número na mão, dá para escolher o que enche esses dias, como um plano de assinatura que só vale de segunda a quarta."
+      },
+      "p24": {
+        "titulo": "O cliente que sumiu de volta à cadeira",
+        "passo1": "Amanhã, liste os clientes que vinham todo mês e não aparecem há mais de 2 meses, e mande uma mensagem pessoal para cada um, com um horário livre da semana."
+      },
+      "p04": {
+        "titulo": "Tudo num lugar só, sem largar a cadeira",
+        "passo1": "Amanhã, um lugar só para cada atendimento: barbeiro, serviço, valor e como pagou. Pode ser uma folha por dia, desde que seja uma só. No fim do dia, some e confira com a gaveta, a maquininha e o Pix.",
+        "alavanca": "caderno"
+      },
+      "p06": {
+        "titulo": "Um foco de cada vez, sem tentar tudo junto",
+        "passo1": "Amanhã, escreva os problemas numa folha e escolha um só para os próximos 3 meses: o que mais custa dinheiro hoje. O resto espera."
+      },
+      "p05": {
+        "titulo": "A assinatura cobrada todo mês na mesma data, sem lembrar assinante um por um",
+        "passo1": "Amanhã, ponha os assinantes numa lista com o dia em que cada um paga e se tem cartão de crédito. Se cada um vence num dia, você passa o mês inteiro cobrando.",
+        "alavanca": "assinatura"
+      },
+      "p03": {
+        "titulo": "A assinatura dividida de um jeito que o barbeiro aceita",
+        "passo1": "Amanhã, decida o pote: a parte do que a assinatura faturou no mês que vai para a equipe. Comece perto do que você já paga de comissão no corte avulso.",
+        "alavanca": "assinatura"
+      },
+      "p13": {
+        "titulo": "Um preço de plano que paga o corte e não lota a sua agenda",
+        "passo1": "Amanhã, tire 2 números da agenda: quantas vezes por mês vêm os 30 clientes que mais frequentam e quantos horários ficam vazios em cada dia, numa semana normal.",
+        "alavanca": "assinatura"
+      },
+      "p26": {
+        "titulo": "A assinatura começando pelo cliente que já vem todo mês",
+        "passo1": "Amanhã, liste os clientes que cortam com você todo mês: são os primeiros assinantes. Para o cliente, o argumento não é desconto: ele paga uma vez, na mesma data, e tem o horário dele.",
+        "alavanca": "assinatura"
+      },
+      "p40": {
+        "titulo": "Todo assinante pagando na data combinada, sem negociar mês a mês",
+        "passo1": "Amanhã, ponha os assinantes numa lista com o dia em que cada um paga e marque quem atrasou nos últimos 3 meses. Escreva a regra do atraso e avise todos de uma vez, e não um por um.",
+        "alavanca": "assinatura"
+      },
+      "p08": {
+        "titulo": "Cliente novo vindo de quem já é cliente",
+        "passo1": "Amanhã, peça a 2 clientes de confiança o contato de um amigo da região e anote quem indicou."
+      },
+      "p14": {
+        "titulo": "Instagram que traz gente do bairro para a cadeira",
+        "passo1": "Amanhã, a cada corte bom, uma foto ou um vídeo de 10 segundos do cliente nos stories, com o ok dele e marcando o perfil dele. Ele repassa para os amigos, que moram perto."
+      },
+      "p12": {
+        "titulo": "Sem a fila que faz o cliente ir embora",
+        "passo1": "Amanhã, deixe uma folha no balcão e anote, por hora, quantos chegaram, quantos esperaram mais de 30 minutos e quantos foram embora. Uma semana basta."
+      },
+      "p09": {
+        "titulo": "O cliente vendo a sua marca, e não a do vizinho",
+        "passo1": "Amanhã, abra o app que você usa como se fosse cliente e conte quantas barbearias aparecem perto da sua. No mesmo dia, troque o link da bio, do status e das mensagens pelo da sua agenda."
+      },
+      "p22": {
+        "titulo": "Divulgar gastando pouco, começando por quem já senta na cadeira",
+        "passo1": "Amanhã, peça a 2 clientes de confiança o contato de um amigo da região e anote quem indicou. É a divulgação que chega confiando em você."
+      },
+      "p34": {
+        "titulo": "O fechamento pronto, sem conta de cabeça e sem briga",
+        "passo1": "Amanhã, liste tudo o que paga comissão (corte, barba, extras, produto, assinatura) e o percentual de cada um. Embaixo, escreva a regra dos casos que dão briga: a taxa do cartão sai antes ou depois? O vale desconta quando?",
+        "alavanca": "caderno"
+      },
+      "p20": {
+        "titulo": "Barbeiro bom chegando por indicação de quem já é bom",
+        "passo1": "Amanhã, pergunte aos seus barbeiros e a 3 colegas de profissão quem eles indicariam, e escreva numa folha o que você oferece: comissão, horário e como é trabalhar aí."
+      },
+      "p17": {
+        "titulo": "Um jeito só de atender, da chegada à cobrança",
+        "passo1": "Amanhã, escreva numa folha os 5 momentos do atendimento (chegada, corte, finalização, cobrança e o próximo horário) e o que todo barbeiro faz em cada um. Mostre à equipe e peça para cada um conferir."
+      },
+      "nota-na-mao": {
+        "titulo": "A nota saindo junto com o atendimento, e não no fim do mês",
+        "passo1": "Amanhã, pergunte ao seu contador 3 coisas e anote: quais serviços e produtos precisam de nota, até que dia do mês ele precisa receber tudo e em que formato."
+      },
+      "nota-nao-emite": {
+        "titulo": "A nota que o contador pede, sem virar trabalho de fim de mês",
+        "passo1": "Amanhã, pergunte ao seu contador 3 coisas e anote: quais serviços e produtos precisam de nota, até que dia do mês ele precisa receber tudo e em que formato."
+      },
+      "t-cobranca": {
+        "titulo": "A assinatura cobrada sem falha, na data de cada um",
+        "passo1": "Amanhã, liste os assinantes cuja cobrança falhou nos últimos 3 meses, com o dia em que cada um paga. É a lista que mostra quanto a falha custa e quem precisa de atenção na troca.",
+        "alavanca": "assinatura"
+      },
+      "t-vitrine": {
+        "titulo": "O cliente vendo a sua marca, e não a do vizinho",
+        "passo1": "Amanhã, abra o app que você usa como se fosse cliente e conte quantas barbearias aparecem perto da sua. No mesmo dia, troque o link da bio, do status e das mensagens pelo da sua agenda."
+      },
+      "t-nota": {
+        "titulo": "Uma nota que sai junto com o atendimento",
+        "passo1": "Amanhã, pergunte ao seu contador 3 coisas e anote: quais serviços e produtos precisam de nota, até que dia do mês ele precisa receber tudo e em que formato."
+      },
+      "t-medo": {
+        "titulo": "Trocar de sistema com cada assinante avisado antes",
+        "passo1": "Amanhã, monte a lista: nome, telefone, valor, o dia em que cada um paga e se tem cartão de crédito. Quem não tem cartão, você resolve antes, e não no dia da troca.",
+        "alavanca": "assinatura"
+      },
+      "outra": {
+        "titulo": "O seu caso, olhado de perto",
+        "passo1": "Amanhã, escreva numa folha o que mais trava e quanto isso custa por mês, mesmo que seja uma estimativa. Com esse número, o nosso time monta o primeiro passo com você na ligação."
+      }
+    }
+  }
+}
