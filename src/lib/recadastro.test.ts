@@ -45,3 +45,12 @@ test("pipe desconhecido é ignorado; erro HTTP é falha", async () => {
   const erro = fetchFalso(502, { status: "erro" });
   assert.deepEqual(await criarCardRecadastro(input({ nutricao: true }), { fetch: erro.f }), { ok: false, motivo: "http_502" });
 });
+
+test("ADR-038: o curso leva a marca `curso` ao OS (chave própria do desvio); o resto do site, não", async () => {
+  const curso = fetchFalso(201, { status: "criado", dealId: 555, contactId: 900, pipe: "qualificacao" });
+  await criarCardRecadastro(input({ curso: true }), { fetch: curso.f });
+  assert.equal(JSON.parse(String(curso.chamadas[0].init?.body)).curso, true);
+  const site = fetchFalso(201, { status: "criado", dealId: 555, contactId: 900, pipe: "qualificacao" });
+  await criarCardRecadastro(input(), { fetch: site.f });
+  assert.equal("curso" in JSON.parse(String(site.chamadas[0].init?.body)), false);
+});

@@ -18,12 +18,24 @@
 export const NUMERO_WHATSAPP_LUCAS: string = "553172183568";
 
 /**
- * Liga o desvio do lead novo com nota < 60 para o Lucas (ADR-035). LIGADO em 10/Out/26 (GO do André;
- * o comercial confirmou o corte em 09/Out). Desligar = `false` + publicar: o lead < 60 volta ao
- * caminho de antes — contato pela chave do site, card na Qualificação, rodízio de SDR — e a rota da
- * nutrição nem é chamada.
+ * CHAVE do desvio ao Lucas (ADR-038 no bestbarbers-ai). Ligada em 10/Out/26 (ADR-035) e DESLIGADA em 06/Nov/26, com o
+ * GO do André: "pode desligar o redirecionamento do Lucas nas páginas do bestbarbers-site-next, e mandar tudo pro pipe
+ * de qualificação para os SDRs". Medido antes: 0 reunião em 117 leads que escreveram ao Lucas desde 13/Out.
+ *
+ * - `leadNovo`: todas as páginas do site (LPs, guias, calculadoras, tabela, projeto, clube, home). Desligada, o lead
+ *   segue o caminho do "Este mês": contato pela chave do site → automação do card na Qualificação → rodízio de SDR.
+ *   A rota da nutrição nem é chamada, o recadastro não pede a Nutrição e a tela do WhatsApp do Lucas não abre.
+ * - `curso`: o curso de assinatura. Desligada em 07/Nov/26 ("Pode mandar sim o lead do curso de assinatura para
+ *   qualificação"): o curso também vai à Qualificação. Ligada, volta a regra dele (Nutrição + passagem ao SDR pelo sinal
+ *   do aluno).
+ *
+ * Religar = trocar o valor e publicar. O OS tem o espelho (`DESVIO_DO_LUCAS` em lib/integrations/ploomes-fields.ts):
+ * basta um dos dois lados desligado para o lead ir à Qualificação.
  */
-export const DESVIO_NOTA_60_LIGADO = true;
+export const DESVIO_DO_LUCAS: Readonly<{ leadNovo: boolean; curso: boolean }> = Object.freeze({
+  leadNovo: false,
+  curso: false,
+});
 
 /**
  * Aprovados pelo André em 06/Out/26 (item L14 da página de textos) — todos os textos daqui para baixo.

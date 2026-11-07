@@ -1,6 +1,10 @@
 /**
  * NUTRIÇÃO — lead com nota < 60 vai para o WhatsApp do Lucas, não para a fila do SDR.
  *
+ * DESLIGADO em 06/Nov/26 (ADR-038 no bestbarbers-ai): a chave `DESVIO_DO_LUCAS` (src/content/lucas-whatsapp.ts) manda
+ * todo lead do site à Qualificação pelo caminho do "Este mês"; o curso também, desde 07/Nov. O código abaixo fica vivo
+ * para religar: `numeroDoDesvio` devolve o número vazio e o resto já tratava "sem número" como "vai ao SDR".
+ *
  * Emenda de 10/Out/26 (André): o RECADASTRO com nota < 60 também vai ao Lucas — o primeiro contato
  * do SDR já não deu certo. O caminho continua `recadastro` (o OS acha o contato que já existe), mas
  * o site pede a Nutrição (`pedeNutricaoNoRecadastro`) e, se o OS devolver `pipe: "nutricao"`, leva
@@ -60,6 +64,20 @@ export function numeroValidoDoLucas(numero: string): string {
   return /^55\d{10,11}$/.test(digitos) ? digitos : "";
 }
 
+/** As duas chaves do desvio ao Lucas (ADR-038): o lead do site em geral e o do curso (regra própria). */
+export interface ChaveDoDesvioLucas {
+  leadNovo: boolean;
+  curso: boolean;
+}
+
+/**
+ * O número do Lucas que este cadastro usa. Vazio = desvio desligado: `caminhoDoLead` devolve `sdr`, o recadastro não
+ * pede a Nutrição e a tela do WhatsApp do Lucas não abre. O curso olha a chave dele; o resto do site, a geral.
+ */
+export function numeroDoDesvio(input: { curso: boolean; numero: string; chave: Readonly<ChaveDoDesvioLucas> }): string {
+  return (input.curso ? input.chave.curso : input.chave.leadNovo) ? input.numero : "";
+}
+
 export type CaminhoDoLead = "recadastro" | "lucas" | "sdr";
 
 /**
@@ -111,6 +129,8 @@ export interface CorpoNutricao {
     sistema?: string;
     /** Formulário v3: "Quando quer começar?" → `bb_quando` do card (decide a rota no OS). */
     quando?: string;
+    /** O cadastro é do curso de assinatura: no OS, o curso tem chave própria do desvio (ADR-038). Não vira campo. */
+    curso?: boolean;
     leadScore: number;
     atribuicao: LeadAttributionFields;
   };
@@ -130,6 +150,7 @@ export function corpoDaNutricao(input: {
   clube?: string;
   sistema?: string;
   quando?: string;
+  curso?: boolean;
 }): CorpoNutricao {
   const { OriginId, ...contato } = input.contato;
   return {
@@ -141,6 +162,7 @@ export function corpoDaNutricao(input: {
       ...(input.clube ? { clube: input.clube } : {}),
       ...(input.sistema ? { sistema: input.sistema } : {}),
       ...(input.quando ? { quando: input.quando } : {}),
+      ...(input.curso ? { curso: true } : {}),
       leadScore: Math.trunc(input.nota),
       atribuicao: input.atribuicao.fields,
     },

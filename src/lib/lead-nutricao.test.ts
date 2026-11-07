@@ -10,7 +10,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import {
@@ -23,6 +23,7 @@ import {
   linkDoAppWhatsAppLucas,
   linkDoWhatsAppLucas,
   mensagemDaPagina,
+  numeroDoDesvio,
   numeroValidoDoLucas,
   pedeNutricaoNoRecadastro,
   vaiAoLucas,
@@ -36,6 +37,7 @@ import {
   PLOOMES_LEGACY_FIELDS,
 } from "./ploomes-fields.ts";
 import {
+  DESVIO_DO_LUCAS,
   MENSAGEM_PADRAO_LUCAS,
   MENSAGENS_LUCAS,
   NUMERO_WHATSAPP_LUCAS,
@@ -392,4 +394,69 @@ test('v3: o corpo da nutrição leva o "quando" ao card', () => {
   });
   assert.equal(corpo.card.quando, "Nos próximos 3 meses");
   assert.equal(corpo.card.leadScore, 60);
+});
+
+// ─── ADR-038 (06/Nov/26): a chave do desvio ao Lucas ─────────────────────────────────────────────
+// GO do André: "pode desligar o redirecionamento do Lucas nas páginas do bestbarbers-site-next, e mandar tudo pro pipe
+// de qualificação para os SDRs". Religar o Lucas é decisão dele: troque a chave E o teste da chave de produção.
+
+const QUANDO_FRIOS = ["Nos próximos 3 meses", "Só estou conhecendo"] as const;
+
+test("ADR-038: a chave de produção desliga o Lucas para todo o site, curso incluído (07/Nov)", () => {
+  assert.equal(DESVIO_DO_LUCAS.leadNovo, false, "o lead do site voltou ao Lucas: é decisão do André (ADR-038)");
+  assert.equal(DESVIO_DO_LUCAS.curso, false, "o curso voltou ao Lucas: é decisão do André (ADR-038, 07/Nov)");
+  assert.equal(numeroDoDesvio({ curso: true, numero: NUMERO_WHATSAPP_LUCAS, chave: DESVIO_DO_LUCAS }), "");
+  assert.ok(Object.isFrozen(DESVIO_DO_LUCAS), "a chave não muda em tempo de execução");
+  const numeroLucas = numeroDoDesvio({ curso: false, numero: NUMERO_WHATSAPP_LUCAS, chave: DESVIO_DO_LUCAS });
+  assert.equal(numeroLucas, "");
+  for (const quando of [...QUANDO_FRIOS, "Este mês", undefined]) {
+    for (const nota of [-20, 15, 45, 59, 60, 85, null]) {
+      assert.equal(caminhoDoLead({ telefoneExiste: false, nota, numeroLucas, quando }), "sdr", `${quando} / ${nota}`);
+      assert.equal(pedeNutricaoNoRecadastro({ nota, numeroLucas, quando }), false, `recadastro ${quando} / ${nota}`);
+    }
+  }
+});
+
+test("ADR-038: numeroDoDesvio — o curso olha a chave dele; o resto do site, a geral", () => {
+  const soCurso = { leadNovo: false, curso: true };
+  assert.equal(numeroDoDesvio({ curso: true, numero: NUMERO, chave: soCurso }), NUMERO);
+  assert.equal(numeroDoDesvio({ curso: false, numero: NUMERO, chave: soCurso }), "");
+  assert.equal(numeroDoDesvio({ curso: true, numero: NUMERO, chave: { leadNovo: false, curso: false } }), "");
+  assert.equal(numeroDoDesvio({ curso: false, numero: NUMERO, chave: { leadNovo: true, curso: false } }), NUMERO);
+  // Religada, a regra v3 volta intacta: "Este mês" ao SDR, o resto ao Lucas.
+  const religado = numeroDoDesvio({ curso: false, numero: NUMERO, chave: { leadNovo: true, curso: true } });
+  assert.equal(caminhoDoLead({ telefoneExiste: false, nota: 15, numeroLucas: religado, quando: "Só estou conhecendo" }), "lucas");
+  assert.equal(caminhoDoLead({ telefoneExiste: false, nota: 70, numeroLucas: religado, quando: "Este mês" }), "sdr");
+});
+
+test("ADR-038: o corpo da nutrição leva a marca do curso só quando é o curso", () => {
+  const base = {
+    contato: { Name: "Barbearia X", Phones: [{ PhoneNumber: "(31) 99999-0000" }], OtherProperties: [] },
+    atribuicao: { originId: null, originDesc: null, fields: {} },
+    nota: 15,
+    quando: "Só estou conhecendo",
+  };
+  assert.equal(corpoDaNutricao({ ...base, curso: true }).card.curso, true);
+  assert.equal("curso" in corpoDaNutricao(base).card, false);
+});
+
+test("ADR-038: o hook decide o número pela chave, e só o formulário do curso se marca como curso", () => {
+  assert.doesNotMatch(hook, /DESVIO_NOTA_60_LIGADO/);
+  assert.match(hook, /const numeroLucas = numeroDoDesvio\(\{ curso, numero: NUMERO_WHATSAPP_LUCAS, chave: DESVIO_DO_LUCAS \}\);/);
+  // A marca vai ao OS nos dois caminhos (recadastro e contato novo), para ele conferir a mesma chave.
+  assert.equal(hook.match(/^\s+curso,$/gm)?.length, 3, "curso no recadastro, no corpo da nutrição e nas dependências");
+  const raiz = join(dirname(fileURLToPath(import.meta.url)), "..");
+  const comCurso = [] as string[];
+  const varrer = (dir: string) => {
+    for (const nome of readdirSync(dir)) {
+      const p = join(dir, nome);
+      if (statSync(p).isDirectory()) varrer(p);
+      else if (/\.tsx?$/.test(nome) && !nome.endsWith(".test.ts") && /\bcurso: true\b/.test(readFileSync(p, "utf8")) && /useLeadForm\(/.test(readFileSync(p, "utf8"))) {
+        comCurso.push(p.slice(raiz.length + 1));
+      }
+    }
+  };
+  varrer(join(raiz, "app"));
+  varrer(join(raiz, "components"));
+  assert.deepEqual(comCurso, ["app/curso-assinatura/_components/FormularioCurso.tsx"]);
 });
