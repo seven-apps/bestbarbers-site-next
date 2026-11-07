@@ -15,6 +15,7 @@ import type { UtmParams } from "@/hooks/useUtmParams";
 // Extensão explícita: é o que permite ao `node --test` (npm test) carregar este
 // módulo sem build. Ver `allowImportingTsExtensions` no tsconfig.
 import { varianteVista } from "./ab-clube.ts";
+import { abPaginaVista } from "./ab-pagina.ts";
 import { cupomDaUrl, CUPOM_CAMPANHA } from "./cupom-parceiro.ts";
 
 /** Campos bb_* em nome lógico — idênticos no Contact e no Deal do Ploomes. */
@@ -107,7 +108,12 @@ export function buildLeadAttribution(input: BuildLeadAttributionInput): LeadAttr
   // mudado depois, ou nem existir. No braço `longa` o pathname do navegador continua
   // `/clube/<slug>` (rewrite), então o slug da PEÇA DE ORIGEM fica no card nos dois braços.
   const variante = varianteVista();
+  // A/B do endereço fixo `/ir/<teste>` (`src/lib/ab-pagina.ts`, 07/Nov/26): quem chega pelo sorteio grava o RÓTULO do
+  // braço (`ir-clube-assunto`, `ir-clube-home`, `ir-agente-ia-…`) no lugar do slug, que separa o lead pago do teste do
+  // orgânico da mesma página (a home, sobretudo). Só vale com o `bb_ab` da URL viva E na página daquele braço.
+  const abPagina = abPaginaVista(typeof window !== "undefined" ? window.location.search : "", pathname);
   const lpVersion =
+    abPagina ??
     (seg.match(/^v\d+/i)?.[0]?.toUpperCase() ||
       (slugCompleto ? seg.replace(/\//g, "-") : seg.split("/")[0]) ||
       "home") + (variante && seg.startsWith("clube/") ? `-${variante}` : "");
