@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { varianteVista } from '@/lib/ab-clube';
+import { abPaginaDaJanela } from '@/lib/ab-pagina';
 
 const PIXEL_ID = '1100195158903491';
 
@@ -35,11 +36,13 @@ export const generateEventId = (): string =>
  * Braço do A/B de página (`<meta name="bb-variante">`, ver `lib/ab-clube.ts`): entra em TODO
  * evento do pixel (fbq + image pixel) quando a página em teste o declara. Fora do teste não há
  * meta e nada muda. O dado explícito do chamador vence (`...data` por cima).
+ * O braço do endereço fixo `/ir/<teste>` (`lib/ab-pagina.ts`) entra do mesmo jeito, como `ab_pagina`.
  */
 const comVariante = (data?: MetaPixelEventData): MetaPixelEventData | undefined => {
   const variante = varianteVista();
-  if (!variante) return data;
-  return { variante, ...data };
+  const abPagina = abPaginaDaJanela();
+  if (!variante && !abPagina) return data;
+  return { ...(variante ? { variante } : {}), ...(abPagina ? { ab_pagina: abPagina } : {}), ...data };
 };
 
 /**

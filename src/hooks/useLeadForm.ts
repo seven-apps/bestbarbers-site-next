@@ -26,6 +26,7 @@ import { calcularScoreV3, interesseLegado, temEquipe } from '@/lib/lead-score';
 import { MSG_EQUIPE, MSG_QUANDO } from '@/lib/qualificacao';
 import { portaDoLead } from '@/lib/tracking/porta';
 import { varianteVista } from '@/lib/ab-clube';
+import { abPaginaDaJanela } from '@/lib/ab-pagina';
 
 export type { CadastroConcluido } from '@/lib/cadastro-concluido';
 
@@ -375,6 +376,8 @@ export const useLeadForm = (options: UseLeadFormOptions = {}) => {
             // Braço do A/B de página (`lib/ab-clube.ts`), o mesmo que vai no `bb_lp_version`
             // e em todo evento do pixel; null fora das páginas em teste.
             variante: varianteVista(),
+            // Braço do endereço fixo `/ir/<teste>` (`lib/ab-pagina.ts`), o mesmo rótulo do `bb_lp_version`; null fora dele.
+            ab_pagina: abPaginaDaJanela(),
             // Braço do teste de formulário; null fora do teste.
             formulario: marcadorEvento ?? null,
           },
