@@ -126,6 +126,9 @@ export function Plano({ conteudo, respostas, nome }: Props) {
             {ligacao?.feito && (
               <ul className={p.feito}>{ligacao.feito.map((x, i) => <li key={i}>{x}</li>)}</ul>
             )}
+            {ligacao?.no_bestbarbers && (
+              <p className={p.linhaInfo}><strong>{t.no_bestbarbers}</strong> {ligacao.no_bestbarbers}</p>
+            )}
             {ligacao?.depois.map((x, i) => <p key={`d${i}`}>{x}</p>)}
 
             {estado === "sem_cadastro" && <p>{t.sem_cadastro}</p>}

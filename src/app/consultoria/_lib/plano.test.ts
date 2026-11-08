@@ -115,13 +115,16 @@ test("O reajuste do solo só vale de outubro a janeiro; fora disso, a ação sai
   }
 });
 
-test("Os meses saem da data de hoje: a regra da divisão começa no dia 1º do mês depois do teste", () => {
+test("Os meses saem da data de hoje: o teste da divisão é o mês seguinte, e a fala não marca a data da regra nova", () => {
   assert.equal(comMeses("{Mes+1} é o mês de teste; a regra começa em 1º de {mes+2}.", 11), "Dezembro é o mês de teste; a regra começa em 1º de janeiro.");
   assert.equal(comMeses("{mes-1} e {mes}", 1), "dezembro e janeiro");
   assert.equal(comMeses("em {mes+2}", 12), "em fevereiro");
   const texto = JSON.stringify(montarPlano(conteudo, { objetivo: "equipe", trava: "p03", quem: "equipe" }, "Felipe", dia(3)));
   assert.ok(texto.includes("Abril é o mês de teste"));
-  assert.ok(texto.includes("Em 1º de maio, a regra nova começa"));
+  assert.ok(texto.includes("Antes de maio: a assinatura no cartão"));
+  assert.ok(texto.includes("sua assinatura de fevereiro"));
+  // o teste é teste: a regra nova só começa depois de cada um ver as duas contas (André virtual, 08/Nov/26)
+  assert.equal(/1º de [a-zç]+/.test(texto), false);
 });
 
 test("Nenhum caso sai com marcador de mês sobrando, em nenhum mês do ano", () => {

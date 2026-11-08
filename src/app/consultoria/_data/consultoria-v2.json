@@ -1154,25 +1154,25 @@
         }
       },
       "p26:equipe": {
-        "subtitulo": "Para a sua assinatura começar em {mes+2}, já com nomes na lista.",
+        "subtitulo": "Assinatura: o cliente paga 1 vez por mês, no cartão, e corta até 4 vezes, fora do sábado.",
         "acoes": [
           {
             "id": "equipe",
             "titulo": "Antes de abrir, conte à equipe: em {mes+2} tem assinatura",
-            "como": "Mostre no papel o que eles ganham.",
+            "como": "5 minutos: o que é e o prêmio de quem vende.",
             "traz": "A equipe oferece, porque sabe o que ganha: R$ 10 por assinatura fechada."
           },
           {
             "id": "lista",
             "titulo": "Na cadeira, todo cliente fica sabendo e pode entrar na lista",
             "como": "Uma folha no balcão, para os nomes. Ainda sem falar de preço.",
-            "traz": "Numa barbearia que fez assim, 1 a 2 em cada 10 nomes assinaram."
+            "traz": "Em {mes+2}, você já abre com assinante pagando no cartão."
           },
           {
             "id": "mensagem",
             "titulo": "Cada barbeiro manda 1 mensagem a quem vem todo mês",
             "como": "Uma só, do WhatsApp da barbearia, com o nome dele.",
-            "traz": "Quem já vem todo mês é quem mais assina."
+            "traz": "Quem vem todo mês fica sabendo antes e chega na cadeira decidido."
           }
         ],
         "gancho": "A fala, a frase e a mensagem, aqui embaixo",
@@ -1183,24 +1183,22 @@
             "rotulo": "Antes de abrir",
             "titulo": "5 minutos com a equipe",
             "passos": [
-              "Amanhã, antes de abrir, junte a equipe. Não é votação: você estudou e decidiu.",
-              "Mostre no papel: do que entrar de assinatura, uma parte é deles, dividida por quem mais atendeu. Decida essa parte antes do primeiro assinante.",
-              "Combine o prêmio: quem fechar uma assinatura na cadeira, na hora, ganha R$ 10 por ela. Sai da barbearia, não da parte da equipe.",
-              "Diga a verdade: no começo, eles vão atender um pouco mais sem ganhar muito mais. Fica bom a partir do 4º mês."
+              "Amanhã, antes de abrir, junte a equipe. Não é votação: você decidiu.",
+              "Combine o prêmio: a partir de {mes+2}, quem fechar uma assinatura na cadeira, na hora, ganha R$ 10 por ela. O nome que ele pôs na folha e assinou no lançamento também conta. Sai da barbearia.",
+              "A parte de cada um no que entrar de assinatura, você decide junto com o plano, antes de {mes+2}."
             ],
             "pronto": {
               "rotulo": "O que falar",
-              "texto": "Pessoal, em {mes+2} a gente lança a assinatura. Não é votação: eu estudei e decidi.\nO cliente paga um valor por mês, no cartão, e corta sem pagar na hora.\nDo que entrar de assinatura, uma parte é de vocês, dividida por quem mais atendeu. Eu mostro a conta no papel.\nQuem fechar uma assinatura na cadeira ganha R$ 10 por ela.\nNo começo vocês vão atender um pouco mais sem ganhar muito mais. Fica bom a partir do 4º mês. Se não der certo, eu sou o primeiro a tirar.\nA partir de amanhã, todo cliente fica sabendo, e quem quiser entra na lista."
+              "texto": "Pessoal, em {mes+2} a gente lança a assinatura. Não é votação: eu decidi.\nO cliente paga um valor por mês, no cartão, e corta até 4 vezes, fora do sábado. O preço sai antes de {mes+2}.\nA partir de {mes+2}, quem fechar uma assinatura na cadeira ganha R$ 10 por ela. O nome que você pôs na lista e assinou no lançamento também vale.\nA partir de amanhã, todo cliente fica sabendo, e quem quiser entra na lista.\nSe não der certo, eu sou o primeiro a tirar."
             },
-            "no_bestbarbers": "a parte da equipe entra no cadastro do plano, e o sistema faz a divisão no fechamento. Depois de criado, o plano não muda: decida antes.",
             "prova": {
               "rotulo": "Quem já fez",
-              "texto": "Uma barbearia grande, ensinada num curso para donos, lançou assim: o dono comunicou, com a conta no papel, e cada barbeiro ganha R$ 10 por assinatura que fecha na cadeira. A regra dele: “dono não pede, dono comunica”."
+              "texto": "Uma barbearia grande, ensinada num curso para donos, lançou assim: o dono comunicou, sem pedir licença. No começo, pagava R$ 10 por assinatura fechada na cadeira. A regra dele: “dono não pede, dono comunica”."
             },
             "medir": {
               "rotulo": "Funcionou?",
               "textos": [
-                "No fim do dia, cada barbeiro diz quantos nomes pôs na lista."
+                "No fim do dia, pergunte a cada barbeiro: quantos clientes ouviram da assinatura hoje?"
               ]
             },
             "textos": [
@@ -1215,21 +1213,22 @@
               "Amanhã, cole uma folha no espelho: “Assinatura: em {mes+2}”. Deixe outra no balcão para os nomes: nome, telefone e o barbeiro.",
               "Na cadeira, todo cliente ouve a frase. Quem quiser, deixa o nome.",
               "Perguntou o preço? “Sai em {mes+2}. Quem está na lista fica sabendo antes.”",
+              "Perguntou quantas vezes? “Até 4 cortes no mês, fora do sábado.”",
               "No lançamento, cada nome da lista recebe o convite antes de todo mundo."
             ],
             "pronto": {
               "rotulo": "A frase, pronta",
-              "texto": "Em {mes+2} a gente lança a assinatura aqui: um valor por mês, no cartão, pra você andar sempre na régua. Quer que eu ponha seu nome na lista? Quem está nela fica sabendo antes de todo mundo."
+              "texto": "Em {mes+2} a gente lança a assinatura aqui: um valor por mês, no cartão, pra você andar sempre na régua. Quer que eu ponha seu nome na lista? Quem está nela fica sabendo antes de todo mundo.",
+              "equipe": "A partir de amanhã, todo cliente ouve isto na cadeira:\n\n\"{texto}\"\n\nQuem quiser, deixa o nome na folha do balcão."
             },
-            "no_bestbarbers": "no dia do lançamento, cada nome da lista recebe o link de pagamento da assinatura. A lista mesmo fica no papel.",
             "prova": {
               "rotulo": "Quem já fez",
-              "texto": "A mesma barbearia grande juntou 385 nomes na lista antes de lançar. Em 2 dias, 60 assinaram: de cada 10 nomes, 1 a 2."
+              "texto": "A mesma barbearia, com uns 2.500 clientes cadastrados, juntou 385 nomes na lista em 1 mês. Em 2 dias de lançamento, 60 assinaram."
             },
             "medir": {
               "rotulo": "Funcionou?",
               "textos": [
-                "Toda noite, some os nomes da lista. No lançamento, conte quantos de cada 10 assinaram."
+                "Toda noite, conte os nomes da folha. Um barbeiro com bem menos nomes que os outros não está falando a frase."
               ]
             },
             "textos": [
@@ -1262,7 +1261,26 @@
               ]
             },
             "textos": [
-              "Quem já vem todo mês é quem mais assina: para ele, a assinatura só organiza o que ele já faz."
+              "Quem já vem todo mês é o mais fácil de convencer: ele já tem o costume, e com a assinatura passa a andar sempre na régua."
+            ]
+          },
+          {
+            "id": "convite",
+            "rotulo": "No lançamento",
+            "titulo": "3 dias antes: o convite para quem está na lista",
+            "pronto": {
+              "rotulo": "O convite, pronto",
+              "texto": "Fala, [nome]! Aqui é o [barbeiro], da [barbearia].\nVocê deixou seu nome na lista da assinatura. Ela abre [dia], ao meio-dia, e quem está na lista fica sabendo antes de todo mundo.\nNo dia, eu te mando o link. Qualquer dúvida, é só me chamar aqui."
+            },
+            "no_bestbarbers": "em Adicionar assinante, você escolhe o cliente e o plano, e o sistema gera o link para pagar no cartão. É esse link que vai para cada nome da lista.",
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "No dia, conte quantos nomes da lista assinaram: 1 a 2 em cada 10 é o normal."
+              ]
+            },
+            "textos": [
+              "Uma mensagem só, para cada nome da lista. No dia, cada um recebe o link para assinar."
             ]
           },
           {
@@ -1270,10 +1288,10 @@
             "rotulo": "O número da semana",
             "titulo": "Os nomes na lista, toda segunda",
             "medir": {
-              "rotulo": "A régua do curso",
-              "meta": "A assinatura fica boa com uns 20 assinantes por barbeiro.",
+              "rotulo": "A meta até o lançamento",
+              "meta": "2 nomes por barbeiro, toda semana.",
               "textos": [
-                "Numa barbearia de 3 barbeiros, uns 60."
+                "Numa barbearia de 2 a 4 barbeiros, é mais ou menos 1 em cada 6 clientes que passam (base do BestBarbers). Cada 10 nomes viram 1 a 2 assinantes no lançamento. Depois, a venda segue na cadeira."
               ]
             },
             "textos": [
@@ -1297,39 +1315,40 @@
             "O cliente paga uma vez por mês, no cartão.",
             "Quem atrasou não consegue marcar."
           ],
+          "no_bestbarbers": "a parte da equipe entra no cadastro do plano, e o sistema faz a divisão no fechamento. Decida a parte da equipe antes de criar o plano: é ela que vale em todo fechamento.",
           "textos": [
-            "O plano, numa linha: um plano de corte, que não vale na sexta e no sábado, por até 2 cortes. Se o seu corte é R$ 55, a assinatura fica em até R$ 110. Assim, o fim de semana continua do cliente que paga avulso."
+            "O plano, numa linha: um plano só de corte, com até 4 cortes no mês, que não vale no sábado. O preço: o de 2 cortes. Se o seu corte é R$ 55, a assinatura fica em uns R$ 110. Assim, o sábado continua do cliente que paga avulso."
           ],
           "chamada": "Na ligação, a gente olha os seus números com você e mostra como a assinatura fica no BestBarbers. Quando fica melhor?"
         },
         "fontes": {
           "rotulo": "De onde vêm os exemplos.",
-          "texto": "A conversa com a equipe, a lista antes de lançar, a mensagem para quem vem sempre e o preço de até 2 cortes vêm de um curso para donos de barbearia, com uma barbearia grande. Nenhum exemplo leva nome."
+          "texto": "A conversa com a equipe, a lista antes de lançar, a mensagem para quem vem sempre, o convite e o preço de até 2 cortes vêm de um curso para donos de barbearia, com uma barbearia grande. A meta de nomes vem da base do BestBarbers. Nenhum exemplo leva nome."
         }
       },
       "p03:equipe": {
-        "subtitulo": "Para dividir a assinatura com regra, a partir de 1º de {mes+2}.",
+        "subtitulo": "Da assinatura, a equipe leva a comissão de sempre: quem atendeu metade, leva metade.",
         "acoes": [
           {
             "id": "agenda",
             "titulo": "Todo assinante entra na agenda como “Corte assinatura”",
             "como": "No nome de quem atendeu. Sem sistema, uma folha por barbeiro.",
-            "traz": "No fim do mês, você sabe quanto cada um atendeu de assinante."
+            "traz": "No fim do mês, o que cada um atendeu está no papel, sem discussão."
           },
           {
             "id": "extrato",
             "titulo": "Abra o extrato do Pix e faça a lista de quem paga",
             "como": "Nome, plano e se pagou {mes-1}.",
-            "traz": "Você sabe quanto entra de assinatura no mês: é isso que se divide."
+            "traz": "Você sabe quanto entra de assinatura e cobra amanhã quem não pagou."
           },
           {
             "id": "equipe",
             "titulo": "Conte à equipe: {mes+1} é o mês de teste",
             "como": "A conta nova no papel, e todo mundo recebe como hoje.",
-            "traz": "Em {mes+2}, a regra começa com a equipe já tendo visto a conta."
+            "traz": "Antes de qualquer mudança, cada um já viu a conta dele."
           }
         ],
-        "gancho": "A mensagem, a lista e a fala, aqui embaixo",
+        "gancho": "A mensagem, a cobrança e a fala, aqui embaixo",
         "divisor": "Como fazer cada uma",
         "blocos": [
           {
@@ -1339,17 +1358,18 @@
             "passos": [
               "Amanhã, crie 3 serviços na agenda: Corte assinatura, Barba assinatura e Corte e barba assinatura.",
               "Todo assinante é marcado num deles, no nome do barbeiro que atendeu.",
-              "Sem agenda no sistema? Uma folha por barbeiro, no balcão. A cada assinante atendido, 1 risco por meia hora de agenda: corte, 1 risco; corte e barba, 2.",
+              "Cada serviço de assinante vale pontos: corte, 2; barba, 1; corte e barba, 3. Sem sistema, na folha do barbeiro, um risquinho por ponto.",
               "Extras, como a sobrancelha, ficam fora: pagam a comissão de sempre."
             ],
             "pronto": {
               "rotulo": "A mensagem para o grupo da equipe",
-              "texto": "Pessoal, a partir de amanhã todo assinante entra na agenda como Corte assinatura, Barba assinatura ou Corte e barba assinatura, no nome de quem atendeu. É isso que vai mostrar quanto cada um atendeu de assinante no mês."
+              "texto": "Pessoal, a partir de amanhã todo assinante entra na agenda como Corte assinatura, Barba assinatura ou Corte e barba assinatura, no nome de quem atendeu. É isso que vai mostrar quanto cada um atendeu de assinante no mês.",
+              "equipe": "{texto}"
             },
-            "no_bestbarbers": "cada serviço do plano tem os seus pontos, e no fechamento o sistema divide a parte da equipe pelos pontos de cada barbeiro.",
+            "no_bestbarbers": "com a assinatura no cartão, cada serviço do plano tem os seus pontos, e no fechamento o sistema divide a parte da equipe.",
             "prova": {
               "rotulo": "Quem já faz",
-              "texto": "Uma rede de barbearias, ensinada num curso para donos, faz assim: cada serviço de assinante tem um nome próprio na agenda, para saber quantos cada barbeiro fez no mês."
+              "texto": "Uma rede de barbearias faz assim e ensina num curso para donos: cada serviço de assinante tem nome próprio na agenda e vale pelo tempo que leva. O corte leva o dobro da barba e vale o dobro; corte e barba, o triplo."
             },
             "medir": {
               "rotulo": "Funcionou?",
@@ -1368,21 +1388,22 @@
             "passos": [
               "Amanhã, abra o extrato do Pix de {mes-1} e de {mes}. Quem paga em dinheiro, pelo caderno.",
               "Numa folha ou no bloco de notas, uma linha por assinante: nome, plano, dia que paga e se pagou {mes-1} e {mes}.",
-              "Some o que entrou em {mes-1} e escreva no alto da folha. Esse é o dinheiro da assinatura que se divide."
+              "Some o que entrou em {mes-1} e escreva no alto da folha. Esse é o dinheiro da assinatura que se divide.",
+              "Quem não pagou {mes-1}? Mande a mensagem abaixo amanhã mesmo."
             ],
             "pronto": {
-              "rotulo": "O cabeçalho da lista",
-              "texto": "Nome · Plano · Dia que paga · {Mes-1} pagou? · {Mes} pagou?\nTotal de {mes-1}: R$ ______"
+              "rotulo": "A mensagem para quem não pagou",
+              "texto": "Fala, [nome]! Aqui é o [seu nome], da [barbearia].\nFui fechar o mês e não achei o Pix da sua assinatura de {mes-1}. Consegue mandar hoje? A chave é [chave]."
             },
             "no_bestbarbers": "a assinatura é no cartão e a cobrança sai sozinha, todo mês. Quem já paga a você ganha o vencimento no mesmo dia em que paga hoje.",
             "prova": {
-              "rotulo": "Quem já faz",
-              "texto": "No mesmo curso, o primeiro passo da divisão é saber quanto entrou de assinatura no mês. E o aviso: “Se é PIX, não é mais assinatura”. No Pix, o que entra muda todo mês, e a parte da equipe muda junto."
+              "rotulo": "O aviso do curso",
+              "texto": "No mesmo curso: “Se é PIX, não é mais assinatura”. Quando o próprio curso, de R$ 99,90 por mês, aceitou Pix, 8 em cada 10 que escolheram o Pix não pagaram na data já no 1º mês."
             },
             "medir": {
               "rotulo": "Funcionou?",
               "textos": [
-                "A lista tem todo mundo que paga, e o total de {mes-1} está escrito no alto."
+                "A lista tem todo mundo que paga, o total de {mes-1} está no alto, e quem não pagou recebeu a mensagem."
               ]
             },
             "textos": [
@@ -1397,20 +1418,21 @@
               "Amanhã, antes de abrir, junte a equipe por 10 minutos e leia a fala abaixo.",
               "Em {mes+1}, pague do jeito de hoje. Ao lado, faça no papel a conta nova (o jeito está logo abaixo).",
               "No fim de {mes+1}, mostre as duas contas, barbeiro por barbeiro.",
-              "Em 1º de {mes+2}, a regra nova começa. Nunca no meio do mês."
+              "Viu as duas contas com a equipe e fechou? A regra nova começa no dia 1º seguinte, nunca no meio do mês."
             ],
             "pronto": {
               "rotulo": "O que falar",
-              "texto": "Pessoal, a assinatura é da barbearia, não de um barbeiro.\nDo que entra de assinatura no mês, uma parte é de vocês, venha o assinante 1 vez ou 10.\nEssa parte se divide pelo tempo de agenda: quem atendeu metade, leva metade.\nEm {mes+1} vocês recebem como sempre, e eu faço a conta nova no papel, do lado. No fim do mês, mostro as duas para cada um.\nA regra nova começa em 1º de {mes+2}."
+              "texto": "Pessoal, a assinatura é da barbearia, não de um barbeiro.\nDo que entra de assinatura no mês, uma parte é de vocês, venha o assinante pouco ou muito.\nEssa parte se divide pelo tempo de agenda: quem atendeu metade, leva metade.\nEm {mes+1} vocês recebem como sempre, e eu faço a conta nova no papel, do lado.\nNo fim do mês, cada um vê as duas contas. A regra nova só começa depois disso, sempre num dia 1º."
             },
             "prova": {
               "rotulo": "Quem já fez",
-              "texto": "Nos cursos para donos, a regra é mostrar a conta à equipe antes de mudar e mudar a comissão sempre no mês seguinte, nunca no meio. O mês de teste, pagando como hoje, é sugestão nossa."
+              "texto": "Num curso para donos, quem passou a equipe para a assinatura reuniu todo mundo e mostrou a conta no papel, com números, antes de mudar. E a comissão nova vale do mês seguinte em diante."
             },
             "medir": {
               "rotulo": "Funcionou?",
               "textos": [
-                "No fim de {mes+1}, as duas contas lado a lado, por barbeiro. A diferença é o que você conversa com a equipe antes de {mes+2}."
+                "No fim de {mes+1}, as duas contas lado a lado, por barbeiro. A diferença é o que você conversa com a equipe antes de mudar.",
+                "Deu diferença grande para alguém? Primeiro confira se todo assinante que ele atendeu está marcado no nome dele. Estando certo, leve as duas contas para a ligação."
               ]
             },
             "textos": [
@@ -1422,29 +1444,29 @@
             "rotulo": "A conta de {mes+1}",
             "titulo": "Como dividir, num caderno",
             "passos": [
-              "Separe a parte da barbearia. O resto é da equipe. Para começar, a mesma parte da comissão de hoje: se o barbeiro leva 40 de cada 100 no corte, a equipe leva 40 de cada 100 da assinatura.",
-              "Some os riscos de cada barbeiro no mês.",
-              "Quem fez metade dos riscos leva metade da parte da equipe. Quem fez um terço leva um terço."
+              "A parte da equipe é a mesma da comissão de hoje: se o barbeiro leva 40 de cada 100 no corte, a equipe leva 40 de cada 100 da assinatura. O resto é da barbearia.",
+              "Some os pontos de cada barbeiro no mês.",
+              "Na calculadora do celular, para cada barbeiro: os pontos dele ÷ os pontos de todos × a parte da equipe."
             ],
             "medir": {
               "rotulo": "Um exemplo no caderno",
               "textos": [
                 "Entrou R$ 4.800 de assinatura. A parte da equipe, 40 de cada 100, é R$ 1.920.",
-                "O barbeiro A fez 90 riscos; o B, 60; o C, 30. O A fez metade: leva R$ 960. O B fez um terço: leva R$ 640. O C leva o que sobra: R$ 320."
+                "O barbeiro A fez 90 pontos; o B, 60; o C, 30: 180 no total. O A fez metade: leva R$ 960 (na calculadora, 90 ÷ 180 × 1.920). O B fez um terço: leva R$ 640. O C leva o que sobra: R$ 320."
               ]
             }
           },
           {
             "id": "numero",
             "rotulo": "O número da semana",
-            "titulo": "Os riscos de cada barbeiro, toda segunda",
+            "titulo": "Os pontos de cada barbeiro, toda segunda",
             "medir": {
               "rotulo": "A meta de {mes+1}",
               "meta": "Nenhum assinante atendido sem o nome de quem fez.",
               "textos": []
             },
             "textos": [
-              "Toda segunda, some os riscos da semana de cada um e escreva no grupo dos barbeiros. Cada um acompanha o que está fazendo, sem esperar o fim do mês."
+              "Toda segunda, some os pontos da semana de cada um e escreva no grupo dos barbeiros. Cada um acompanha o que está fazendo, sem esperar o fim do mês."
             ]
           }
         ],
@@ -1458,7 +1480,7 @@
             "No fechamento, o sistema divide a parte da equipe pelo que cada um atendeu."
           ],
           "textos": [
-            "Com o Pix, o que entra muda todo mês, e a parte da equipe muda junto. No cartão, a cobrança sai sozinha, todo mês."
+            "Com o Pix, todo mês você confere no extrato, um por um, quem pagou. No cartão, a cobrança sai sozinha todo mês, e você vê na lista quem está em dia e quem venceu."
           ],
           "chamada": "Na ligação, a gente olha os seus números com você e mostra como a divisão fica no BestBarbers. Quando fica melhor?"
         },
