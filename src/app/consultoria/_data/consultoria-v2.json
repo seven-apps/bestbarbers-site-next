@@ -979,7 +979,7 @@
           {
             "id": "preco",
             "titulo": "Não subiu este ano? Suba o corte em R$ 5",
-            "como": "Quem trabalha sozinho e fatura mais de R$ 10 mil cobra uns R$ 55. Na sua faixa, uns R$ 40.",
+            "como": "Quem trabalha sozinho e fatura mais de R$ 10 mil cobra uns R$ 50. Na sua faixa, uns R$ 40.",
             "traz": "Com uns 6 cortes por dia, são R$ 30 a mais por dia, com os mesmos clientes."
           }
         ],
@@ -1070,7 +1070,7 @@
               ]
             },
             "textos": [
-              "Entre quem trabalha sozinho, o que mais separa a sua faixa de quem fatura mais de R$ 10 mil é o preço: uns R$ 55 no corte, contra uns R$ 40."
+              "Entre quem trabalha sozinho, o que mais separa a sua faixa de quem fatura mais de R$ 10 mil é o preço: uns R$ 50 no corte, contra uns R$ 40."
             ]
           },
           {
@@ -1115,7 +1115,7 @@
         },
         "fontes": {
           "rotulo": "De onde vêm os números.",
-          "texto": "“Quase 1 em cada 3 não volta em 2 meses”, “uns 14 que vinham todo mês e sumiram” e “uns R$ 55 contra uns R$ 40 no corte”: barbeiros que trabalham sozinhos, no BestBarbers, de agosto a outubro de 2026. Os exemplos da próxima marcada, da lista de quem sumiu e do reajuste vêm de cursos para donos de barbearia. Nenhum exemplo leva nome."
+          "texto": "“Quase 1 em cada 3 não volta em 2 meses”, “uns 14 que vinham todo mês e sumiram” e “uns R$ 50 contra uns R$ 40 no corte”: barbeiros que trabalham sozinhos, no BestBarbers, de agosto a outubro de 2026. Os exemplos da próxima marcada, da lista de quem sumiu e do reajuste vêm de cursos para donos de barbearia. Nenhum exemplo leva nome."
         },
         "epoca": {
           "acao": "preco",
@@ -1139,7 +1139,7 @@
               "para": "As 2 coisas trazem o cliente de volta, mas pedem esforço toda semana."
             },
             {
-              "de": " e “uns R$ 55 contra uns R$ 40 no corte”",
+              "de": " e “uns R$ 50 contra uns R$ 40 no corte”",
               "para": ""
             },
             {
