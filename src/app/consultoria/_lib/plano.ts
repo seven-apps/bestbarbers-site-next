@@ -1,6 +1,6 @@
 // Fonte: bestbarbers-ai/docs/operacional/marketing-vendas-nov26/estrategia-canais/consultoria-v2/02-plano.md §3.2
 // ("a distância e o passo 1") e 05-contrato-site-os.md (a distância é conta do site, que é o único dono dela).
-import type { ConteudoConsultoria, Faixa, Horario, PlanoDaTrava, Respostas } from "./types.ts";
+import type { AcaoV5, BlocoV5, ConteudoConsultoria, Faixa, Horario, PlanoDaTrava, Respostas, Texto } from "./types.ts";
 
 export const URL_DO_SITE = "https://www.bestbarbers.app";
 export const CAMINHO_DO_PLANO = "/consultoria/plano";
@@ -65,41 +65,132 @@ export function planoDaTrava(conteudo: Pick<ConteudoConsultoria, "planos">, r: R
   return conteudo.planos.por_trava[r.trava ?? ""] ?? conteudo.planos.por_trava.outra;
 }
 
-export function textoDaTrava(conteudo: Pick<ConteudoConsultoria, "travas">, r: Respostas): string | undefined {
-  if (!r.objetivo || !r.trava) return undefined;
-  return conteudo.travas[r.objetivo]?.opcoes.find((o) => o.id === r.trava)?.texto;
+/** A chave do caso completo: "<trava>:<quem>" (ex.: "p19:equipe"). */
+export function chaveDoCaso(r: Respostas): string {
+  return `${r.trava ?? ""}:${r.quem ?? ""}`;
 }
 
-/** "2 a 4 barbeiros · assinatura cobrada na mão ou no Pix · quer resolver este mês": a prova de que lemos. */
-export function linhaDeLeitura(conteudo: ConteudoConsultoria, r: Respostas): string {
-  const partes: string[] = [];
-  if (r.quem === "equipe" && r.porte) partes.push(`${conteudo.porte.find((p) => p.id === r.porte)?.texto} barbeiros`);
-  else if (r.quem === "solo") partes.push("você atende sozinho");
-  else if (r.quem === "abrir") partes.push("barbearia para abrir");
-  else if (r.quem === "barbeiro") partes.push("barbeiro, não dono");
-  const assinatura = conteudo.assinatura.find((a) => a.id === r.assinatura);
-  if (assinatura && r.quem !== "barbeiro") partes.push(`assinatura: ${assinatura.resumo}`);
-  if (r.prazo === "mes") partes.push("quer resolver este mês");
-  else if (r.prazo === "tres") partes.push("quer resolver nos próximos 3 meses");
-  else if (r.prazo === "entender") partes.push("quer entender primeiro");
-  return partes.join(" · ");
+const MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+
+/** O mês de Brasília, de 1 a 12. `agora` entra por parâmetro para o teste. */
+export function mesDeBrasilia(agora: Date = new Date()): number {
+  return new Date(agora.getTime() - 3 * 60 * 60 * 1000).getUTCMonth() + 1;
 }
 
-/** O subtítulo: "De R$ 10 a 20 mil para R$ 30 a 60 mil por mês, começando por: …". */
-export function linhaDoCaminho(conteudo: ConteudoConsultoria, r: Respostas): string {
-  const hoje = faixaDeHoje(conteudo, r);
-  const meta = faixaDaMeta(conteudo, r);
-  const trava = r.trava === "outra" ? (r.outra?.trim() || "o que você contou") : textoDaTrava(conteudo, r);
-  const comeco = trava ? `, começando por: “${trava}”` : "";
-  if (hoje && meta) return `De ${minuscula(hoje.texto)} para ${minuscula(meta.texto)} por mês${comeco}.`;
-  if (meta) return `Chegar a ${minuscula(meta.texto)} por mês${comeco}.`;
-  return trava ? `Começando por: “${trava}”.` : "";
+/** Troca {mes-1}, {mes}, {mes+1} e {mes+2} pelo nome do mês ({Mes…} sai com maiúscula). */
+export function comMeses(texto: string, mes: number): string {
+  return texto.replace(/\{(mes|Mes)([+-]\d)?\}/g, (_, forma: string, desvio?: string) => {
+    const nome = MESES[(((mes - 1 + Number(desvio ?? 0)) % 12) + 12) % 12];
+    return forma === "Mes" ? nome.charAt(0).toUpperCase() + nome.slice(1) : nome;
+  });
 }
 
-/** "Até R$ 2 mil" → "até R$ 2 mil"; "R$ 10 a 20 mil" fica como está. */
-function minuscula(texto: string): string {
-  if (/^R\$/.test(texto)) return texto;
-  return texto.charAt(0).toLowerCase() + texto.slice(1);
+export interface BlocoPronto extends Omit<BlocoV5, "textos" | "depois"> {
+  /** O número da ação que o bloco detalha (o bloco de apoio não tem). */
+  num?: number;
+  textos: string[];
+  depois: string[];
+}
+
+/** O plano pronto para a página: a 1ª tela (título, subtítulo, ações) e o detalhe, já com os meses e a época. */
+export interface PlanoPronto {
+  /** true = caso completo do molde v5; false = 1 ação a partir do plano da trava. */
+  completo: boolean;
+  titulo: string;
+  subtitulo: string;
+  acoes: (AcaoV5 & { num: number })[];
+  gancho: string;
+  divisor: string;
+  blocos: BlocoPronto[];
+  ligacao: (BlocoPronto & { chamada: string }) | null;
+  fontes: { rotulo: string; texto: string } | null;
+}
+
+function textosDoMes(textos: Texto[] | undefined, mes: number): string[] {
+  return (textos ?? []).flatMap((t) => (typeof t === "string" ? [t] : t.meses.includes(mes) ? [t.texto] : []));
+}
+
+function prontoDoBloco(b: BlocoV5, mes: number, num?: number): BlocoPronto {
+  return { ...b, num, textos: textosDoMes(b.textos, mes), depois: textosDoMes(b.depois, mes) };
+}
+
+/** Aplica a troca dos meses em todo texto do plano. */
+function trocarMeses<T>(valor: T, mes: number): T {
+  if (typeof valor === "string") return comMeses(valor, mes) as T;
+  if (Array.isArray(valor)) return valor.map((v) => trocarMeses(v, mes)) as T;
+  if (valor && typeof valor === "object") {
+    return Object.fromEntries(Object.entries(valor).map(([k, v]) => [k, trocarMeses(v, mes)])) as T;
+  }
+  return valor;
+}
+
+/** "{nome}, 3 coisas para amanhã" — "1 coisa" quando é uma só, e sem o nome quando ele não veio. */
+function tituloDoPlano(t: ConteudoConsultoria["telas"]["pronto"], nome: string, quantas: number): string {
+  const q = quantas === 1 ? t.uma : t.varias.replace("{n}", String(quantas));
+  if (nome) return t.titulo.replace("{nome}", nome).replace("{quantas}", q);
+  const sem = t.titulo_sem_nome.replace("{quantas}", q);
+  return sem.charAt(0).toUpperCase() + sem.slice(1);
+}
+
+/**
+ * O plano da página (molde v5, aprovado em 08/Nov/26): o caso completo quando existe para a trava × quem;
+ * senão, 1 ação no mesmo visual, a partir do plano da trava (S46). `agora` entra por parâmetro para o teste.
+ */
+export function montarPlano(conteudo: ConteudoConsultoria, r: Respostas, nome: string, agora: Date = new Date()): PlanoPronto {
+  const t = conteudo.telas.pronto;
+  const mes = mesDeBrasilia(agora);
+  const caso = conteudo.planos.v5[chaveDoCaso(r)];
+
+  if (!caso) {
+    const plano = planoDaTrava(conteudo, r);
+    return trocarMeses({
+      completo: false,
+      titulo: tituloDoPlano(t, nome, 1),
+      subtitulo: plano.titulo,
+      acoes: [{ id: "passo", num: 1, ...plano.acao }],
+      gancho: t.gancho,
+      divisor: t.divisor_uma,
+      blocos: [{
+        id: "passo", num: 1, rotulo: t.rotulo_uma, titulo: plano.acao.titulo, textos: [plano.passo1], pronto: plano.pronto,
+        prova: plano.prova, depois: [],
+      }],
+      ligacao: null,
+      fontes: null,
+    }, mes);
+  }
+
+  const foraDaEpoca = caso.epoca && !caso.epoca.meses.includes(mes) ? caso.epoca : null;
+  const c = foraDaEpoca ? trocarTrechos(caso, foraDaEpoca.trocas) : caso;
+  const acoes = c.acoes.filter((a) => a.id !== foraDaEpoca?.acao).map((a, i) => ({ ...a, num: i + 1 }));
+  const numeroDaAcao = new Map(acoes.map((a) => [a.id, a.num]));
+  const blocos = c.blocos.filter((b) => b.id !== foraDaEpoca?.acao).map((b) => prontoDoBloco(b, mes, numeroDaAcao.get(b.id)));
+
+  return trocarMeses({
+    completo: true,
+    titulo: tituloDoPlano(t, nome, acoes.length),
+    subtitulo: c.subtitulo,
+    acoes,
+    gancho: c.gancho,
+    divisor: c.divisor,
+    blocos,
+    ligacao: { ...prontoDoBloco(c.ligacao, mes), chamada: c.ligacao.chamada },
+    fontes: c.fontes,
+  }, mes);
+}
+
+/** Troca cada trecho (de → para) em todo texto do caso (fora da época). */
+function trocarTrechos<T>(valor: T, trocas: { de: string; para: string }[]): T {
+  if (typeof valor === "string") return trocas.reduce((s, { de, para }) => s.split(de).join(para), valor as string) as T;
+  if (Array.isArray(valor)) return valor.map((v) => trocarTrechos(v, trocas)) as T;
+  if (valor && typeof valor === "object") {
+    return Object.fromEntries(Object.entries(valor).map(([k, v]) => [k, trocarTrechos(v, trocas)])) as T;
+  }
+  return valor;
+}
+
+/** O link do WhatsApp para mandar à equipe o aviso de um material pronto. */
+export function linkParaEquipe(aviso: string, texto: string): string {
+  return `https://wa.me/?text=${encodeURIComponent(aviso.replace("{texto}", texto))}`;
 }
 
 /** As respostas que viajam no endereço do plano (o SDR manda o mesmo link no 1º toque). O texto livre não viaja. */

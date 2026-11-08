@@ -12,7 +12,7 @@
     "objetivo": {
       "rotulo": "Consultoria on-line gratuita",
       "pergunta": "O que você quer resolver primeiro na sua barbearia?",
-      "texto": "São 7 perguntas de toque. No fim, o seu plano aparece na tela: a distância até a sua meta e o primeiro passo para fazer amanhã."
+      "texto": "São 7 perguntas de toque. No fim, o seu plano aparece na tela: o que fazer amanhã, com a mensagem pronta."
     },
     "quem": {
       "pergunta": "Quem é você na barbearia?",
@@ -37,11 +37,20 @@
       "erro": "Não conseguimos registrar agora. Confira o WhatsApp e tente de novo."
     },
     "pronto": {
-      "rotulo": "O seu plano",
-      "titulo": "{nome}, o seu plano",
-      "distancia_titulo": "A distância",
-      "distancia_meio": "pelo meio das faixas que você marcou",
-      "passo_titulo": "O passo 1, para amanhã",
+      "titulo": "{nome}, {quantas} para amanhã",
+      "titulo_sem_nome": "{quantas} para amanhã",
+      "uma": "1 coisa",
+      "varias": "{n} coisas",
+      "gancho": "Como fazer e a mensagem pronta, aqui embaixo",
+      "divisor": "Como fazer cada uma",
+      "divisor_uma": "Como fazer",
+      "rotulo_uma": "Amanhã",
+      "no_bestbarbers": "No BestBarbers:",
+      "sem_sistema": "Sem sistema:",
+      "copiar": "Copiar",
+      "copiado": "Copiado ✓",
+      "mandar_equipe": "Mandar à equipe",
+      "horario_rotulo": "O próximo passo",
       "horario_titulo": "Quer montar o resto com a gente?",
       "horario_texto": "Os próximos passos o nosso time monta com você, numa ligação. Quando fica melhor?",
       "horario_ok": "Combinado: o nosso time te liga {quando}.",
@@ -56,7 +65,7 @@
     },
     "meta": {
       "pergunta": "E quanto de faturamento você quer alcançar por mês, daqui a 1 ano?",
-      "linha": "O plano mostra o caminho de um para o outro.",
+      "linha": "O nosso time usa isso para montar o resto com você.",
       "pergunta_abrir": "Quanto você quer faturar por mês, daqui a 1 ano?"
     },
     "outra": {
@@ -430,120 +439,1055 @@
     }
   ],
   "planos": {
-    "fonte": "bestbarbers-ai/docs/operacional/marketing-vendas-nov26/estrategia-canais/consultoria-v1/dores-top10.json (o 1º passo de cada dor, sem as variáveis da conversa) e consultoria-v2/04-roteiros-12nov.md (troca e caderno); as dores sem plano escrito ganharam o 1º passo em 07/Nov/26",
-    "alavancas": {
-      "assinatura": "Com um plano de R$ 100 por mês, cada R$ 10 mil a mais por mês são 100 assinantes. (R$ 100 é só um exemplo, e não uma recomendação de preço.)",
-      "caderno": "A meta só anda quando o número é medido: sem saber quanto entra por dia, não dá para saber se você está chegando."
-    },
+    "fonte": "bestbarbers-ai/docs/operacional/marketing-vendas-nov26/estrategia-canais/consultoria-v1/dores-top10.json (o 1º passo de cada dor, sem as variáveis da conversa) e consultoria-v2/04-roteiros-12nov.md (troca e caderno); as dores sem plano escrito ganharam o 1º passo em 07/Nov/26; 08/Nov/26: cada trava ganhou a ação da 1ª tela e a mensagem pronta no molde v5 (S46), e os casos completos foram para planos.v5 (bestbarbers-ai/docs/operacional/marketing-vendas-nov26/estrategia-canais/consultoria-v2/plano-de-acao/)",
     "por_trava": {
       "p10": {
         "titulo": "Faturar mais com a mesma barbearia, começando pelo que entra mais rápido",
-        "passo1": "Amanhã, faça a conta da barbearia cheia: horários por dia de cada barbeiro × dias de trabalho no mês × valor médio por atendimento. A diferença para o que entrou no mês mostra onde mexer: cadeira vazia, cliente que não volta ou pouco gasto por visita."
+        "passo1": "Amanhã, todo cliente ouve a frase antes de tirar a capa, com 2 horários para escolher. Disse sim? Marque ali mesmo, na agenda. No fim do dia, conte quantos saíram com a próxima marcada.",
+        "acao": {
+          "titulo": "Antes de tirar a capa, marque a próxima vez",
+          "como": "Sempre com 2 horários para o cliente escolher.",
+          "traz": "O cliente não some: já sai com o dia de voltar."
+        },
+        "pronto": {
+          "rotulo": "A frase, pronta",
+          "texto": "Já deixo a sua próxima marcada? Daqui a 3 semanas, tenho [dia] às [hora] ou [dia] às [hora]."
+        },
+        "prova": {
+          "rotulo": "Quem já faz",
+          "texto": "Num curso para donos de barbearia, essa pergunta é passo fixo do roteiro de atendimento: “Você já gostaria de deixar seu próximo horário agendado?”"
+        }
       },
       "p19": {
         "titulo": "A cadeira cheia também no começo da semana",
-        "passo1": "Amanhã, conte numa semana normal quantos horários ficam vazios de segunda a quarta, por barbeiro. Com o número na mão, dá para escolher o que enche esses dias, como um plano de assinatura que só vale de segunda a quarta."
+        "passo1": "Amanhã, todo cliente ouve a frase antes de tirar a capa, sempre com 2 horários de segunda a quarta. Disse sim? Marque ali mesmo, na agenda. No fim do dia, conte quantos saíram com a próxima marcada.",
+        "acao": {
+          "titulo": "Antes de tirar a capa, marque a próxima vez",
+          "como": "Sempre 2 horários, de segunda a quarta.",
+          "traz": "O começo da semana ganha cliente já marcado."
+        },
+        "pronto": {
+          "rotulo": "A frase, pronta",
+          "texto": "Já deixo a sua próxima marcada? Daqui a 3 semanas, tenho terça às 18h ou quarta às 19h."
+        },
+        "prova": {
+          "rotulo": "Quem já faz",
+          "texto": "Num curso para donos de barbearia, essa pergunta é passo fixo do roteiro de atendimento: “Você já gostaria de deixar seu próximo horário agendado?”"
+        }
       },
       "p24": {
         "titulo": "O cliente que sumiu de volta à cadeira",
-        "passo1": "Amanhã, liste os clientes que vinham todo mês e não aparecem há mais de 2 meses, e mande uma mensagem pessoal para cada um, com um horário livre da semana."
+        "passo1": "Amanhã, faça a lista de quem vinha todo mês e não aparece há mais de 2 meses. Tire quem saiu reclamando. Mande 5 mensagens por dia, pelo WhatsApp da barbearia, cada uma com um horário livre da semana.",
+        "acao": {
+          "titulo": "Mande 5 mensagens por dia para quem sumiu",
+          "como": "Comece por quem vinha todo mês.",
+          "traz": "Cada um que volta é um cliente de todo mês."
+        },
+        "pronto": {
+          "rotulo": "A mensagem, pronta",
+          "texto": "Fala, [nome]! Aqui é o [barbeiro], da [barbearia].\nFaz um tempinho que você não aparece. Tá tudo certo?\nEssa semana eu tenho [dia] às [hora]. Quer que eu deixe reservado pra você?"
+        },
+        "prova": {
+          "rotulo": "Quem já fez",
+          "texto": "Uma barbearia que faz isso a cada 3 meses: em 10 dias úteis, a recepcionista trouxe 8 clientes de volta. De 200 a 300 mensagens, só 1 cliente pediu para não receber mais."
+        }
       },
       "p04": {
         "titulo": "Tudo num lugar só, sem largar a cadeira",
         "passo1": "Amanhã, um lugar só para cada atendimento: barbeiro, serviço, valor e como pagou. Pode ser uma folha por dia, desde que seja uma só. No fim do dia, some e confira com a gaveta, a maquininha e o Pix.",
-        "alavanca": "caderno"
+        "acao": {
+          "titulo": "Um lugar só para cada atendimento",
+          "como": "Uma folha por dia: barbeiro, serviço, valor e como pagou.",
+          "traz": "No fim do dia, você confere com a gaveta, a maquininha e o Pix."
+        },
+        "pronto": {
+          "rotulo": "A mensagem para a equipe",
+          "texto": "Pessoal, a partir de amanhã todo atendimento vai numa folha só, no balcão: barbeiro, serviço, valor e como pagou. No fim do dia, eu somo e confiro com a gaveta, a maquininha e o Pix."
+        }
       },
       "p06": {
         "titulo": "Um foco de cada vez, sem tentar tudo junto",
-        "passo1": "Amanhã, escreva os problemas numa folha e escolha um só para os próximos 3 meses: o que mais custa dinheiro hoje. O resto espera."
+        "passo1": "Amanhã, escreva os problemas numa folha e escolha um só para os próximos 3 meses: o que mais custa dinheiro hoje. O resto espera.",
+        "acao": {
+          "titulo": "Escolha um problema só para os próximos 3 meses",
+          "como": "O que mais custa dinheiro hoje. O resto espera.",
+          "traz": "Você e a equipe sabem o que vem primeiro."
+        },
+        "pronto": {
+          "rotulo": "A mensagem para a equipe",
+          "texto": "Pessoal, nos próximos 3 meses a gente vai atacar um problema só: [o problema]. O resto espera. Toda segunda eu conto no grupo como está."
+        }
       },
       "p05": {
         "titulo": "A assinatura cobrada todo mês na mesma data, sem lembrar assinante um por um",
         "passo1": "Amanhã, ponha os assinantes numa lista com o dia em que cada um paga e se tem cartão de crédito. Se cada um vence num dia, você passa o mês inteiro cobrando.",
-        "alavanca": "assinatura"
+        "acao": {
+          "titulo": "Faça a lista dos assinantes, com o dia em que cada um paga",
+          "como": "E se cada um tem cartão de crédito.",
+          "traz": "Você vê quantos dias do mês passa cobrando."
+        },
+        "pronto": {
+          "rotulo": "A mensagem para cada assinante",
+          "texto": "Fala, [nome]! Aqui é o [dono], da [barbearia].\nEstou organizando a assinatura: você tem cartão de crédito? Pergunto porque quero deixar a cobrança mais fácil pra você."
+        }
       },
       "p03": {
         "titulo": "A assinatura dividida de um jeito que o barbeiro aceita",
-        "passo1": "Amanhã, decida o pote: a parte do que a assinatura faturou no mês que vai para a equipe. Comece perto do que você já paga de comissão no corte avulso.",
-        "alavanca": "assinatura"
+        "passo1": "Amanhã, crie na agenda os serviços Corte assinatura, Barba assinatura e Corte e barba assinatura, e marque todo assinante num deles, no nome de quem atendeu. Sem saber quem atendeu, não tem como dividir.",
+        "acao": {
+          "titulo": "Todo assinante entra na agenda como “Corte assinatura”",
+          "como": "No nome de quem atendeu.",
+          "traz": "No fim do mês, você sabe quanto cada um atendeu de assinante."
+        },
+        "pronto": {
+          "rotulo": "A mensagem para o grupo da equipe",
+          "texto": "Pessoal, a partir de amanhã todo assinante entra na agenda como Corte assinatura, Barba assinatura ou Corte e barba assinatura, no nome de quem atendeu. É isso que vai mostrar quanto cada um atendeu de assinante no mês."
+        },
+        "prova": {
+          "rotulo": "Quem já faz",
+          "texto": "Uma rede de barbearias, ensinada num curso para donos, faz assim: cada serviço de assinante tem um nome próprio na agenda, para saber quantos cada barbeiro fez no mês."
+        }
       },
       "p13": {
         "titulo": "Um preço de plano que paga o corte e não lota a sua agenda",
         "passo1": "Amanhã, tire 2 números da agenda: quantas vezes por mês vêm os 30 clientes que mais frequentam e quantos horários ficam vazios em cada dia, numa semana normal.",
-        "alavanca": "assinatura"
+        "acao": {
+          "titulo": "Antes de decidir o preço, olhe a agenda",
+          "como": "Quantas vezes por mês vêm os 30 clientes mais fiéis.",
+          "traz": "O preço sai do que o seu cliente já faz."
+        },
+        "pronto": {
+          "rotulo": "A folha, pronta",
+          "texto": "Cliente · Vezes em {mes-3} · Vezes em {mes-2} · Vezes em {mes-1}"
+        }
       },
       "p26": {
         "titulo": "A assinatura começando pelo cliente que já vem todo mês",
-        "passo1": "Amanhã, liste os clientes que cortam com você todo mês: são os primeiros assinantes. Para o cliente, o argumento não é desconto: ele paga uma vez, na mesma data, e tem o horário dele.",
-        "alavanca": "assinatura"
+        "passo1": "Amanhã, faça a lista dos clientes que cortam com você todo mês: são os primeiros a ouvir da assinatura. Para eles, a assinatura só organiza o que já fazem: pagam uma vez por mês, no cartão, e cortam sem pagar na hora.",
+        "acao": {
+          "titulo": "Faça a lista de quem corta com você todo mês",
+          "como": "São os primeiros a ouvir da assinatura.",
+          "traz": "Quem já vem todo mês é quem mais assina."
+        },
+        "pronto": {
+          "rotulo": "A mensagem, pronta",
+          "texto": "Fala, [nome]! Aqui é o [barbeiro], da [barbearia].\nEstou para lançar a assinatura: um valor por mês, no cartão, e você corta sem pagar na hora.\nComo você vem sempre, quis te contar antes. Posso deixar seu nome na lista?"
+        },
+        "prova": {
+          "rotulo": "Quem já faz",
+          "texto": "Num curso para donos, a regra é começar por quem já vem: “É muito mais fácil você convencer o cliente que corta de 30 em 30”."
+        }
       },
       "p40": {
         "titulo": "Todo assinante pagando na data combinada, sem negociar mês a mês",
         "passo1": "Amanhã, ponha os assinantes numa lista com o dia em que cada um paga e marque quem atrasou nos últimos 3 meses. Escreva a regra do atraso e avise todos de uma vez, e não um por um.",
-        "alavanca": "assinatura"
+        "acao": {
+          "titulo": "Escreva a regra do atraso e avise todos de uma vez",
+          "como": "Uma mensagem só, no mesmo dia, para todos.",
+          "traz": "A regra vale para todos, e não se negocia um por um."
+        },
+        "pronto": {
+          "rotulo": "A mensagem, pronta",
+          "texto": "Fala, [nome]! Aqui é o [dono], da [barbearia].\nPra ficar justo com todo mundo, a assinatura agora tem uma regra só: o pagamento é todo dia [dia]. Com o pagamento em dia, é só marcar.\nQualquer dúvida, me chama."
+        }
       },
       "p08": {
         "titulo": "Cliente novo vindo de quem já é cliente",
-        "passo1": "Amanhã, peça a 2 clientes de confiança o contato de um amigo da região e anote quem indicou."
+        "passo1": "Amanhã, no fim do corte, pergunte: “Quer dar um corte de presente para um amigo?” Disse sim? O cliente manda a mensagem pronta do celular dele, com uma selfie com o barbeiro, e você chama o amigo no mesmo dia para marcar. O barbeiro ganha a comissão normal, e o limite é de 2 presentes por barbeiro, por dia.",
+        "acao": {
+          "titulo": "Antes de sair, o cliente ganha 1 corte grátis para dar a um amigo",
+          "como": "Comissão normal ao barbeiro e no máximo 2 por dia.",
+          "traz": "Numa rede que faz assim, 1 em cada 5 amigos voltou pagando."
+        },
+        "pronto": {
+          "rotulo": "A mensagem do cliente para o amigo",
+          "texto": "Fala, [amigo]! Acabei de cortar o cabelo na [barbearia] e consegui um corte de presente pra você.\nO [barbeiro] vai te chamar pra marcar."
+        },
+        "prova": {
+          "rotulo": "Quem já fez",
+          "texto": "Uma rede de 4 barbearias, com 19 barbeiros, faz assim, com a selfie. Das 200 pessoas que vieram pelo corte de presente, pelo menos 40 voltaram pagando. Comece com o limite e conte quantos vêm."
+        }
       },
       "p14": {
         "titulo": "Instagram que traz gente do bairro para a cadeira",
-        "passo1": "Amanhã, a cada corte bom, uma foto ou um vídeo de 10 segundos do cliente nos stories, com o ok dele e marcando o perfil dele. Ele repassa para os amigos, que moram perto."
+        "passo1": "Amanhã, a cada corte bom, uma foto ou um vídeo de 10 segundos do cliente nos stories, com o ok dele e marcando o perfil dele. Ele repassa para os amigos, que moram perto.",
+        "acao": {
+          "titulo": "A cada corte bom, 10 segundos do cliente nos stories",
+          "como": "Com o ok dele, marcando o perfil dele.",
+          "traz": "Ele repassa para os amigos, que moram perto."
+        },
+        "pronto": {
+          "rotulo": "A frase, pronta",
+          "texto": "Ficou bom demais! Posso fazer um vídeo rapidinho pro stories e te marcar?"
+        }
       },
       "p12": {
         "titulo": "Sem a fila que faz o cliente ir embora",
-        "passo1": "Amanhã, deixe uma folha no balcão e anote, por hora, quantos chegaram, quantos esperaram mais de 30 minutos e quantos foram embora. Uma semana basta."
+        "passo1": "Amanhã, deixe uma folha no balcão e anote, por hora, quantos chegaram, quantos esperaram mais de 30 minutos e quantos foram embora. Uma semana basta.",
+        "acao": {
+          "titulo": "Deixe uma folha no balcão e anote a fila, hora a hora",
+          "como": "Quantos chegaram, quantos esperaram e quantos foram embora.",
+          "traz": "Em uma semana, você sabe quantos clientes a fila leva embora."
+        },
+        "pronto": {
+          "rotulo": "A folha, pronta",
+          "texto": "Hora · Chegaram · Esperaram mais de 30 min · Foram embora"
+        }
       },
       "p09": {
         "titulo": "O cliente vendo a sua marca, e não a do vizinho",
-        "passo1": "Amanhã, abra o app que você usa como se fosse cliente e conte quantas barbearias aparecem perto da sua. No mesmo dia, troque o link da bio, do status e das mensagens pelo da sua agenda."
+        "passo1": "Amanhã, abra o app que você usa como se fosse cliente e conte quantas barbearias aparecem perto da sua. No mesmo dia, troque o link da bio, do status e das mensagens pelo da sua agenda.",
+        "acao": {
+          "titulo": "Troque o link da bio pelo da sua agenda",
+          "como": "E também o do status e o das mensagens.",
+          "traz": "O cliente marca pelo seu link, e não pela vitrine do app."
+        },
+        "pronto": {
+          "rotulo": "A mensagem, pronta",
+          "texto": "Fala, [nome]! Agora dá pra marcar o seu horário direto por aqui: [link da agenda]"
+        }
       },
       "p22": {
         "titulo": "Divulgar gastando pouco, começando por quem já senta na cadeira",
-        "passo1": "Amanhã, peça a 2 clientes de confiança o contato de um amigo da região e anote quem indicou. É a divulgação que chega confiando em você."
+        "passo1": "Amanhã, peça a 2 clientes de confiança o contato de um amigo da região e anote quem indicou. É a divulgação que chega confiando em você.",
+        "acao": {
+          "titulo": "Peça a 2 clientes de confiança o contato de um amigo",
+          "como": "E anote quem indicou.",
+          "traz": "É a divulgação que chega confiando em você."
+        },
+        "pronto": {
+          "rotulo": "A frase, pronta",
+          "texto": "Você tem um amigo aqui perto que ia gostar de cortar comigo? Se me passar o contato, eu chamo ele e falo que foi você que indicou."
+        }
       },
       "p34": {
         "titulo": "O fechamento pronto, sem conta de cabeça e sem briga",
         "passo1": "Amanhã, liste tudo o que paga comissão (corte, barba, extras, produto, assinatura) e o percentual de cada um. Embaixo, escreva a regra dos casos que dão briga: a taxa do cartão sai antes ou depois? O vale desconta quando?",
-        "alavanca": "caderno"
+        "acao": {
+          "titulo": "Escreva a regra da comissão numa folha só",
+          "como": "O que paga comissão, quanto, e os casos que dão briga.",
+          "traz": "A conta não depende mais da memória de ninguém."
+        },
+        "pronto": {
+          "rotulo": "A mensagem para a equipe",
+          "texto": "Pessoal, vou escrever numa folha a regra da comissão de cada serviço e os casos que dão dúvida. Amanhã eu mostro pra todo mundo conferir antes de valer."
+        }
       },
       "p20": {
         "titulo": "Barbeiro bom chegando por indicação de quem já é bom",
-        "passo1": "Amanhã, pergunte aos seus barbeiros e a 3 colegas de profissão quem eles indicariam, e escreva numa folha o que você oferece: comissão, horário e como é trabalhar aí."
+        "passo1": "Amanhã, pergunte aos seus barbeiros e a 3 colegas de profissão quem eles indicariam, e escreva numa folha o que você oferece: comissão, horário e como é trabalhar aí.",
+        "acao": {
+          "titulo": "Pergunte aos seus barbeiros quem eles indicariam",
+          "como": "E a 3 colegas de profissão.",
+          "traz": "Quem chega indicado já vem com alguém respondendo por ele."
+        },
+        "pronto": {
+          "rotulo": "A mensagem, pronta",
+          "texto": "Fala, [nome]! Tô procurando um barbeiro bom pra equipe. Você conhece alguém que você indicaria de olho fechado?"
+        }
       },
       "p17": {
         "titulo": "Um jeito só de atender, da chegada à cobrança",
-        "passo1": "Amanhã, escreva numa folha os 5 momentos do atendimento (chegada, corte, finalização, cobrança e o próximo horário) e o que todo barbeiro faz em cada um. Mostre à equipe e peça para cada um conferir."
+        "passo1": "Amanhã, escreva numa folha os 5 momentos do atendimento (chegada, corte, finalização, cobrança e o próximo horário) e o que todo barbeiro faz em cada um. Mostre à equipe e peça para cada um conferir.",
+        "acao": {
+          "titulo": "Escreva os 5 momentos do atendimento numa folha",
+          "como": "Chegada, corte, finalização, cobrança e o próximo horário.",
+          "traz": "Todo barbeiro sabe o que fazer em cada um."
+        },
+        "pronto": {
+          "rotulo": "A mensagem para a equipe",
+          "texto": "Pessoal, escrevi numa folha os 5 momentos do atendimento: chegada, corte, finalização, cobrança e o próximo horário. Amanhã, antes de abrir, cada um lê e me diz o que mudaria."
+        }
       },
       "nota-na-mao": {
         "titulo": "A nota saindo junto com o atendimento, e não no fim do mês",
-        "passo1": "Amanhã, pergunte ao seu contador 3 coisas e anote: quais serviços e produtos precisam de nota, até que dia do mês ele precisa receber tudo e em que formato."
+        "passo1": "Amanhã, pergunte ao seu contador 3 coisas e anote: quais serviços e produtos precisam de nota, até que dia do mês ele precisa receber tudo e em que formato.",
+        "acao": {
+          "titulo": "Pergunte 3 coisas ao seu contador",
+          "como": "O que precisa de nota, até que dia e em que formato.",
+          "traz": "Você sabe o que precisa sair, e quando."
+        },
+        "pronto": {
+          "rotulo": "A mensagem para o contador",
+          "texto": "Oi, [contador]! Quero organizar as notas da barbearia. Pode me responder 3 coisas?\n1. Quais serviços e produtos precisam de nota?\n2. Até que dia do mês você precisa receber tudo?\n3. Em que formato?"
+        }
       },
       "nota-nao-emite": {
         "titulo": "A nota que o contador pede, sem virar trabalho de fim de mês",
-        "passo1": "Amanhã, pergunte ao seu contador 3 coisas e anote: quais serviços e produtos precisam de nota, até que dia do mês ele precisa receber tudo e em que formato."
+        "passo1": "Amanhã, pergunte ao seu contador 3 coisas e anote: quais serviços e produtos precisam de nota, até que dia do mês ele precisa receber tudo e em que formato.",
+        "acao": {
+          "titulo": "Pergunte 3 coisas ao seu contador",
+          "como": "O que precisa de nota, até que dia e em que formato.",
+          "traz": "Você sabe o que precisa sair, e quando."
+        },
+        "pronto": {
+          "rotulo": "A mensagem para o contador",
+          "texto": "Oi, [contador]! Quero organizar as notas da barbearia. Pode me responder 3 coisas?\n1. Quais serviços e produtos precisam de nota?\n2. Até que dia do mês você precisa receber tudo?\n3. Em que formato?"
+        }
       },
       "t-cobranca": {
         "titulo": "A assinatura cobrada sem falha, na data de cada um",
         "passo1": "Amanhã, liste os assinantes cuja cobrança falhou nos últimos 3 meses, com o dia em que cada um paga. É a lista que mostra quanto a falha custa e quem precisa de atenção na troca.",
-        "alavanca": "assinatura"
+        "acao": {
+          "titulo": "Liste quem teve a cobrança falhando nos últimos 3 meses",
+          "como": "Com o dia em que cada um paga.",
+          "traz": "Você vê quanto a falha custa e quem precisa de atenção na troca."
+        },
+        "pronto": {
+          "rotulo": "A lista, pronta",
+          "texto": "Nome · Valor · Dia que paga · Falhou em {mes-3}? · Em {mes-2}? · Em {mes-1}?"
+        }
       },
       "t-vitrine": {
         "titulo": "O cliente vendo a sua marca, e não a do vizinho",
-        "passo1": "Amanhã, abra o app que você usa como se fosse cliente e conte quantas barbearias aparecem perto da sua. No mesmo dia, troque o link da bio, do status e das mensagens pelo da sua agenda."
+        "passo1": "Amanhã, abra o app que você usa como se fosse cliente e conte quantas barbearias aparecem perto da sua. No mesmo dia, troque o link da bio, do status e das mensagens pelo da sua agenda.",
+        "acao": {
+          "titulo": "Troque o link da bio pelo da sua agenda",
+          "como": "E também o do status e o das mensagens.",
+          "traz": "O cliente marca pelo seu link, e não pela vitrine do app."
+        },
+        "pronto": {
+          "rotulo": "A mensagem, pronta",
+          "texto": "Fala, [nome]! Agora dá pra marcar o seu horário direto por aqui: [link da agenda]"
+        }
       },
       "t-nota": {
         "titulo": "Uma nota que sai junto com o atendimento",
-        "passo1": "Amanhã, pergunte ao seu contador 3 coisas e anote: quais serviços e produtos precisam de nota, até que dia do mês ele precisa receber tudo e em que formato."
+        "passo1": "Amanhã, pergunte ao seu contador 3 coisas e anote: quais serviços e produtos precisam de nota, até que dia do mês ele precisa receber tudo e em que formato.",
+        "acao": {
+          "titulo": "Pergunte 3 coisas ao seu contador",
+          "como": "O que precisa de nota, até que dia e em que formato.",
+          "traz": "Você sabe o que precisa sair, e quando."
+        },
+        "pronto": {
+          "rotulo": "A mensagem para o contador",
+          "texto": "Oi, [contador]! Quero organizar as notas da barbearia. Pode me responder 3 coisas?\n1. Quais serviços e produtos precisam de nota?\n2. Até que dia do mês você precisa receber tudo?\n3. Em que formato?"
+        }
       },
       "t-medo": {
         "titulo": "Trocar de sistema com cada assinante avisado antes",
         "passo1": "Amanhã, monte a lista: nome, telefone, valor, o dia em que cada um paga e se tem cartão de crédito. Quem não tem cartão, você resolve antes, e não no dia da troca.",
-        "alavanca": "assinatura"
+        "acao": {
+          "titulo": "Monte a lista dos assinantes antes da troca",
+          "como": "Nome, telefone, valor, dia que paga e se tem cartão.",
+          "traz": "Quem não tem cartão, você resolve antes, e não no dia da troca."
+        },
+        "pronto": {
+          "rotulo": "A lista, pronta",
+          "texto": "Nome · Telefone · Valor · Dia que paga · Tem cartão de crédito?"
+        }
       },
       "outra": {
         "titulo": "O seu caso, olhado de perto",
-        "passo1": "Amanhã, escreva numa folha o que mais trava e quanto isso custa por mês, mesmo que seja uma estimativa. Com esse número, o nosso time monta o primeiro passo com você na ligação."
+        "passo1": "Amanhã, escreva numa folha o que mais trava e quanto isso custa por mês, mesmo que seja uma estimativa. Com esse número, o nosso time monta o primeiro passo com você na ligação.",
+        "acao": {
+          "titulo": "Escreva numa folha o que mais trava",
+          "como": "E quanto isso custa por mês, mesmo que de cabeça.",
+          "traz": "Com esse número, a gente monta o primeiro passo com você."
+        },
+        "pronto": {
+          "rotulo": "A folha, pronta",
+          "texto": "O que mais trava: ______\nQuanto custa por mês, de cabeça: R$ ______\nDesde quando: ______"
+        }
+      }
+    },
+    "v5": {
+      "p19:equipe": {
+        "subtitulo": "Para encher de segunda a quarta, sem anúncio.",
+        "acoes": [
+          {
+            "id": "capa",
+            "titulo": "Antes de tirar a capa, marque a próxima vez",
+            "como": "“Já deixo a sua próxima marcada? Daqui a 3 semanas, tenho terça às 18h ou quarta às 19h.”",
+            "traz": "O cliente não some: já sai com o dia de voltar, numa terça ou quarta."
+          },
+          {
+            "id": "mensagem",
+            "titulo": "Cada barbeiro manda 5 mensagens por dia para quem sumiu",
+            "como": "Comece por quem vinha todo mês: barbearias do seu tamanho têm uns 30.",
+            "traz": "Cada um que volta é um cliente de todo mês: 12 cortes no ano."
+          },
+          {
+            "id": "presente",
+            "titulo": "Antes de sair, o cliente ganha 1 corte grátis para dar a um amigo",
+            "como": "O amigo corta numa terça ou quarta, no horário que hoje fica vazio.",
+            "traz": "Numa rede que faz assim, 1 em cada 5 amigos voltou pagando."
+          }
+        ],
+        "gancho": "A frase e as mensagens prontas, aqui embaixo",
+        "divisor": "Como fazer cada uma",
+        "blocos": [
+          {
+            "id": "capa",
+            "rotulo": "Na cadeira",
+            "titulo": "Antes de tirar a capa, marque a próxima vez",
+            "passos": [
+              "Hoje à noite, mande a frase para os barbeiros.",
+              "Amanhã, todo cliente ouve a frase antes de tirar a capa. Sempre 2 horários, de segunda a quarta. As 3 semanas são só o exemplo: use o tempo que ele costuma levar para voltar.",
+              "Ele disse sim? Marque ali mesmo, na agenda.",
+              "Fez platinado? Marque também a volta para matizar, numa terça."
+            ],
+            "pronto": {
+              "rotulo": "A frase, pronta",
+              "texto": "Já deixo a sua próxima marcada? Daqui a 3 semanas, tenho terça às 18h ou quarta às 19h.",
+              "equipe": "A partir de amanhã, antes de tirar a capa, todo cliente ouve isto:\n\n\"{texto}\"\n\nSempre 2 horários, de segunda a quarta."
+            },
+            "no_bestbarbers": "o barbeiro marca a próxima na agenda, e o cliente que tem o app da barbearia recebe o lembrete do horário.",
+            "prova": {
+              "rotulo": "Quem já faz",
+              "texto": "Num curso para donos de barbearia, essa pergunta é passo fixo do roteiro de atendimento: “Você já gostaria de deixar seu próximo horário agendado?”"
+            },
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "No fim do dia, cada barbeiro diz quantos clientes saíram com a próxima marcada. Cada sim é uma terça ou quarta que já tem cliente."
+              ]
+            },
+            "textos": [
+              "Hoje o cliente volta quando lembra. Nas barbearias do seu tamanho, 1 em cada 3 clientes que pagam avulso não volta em 2 meses."
+            ]
+          },
+          {
+            "id": "mensagem",
+            "rotulo": "No celular",
+            "titulo": "5 mensagens por dia para quem sumiu",
+            "passos": [
+              "Faça a lista de quem não vem há mais de 2 meses, por barbeiro. Comece por quem vinha todo mês. Tire quem saiu reclamando.",
+              "Cada barbeiro manda 5 por dia, pelo WhatsApp da barbearia, com o nome dele na mensagem. Mensagem de gente, não de empresa.",
+              "Respondeu? Marque na hora, de segunda a quarta.",
+              "Acabou a lista, pare. Faça de novo daqui a 3 meses."
+            ],
+            "pronto": {
+              "rotulo": "A mensagem, pronta",
+              "texto": "Fala, [nome]! Aqui é o [barbeiro], da [barbearia].\nFaz um tempinho que você não aparece. Tá tudo certo?\nEssa semana eu tenho terça às 18h ou quarta às 19h. Quer que eu deixe um reservado pra você?"
+            },
+            "no_bestbarbers": "em Relatórios › Últimos Atendimentos, escolha “Último Ano” e ordene por “Dias Desde Visita”. A lista de quem sumiu sai pronta, por barbeiro, e dá para exportar.",
+            "sem_sistema": "a agenda ou o caderno dos últimos 3 meses.",
+            "prova": {
+              "rotulo": "Quem já fez",
+              "texto": "Uma barbearia que faz isso a cada 3 meses: em 10 dias úteis, a recepcionista trouxe 8 clientes de volta. De 200 a 300 mensagens, só 1 cliente pediu para não receber mais. O dono resume: “Se você trouxer 5 pessoas, já vai valer muito a pena.”"
+            },
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "São 15 mensagens por dia (3 barbeiros × 5): em 2 dias, vocês falam com todos. No fim do dia, conte quem respondeu e quem marcou. Acabou a lista, anote o total: é o número a bater daqui a 3 meses."
+              ]
+            },
+            "textos": [
+              "Esse cliente já conhece a casa e o barbeiro. Chamar de volta não custa nada."
+            ]
+          },
+          {
+            "id": "presente",
+            "rotulo": "Na saída",
+            "titulo": "1 corte grátis para o cliente dar a um amigo",
+            "passos": [
+              "O barbeiro ganha a comissão normal no corte de presente. É o seu custo, e por isso o limite: no máximo 2 presentes por barbeiro por dia.",
+              "No fim do corte, o barbeiro pergunta: “Quer dar um corte de presente para um amigo? Ele vem numa terça ou quarta.”",
+              "Disse sim? O cliente manda a mensagem pronta do celular dele, com uma selfie com o barbeiro. Pela foto, o amigo vê que é ele mesmo.",
+              "No mesmo dia, o barbeiro chama o amigo pelo WhatsApp da barbearia e marca de segunda a quarta.",
+              "O amigo veio? Atenda como cliente da casa e, antes de tirar a capa, marque a próxima vez."
+            ],
+            "pronto": {
+              "rotulo": "A mensagem do cliente para o amigo",
+              "texto": "Fala, [amigo]! Acabei de cortar o cabelo na [barbearia] e consegui um corte de presente pra você.\nO [barbeiro] vai te chamar pra marcar."
+            },
+            "no_bestbarbers": "cadastre o serviço “Corte Presente”, com preço R$ 0. Assim você conta quantos amigos vieram e de qual barbeiro.",
+            "prova": {
+              "rotulo": "Quem já fez",
+              "texto": "Uma rede de 4 barbearias, com 19 barbeiros, faz assim, com a selfie. Das 200 pessoas que vieram pelo corte de presente, pelo menos 40 voltaram pagando. Um barbeiro trouxe sozinho 27 pessoas num mês. A rede também paga, a cada 3 meses, um prêmio em dinheiro ao barbeiro e ao cliente que mais trazem. Comece sem prêmio e conte quantos vêm."
+            },
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "Toda semana, conte quantos amigos vieram e quantos voltaram pagando."
+              ]
+            },
+            "textos": [
+              "O amigo chega pela mão de alguém da casa, e o corte dele ocupa um horário que hoje fica parado."
+            ]
+          },
+          {
+            "id": "equipe",
+            "rotulo": "Com os barbeiros",
+            "titulo": "5 minutos com a equipe, antes de abrir",
+            "pronto": {
+              "rotulo": "O que falar",
+              "texto": "De segunda a quarta a gente fica parado, e parado ninguém ganha comissão.\nA partir de amanhã, todo cliente sai com a próxima marcada.\nCada um manda 5 mensagens por dia para os seus clientes que sumiram.\nE, no fim do corte, oferece um corte de presente para um amigo do cliente, numa terça ou quarta.\nQuem voltar ou vier pelo seu convite, a gente conta no seu nome."
+            }
+          },
+          {
+            "id": "numero",
+            "rotulo": "O número da semana",
+            "titulo": "Um número só, toda segunda",
+            "medir": {
+              "rotulo": "A meta do primeiro mês",
+              "meta": "9 atendimentos a mais por semana, de segunda a quarta.",
+              "textos": [
+                "É 1 a mais por barbeiro, por dia."
+              ]
+            },
+            "textos": [
+              "Amanhã, conte quantos atendimentos pagos a barbearia fez de segunda a quarta na semana passada. Escreva no grupo dos barbeiros. Toda segunda, conte de novo. Os cortes de presente, conte à parte."
+            ],
+            "depois": [
+              "Subiu? Continue. Não mexeu em 2 semanas? Fale com a gente.",
+              {
+                "texto": "Em dezembro a barbearia enche sozinha: o teste de verdade é janeiro.",
+                "meses": [
+                  11,
+                  12
+                ]
+              }
+            ]
+          }
+        ],
+        "ligacao": {
+          "id": "ligacao",
+          "rotulo": "O próximo passo",
+          "titulo": "Depois: a assinatura de segunda a quarta",
+          "feito": [
+            "O plano vale só de segunda a quarta, com limite de cortes.",
+            "O cliente paga uma vez por mês, no cartão.",
+            "Quem atrasou não consegue marcar."
+          ],
+          "textos": [
+            "As 3 coisas puxam cliente para o começo da semana, mas pedem esforço toda semana. Com uma assinatura que só vale de segunda a quarta, quem assina só marca nesses dias:"
+          ],
+          "chamada": "Na ligação, a gente olha os seus números com você e mostra como essa assinatura fica no BestBarbers. Quando fica melhor?"
+        },
+        "fontes": {
+          "rotulo": "De onde vêm os números.",
+          "texto": "“1 em cada 3 não volta em 2 meses” e “uns 30 que vinham todo mês e sumiram”: 544 barbearias como a sua, no BestBarbers, de agosto a outubro de 2026. Os exemplos da próxima marcada, da lista de quem sumiu e do corte de presente vêm de cursos para donos de barbearia. Nenhum exemplo leva nome."
+        }
+      },
+      "p10:solo": {
+        "subtitulo": "Onde mexer para faturar mais: na cadeira, no celular e no preço.",
+        "acoes": [
+          {
+            "id": "capa",
+            "titulo": "Antes de tirar a capa, marque a próxima vez",
+            "como": "“Já deixo a sua próxima marcada? Daqui a 3 semanas, tenho terça às 18h ou quarta às 19h.”",
+            "traz": "O cliente não some: já sai com o dia de voltar."
+          },
+          {
+            "id": "mensagem",
+            "titulo": "Mande 5 mensagens por dia para quem sumiu",
+            "como": "Comece por quem vinha todo mês: barbeiros sozinhos como você têm uns 14.",
+            "traz": "Cada um que volta é um cliente de todo mês: 12 cortes no ano."
+          },
+          {
+            "id": "preco",
+            "titulo": "Não subiu este ano? Suba o corte em R$ 5",
+            "como": "Quem trabalha sozinho e fatura mais de R$ 10 mil cobra uns R$ 50. Na sua faixa, uns R$ 40.",
+            "traz": "Com uns 6 cortes por dia, são R$ 30 a mais por dia, com os mesmos clientes."
+          }
+        ],
+        "gancho": "A frase e a mensagem prontas, aqui embaixo",
+        "divisor": "Como fazer cada uma",
+        "blocos": [
+          {
+            "id": "capa",
+            "rotulo": "Na cadeira",
+            "titulo": "Antes de tirar a capa, marque a próxima vez",
+            "passos": [
+              "Amanhã, todo cliente ouve a frase antes de tirar a capa. Ofereça sempre 2 horários, nos dias mais vazios da sua agenda. As 3 semanas são só o exemplo: use o tempo que ele costuma levar para voltar.",
+              "Ele disse sim? Marque ali mesmo, na agenda.",
+              "Fez platinado? Marque também a volta para matizar, numa terça."
+            ],
+            "pronto": {
+              "rotulo": "A frase, pronta",
+              "texto": "Já deixo a sua próxima marcada? Daqui a 3 semanas, tenho terça às 18h ou quarta às 19h."
+            },
+            "no_bestbarbers": "você marca a próxima na agenda, e o cliente que tem o app da barbearia recebe o lembrete do horário.",
+            "prova": {
+              "rotulo": "Quem já faz",
+              "texto": "Num curso para donos de barbearia, essa pergunta é passo fixo do roteiro de atendimento: “Você já gostaria de deixar seu próximo horário agendado?”"
+            },
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "No fim do dia, conte quantos clientes saíram com a próxima marcada. Cada sim é um horário vazio que já tem cliente."
+              ]
+            },
+            "textos": [
+              "Hoje o cliente volta quando lembra. Na sua faixa, quem trabalha sozinho faz uns 5 atendimentos na terça e 8 no sábado. E quase 1 em cada 3 clientes que pagam avulso não volta em 2 meses."
+            ]
+          },
+          {
+            "id": "mensagem",
+            "rotulo": "No celular",
+            "titulo": "5 mensagens por dia para quem sumiu",
+            "passos": [
+              "Faça a lista de quem não vem há mais de 2 meses. Comece por quem vinha todo mês. Tire quem saiu reclamando.",
+              "Mande 5 por dia, do WhatsApp da barbearia, no primeiro horário vago do dia. Mensagem de gente, não de empresa.",
+              "Respondeu? Marque na hora, num dia vazio da sua agenda.",
+              "Acabaram os que vinham todo mês? Siga pelo resto da lista. Acabou tudo, pare e faça de novo daqui a 3 meses."
+            ],
+            "pronto": {
+              "rotulo": "A mensagem, pronta",
+              "texto": "Fala, [nome]! Aqui é o [seu nome], da [barbearia].\nFaz um tempinho que você não aparece. Tá tudo certo?\nEssa semana eu tenho terça às 18h ou quarta às 19h. Quer que eu deixe um reservado pra você?"
+            },
+            "no_bestbarbers": "em Relatórios › Últimos Atendimentos, escolha “Último Ano” e ordene por “Dias Desde Visita”. A lista de quem sumiu sai pronta, e dá para exportar.",
+            "sem_sistema": "a agenda ou o caderno dos últimos 3 meses.",
+            "prova": {
+              "rotulo": "Quem já fez",
+              "texto": "Uma barbearia que faz isso a cada 3 meses: em 10 dias úteis, trouxe 8 clientes de volta. De 200 a 300 mensagens, só 1 cliente pediu para não receber mais."
+            },
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "São 5 mensagens por dia: em 3 dias, você fala com os que vinham todo mês. No fim do dia, conte quem respondeu e quem marcou. 1 ou 2 que voltem já são de 12 a 24 cortes no ano."
+              ]
+            },
+            "textos": [
+              "Esse cliente já conhece você e o seu trabalho. Chamar de volta não custa nada."
+            ]
+          },
+          {
+            "id": "preco",
+            "rotulo": "No preço",
+            "titulo": "Suba o corte em R$ 5",
+            "passos": [
+              "Não subiu o preço este ano? Então, amanhã, o corte sobe R$ 5. Se hoje é R$ 40, passa a R$ 45. Já subiu? Pule esta e fique com a 1 e a 2.",
+              "Troque o preço na tabela e na agenda. Só não faça aviso antes.",
+              "Se alguém comentar, responda com a frase pronta, sem pedir desculpa.",
+              "Faça isso todo ano, no mesmo mês. Quem fica anos sem subir, quando sobe, compra briga."
+            ],
+            "pronto": {
+              "rotulo": "Se o cliente comentar",
+              "texto": "É, subiu R$ 5. Daqui pra frente, todo fim de ano sobe um pouquinho. O resto continua igual."
+            },
+            "no_bestbarbers": "mude o preço do corte em Serviços.",
+            "prova": {
+              "rotulo": "Quem já faz",
+              "texto": "Um dono com 16 anos no mercado de barbearia ensina num curso para donos: suba todo ano, de preferência em novembro ou dezembro, quando entra o 13º. De R$ 2 a 3 para acostumar o cliente; uns R$ 5 para acompanhar a inflação. Ele nunca avisa antes: segundo ele, quem reclama de preço reclama por hábito, e não porque está caro."
+            },
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "No fim da semana, conte os cortes e multiplique por R$ 5: é o que entrou a mais."
+              ]
+            },
+            "textos": [
+              "Entre quem trabalha sozinho, o que mais separa a sua faixa de quem fatura mais de R$ 10 mil é o preço: uns R$ 50 no corte, contra uns R$ 40."
+            ]
+          },
+          {
+            "id": "numero",
+            "rotulo": "O número da semana",
+            "titulo": "Dois números, toda segunda",
+            "medir": {
+              "rotulo": "A meta do primeiro mês",
+              "meta": "3 atendimentos a mais por semana, e R$ 5 a mais em cada corte.",
+              "textos": [
+                "Os 3 vêm da próxima marcada e das mensagens."
+              ]
+            },
+            "textos": [
+              "Amanhã, anote quantos atendimentos você fez na semana passada e quanto entrou. No caderno ou no celular. Toda segunda, anote de novo."
+            ],
+            "depois": [
+              "Subiu? Continue. Não mexeu em 2 semanas? Fale com a gente.",
+              {
+                "texto": "Em dezembro a barbearia enche sozinha: o teste de verdade é janeiro.",
+                "meses": [
+                  11,
+                  12
+                ]
+              }
+            ]
+          }
+        ],
+        "ligacao": {
+          "id": "ligacao",
+          "rotulo": "O próximo passo",
+          "titulo": "Depois: a assinatura",
+          "feito": [
+            "Você escolhe os dias e o limite de cortes do plano.",
+            "O cliente paga uma vez por mês, no cartão.",
+            "Quem atrasou não consegue marcar."
+          ],
+          "textos": [
+            "As 3 coisas trazem o cliente de volta e aumentam o que cada um deixa, mas pedem esforço toda semana. Com a assinatura, o cliente paga uma vez por mês e marca sem você chamar:"
+          ],
+          "chamada": "Na ligação, a gente olha os seus números com você e mostra como a assinatura fica no BestBarbers. Quando fica melhor?"
+        },
+        "fontes": {
+          "rotulo": "De onde vêm os números.",
+          "texto": "“Quase 1 em cada 3 não volta em 2 meses”, “uns 14 que vinham todo mês e sumiram” e “uns R$ 50 contra uns R$ 40 no corte”: barbeiros que trabalham sozinhos, no BestBarbers, de agosto a outubro de 2026. Os exemplos da próxima marcada, da lista de quem sumiu e do reajuste vêm de cursos para donos de barbearia. Nenhum exemplo leva nome."
+        },
+        "epoca": {
+          "acao": "preco",
+          "meses": [
+            10,
+            11,
+            12,
+            1
+          ],
+          "trocas": [
+            {
+              "de": "Onde mexer para faturar mais: na cadeira, no celular e no preço.",
+              "para": "Onde mexer para faturar mais: na cadeira e no celular."
+            },
+            {
+              "de": "3 atendimentos a mais por semana, e R$ 5 a mais em cada corte.",
+              "para": "3 atendimentos a mais por semana."
+            },
+            {
+              "de": "As 3 coisas trazem o cliente de volta e aumentam o que cada um deixa, mas pedem esforço toda semana.",
+              "para": "As 2 coisas trazem o cliente de volta, mas pedem esforço toda semana."
+            },
+            {
+              "de": " e “uns R$ 50 contra uns R$ 40 no corte”",
+              "para": ""
+            },
+            {
+              "de": "“Quase 1 em cada 3 não volta em 2 meses”, “uns 14",
+              "para": "“Quase 1 em cada 3 não volta em 2 meses” e “uns 14"
+            },
+            {
+              "de": ", da lista de quem sumiu e do reajuste",
+              "para": " e da lista de quem sumiu"
+            }
+          ]
+        }
+      },
+      "p26:equipe": {
+        "subtitulo": "Assinatura: o cliente paga 1 vez por mês, no cartão, e corta até 4 vezes, fora do sábado.",
+        "acoes": [
+          {
+            "id": "equipe",
+            "titulo": "Antes de abrir, conte à equipe: em {mes+2} tem assinatura",
+            "como": "5 minutos: o que é e o prêmio de quem vende.",
+            "traz": "A equipe oferece, porque sabe o que ganha: R$ 10 por assinatura fechada."
+          },
+          {
+            "id": "lista",
+            "titulo": "Na cadeira, todo cliente fica sabendo e pode entrar na lista",
+            "como": "Uma folha no balcão, para os nomes. Ainda sem falar de preço.",
+            "traz": "Em {mes+2}, você já abre com assinante pagando no cartão."
+          },
+          {
+            "id": "mensagem",
+            "titulo": "Cada barbeiro manda 1 mensagem a quem vem todo mês",
+            "como": "Uma só, do WhatsApp da barbearia, com o nome dele.",
+            "traz": "Quem vem todo mês fica sabendo antes e chega na cadeira decidido."
+          }
+        ],
+        "gancho": "A fala, a frase e a mensagem, aqui embaixo",
+        "divisor": "Como fazer cada uma",
+        "blocos": [
+          {
+            "id": "equipe",
+            "rotulo": "Antes de abrir",
+            "titulo": "5 minutos com a equipe",
+            "passos": [
+              "Amanhã, antes de abrir, junte a equipe. Não é votação: você decidiu.",
+              "Combine o prêmio: a partir de {mes+2}, quem fechar uma assinatura na cadeira, na hora, ganha R$ 10 por ela. O nome que ele pôs na folha e assinou no lançamento também conta. Sai da barbearia.",
+              "A parte de cada um no que entrar de assinatura, você decide junto com o plano, antes de {mes+2}."
+            ],
+            "pronto": {
+              "rotulo": "O que falar",
+              "texto": "Pessoal, em {mes+2} a gente lança a assinatura. Não é votação: eu decidi.\nO cliente paga um valor por mês, no cartão, e corta até 4 vezes, fora do sábado. O preço sai antes de {mes+2}.\nA partir de {mes+2}, quem fechar uma assinatura na cadeira ganha R$ 10 por ela. O nome que você pôs na lista e assinou no lançamento também vale.\nA partir de amanhã, todo cliente fica sabendo, e quem quiser entra na lista.\nSe não der certo, eu sou o primeiro a tirar."
+            },
+            "prova": {
+              "rotulo": "Quem já fez",
+              "texto": "Uma barbearia grande, ensinada num curso para donos, lançou assim: o dono comunicou, sem pedir licença. No começo, pagava R$ 10 por assinatura fechada na cadeira. A regra dele: “dono não pede, dono comunica”."
+            },
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "No fim do dia, pergunte a cada barbeiro: quantos clientes ouviram da assinatura hoje?"
+              ]
+            },
+            "textos": [
+              "A assinatura só vende se o barbeiro oferece. E ele só oferece quando entende o que ganha."
+            ]
+          },
+          {
+            "id": "lista",
+            "rotulo": "Na cadeira",
+            "titulo": "Todo cliente fica sabendo, e quem quiser entra na lista",
+            "passos": [
+              "Amanhã, cole uma folha no espelho: “Assinatura: em {mes+2}”. Deixe outra no balcão para os nomes: nome, telefone e o barbeiro.",
+              "Na cadeira, todo cliente ouve a frase. Quem quiser, deixa o nome.",
+              "Perguntou o preço? “Sai em {mes+2}. Quem está na lista fica sabendo antes.”",
+              "Perguntou quantas vezes? “Até 4 cortes no mês, fora do sábado.”",
+              "No lançamento, cada nome da lista recebe o convite antes de todo mundo."
+            ],
+            "pronto": {
+              "rotulo": "A frase, pronta",
+              "texto": "Em {mes+2} a gente lança a assinatura aqui: um valor por mês, no cartão, pra você andar sempre na régua. Quer que eu ponha seu nome na lista? Quem está nela fica sabendo antes de todo mundo.",
+              "equipe": "A partir de amanhã, todo cliente ouve isto na cadeira:\n\n\"{texto}\"\n\nQuem quiser, deixa o nome na folha do balcão."
+            },
+            "prova": {
+              "rotulo": "Quem já fez",
+              "texto": "A mesma barbearia, com uns 2.500 clientes cadastrados, juntou 385 nomes na lista em 1 mês. Em 2 dias de lançamento, 60 assinaram."
+            },
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "Toda noite, conte os nomes da folha. Um barbeiro com bem menos nomes que os outros não está falando a frase."
+              ]
+            },
+            "textos": [
+              "Ainda sem preço. Primeiro você junta quem tem interesse; o preço sai no lançamento."
+            ]
+          },
+          {
+            "id": "mensagem",
+            "rotulo": "No celular",
+            "titulo": "1 mensagem para quem vem todo mês",
+            "passos": [
+              "Cada barbeiro separa os clientes dele que vêm todo mês.",
+              "Manda uma mensagem só, do WhatsApp da barbearia, com o nome dele. Não mande de novo.",
+              "Respondeu que quer? O nome vai para a lista do balcão."
+            ],
+            "pronto": {
+              "rotulo": "A mensagem, pronta",
+              "texto": "Fala, [nome]! Aqui é o [barbeiro], da [barbearia].\nEm {mes+2} a gente lança a assinatura: um valor por mês, no cartão, e você corta sem pagar na hora.\nComo você vem sempre, quis te contar antes. Quer que eu deixe seu nome na lista?"
+            },
+            "no_bestbarbers": "em Relatórios › Frequência de clientes, o filtro “Mensal” mostra quem volta todo mês, com o botão do WhatsApp.",
+            "sem_sistema": "a agenda ou o caderno dos últimos 3 meses.",
+            "prova": {
+              "rotulo": "Quem já faz",
+              "texto": "No mesmo curso, a regra é começar por quem já vem: “É muito mais fácil você convencer o cliente que corta de 30 em 30”."
+            },
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "Conte as mensagens mandadas, as respostas e os nomes que entraram na lista."
+              ]
+            },
+            "textos": [
+              "Quem já vem todo mês é o mais fácil de convencer: ele já tem o costume, e com a assinatura passa a andar sempre na régua."
+            ]
+          },
+          {
+            "id": "convite",
+            "rotulo": "No lançamento",
+            "titulo": "3 dias antes: o convite para quem está na lista",
+            "pronto": {
+              "rotulo": "O convite, pronto",
+              "texto": "Fala, [nome]! Aqui é o [barbeiro], da [barbearia].\nVocê deixou seu nome na lista da assinatura. Ela abre [dia], ao meio-dia, e quem está na lista fica sabendo antes de todo mundo.\nNo dia, eu te mando o link. Qualquer dúvida, é só me chamar aqui."
+            },
+            "no_bestbarbers": "em Adicionar assinante, você escolhe o cliente e o plano, e o sistema gera o link para pagar no cartão. É esse link que vai para cada nome da lista.",
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "No dia, conte quantos nomes da lista assinaram: 1 a 2 em cada 10 é o normal."
+              ]
+            },
+            "textos": [
+              "Uma mensagem só, para cada nome da lista. No dia, cada um recebe o link para assinar."
+            ]
+          },
+          {
+            "id": "numero",
+            "rotulo": "O número da semana",
+            "titulo": "Os nomes na lista, toda segunda",
+            "medir": {
+              "rotulo": "A meta até o lançamento",
+              "meta": "2 nomes por barbeiro, toda semana.",
+              "textos": [
+                "Numa barbearia de 2 a 4 barbeiros, é mais ou menos 1 em cada 6 clientes que passam (base do BestBarbers). Cada 10 nomes viram 1 a 2 assinantes no lançamento. Depois, a venda segue na cadeira."
+              ]
+            },
+            "textos": [
+              "Toda segunda, conte os nomes da lista e escreva no grupo dos barbeiros.",
+              {
+                "texto": "Em dezembro a barbearia enche sozinha: é a hora de encher a lista.",
+                "meses": [
+                  11,
+                  12
+                ]
+              }
+            ]
+          }
+        ],
+        "ligacao": {
+          "id": "ligacao",
+          "rotulo": "O próximo passo",
+          "titulo": "Antes de {mes+2}: o plano",
+          "feito": [
+            "Você escolhe os dias e o limite de cortes do plano.",
+            "O cliente paga uma vez por mês, no cartão.",
+            "Quem atrasou não consegue marcar."
+          ],
+          "no_bestbarbers": "a parte da equipe entra no cadastro do plano, e o sistema faz a divisão no fechamento. Decida a parte da equipe antes de criar o plano: é ela que vale em todo fechamento.",
+          "textos": [
+            "O plano, numa linha: um plano só de corte, com até 4 cortes no mês, que não vale no sábado. O preço: o de 2 cortes. Se o seu corte é R$ 55, a assinatura fica em uns R$ 110. Assim, o sábado continua do cliente que paga avulso."
+          ],
+          "chamada": "Na ligação, a gente olha os seus números com você e mostra como a assinatura fica no BestBarbers. Quando fica melhor?"
+        },
+        "fontes": {
+          "rotulo": "De onde vêm os exemplos.",
+          "texto": "A conversa com a equipe, a lista antes de lançar, a mensagem para quem vem sempre, o convite e o preço de até 2 cortes vêm de um curso para donos de barbearia, com uma barbearia grande. A meta de nomes vem da base do BestBarbers. Nenhum exemplo leva nome."
+        }
+      },
+      "p03:equipe": {
+        "subtitulo": "Da assinatura, a equipe leva a comissão de sempre: quem atendeu metade, leva metade.",
+        "acoes": [
+          {
+            "id": "agenda",
+            "titulo": "Todo assinante entra na agenda como “Corte assinatura”",
+            "como": "No nome de quem atendeu. Sem sistema, uma folha por barbeiro.",
+            "traz": "No fim do mês, o que cada um atendeu está no papel, sem discussão."
+          },
+          {
+            "id": "extrato",
+            "titulo": "Abra o extrato do Pix e faça a lista de quem paga",
+            "como": "Nome, plano e se pagou {mes-1}.",
+            "traz": "Você sabe quanto entra de assinatura e cobra amanhã quem não pagou."
+          },
+          {
+            "id": "equipe",
+            "titulo": "Conte à equipe: {mes+1} é o mês de teste",
+            "como": "A conta nova no papel, e todo mundo recebe como hoje.",
+            "traz": "Antes de qualquer mudança, cada um já viu a conta dele."
+          }
+        ],
+        "gancho": "A mensagem, a cobrança e a fala, aqui embaixo",
+        "divisor": "Como fazer cada uma",
+        "blocos": [
+          {
+            "id": "agenda",
+            "rotulo": "Na agenda",
+            "titulo": "Todo atendimento de assinante, com o nome de quem fez",
+            "passos": [
+              "Amanhã, crie 3 serviços na agenda: Corte assinatura, Barba assinatura e Corte e barba assinatura.",
+              "Todo assinante é marcado num deles, no nome do barbeiro que atendeu.",
+              "Cada serviço de assinante vale pontos: corte, 2; barba, 1; corte e barba, 3. Sem sistema, na folha do barbeiro, um risquinho por ponto.",
+              "Extras, como a sobrancelha, ficam fora: pagam a comissão de sempre."
+            ],
+            "pronto": {
+              "rotulo": "A mensagem para o grupo da equipe",
+              "texto": "Pessoal, a partir de amanhã todo assinante entra na agenda como Corte assinatura, Barba assinatura ou Corte e barba assinatura, no nome de quem atendeu. É isso que vai mostrar quanto cada um atendeu de assinante no mês.",
+              "equipe": "{texto}"
+            },
+            "no_bestbarbers": "com a assinatura no cartão, cada serviço do plano tem os seus pontos, e no fechamento o sistema divide a parte da equipe.",
+            "prova": {
+              "rotulo": "Quem já faz",
+              "texto": "Uma rede de barbearias faz assim e ensina num curso para donos: cada serviço de assinante tem nome próprio na agenda e vale pelo tempo que leva. O corte leva o dobro da barba e vale o dobro; corte e barba, o triplo."
+            },
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "Toda noite, confira: todo assinante do dia está marcado, no nome de quem atendeu?"
+              ]
+            },
+            "textos": [
+              "Sem saber quem atendeu cada assinante, não tem como dividir. Por isso, este vem primeiro."
+            ]
+          },
+          {
+            "id": "extrato",
+            "rotulo": "No celular",
+            "titulo": "A lista de quem paga",
+            "passos": [
+              "Amanhã, abra o extrato do Pix de {mes-1} e de {mes}. Quem paga em dinheiro, pelo caderno.",
+              "Numa folha ou no bloco de notas, uma linha por assinante: nome, plano, dia que paga e se pagou {mes-1} e {mes}.",
+              "Some o que entrou em {mes-1} e escreva no alto da folha. Esse é o dinheiro da assinatura que se divide.",
+              "Quem não pagou {mes-1}? Mande a mensagem abaixo amanhã mesmo."
+            ],
+            "pronto": {
+              "rotulo": "A mensagem para quem não pagou",
+              "texto": "Fala, [nome]! Aqui é o [seu nome], da [barbearia].\nFui fechar o mês e não achei o Pix da sua assinatura de {mes-1}. Consegue mandar hoje? A chave é [chave]."
+            },
+            "no_bestbarbers": "a assinatura é no cartão e a cobrança sai sozinha, todo mês. Quem já paga a você ganha o vencimento no mesmo dia em que paga hoje.",
+            "prova": {
+              "rotulo": "O aviso do curso",
+              "texto": "No mesmo curso: “Se é PIX, não é mais assinatura”. Quando o próprio curso, de R$ 99,90 por mês, aceitou Pix, 8 em cada 10 que escolheram o Pix não pagaram na data já no 1º mês."
+            },
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "A lista tem todo mundo que paga, o total de {mes-1} está no alto, e quem não pagou recebeu a mensagem."
+              ]
+            },
+            "textos": [
+              "É o primeiro número da divisão: quanto entra de assinatura no mês."
+            ]
+          },
+          {
+            "id": "equipe",
+            "rotulo": "Antes de abrir",
+            "titulo": "{Mes+1} é o mês de teste",
+            "passos": [
+              "Amanhã, antes de abrir, junte a equipe por 10 minutos e leia a fala abaixo.",
+              "Em {mes+1}, pague do jeito de hoje. Ao lado, faça no papel a conta nova (o jeito está logo abaixo).",
+              "No fim de {mes+1}, mostre as duas contas, barbeiro por barbeiro.",
+              "Viu as duas contas com a equipe e fechou? A regra nova começa no dia 1º seguinte, nunca no meio do mês."
+            ],
+            "pronto": {
+              "rotulo": "O que falar",
+              "texto": "Pessoal, a assinatura é da barbearia, não de um barbeiro.\nDo que entra de assinatura no mês, uma parte é de vocês, venha o assinante pouco ou muito.\nEssa parte se divide pelo tempo de agenda: quem atendeu metade, leva metade.\nEm {mes+1} vocês recebem como sempre, e eu faço a conta nova no papel, do lado.\nNo fim do mês, cada um vê as duas contas. A regra nova só começa depois disso, sempre num dia 1º."
+            },
+            "prova": {
+              "rotulo": "Quem já fez",
+              "texto": "Num curso para donos, quem passou a equipe para a assinatura reuniu todo mundo e mostrou a conta no papel, com números, antes de mudar. E a comissão nova vale do mês seguinte em diante."
+            },
+            "medir": {
+              "rotulo": "Funcionou?",
+              "textos": [
+                "No fim de {mes+1}, as duas contas lado a lado, por barbeiro. A diferença é o que você conversa com a equipe antes de mudar.",
+                "Deu diferença grande para alguém? Primeiro confira se todo assinante que ele atendeu está marcado no nome dele. Estando certo, leve as duas contas para a ligação."
+              ]
+            },
+            "textos": [
+              "A regra nova só começa num dia 1º. Antes, a equipe vê a conta no papel."
+            ]
+          },
+          {
+            "id": "conta",
+            "rotulo": "A conta de {mes+1}",
+            "titulo": "Como dividir, num caderno",
+            "passos": [
+              "A parte da equipe é a mesma da comissão de hoje: se o barbeiro leva 40 de cada 100 no corte, a equipe leva 40 de cada 100 da assinatura. O resto é da barbearia.",
+              "Some os pontos de cada barbeiro no mês.",
+              "Na calculadora do celular, para cada barbeiro: os pontos dele ÷ os pontos de todos × a parte da equipe."
+            ],
+            "medir": {
+              "rotulo": "Um exemplo no caderno",
+              "textos": [
+                "Entrou R$ 4.800 de assinatura. A parte da equipe, 40 de cada 100, é R$ 1.920.",
+                "O barbeiro A fez 90 pontos; o B, 60; o C, 30: 180 no total. O A fez metade: leva R$ 960 (na calculadora, 90 ÷ 180 × 1.920). O B fez um terço: leva R$ 640. O C leva o que sobra: R$ 320."
+              ]
+            }
+          },
+          {
+            "id": "numero",
+            "rotulo": "O número da semana",
+            "titulo": "Os pontos de cada barbeiro, toda segunda",
+            "medir": {
+              "rotulo": "A meta de {mes+1}",
+              "meta": "Nenhum assinante atendido sem o nome de quem fez.",
+              "textos": []
+            },
+            "textos": [
+              "Toda segunda, some os pontos da semana de cada um e escreva no grupo dos barbeiros. Cada um acompanha o que está fazendo, sem esperar o fim do mês."
+            ]
+          }
+        ],
+        "ligacao": {
+          "id": "ligacao",
+          "rotulo": "O próximo passo",
+          "titulo": "Antes de {mes+2}: a assinatura no cartão",
+          "feito": [
+            "Quem já assina passa para o cartão no mesmo dia em que paga hoje.",
+            "A parte da equipe e os pontos de cada serviço ficam no cadastro do plano.",
+            "No fechamento, o sistema divide a parte da equipe pelo que cada um atendeu."
+          ],
+          "textos": [
+            "Com o Pix, todo mês você confere no extrato, um por um, quem pagou. No cartão, a cobrança sai sozinha todo mês, e você vê na lista quem está em dia e quem venceu."
+          ],
+          "chamada": "Na ligação, a gente olha os seus números com você e mostra como a divisão fica no BestBarbers. Quando fica melhor?"
+        },
+        "fontes": {
+          "rotulo": "De onde vêm os exemplos.",
+          "texto": "O serviço de assinatura na agenda, a divisão pelo tempo de agenda, a parte da equipe e a mudança só no mês seguinte vêm de cursos para donos de barbearia. O mês de teste é sugestão nossa. Nenhum exemplo leva nome."
+        }
       }
     }
   }

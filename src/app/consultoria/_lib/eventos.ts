@@ -3,7 +3,10 @@
 // `page_view` da página do plano (/consultoria/plano?…&de=ficha), aberta com navegação completa.
 type DadosDoEvento = Record<string, string | number | boolean | null | undefined>;
 
-export function empurrar(evento: "consultoria_inicio" | "consultoria_fim" | "consultoria_horario", dados: DadosDoEvento = {}) {
+export function empurrar(
+  evento: "consultoria_inicio" | "consultoria_fim" | "consultoria_horario" | "consultoria_copiar",
+  dados: DadosDoEvento = {},
+) {
   if (typeof window === "undefined") return;
   const w = window as unknown as { dataLayer?: unknown[] };
   w.dataLayer = w.dataLayer || [];

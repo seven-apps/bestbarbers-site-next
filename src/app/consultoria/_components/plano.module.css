@@ -1,0 +1,63 @@
+/* O plano no molde v5 (aprovado em 08/Nov/26): a 1ª tela com as ações cabe em 664 px de altura a 390 px de largura
+   (a área útil do Safari no celular), sem rolar. Papel claro, texto preto, dourado só no destaque. */
+.plano { --rotulo: #8a5d00; --verde: #25d366; scroll-behavior: smooth; }
+.topo { background: var(--tinta); padding: 11px 20px 9px; }
+.logo { height: 17px; width: auto; display: block; }
+.barra { height: 4px; background: #2a2a2a; border-radius: 4px; margin-top: 8px; overflow: hidden; }
+.barra span { display: block; height: 100%; width: 100%; background: var(--dourado); }
+.corpo { padding: 10px 20px 40px; }
+.corpo h1 { font-size: 22px; line-height: 1.2; font-weight: 800; letter-spacing: -.02em; }
+.corpo h1:focus { outline: none; }
+
+.rotulo { font-size: 11px; font-weight: 800; letter-spacing: .12em; color: var(--rotulo); text-transform: uppercase; }
+.sub { font-size: 14px; line-height: 1.4; color: var(--tinta-2); margin-top: 4px; }
+.num { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--dourado); color: var(--tinta); font-size: 12px; font-weight: 800; vertical-align: 2px; margin-right: 6px; }
+
+/* ETAPA 1: a 1ª tela, as ações */
+.acoes { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.acao { display: block; text-decoration: none; color: inherit; background: #fff; border: 1.5px solid var(--linha); border-radius: 14px; padding: 11px 12px 10px; }
+.acao:active { transform: scale(.99); }
+.acao:focus-visible { outline: 2px solid var(--dourado); outline-offset: 2px; }
+.acao h2 { font-size: 15.5px; line-height: 1.3; font-weight: 800; }
+.como { font-size: 13.5px; line-height: 1.38; color: var(--tinta-2); margin-top: 3px; }
+.traz { display: flex; gap: 6px; margin-top: 6px; font-size: 13.5px; line-height: 1.35; font-weight: 700; background: var(--dourado-claro); border-radius: 9px; padding: 5px 9px; }
+.traz b { color: var(--rotulo); }
+.gancho { margin-top: 10px; font-size: 13px; font-weight: 700; color: var(--tinta-2); text-align: center; }
+
+/* ETAPA 2: o detalhe */
+.divisor { margin: 30px 0 4px; display: flex; align-items: center; gap: 10px; }
+.divisor::before, .divisor::after { content: ""; flex: 1; height: 1px; background: var(--linha); }
+.bloco { margin-top: 16px; background: #fff; border: 1px solid var(--linha); border-radius: 14px; padding: 18px 16px; scroll-margin-top: 12px; }
+.bloco h3 { font-size: 19px; line-height: 1.25; font-weight: 800; letter-spacing: -.01em; margin-top: 6px; }
+.bloco p { font-size: 15px; line-height: 1.5; color: var(--tinta-2); margin-top: 8px; }
+.bloco .rotulo { margin-top: 0; font-size: 11px; line-height: 1.4; color: var(--rotulo); }
+.mini { font-size: 11px !important; font-weight: 800; letter-spacing: .1em; color: var(--rotulo) !important; text-transform: uppercase; margin-top: 16px; }
+.passos { list-style: none; counter-reset: p; margin-top: 4px; padding: 0; }
+.passos li { counter-increment: p; position: relative; padding-left: 30px; font-size: 15px; line-height: 1.45; margin-top: 8px; }
+.passos li::before { content: counter(p); position: absolute; left: 0; top: 1px; width: 21px; height: 21px; border-radius: 50%; border: 1.5px solid var(--tinta); font-size: 11.5px; font-weight: 800; display: grid; place-items: center; }
+.pronto { margin-top: 14px; background: var(--papel); border: 1px dashed #d3ccbd; border-radius: 12px; padding: 12px 13px; }
+.pronto .mini { margin-top: 0; }
+.texto { font-size: 15px; line-height: 1.5; color: var(--tinta) !important; white-space: pre-line; margin-top: 6px !important; }
+.botoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1.5px solid var(--tinta); background: #fff; color: var(--tinta); font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; text-decoration: none; white-space: nowrap; }
+.btn:focus-visible { outline: 2px solid var(--dourado); outline-offset: 2px; }
+.zap { background: var(--verde); border-color: var(--verde); color: #08311a; }
+.linhaInfo { margin-top: 12px; font-size: 14px !important; line-height: 1.45 !important; }
+.linhaInfo strong { color: var(--tinta); }
+.prova { margin-top: 14px; border-left: 3px solid var(--dourado); padding: 2px 0 2px 12px; }
+.prova p { margin-top: 0; font-size: 14.5px; color: var(--tinta); }
+.prova .mini { margin: 0 0 3px; }
+.medir { margin-top: 14px; background: var(--dourado-claro); border-radius: 12px; padding: 12px 13px; }
+.medir .mini { margin-top: 0; }
+.medir p { color: var(--tinta); font-size: 14.5px; margin-top: 4px; }
+.medir .meta { font-size: 17px; line-height: 1.35; font-weight: 800; }
+.feito { list-style: none; margin-top: 8px; padding: 0; }
+.feito li { position: relative; padding-left: 28px; font-size: 15px; line-height: 1.4; margin-top: 8px; font-weight: 600; }
+.feito li::before { content: ""; position: absolute; left: 0; top: 1px; width: 19px; height: 19px; border-radius: 50%; background: var(--dourado); }
+.feito li::after { content: ""; position: absolute; left: 7px; top: 5px; width: 4px; height: 8px; border: solid var(--tinta); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.ligacao { border-color: var(--tinta); }
+.confirmado { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--tinta) !important; }
+.confirmado svg { width: 20px; height: 20px; flex: 0 0 20px; background: var(--dourado); border-radius: 50%; padding: 3px; }
+.erro { color: #b42318 !important; font-size: 13px !important; }
+.fontes { margin-top: 24px; font-size: 12px; line-height: 1.55; color: var(--apagado); }
+.fontes strong { color: var(--tinta-2); }

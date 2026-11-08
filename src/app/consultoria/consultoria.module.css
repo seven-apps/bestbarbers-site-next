@@ -57,24 +57,9 @@
 .whatsapp { margin-top: 22px; width: 100%; border-radius: 14px; padding: 16px; font-size: 16px; font-weight: 700; background: #25d366; color: #08311a; display: flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; }
 .whatsapp svg { width: 20px; height: 20px; }
 
-/* A página do plano (braço do texto, 07/Nov/26). */
+/* O texto livre da trava "Outra coisa" (07/Nov/26). O resto da página do plano está em _components/plano.module.css. */
 .campo { width: 100%; font: inherit; font-size: 16px; padding: 12px; border: 1.5px solid var(--linha); border-radius: 12px; background: #fff; color: var(--tinta); margin-top: 8px; resize: vertical; }
 .campo:focus { outline: none; border-color: var(--tinta); }
 .subpergunta label { font-size: 14px; font-weight: 700; }
 .principal:disabled { opacity: .7; cursor: progress; }
-.caminho { font-size: 16px; line-height: 1.4; font-weight: 600; color: var(--tinta-2); margin-top: 10px; }
-.leitura { font-size: 12.5px; color: var(--apagado); margin-top: 8px; }
-.numeros { display: flex; align-items: center; gap: 10px; margin-top: 18px; background: var(--tinta); color: #fff; border-radius: 14px; padding: 14px 16px; flex-wrap: wrap; }
-.numeros span { display: flex; flex-direction: column; font-size: 15px; font-weight: 800; }
-.numeros small { font-size: 10.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--dourado); }
-.numeros .seta { font-size: 20px; color: var(--dourado); }
-.secao { margin-top: 22px; background: #fff; border: 1px solid var(--linha); border-radius: 14px; padding: 16px; }
-.secao h2 { font-size: 11px; font-weight: 800; letter-spacing: .12em; color: #8a5d00; text-transform: uppercase; }
-.secao p { font-size: 15px; line-height: 1.5; color: var(--tinta-2); margin-top: 8px; }
-.destaque { font-size: 19px !important; font-weight: 800; color: var(--tinta) !important; }
-.destaque small { display: block; font-size: 12px; font-weight: 500; color: var(--apagado); }
-.tituloPlano { font-weight: 800; color: var(--tinta) !important; }
-.horario { border-color: var(--tinta); }
-.confirmado { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--tinta) !important; }
-.confirmado svg { width: 20px; height: 20px; flex: 0 0 20px; background: var(--dourado); border-radius: 50%; padding: 3px; }
 .miudo a { color: var(--tinta-2); text-decoration: underline; }

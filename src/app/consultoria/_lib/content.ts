@@ -19,8 +19,8 @@ export function conteudoPublico(): ConteudoConsultoria {
     prazo: source.prazo,
     horarios: source.horarios,
     planos: {
-      alavancas: source.planos.alavancas,
       por_trava: source.planos.por_trava as ConteudoConsultoria["planos"]["por_trava"],
+      v5: source.planos.v5 as ConteudoConsultoria["planos"]["v5"],
     },
   };
 }
