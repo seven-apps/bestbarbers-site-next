@@ -285,7 +285,14 @@ export const TEXTOS_AREA = {
     // Texto novo: cabeçalho da aula aberta.
     cabecalho: (n: number) => `Aula ${n} de 6`,
     semVideo: (n: number) => `A aula ${n} entra aqui em breve.`,
-    videoComErro: "O vídeo não carregou. Atualize a página para tentar de novo.",
+    // Texto novo (10/Nov/26): o erro do player com saída. "Atualizar a página" não resolvia e não
+    // era saída; o botão remonta o player sem recarregar. O aluno fica DENTRO do curso (decisão
+    // do André): nenhum link para o YouTube no erro. A dica diz "o link do curso" porque o acesso
+    // fica guardado no navegador onde o link foi aberto: noutro navegador, só o link (do WhatsApp
+    // ou do e-mail) abre a área; o endereço copiado da barra cai em "link inválido".
+    videoComErro: "O vídeo não carregou.",
+    tentarDeNovo: "Tentar de novo",
+    dicaVideoComErro: "Se não abrir, abra o link do curso no Safari ou no Chrome e troque a rede (Wi‑Fi ou internet do celular).", // "Wi‑Fi" com U+2011, o hífen que não quebra (no iPhone SE a linha quebrava em "Wi-")
   },
   botoes: {
     proxima: (tituloProxima: string) => `PRÓXIMA AULA: ${tituloProxima}`,
