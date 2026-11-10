@@ -116,6 +116,12 @@ export interface ConteudoConsultoria {
       whatsapp: string; whatsapp_placeholder: string; botao: string; rodape: string;
       enviando: string; erro: string;
     };
+    /** A tela de contato do braço cedo (A/B de 10/Nov/26, ./ab.ts): vem antes das últimas perguntas, não antes do plano. */
+    contato_cedo: {
+      rotulo: string; pergunta: string; nome: string; nome_placeholder: string;
+      whatsapp: string; whatsapp_placeholder: string; botao: string; rodape: string;
+      enviando: string; erro: string;
+    };
     pronto: {
       titulo: string; titulo_sem_nome: string; uma: string; varias: string;
       gancho: string; divisor: string; divisor_uma: string; rotulo_uma: string;

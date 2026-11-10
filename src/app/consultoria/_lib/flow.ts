@@ -1,9 +1,17 @@
 // Fonte: ficha aprovada da consultoria (04/Nov/26) + faturamento e meta (S21, 07/Nov/26). Regras do fluxo, sem React, para os testes.
+import type { BracoContato } from "./ab.ts";
 import type { ConteudoConsultoria, Respostas, Tela } from "./types.ts";
 
 /** As perguntas de toque, na ordem. Contato e "pronto" não contam no "Pergunta X de Y". */
 export const PERGUNTAS: readonly Tela[] = ["objetivo", "trava", "quem", "assinatura", "faturamento", "meta", "prazo"];
+/** Braço "fim" (controle, o fluxo de 07/Nov/26): o contato depois de todas as perguntas. */
 export const ORDEM: readonly Tela[] = [...PERGUNTAS, "contato", "pronto"];
+/** Braço "cedo" (A/B de 10/Nov/26, regra em ./ab.ts): o contato logo depois da pergunta de equipe. */
+export const ORDEM_CEDO: readonly Tela[] = ["objetivo", "trava", "quem", "contato", "assinatura", "faturamento", "meta", "prazo", "pronto"];
+
+export function ordemDoBraco(braco: BracoContato = "fim"): readonly Tela[] {
+  return braco === "cedo" ? ORDEM_CEDO : ORDEM;
+}
 
 type ComTravas = Pick<ConteudoConsultoria, "travas">;
 
@@ -57,10 +65,12 @@ export function telaRespondida(tela: Tela, r: Respostas): boolean {
   return true;
 }
 
-export function proximaTela(conteudo: ComTravas, atual: Tela, r: Respostas): Tela {
-  let indice = ORDEM.indexOf(atual) + 1;
-  while (indice < ORDEM.length - 1 && pula(conteudo, ORDEM[indice], r)) indice++;
-  return ORDEM[Math.min(indice, ORDEM.length - 1)];
+/** A tela seguinte no braço. No braço "cedo", depois do prazo vem "pronto": é a hora de montar o plano e sair. */
+export function proximaTela(conteudo: ComTravas, atual: Tela, r: Respostas, braco: BracoContato = "fim"): Tela {
+  const ordem = ordemDoBraco(braco);
+  let indice = ordem.indexOf(atual) + 1;
+  while (indice < ordem.length - 1 && pula(conteudo, ordem[indice], r)) indice++;
+  return ordem[Math.min(indice, ordem.length - 1)];
 }
 
 /**
@@ -92,10 +102,9 @@ export function escolher(conteudo: ComTravas, r: Respostas, chave: keyof Respost
   return novo;
 }
 
-/** Fração da barra de progresso (0 a 1). */
-export function progresso(conteudo: ComTravas, tela: Tela, r: Respostas): number {
+/** Fração da barra de progresso (0 a 1): a posição da tela entre as perguntas que valem e o contato, no braço. */
+export function progresso(conteudo: ComTravas, tela: Tela, r: Respostas, braco: BracoContato = "fim"): number {
   if (tela === "pronto") return 1;
-  const perguntas = perguntasDoFluxo(conteudo, r);
-  if (tela === "contato") return perguntas.length / (perguntas.length + 1);
-  return Math.max(perguntas.indexOf(tela), 0) / (perguntas.length + 1);
+  const sequencia = ordemDoBraco(braco).filter((t) => t !== "pronto" && !pula(conteudo, t, r));
+  return Math.max(sequencia.indexOf(tela), 0) / sequencia.length;
 }

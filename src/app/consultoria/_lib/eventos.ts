@@ -4,7 +4,7 @@
 type DadosDoEvento = Record<string, string | number | boolean | null | undefined>;
 
 export function empurrar(
-  evento: "consultoria_inicio" | "consultoria_fim" | "consultoria_horario" | "consultoria_copiar",
+  evento: "consultoria_inicio" | "consultoria_tela" | "consultoria_contato" | "consultoria_fim" | "consultoria_horario" | "consultoria_copiar",
   dados: DadosDoEvento = {},
 ) {
   if (typeof window === "undefined") return;

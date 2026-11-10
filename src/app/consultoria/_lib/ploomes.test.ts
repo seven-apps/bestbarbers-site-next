@@ -4,8 +4,8 @@ import { readFileSync } from "node:fs";
 import { CLUBE_OPCOES, EQUIPE_OPCOES_V3, QUANDO_OPCOES } from "../../../lib/lead-score.ts";
 import { PLOOMES_OPCOES_CLUBE, PLOOMES_OPCOES_QUANDO } from "../../../lib/ploomes-fields.ts";
 import {
-  ENVIO_PLOOMES_ATIVO, FATURAMENTO_DO_CRM, LIMITE_DO_CAMPO, LP_VERSION, anotacaoDoHorario, resumoCurto, clubeDoCRM, dadosDoContato, equipeDoCRM,
-  limparTextoLivre, quandoDoCRM, resumoDaFicha,
+  ENVIO_PLOOMES_ATIVO, FATURAMENTO_DO_CRM, FECHO_CEDO, LIMITE_DO_CAMPO, LP_VERSION, anotacaoDoHorario, resumoCurto, clubeDoCRM, dadosDoContato,
+  enderecoParaTerminar, equipeDoCRM, limparTextoLivre, quandoDoCRM, resumoDaFicha, resumoParcial,
 } from "./ploomes.ts";
 import { enderecoDoPlano } from "./plano.ts";
 import type { ConteudoConsultoria, Respostas } from "./types.ts";
@@ -90,4 +90,34 @@ test("A versão curta cabe no campo de 250 caracteres com os prefixos mais longo
 test("A anotação do horário segue o contrato", () => {
   assert.equal(anotacaoDoHorario(conteudo.horarios[1]), "[Consultoria] Horário escolhido: amanhã de manhã");
   assert.deepEqual(conteudo.horarios.map((h) => h.quando), ["hoje até as 18h", "amanhã de manhã", "amanhã à tarde", "prefiro por mensagem"]);
+});
+
+test("Braço cedo: o card nasce com a equipe e sem prazo, nota nem plano; a descrição avisa que as respostas vêm nas anotações", () => {
+  const parcial: Respostas = { objetivo: "assinatura", trava: "p05", quem: "equipe", porte: "2a4", assinatura: "mao" };
+  const dados = dadosDoContato({
+    nome: "Teste", whatsapp: "(11) 90000-0000", respostas: parcial, conteudo, enderecoDoPlano: "", leadEventId: "1-t-cons_cedo", fecho: FECHO_CEDO,
+  });
+  assert.equal(dados.employeeCount, "2 a 4 colaboradores");
+  assert.equal(dados.startWhen, undefined);
+  assert.equal(dados.leadScore, undefined);
+  assert.equal(dados.leadEventId, "1-t-cons_cedo");
+  assert.match(dados.descricaoExtra ?? "", /· Respostas nas anotações$/);
+  assert.ok((dados.descricaoExtra ?? "").length <= LIMITE_DO_CAMPO);
+});
+
+test("O controle segue com a descrição de antes", () => {
+  assert.match(resumoCurto(conteudo, caso), /· Plano nas anotações$/);
+});
+
+test("A anotação parcial tem o que ele respondeu, a situação e o link para terminar, e a ficha do SDR a reconhece", () => {
+  const parcial: Respostas = { objetivo: "faturamento", trava: "p10", quem: "solo" };
+  const terminar = enderecoParaTerminar("https://bestbarbers.app", parcial);
+  assert.equal(terminar, "https://bestbarbers.app/consultoria?objetivo=faturamento");
+  const linha = resumoParcial(conteudo, parcial, terminar);
+  // A ficha do SDR (bestbarbers-ai, consultoriaDaFicha) pega a anotação "[Consultoria] Objetivo:" mais nova.
+  assert.match(linha, /^\[Consultoria\] Objetivo: /);
+  assert.match(linha, / · Trava: /);
+  assert.match(linha, / · Quem: /);
+  assert.match(linha, / · Situação: deixou o contato antes do plano · Terminar: https:\/\/bestbarbers\.app\/consultoria\?objetivo=faturamento$/);
+  assert.equal(/Plano:|Prazo:|Distância:/.test(linha), false);
 });
