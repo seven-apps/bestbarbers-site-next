@@ -36,6 +36,18 @@
       "enviando": "Montando o seu plano…",
       "erro": "Não conseguimos registrar agora. Confira o WhatsApp e tente de novo."
     },
+    "contato_cedo": {
+      "rotulo": "Antes das últimas perguntas",
+      "pergunta": "Em nome de quem sai o seu plano?",
+      "nome": "Seu nome",
+      "nome_placeholder": "Como você quer ser chamado",
+      "whatsapp": "WhatsApp com DDD",
+      "whatsapp_placeholder": "(00) 00000-0000",
+      "botao": "Continuar",
+      "rodape": "O nosso time recebe as suas respostas e usa o seu WhatsApp só para falar do seu plano.",
+      "enviando": "Salvando…",
+      "erro": "Não conseguimos registrar agora. Confira o WhatsApp e tente de novo."
+    },
     "pronto": {
       "titulo": "{nome}, {quantas} para amanhã",
       "titulo_sem_nome": "{quantas} para amanhã",

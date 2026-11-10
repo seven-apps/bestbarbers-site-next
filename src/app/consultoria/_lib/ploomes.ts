@@ -100,7 +100,7 @@ export const LIMITE_DO_CAMPO = 250;
  * de `[SCORE]`/`[QUANDO]`, antes da atribuição (que pode ser cortada: os campos bb_* guardam a atribuição inteira).
  * A linha completa do contrato vai numa anotação no contato (`resumoDaFicha`).
  */
-export function resumoCurto(conteudo: ConteudoConsultoria, r: Respostas): string {
+export function resumoCurto(conteudo: ConteudoConsultoria, r: Respostas, fecho = "Plano nas anotações"): string {
   const trava = r.trava === "outra"
     ? (r.outra?.trim() ? `Outra coisa: "${limparTextoLivre(r.outra).slice(0, 60)}"` : "Outra coisa")
     : texto(r.objetivo ? conteudo.travas[r.objetivo]?.opcoes : undefined, r.trava);
@@ -109,7 +109,27 @@ export function resumoCurto(conteudo: ConteudoConsultoria, r: Respostas): string
     ["Faturamento", faixaDeHoje(conteudo, r)?.texto],
     ["Meta", faixaDaMeta(conteudo, r)?.texto],
   ];
-  return `[Consultoria] ${partes.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join(" · ")} · Plano nas anotações`;
+  return `[Consultoria] ${partes.filter(([, v]) => v).map(([k, v]) => `${k}: ${v}`).join(" · ")} · ${fecho}`;
+}
+
+/** O fecho da descrição no braço cedo: o card nasce antes do plano, e as respostas chegam depois, nas anotações. */
+export const FECHO_CEDO = "Respostas nas anotações";
+
+/**
+ * A anotação do braço cedo, gravada junto com o contato: o que ele respondeu até ali, a situação e o link para
+ * terminar. Se ele terminar, a anotação completa (`resumoDaFicha`) entra depois e é a que a ficha do SDR lê (a ficha
+ * pega a anotação `[Consultoria] Objetivo:` mais nova). Se não terminar, esta é a que fica.
+ */
+export function resumoParcial(conteudo: ConteudoConsultoria, r: Respostas, enderecoParaTerminar: string): string {
+  const linha = resumoDaFicha(conteudo, r, "");
+  return `${linha} · Situação: deixou o contato antes do plano · Terminar: ${enderecoParaTerminar}`;
+}
+
+/** O link que o SDR manda para quem parou no meio: a consultoria de novo, com o objetivo que ele já escolheu. */
+export function enderecoParaTerminar(origem: string, r: Respostas): string {
+  const url = new URL("/consultoria", origem);
+  if (r.objetivo) url.searchParams.set("objetivo", r.objetivo);
+  return url.toString();
 }
 
 /**
@@ -123,6 +143,8 @@ export function dadosDoContato(input: {
   conteudo: ConteudoConsultoria;
   enderecoDoPlano: string;
   leadEventId: string;
+  /** O fim da descrição curta; no braço cedo, `FECHO_CEDO`. */
+  fecho?: string;
 }): PloomesContactData {
   const { respostas: r } = input;
   const nome = input.nome.trim();
@@ -137,7 +159,7 @@ export function dadosDoContato(input: {
     startWhen: quandoDoCRM(r),
     leadScore: nota ?? undefined,
     leadEventId: input.leadEventId,
-    descricaoExtra: resumoCurto(input.conteudo, r),
+    descricaoExtra: resumoCurto(input.conteudo, r, input.fecho),
     lpVersion: LP_VERSION,
   };
 }

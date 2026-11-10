@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { escolher, objetivoDaUrl, perguntasDoFluxo, progresso, proximaTela, pulaAssinatura, telaRespondida } from "./flow.ts";
+import { escolher, objetivoDaUrl, ordemDoBraco, perguntasDoFluxo, progresso, proximaTela, pulaAssinatura, telaRespondida } from "./flow.ts";
 import type { ConteudoConsultoria, Respostas, Tela } from "./types.ts";
 
 const conteudo = JSON.parse(readFileSync(new URL("../_data/consultoria-v2.json", import.meta.url), "utf8")) as ConteudoConsultoria;
@@ -80,4 +80,59 @@ test("objetivo pela URL só vale id que existe; progresso vai de 0 a 1", () => {
   assert.equal(progresso(conteudo, "pronto", {}), 1);
   const r: Respostas = { objetivo: "equipe", trava: "p34", quem: "solo" };
   assert.ok(progresso(conteudo, "contato", r) < 1);
+});
+
+/** Como `caminhar`, no braço do A/B do contato. */
+function caminharNoBraco(braco: "fim" | "cedo", inicio: Tela, toques: [keyof Respostas, string][]) {
+  let tela = inicio;
+  let r: Respostas = {};
+  const visitadas: Tela[] = [tela];
+  for (const [chave, valor] of toques) {
+    r = escolher(conteudo, r, chave, valor);
+    while (telaRespondida(tela, r) && tela !== "pronto") {
+      tela = proximaTela(conteudo, tela, r, braco);
+      visitadas.push(tela);
+      if (tela !== "contato") break;
+    }
+  }
+  return { visitadas, r };
+}
+
+test("Braço cedo, vindo do anúncio: trava, equipe, contato, e só depois as outras perguntas; o fim é o plano", () => {
+  const toques: [keyof Respostas, string][] = [
+    ["objetivo", "faturamento"], ["trava", "p10"], ["quem", "equipe"], ["porte", "2a4"], ["assinatura", "nao"],
+    ["faturamento", "10a20"], ["meta", "30a60"], ["prazo", "mes"],
+  ];
+  const { visitadas } = caminharNoBraco("cedo", "objetivo", toques);
+  assert.deepEqual(visitadas, ["objetivo", "trava", "quem", "contato", "assinatura", "faturamento", "meta", "prazo", "pronto"]);
+  assert.equal(ordemDoBraco("cedo").indexOf("contato"), ordemDoBraco("cedo").indexOf("quem") + 1);
+});
+
+test("Braço cedo: a equipe já está respondida quando o contato aparece (o card nasce com ela)", () => {
+  const ordem = ordemDoBraco("cedo");
+  for (const antes of ["objetivo", "trava", "quem"] as const) assert.ok(ordem.indexOf(antes) < ordem.indexOf("contato"));
+});
+
+test("Braço cedo: o barbeiro e quem vai abrir pulam as mesmas perguntas do controle", () => {
+  assert.equal(proximaTela(conteudo, "contato", { quem: "barbeiro" }, "cedo"), "prazo");
+  assert.equal(proximaTela(conteudo, "contato", { quem: "abrir" }, "cedo"), "assinatura");
+  assert.equal(proximaTela(conteudo, "assinatura", { quem: "abrir" }, "cedo"), "meta");
+  assert.equal(proximaTela(conteudo, "prazo", { quem: "solo" }, "cedo"), "pronto");
+});
+
+test("O controle não mudou: sem braço, ou no braço fim, o contato vem depois do prazo", () => {
+  assert.equal(proximaTela(conteudo, "prazo", { quem: "solo" }), "contato");
+  assert.equal(proximaTela(conteudo, "prazo", { quem: "solo" }, "fim"), "contato");
+  assert.equal(proximaTela(conteudo, "quem", { quem: "solo", objetivo: "faturamento", trava: "p10" }, "fim"), "assinatura");
+});
+
+test("A barra só anda para a frente nos dois braços", () => {
+  const r: Respostas = { objetivo: "faturamento", trava: "p10", quem: "equipe", porte: "2a4", assinatura: "nao", faturamento: "10a20", meta: "30a60", prazo: "mes" };
+  for (const braco of ["fim", "cedo"] as const) {
+    const telas = ordemDoBraco(braco);
+    const valores = telas.map((t) => progresso(conteudo, t, r, braco));
+    for (let i = 1; i < valores.length; i++) assert.ok(valores[i] > valores[i - 1], `${braco}: ${telas[i]}`);
+    assert.equal(valores[0], 0);
+    assert.equal(valores[valores.length - 1], 1);
+  }
 });
