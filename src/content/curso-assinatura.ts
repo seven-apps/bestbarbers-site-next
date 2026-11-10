@@ -291,6 +291,9 @@ export const TEXTOS_AREA = {
     // fica guardado no navegador onde o link foi aberto: noutro navegador, só o link (do WhatsApp
     // ou do e-mail) abre a área; o endereço copiado da barra cai em "link inválido".
     videoComErro: "O vídeo não carregou.",
+    // O player não ficou pronto em 20 s (`sem_ready`): pode ser só internet lenta, e o card some
+    // sozinho quando o vídeo carregar. "Não carregou" seria falso enquanto ele ainda carrega.
+    videoDemorando: "O vídeo está demorando para carregar.",
     tentarDeNovo: "Tentar de novo",
     dicaVideoComErro: "Se não abrir, abra o link do curso no Safari ou no Chrome e troque a rede (Wi‑Fi ou internet do celular).", // "Wi‑Fi" com U+2011, o hífen que não quebra (no iPhone SE a linha quebrava em "Wi-")
   },

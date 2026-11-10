@@ -406,6 +406,7 @@ test("erro do vídeo: o card tem a mensagem, o botão e a dica, sem link para o 
   const a = TEXTOS_AREA.aula as Record<string, unknown>;
   assert.equal(a.videoComErro, "O vídeo não carregou.");
   assert.equal(a.tentarDeNovo, "Tentar de novo");
+  assert.equal(a.videoDemorando, "O vídeo está demorando para carregar.", "sem_ready não diz que falhou: pode ser só lento");
   assert.match(String(a.dicaVideoComErro), /link do curso no Safari ou no Chrome/, "noutro navegador só o link abre a área");
-  assert.doesNotMatch(`${a.videoComErro} ${a.dicaVideoComErro}`, /youtube|youtu\.be|atualize a página/i);
+  assert.doesNotMatch(`${a.videoComErro} ${a.videoDemorando} ${a.dicaVideoComErro}`, /youtube|youtu\.be|atualize a página/i);
 });

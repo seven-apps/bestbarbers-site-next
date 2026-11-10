@@ -321,7 +321,9 @@ export function PlayerAula({
         >
           {/* Abaixo de 360 px (iPhone SE) o vídeo tem ~160 px de altura: sem o ícone, a dica cabe com folga. */}
           <TriangleAlert className="w-6 h-6 text-[#ffaf02] max-[359px]:hidden" />
-          <p className="text-[15px] font-semibold text-white/85">{TEXTOS_AREA.aula.videoComErro}</p>
+          <p className="text-[15px] font-semibold text-white/85">
+            {erro === "sem_ready" ? TEXTOS_AREA.aula.videoDemorando : TEXTOS_AREA.aula.videoComErro}
+          </p>
           <button
             type="button"
             onClick={() => {
