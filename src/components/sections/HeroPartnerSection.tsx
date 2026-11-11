@@ -48,6 +48,11 @@ interface HeroPartnerSectionProps {
   source?: string | null;
   /** Cupom válido do link (out/26): o topo vira a oferta do cupom; a foto do parceiro continua. */
   cupom?: CupomParceiro | null;
+  /**
+   * Foto do parceiro criado pelo time no dashboard (/p/<slug>, 11/Nov/26): vem do OS, não do imageMap. Quando vem,
+   * vence o `source`: o herói fica igual ao dos parceiros antigos, só que sem deploy por parceiro.
+   */
+  fotoRemota?: { src: string; width: number; height: number; alt: string } | null;
 }
 
 /**
@@ -71,6 +76,7 @@ export function HeroPartnerSection({
   onCtaClick,
   source,
   cupom,
+  fotoRemota,
 }: HeroPartnerSectionProps) {
   const { hero } = homeContent;
 
@@ -109,12 +115,12 @@ export function HeroPartnerSection({
   }), []);
 
   // Slug desconhecido OU banido cai no herói genérico — fallback, nunca erro.
-  const isPartnerImage = !!(
+  const isPartnerImage = !!fotoRemota || !!(
     source &&
     !SOURCES_BANIDOS.has(source.trim().toLowerCase()) &&
     imageMap[source]
   );
-  const displayImage = isPartnerImage ? imageMap[source!] : hero.image.src;
+  const displayImage = fotoRemota ? fotoRemota.src : isPartnerImage ? imageMap[source!] : hero.image.src;
 
   return (
     <section
@@ -206,9 +212,9 @@ export function HeroPartnerSection({
               <div className="relative w-full max-w-[100%] md:max-w-[95%] lg:max-w-full">
                 <Image
                   src={displayImage}
-                  alt={hero.image.alt}
-                  width={hero.image.width}
-                  height={hero.image.height}
+                  alt={fotoRemota?.alt ?? hero.image.alt}
+                  width={fotoRemota?.width ?? hero.image.width}
+                  height={fotoRemota?.height ?? hero.image.height}
                   className="w-full h-auto max-h-[65vh] md:max-h-[70vh] lg:max-h-[605px] object-contain"
                   priority
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"

@@ -1,6 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    // Foto do parceiro criado pelo time no dashboard (/p/<slug>, 11/Nov/26): servida pelo OS, com a versão no caminho.
+    remotePatterns: [
+      { protocol: "https", hostname: "bbai.bestbarbers.app", pathname: "/api/parceiros-publico/foto/**" },
+      // Só no `next dev`: o OS local (porta 3000) ou o ambiente de teste da tela (3099).
+      ...(process.env.NODE_ENV === "development"
+        ? [{ protocol: "http" as const, hostname: "localhost", pathname: "/api/parceiros-publico/foto/**" }]
+        : []),
+    ],
+  },
   async headers() {
     return [
       {
