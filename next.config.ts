@@ -31,6 +31,8 @@ const nextConfig: NextConfig = {
       // Link curto do parceiro Welker (André, 31/Out/26): foto no herói (source) + origem 120004199 no Ploomes.
       // Temporário pelo mesmo motivo do /bio. Parênteses do odesc codificados (o destino é lido como padrão de rota).
       { source: "/welker", destination: "/parceiros?source=welker&origin=120004199&odesc=Welker%20Mantalof%20%28Welker%20Barbershop%29", permanent: false },
+      // Link curto do parceiro Gustavo Caravelli (André, 11/Nov/26): foto no herói (source) + origem 120004237 no Ploomes.
+      { source: "/caravelli", destination: "/parceiros?source=gustavo-caravelli&origin=120004237&odesc=Gustavo%20Caravelli%20%28Barbearia%20Premium%29", permanent: false },
     ];
   },
 };

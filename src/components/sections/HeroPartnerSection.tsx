@@ -39,6 +39,7 @@ import lucasStartImg from "@/app/parceiros/assets/lucas-start.png";
 import isaacArtsImg from "@/app/parceiros/assets/isaac-arts.png";
 import henriqueSantosImg from "@/app/parceiros/assets/henrique-santos.png";
 import welkerImg from "@/app/parceiros/assets/welker.png";
+import gustavoCaravelliImg from "@/app/parceiros/assets/gustavo-caravelli.png";
 import { BOTAO_AMARELO, BOTAO_PRETO, CLASSE_BOTAO_CHAMADA, SetaDoBotao } from "@/components/ui/botao-chamada";
 
 
@@ -104,6 +105,7 @@ export function HeroPartnerSection({
     "isaac-arts": isaacArtsImg,
     "henrique-santos": henriqueSantosImg,
     welker: welkerImg,
+    "gustavo-caravelli": gustavoCaravelliImg,
   }), []);
 
   // Slug desconhecido OU banido cai no herói genérico — fallback, nunca erro.
