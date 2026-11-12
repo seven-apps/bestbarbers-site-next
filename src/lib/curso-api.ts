@@ -386,6 +386,57 @@ export async function registrarSinal(
   return { ok: true, dados: { status } };
 }
 
+// ─── Erro do vídeo (10/Nov/26) ──────────────────────────────────────────────────────────────
+
+/**
+ * O que derrubou o player: `"iframe_api"` (o script da API do YouTube não carregou), `"sem_ready"`
+ * (o player não ficou pronto em 20 s: tela preta, sem erro nenhum do YouTube) ou o código que o
+ * player devolveu no `onError` (2, 5, 100, 101, 150… do YouTube). `0` = erro sem código legível.
+ */
+export type CodigoErroVideo = "iframe_api" | "sem_ready" | number;
+
+/** O `e.data` do `onError` vira o código do aviso: inteiro de 0 a 9999, ou `0` se vier estranho. */
+export function codigoDoErroDoPlayer(dado: unknown): number {
+  return typeof dado === "number" && Number.isInteger(dado) && dado >= 0 && dado <= 9999 ? dado : 0;
+}
+
+/** Aulas cujo erro já foi avisado NESTE carregamento da página (o aviso sai uma vez por aula). */
+const errosAvisadosNestaPagina = new Set<NumeroAula>();
+
+export type ResultadoAvisoErro = "enviado" | "repetido" | "nao_enviado";
+
+/**
+ * `POST /api/curso/aluno/erro-video`: conta ao OS que o vídeo da aula não carregou e por quê.
+ * É telemetria, nunca trava a tela: não lança, sai uma vez por aula por carregamento e qualquer
+ * resposta que não seja 2xx (404 do OS antigo, 401, 429, queda) termina calada em `nao_enviado`.
+ * O navegador não manda o User-Agent no corpo: o OS resume o do cabeçalho.
+ * Rede caída repete UMA vez depois de 3 s (a rede do aluno é justamente a suspeita).
+ */
+export async function avisarErroDeVideo(
+  token: string,
+  aula: NumeroAula,
+  codigo: CodigoErroVideo,
+  opcoes: OpcoesDeRede & {
+    avisadas?: Set<NumeroAula>;
+    esperar?: (ms: number) => Promise<void>;
+  } = {},
+): Promise<ResultadoAvisoErro> {
+  const avisadas = opcoes.avisadas ?? errosAvisadosNestaPagina;
+  if (avisadas.has(aula)) return "repetido";
+  avisadas.add(aula);
+  if (!tokenComFormato(token)) return "nao_enviado";
+  const esperar = opcoes.esperar ?? ((ms: number) => new Promise<void>((ok) => setTimeout(ok, ms)));
+  const corpo = JSON.stringify({ aula, codigo: typeof codigo === "string" ? codigo : codigoDoErroDoPlayer(codigo) });
+  const enviar = () =>
+    chamar("/api/curso/aluno/erro-video", { method: "POST", token, body: corpo }, { timeoutMs: 8_000, ...opcoes });
+  let r = await enviar();
+  if (r.status === 0) {
+    await esperar(3_000);
+    r = await enviar();
+  }
+  return r.status >= 200 && r.status < 300 ? "enviado" : "nao_enviado";
+}
+
 /**
  * `POST /api/curso/link`. O OS responde 202 exista ou não o cadastro (a tela diz "se houver um
  * cadastro…"), então o único resultado que muda a tela é a falha de rede ou de limite.

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Clapperboard, TriangleAlert } from "lucide-react";
+import { Clapperboard, RotateCcw, TriangleAlert } from "lucide-react";
 import { TEXTOS_AREA, type Aula } from "@/content/curso-assinatura";
-import { chaveAssistido, chavePosicao, gravar, ler } from "@/lib/curso-api";
+import { chaveAssistido, chavePosicao, codigoDoErroDoPlayer, gravar, ler, type CodigoErroVideo } from "@/lib/curso-api";
 import {
   esperaParaRepetir,
   fracaoAssistida,
@@ -51,6 +51,14 @@ declare global {
 
 let promessaDaApi: Promise<YTNamespace> | null = null;
 
+/**
+ * Quanto o player tem para ficar pronto (`onReady`) antes do card de erro aparecer como `sem_ready`.
+ * Não é limite cego: nada é destruído, e se o player ficar pronto depois (internet lenta) o card
+ * some sozinho. Sem isto, iframe_api que trava no meio ou embed que não abre deixavam tela preta,
+ * sem card, sem saída e sem aviso ao OS.
+ */
+const ESPERA_PELO_PLAYER_MS = 20_000;
+
 /** Carrega `iframe_api` uma vez por página (sem apagar quem já ouvia o `onYouTubeIframeAPIReady`). */
 function carregarApiDoYouTube(): Promise<YTNamespace> {
   if (window.YT?.Player) return Promise.resolve(window.YT);
@@ -96,31 +104,43 @@ function armazenamento(): Storage | null {
  * que é sinal de compra, falhou no fim do vídeo e a pessoa fechou a aba). A fração usa só a
  * duração que o player informa: a da constante é estimativa e podia concluir a aula sem ela ter
  * sido assistida (medido em 06/Out/26: `getDuration()` às vezes devolve 0 no `onReady`).
+ *
+ * Erro (10/Nov/26): o card guarda O QUE falhou (`"iframe_api"`, `"sem_ready"` ou o código do `onError`), avisa o
+ * OS por `avisarErro` e oferece "Tentar de novo", que remonta o player (nova volta do efeito, sem
+ * recarregar a página). Antes, o aviso pedia para atualizar a página, não tinha saída e o motivo
+ * se perdia: um aluno no iPhone ficou parado nele sem a gente saber por quê.
  */
 export function PlayerAula({
   aula,
   codigo,
   marcoServidor,
   enviarMarco,
+  avisarErro,
 }: {
   aula: Aula;
   codigo: string;
   marcoServidor: Marco | null;
   /** `true` = não precisa tentar de novo (aceito, ou recusado de vez). */
   enviarMarco: (marco: Marco) => Promise<boolean>;
+  /** Telemetria do erro: sai sem esperar e nunca muda a tela (quem deduplica é o cliente da API). */
+  avisarErro: (codigo: CodigoErroVideo) => void;
 }) {
   const caixa = useRef<HTMLDivElement>(null);
-  const [erro, setErro] = useState(false);
+  const [erro, setErro] = useState<CodigoErroVideo | null>(null);
+  // Cada clique em "Tentar de novo" soma 1 e o efeito do player roda de novo do zero.
+  const [tentativa, setTentativa] = useState(0);
   const marcoRef = useRef(marcoServidor);
   const enviarRef = useRef(enviarMarco);
+  const avisarRef = useRef(avisarErro);
   useEffect(() => {
     marcoRef.current = marcoServidor;
     enviarRef.current = enviarMarco;
-  }, [marcoServidor, enviarMarco]);
+    avisarRef.current = avisarErro;
+  }, [marcoServidor, enviarMarco, avisarErro]);
 
   useEffect(() => {
     if (!aula.youtubeId || !caixa.current) return;
-    setErro(false);
+    setErro(null);
     const container = caixa.current;
     const storage = armazenamento();
     const chaveTrechos = chaveAssistido(codigo, aula.numero);
@@ -131,6 +151,8 @@ export function PlayerAula({
     let relogio: number | undefined;
     let retentativa: number | undefined;
     let esperaDuracao: number | undefined;
+    let vigia: number | undefined;
+    let pronto = false;
     let acompanhamento: Acompanhamento = { intervalos: lerIntervalos(ler(storage, chaveTrechos)), ultimoTempo: null };
     // Trecho guardado = houve play numa visita anterior (o 0 daquela visita pode ter falhado).
     let deuPlay = acompanhamento.intervalos.length > 0;
@@ -195,6 +217,20 @@ export function PlayerAula({
       relogio = undefined;
     };
 
+    // `motivo`, não `codigo`: aqui `codigo` já é o código do aluno.
+    const falhou = (motivo: CodigoErroVideo) => {
+      if (!vivo) return;
+      if (vigia !== undefined) window.clearTimeout(vigia);
+      vigia = undefined;
+      setErro(motivo);
+      avisarRef.current(motivo);
+    };
+
+    vigia = window.setTimeout(() => {
+      vigia = undefined;
+      if (!pronto) falhou("sem_ready");
+    }, ESPERA_PELO_PLAYER_MS);
+
     carregarApiDoYouTube()
       .then((YT) => {
         if (!vivo) return;
@@ -214,6 +250,11 @@ export function PlayerAula({
             // Reenvia o que os trechos guardados já alcançaram e o OS ainda não tem. O player pode
             // não saber a duração no onReady: confere de novo a cada 1 s, por até 15 s.
             onReady: () => {
+              pronto = true;
+              if (vigia !== undefined) window.clearTimeout(vigia);
+              vigia = undefined;
+              // Ficou pronto depois do vigia (internet lenta): o card do `sem_ready` sai e o vídeo aparece.
+              if (vivo) setErro((atual) => (atual === "sem_ready" ? null : atual));
               let vezes = 0;
               const conferir = () => {
                 if (!vivo || !player) return;
@@ -239,21 +280,18 @@ export function PlayerAula({
                 avaliar();
               }
             },
-            onError: () => {
-              if (vivo) setErro(true);
-            },
+            onError: (e) => falhou(codigoDoErroDoPlayer(e.data)),
           },
         });
       })
-      .catch(() => {
-        if (vivo) setErro(true);
-      });
+      .catch(() => falhou("iframe_api"));
 
     return () => {
       vivo = false;
       parar();
       if (retentativa !== undefined) window.clearTimeout(retentativa);
       if (esperaDuracao !== undefined) window.clearTimeout(esperaDuracao);
+      if (vigia !== undefined) window.clearTimeout(vigia);
       try {
         player?.destroy();
       } catch {
@@ -261,7 +299,7 @@ export function PlayerAula({
       }
       container.replaceChildren();
     };
-  }, [aula.numero, aula.youtubeId, aula.duracao, codigo]);
+  }, [aula.numero, aula.youtubeId, aula.duracao, codigo, tentativa]);
 
   if (!aula.youtubeId) {
     return (
@@ -275,10 +313,29 @@ export function PlayerAula({
   return (
     <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black">
       <div ref={caixa} className="absolute inset-0" />
-      {erro ? (
-        <div role="alert" className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center bg-[#161616]">
-          <TriangleAlert className="w-7 h-7 text-[#ffaf02]" />
-          <p className="text-[15px] font-semibold text-white/85">{TEXTOS_AREA.aula.videoComErro}</p>
+      {erro !== null ? (
+        <div
+          role="alert"
+          data-codigo-erro={String(erro)}
+          className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-5 text-center bg-[#161616]"
+        >
+          {/* Abaixo de 360 px (iPhone SE) o vídeo tem ~160 px de altura: sem o ícone, a dica cabe com folga. */}
+          <TriangleAlert className="w-6 h-6 text-[#ffaf02] max-[359px]:hidden" />
+          <p className="text-[15px] font-semibold text-white/85">
+            {erro === "sem_ready" ? TEXTOS_AREA.aula.videoDemorando : TEXTOS_AREA.aula.videoComErro}
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setErro(null);
+              setTentativa((t) => t + 1);
+            }}
+            className="inline-flex items-center gap-2 min-h-[40px] px-5 rounded-full font-extrabold text-[14px] bg-[#ffaf02] text-[#121212]"
+          >
+            <RotateCcw className="w-4 h-4" />
+            {TEXTOS_AREA.aula.tentarDeNovo}
+          </button>
+          <p className="max-w-[340px] text-[12px] md:text-[13px] leading-snug text-white/60">{TEXTOS_AREA.aula.dicaVideoComErro}</p>
         </div>
       ) : null}
     </div>

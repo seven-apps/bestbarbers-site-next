@@ -11,6 +11,8 @@ import {
   CHAVE_INSCRICAO_PENDENTE,
   CHAVE_TOKEN,
   apagarToken,
+  avisarErroDeVideo,
+  codigoDoErroDoPlayer,
   corpoDaInscricao,
   guardarInscricaoPendente,
   guardarToken,
@@ -343,4 +345,68 @@ test("progresso: resposta HTTP (mesmo 5xx) não repete na hora; o player repete 
   const { f, chamadas } = fetchFalso([() => json(503, { status: "erro", detalhe: "indisponivel" })]);
   assert.deepEqual(await registrarProgresso(TOKEN, 1, 25, { fetch: f, base: BASE }), { ok: false, motivo: "servidor" });
   assert.equal(chamadas.length, 1);
+});
+
+// ─── Erro do vídeo (10/Nov/26) ──────────────────────────────────────────────────────────────
+
+test("erro do vídeo: o código do onError vira inteiro de 0 a 9999; o resto vira 0", () => {
+  assert.equal(codigoDoErroDoPlayer(150), 150);
+  assert.equal(codigoDoErroDoPlayer(2), 2);
+  assert.equal(codigoDoErroDoPlayer(0), 0);
+  for (const estranho of [undefined, null, "150", 1.5, -1, 10_000, Number.NaN]) assert.equal(codigoDoErroDoPlayer(estranho), 0);
+});
+
+test("erro do vídeo: avisa o OS com Bearer, só aula e código no corpo, e uma vez por aula", async () => {
+  const { f, chamadas } = fetchFalso([() => json(201, { status: "ok" })]);
+  const avisadas = new Set<1 | 2 | 3 | 4 | 5 | 6>();
+  const o = { fetch: f, base: BASE, avisadas };
+  assert.equal(await avisarErroDeVideo(TOKEN, 1, "iframe_api", o), "enviado");
+  assert.equal(await avisarErroDeVideo(TOKEN, 1, 150, o), "repetido", "a mesma aula no mesmo carregamento não avisa de novo");
+  assert.equal(await avisarErroDeVideo(TOKEN, 2, 150, o), "enviado");
+  assert.equal(await avisarErroDeVideo(TOKEN, 3, "sem_ready", o), "enviado");
+  assert.deepEqual(chamadas.map((c) => c.url), Array(3).fill(`${BASE}/api/curso/aluno/erro-video`));
+  assert.deepEqual(chamadas.map((c) => JSON.parse(String(c.init?.body))), [
+    { aula: 1, codigo: "iframe_api" },
+    { aula: 2, codigo: 150 },
+    { aula: 3, codigo: "sem_ready" },
+  ]);
+  for (const c of chamadas) {
+    assert.equal(c.init?.method, "POST");
+    assert.equal((c.init?.headers as Record<string, string>).Authorization, `Bearer ${TOKEN}`);
+    assert.ok(!c.url.includes(TOKEN), "o token nunca vai na URL");
+  }
+});
+
+test("erro do vídeo: 404 (OS sem a rota), 401 e 429 terminam calados, sem lançar e sem repetir", async () => {
+  for (const status of [404, 401, 429, 503]) {
+    const { f, chamadas } = fetchFalso([() => json(status, { status: "erro" })]);
+    assert.equal(await avisarErroDeVideo(TOKEN, 3, 5, { fetch: f, base: BASE, avisadas: new Set() }), "nao_enviado");
+    assert.equal(chamadas.length, 1, `status ${status} não repete`);
+  }
+});
+
+test("erro do vídeo: rede caída repete uma vez depois de 3 s; token estranho não chama a rede", async () => {
+  const esperas: number[] = [];
+  const esperar = async (ms: number) => { esperas.push(ms); };
+  const { f, chamadas } = fetchFalso([() => { throw new TypeError("Failed to fetch"); }, () => json(201, { status: "ok" })]);
+  assert.equal(await avisarErroDeVideo(TOKEN, 4, 101, { fetch: f, base: BASE, avisadas: new Set(), esperar }), "enviado");
+  assert.equal(chamadas.length, 2);
+  assert.deepEqual(esperas, [3_000]);
+
+  const caiu = fetchFalso([() => { throw new TypeError("Failed to fetch"); }]);
+  assert.equal(await avisarErroDeVideo(TOKEN, 4, 101, { fetch: caiu.f, base: BASE, avisadas: new Set(), esperar }), "nao_enviado");
+  assert.equal(caiu.chamadas.length, 2, "uma repetição só");
+
+  const nada = fetchFalso([() => json(201, {})]);
+  assert.equal(await avisarErroDeVideo("curto", 4, 101, { fetch: nada.f, base: BASE, avisadas: new Set() }), "nao_enviado");
+  assert.equal(nada.chamadas.length, 0);
+});
+
+test("erro do vídeo: o card tem a mensagem, o botão e a dica, sem link para o YouTube", () => {
+  const a = TEXTOS_AREA.aula as Record<string, unknown>;
+  assert.equal(a.videoComErro, "O vídeo não carregou.");
+  assert.equal(a.tentarDeNovo, "Tentar de novo");
+  assert.equal(a.videoDemorando, "O vídeo está demorando para carregar.", "sem_ready não diz que falhou: pode ser só lento");
+  assert.match(String(a.dicaVideoComErro), /link do curso no Safari ou no Chrome/, "noutro navegador só o link abre a área");
+  assert.doesNotMatch(`${a.videoComErro} ${a.videoDemorando} ${a.dicaVideoComErro}`, /youtube|youtu\.be|atualize a página/i);
 });

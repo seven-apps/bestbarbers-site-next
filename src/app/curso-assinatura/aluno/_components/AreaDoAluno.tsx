@@ -15,6 +15,7 @@ import {
   CHAVE_BOAS_VINDAS,
   apagarInscricaoPendente,
   apagarToken,
+  avisarErroDeVideo,
   gravar,
   guardarToken,
   inscreverNoCurso,
@@ -25,6 +26,7 @@ import {
   registrarProgresso,
   registrarSinal,
   salvarFicha,
+  type CodigoErroVideo,
 } from "@/lib/curso-api";
 import {
   comMarco,
@@ -274,6 +276,11 @@ export function AreaDoAluno() {
     [linkInvalido],
   );
 
+  // Telemetria do erro do vídeo: nada aqui muda a tela (nem o 401 derruba o link nesta chamada).
+  const avisarErroVideo = useCallback((aula: NumeroAula, codigo: CodigoErroVideo) => {
+    if (token.current) void avisarErroDeVideo(token.current, aula, codigo);
+  }, []);
+
   const salvar: SalvarFicha = useCallback(
     async (aula, respostas) => {
       if (!token.current) return { ok: false, motivo: "token_invalido" } as const;
@@ -389,7 +396,9 @@ export function AreaDoAluno() {
               <h1 className="text-[24px] md:text-[32px] font-extrabold leading-tight text-white">{aula.titulo}</h1>
             </header>
 
-            <PlayerAula key={aula.numero} aula={aula} codigo={estado.aluno.codigo} marcoServidor={dados.marco} enviarMarco={(m) => enviarMarco(aula.numero, m)} />
+            <PlayerAula key={aula.numero} aula={aula} codigo={estado.aluno.codigo} marcoServidor={dados.marco} enviarMarco={(m) => enviarMarco(aula.numero, m)}
+              avisarErro={(c) => avisarErroVideo(aula.numero, c)}
+            />
 
             <div className="flex flex-col sm:flex-row gap-3">
               <button
