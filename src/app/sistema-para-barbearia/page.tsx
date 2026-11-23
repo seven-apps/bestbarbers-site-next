@@ -77,6 +77,14 @@ const FAQ = [
       "O plano com o aplicativo da sua barbearia custa a partir de R$299 por mês. Assinatura, nota fiscal, totem e o agente de IA no WhatsApp são contratados à parte. O valor final depende das unidades e dos módulos que você escolher.",
   },
   {
+    // "sistema para barbearia grátis" é a sugestão nº 1 do YouTube e a pergunta aparece em 6 das 10 primeiras páginas
+    // do Google (02-mapa-palavras-chave.md, 23/Nov/26); nenhuma página de produto responde. Resposta honesta: não há
+    // plano grátis (bestbarbers-product-features.md).
+    pergunta: "Existe sistema para barbearia grátis?",
+    resposta:
+      "Existe sistema com plano grátis, mas o BestBarbers não tem. O plano com o aplicativo da sua barbearia custa a partir de R$299 por mês. Se for testar um grátis, confira se ele cobra a assinatura no cartão todo mês, se calcula a comissão de cada barbeiro e se o aplicativo leva a marca da sua barbearia.",
+  },
+  {
     pergunta: "Serve para barbearia de uma cadeira ou só para quem tem equipe?",
     resposta:
       "Serve para as duas. Agenda, caixa, clientes e assinatura funcionam do mesmo jeito. Com equipe, o sistema também calcula a comissão de cada barbeiro.",
