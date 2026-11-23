@@ -18,7 +18,7 @@ const sections = [
   { id: 7, title: "Direitos de uso e publicação de BestBarbers" },
   { id: 8, title: "Política de Uso Justo" },
   { id: 9, title: "Conclusão do contrato, duração do contrato, rescisão" },
-  { id: 10, title: "Remuneração e pagamentos" },
+  { id: 10, title: "Remuneração, pagamentos e serviços financeiros" },
   { id: 11, title: "Copyright" },
   { id: 12, title: "Garantia para defeitos materiais e legais" },
   { id: 13, title: "Responsabilidade e força maior" },
@@ -52,6 +52,9 @@ export default function TermosDeUso() {
         <h1 className="text-3xl md:text-4xl font-extrabold text-[#121212] mb-10">
           Termos de uso:
         </h1>
+        <p className="text-gray-600 text-sm -mt-6 mb-10">
+          Última atualização: 23 de novembro de 2026.
+        </p>
 
         {/* Table of Contents */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-2 mb-12 text-sm">
@@ -258,18 +261,62 @@ export default function TermosDeUso() {
           </section>
 
           {/* 10 */}
+          {/*
+            10.3 a 10.5: cláusula-modelo do playbook de BaaS do Asaas (Resolução Conjunta
+            BCB/CMN nº 16/2025, art. 14, I). Quando a conta principal parar de cobrar
+            assinaturas (migração para as subcontas), acrescentar ao fim do 10.4 o trecho
+            do modelo: ", nem realizando intermediação financeira em nome próprio".
+          */}
           <section id="section-10">
             <h2 className="text-xl md:text-2xl font-bold mb-4">
-              10. Remuneração e pagamentos:
+              10. Remuneração, pagamentos e serviços financeiros:
             </h2>
-            <p>
-              10.1 Os &quot;usuários&quot;/&quot;clientes&quot;, fornecerão os
-              dados para cobrança e pagamento dos serviços prestados pela
-              barbearia, não existindo qualquer responsabilidade do BestBarbers.
-              10.2 As &quot;barbearias&quot; receberão a remuneração pelos
-              serviços pagos através da plataforma, estando cientes da cobrança
-              de 8.5% em relação ao valor do serviço.
-            </p>
+            <div className="space-y-3">
+              <p>
+                10.1 Os &quot;usuários&quot;/&quot;clientes&quot; fornecerão os
+                dados para cobrança e pagamento dos serviços prestados pela
+                barbearia, não existindo qualquer responsabilidade do BestBarbers.
+              </p>
+              <p>
+                10.2 As &quot;barbearias&quot; recebem pelos serviços pagos por
+                meio da plataforma e pagam ao BestBarbers a taxa de uso da
+                plataforma prevista no plano contratado e nas condições comerciais
+                aceitas na contratação.
+              </p>
+              <p>
+                10.3 Prestação de Serviços Financeiros. Os serviços financeiros e
+                de pagamentos disponibilizados por meio da presente plataforma (no
+                painel, no aplicativo BestBarbers e nos aplicativos das barbearias
+                feitos com a tecnologia do BestBarbers), incluindo abertura e
+                manutenção de conta de pagamento, processamento de transações,
+                cobranças por cartão, Pix e boleto, assinaturas, transferências,
+                saques, antecipações, pagamentos e demais movimentações de
+                valores, são prestados pelo ASAAS GESTÃO FINANCEIRA INSTITUIÇÃO DE
+                PAGAMENTO S.A., inscrito no CNPJ sob o nº 19.540.550/0001-21,
+                instituição de pagamento autorizada a funcionar pelo Banco Central
+                do Brasil.
+              </p>
+              <p>
+                10.4 O BestBarbers atua exclusivamente como integrador tecnológico
+                e distribuidor da experiência do produto, não sendo instituição
+                financeira ou de pagamento.
+              </p>
+              <p>
+                10.5 O cliente declara ciência de que o relacionamento financeiro e
+                de pagamentos e a responsabilidade regulatória pelos serviços acima
+                descritos são do ASAAS GESTÃO FINANCEIRA INSTITUIÇÃO DE PAGAMENTO
+                S.A., nos termos da regulamentação vigente.
+              </p>
+              <p>
+                10.6 Ao ativar o pagamento pelo aplicativo ou o clube de
+                assinatura, a barbearia autoriza o BestBarbers a enviar ao Asaas os
+                dados necessários para abrir e manter a sua conta de pagamento e
+                declara conhecer os Termos de Uso do Asaas. Para prestar esses
+                serviços, o BestBarbers compartilha com o Asaas os dados
+                necessários ao cadastro, à cobrança e à prevenção de fraude, da
+                barbearia e de quem paga.
+              </p>
+            </div>
           </section>
 
           {/* 11 */}
