@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { CTAButton } from "@/components/ui/cta-button";
 import { homeContent } from "@/content/home";
 
@@ -113,6 +114,12 @@ export function FeaturesSection({ onCtaClick }: FeaturesSectionProps) {
           </CTAButton>
         </div>
       </div>
+      {/* Link de texto para a página do sistema (SEO, 23/Nov/26): a home não levava a nenhuma página de produto. */}
+      <p className="text-center mt-6 px-4">
+        <Link href="/sistema-para-barbearia" className="text-sm text-gray-400 underline underline-offset-4 hover:text-[#ffaf02] transition-colors">
+          Veja tudo o que o sistema para barbearia faz e o preço
+        </Link>
+      </p>
     </section>
   );
 }

@@ -356,7 +356,33 @@ export const homeContent = {
       width: 200,
       height: 60,
     },
+    // "O sistema" e "Aprenda" (SEO, 23/Nov/26): antes o rodapé, usado em quase todas as páginas, só linkava termos e
+    // política, e a home não levava a nenhuma página de produto. O texto do link é a busca que a página quer ganhar.
     sections: [
+      {
+        title: "O sistema",
+        links: [
+          { text: "Sistema para barbearia", href: "/sistema-para-barbearia" },
+          { text: "App próprio da barbearia", href: "/app-proprio-barbearia" },
+          { text: "Agendamento online", href: "/agendamento-online" },
+          { text: "Clube de assinaturas", href: "/clube-de-assinaturas" },
+          { text: "Comissão de barbeiro", href: "/gestao-comissoes-barbeiro" },
+          { text: "Controle financeiro", href: "/gestao-financeira-barbearia" },
+          { text: "Nota fiscal (NFS-e)", href: "/nota-fiscal-barbearia" },
+          { text: "Totem de autoatendimento", href: "/totem-autoatendimento" },
+          { text: "Agente de IA no WhatsApp", href: "/agente-ia-whatsapp" },
+        ],
+      },
+      {
+        title: "Aprenda",
+        links: [
+          { text: "Blog para donos de barbearia", href: "/blog" },
+          { text: "Curso grátis de assinatura", href: "/curso-assinatura" },
+          { text: "Tabela de preço da assinatura", href: "/tabela-precificacao-clube" },
+          { text: "Calculadora de lucro do corte", href: "/calculadora-lucro-do-corte" },
+          { text: "Calculadora de prejuízo", href: "/calculadora-prejuizo" },
+        ],
+      },
       {
         title: "Transparência",
         links: [

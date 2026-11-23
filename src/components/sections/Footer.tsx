@@ -182,7 +182,8 @@ export function Footer() {
               </h3>
 
               {'links' in section && section.links && (
-                <div className="flex flex-col space-y-2">
+                // Duas colunas no celular: com "O sistema" (9 links) o rodapé ficava comprido demais em coluna única.
+                <div className="grid grid-cols-2 gap-x-6 gap-y-2">
                   {section.links.map((link, linkIndex) => (
                     <Link
                       key={linkIndex}

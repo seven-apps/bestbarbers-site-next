@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Política de Privacidade - BestBarbers",
   description:
     "Política de Privacidade da plataforma BestBarbers. Saiba como coletamos, usamos e protegemos suas informações.",
+  alternates: { canonical: "/politica-de-privacidade" },
 };
 
 const sections = [

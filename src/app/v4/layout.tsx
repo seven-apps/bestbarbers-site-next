@@ -1,4 +1,8 @@
 import Script from "next/script";
+import { foraDaBusca } from "@/lib/seo-fora-da-busca";
+
+// Página de anúncio: fora do Google (SEO, 23/Nov/26).
+export const metadata = foraDaBusca("Variante de página v4 | BestBarbers");
 
 export default function V4Layout({
   children,

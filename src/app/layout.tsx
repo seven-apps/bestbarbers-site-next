@@ -41,17 +41,12 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL("https://www.bestbarbers.app"),
-  alternates: {
-    canonical: "/",
-    languages: {
-      "pt-BR": "https://www.bestbarbers.app",
-      "x-default": "https://www.bestbarbers.app",
-    },
-  },
+  // Sem `alternates` nem `openGraph.url` aqui (SEO, 23/Nov/26): o layout raiz vale para TODAS as rotas, e o
+  // canonical "/" herdado fazia /parceiros, /v4, /v12, termos e política dizerem ao Google "sou cópia da home".
+  // Cada página declara o próprio canonical; a home declara o dela em src/app/page.tsx.
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://www.bestbarbers.app",
     title: "BestBarbers — Sistema para Barbearia com App Próprio e Clube de Assinaturas",
     description: "Sistema completo para barbearia: app próprio na App Store, clube de assinaturas, agendamento 24h, nota fiscal automática e financeiro. 1.200+ barbearias confiam.",
     siteName: "BestBarbers",
