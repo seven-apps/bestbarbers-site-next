@@ -40,11 +40,11 @@ const RECURSOS: Recurso[] = [
   { nome: "Agenda online", resolve: "O cliente vê os horários livres e marca sozinho pelo link ou pelo app, a qualquer hora.", href: "/agendamento-online" },
   { nome: "Aplicativo com a sua marca", resolve: "O cliente baixa o app com o nome da sua barbearia na App Store e no Google Play.", href: "/app-proprio-barbearia" },
   { nome: "Lembrete do horário", resolve: "O app avisa o cliente na véspera e de novo perto do horário marcado.", href: "/agendamento-online" },
-  { nome: "Assinatura", resolve: "A mensalidade é cobrada no cartão de crédito, todo mês, na mesma data. Quem está com o pagamento atrasado não agenda.", href: "/clube-de-assinaturas", modulo: true },
+  { nome: "Assinatura", resolve: "A mensalidade é cobrada no cartão de crédito, todo mês, na mesma data. Quem atrasa recebe aviso no app e só volta a marcar quando pagar.", href: "/clube-de-assinaturas", modulo: true },
   { nome: "Comissão dos barbeiros", resolve: "Calculada sozinha para cada barbeiro, inclusive a da assinatura. O barbeiro vê o fechamento dele no app.", href: "/gestao-comissoes-barbeiro" },
   { nome: "Caixa e financeiro", resolve: "Caixa, extrato, entradas e saídas e o relatório do mês por barbeiro.", href: "/gestao-financeira-barbearia" },
   { nome: "Clientes", resolve: "Quando cada cliente veio, quantas vezes e quanto gastou. A lista de quem sumiu sai pronta para você chamar de volta pelo app." },
-  { nome: "Nota fiscal", resolve: "Nota fiscal de serviço (NFS-e) e de produto (NFC-e) emitidas pelo sistema, com PDF e XML para o contador.", href: "/nota-fiscal-barbearia", modulo: true },
+  { nome: "Nota fiscal", resolve: "A nota fiscal do serviço (NFS-e) e a do produto vendido (NFC-e) saem pelo sistema, com os arquivos que o contador pede.", href: "/nota-fiscal-barbearia", modulo: true },
   { nome: "Totem de autoatendimento", resolve: "O cliente marca horário, faz check-in e paga sozinho no balcão.", href: "/totem-autoatendimento", modulo: true },
   { nome: "Produtos e estoque", resolve: "O produto vendido na comanda já sai do estoque." },
   { nome: "Várias unidades", resolve: "Todas as unidades no mesmo login: você troca de unidade no painel." },
@@ -52,9 +52,9 @@ const RECURSOS: Recurso[] = [
 ];
 
 const COMO_ESCOLHER = [
-  { pergunta: "O cliente consegue marcar sozinho?", porque: "Se cada horário ainda passa pelo seu WhatsApp, o sistema virou só uma agenda digital." },
+  { pergunta: "O cliente consegue marcar sozinho?", porque: "Se cada horário ainda passa pelo seu WhatsApp, você continua fazendo o trabalho que o sistema deveria fazer." },
   { pergunta: "Ele calcula a comissão de cada barbeiro?", porque: "Inclusive a parte da assinatura, que é onde a conta na mão mais dá briga." },
-  { pergunta: "Ele cobra a assinatura no cartão, todo mês?", porque: "E impede o cliente com o pagamento atrasado de agendar, sem você precisar cobrar ninguém." },
+  { pergunta: "Ele cobra a assinatura no cartão, todo mês?", porque: "E se ele segura a agenda de quem atrasou, sem você precisar cobrar ninguém." },
   { pergunta: "O app é da sua barbearia ou é um app com várias barbearias?", porque: "No app com a sua marca, o seu cliente só vê a sua barbearia." },
   { pergunta: "Quem implanta e quem atende depois?", porque: "Pergunte quem configura o sistema com você e com quem você fala quando tiver dúvida." },
   { pergunta: "Consigo trazer o que já tenho?", porque: "Clientes, serviços e os assinantes que você já cobra no PIX ou controla na planilha." },
@@ -69,12 +69,12 @@ const FAQ = [
   {
     pergunta: "Qual o melhor sistema para barbearia?",
     resposta:
-      "O que resolve, juntas, as três contas que mais tomam o tempo do dono: agenda, comissão e assinatura. Antes de escolher, confira se o cliente marca sozinho, se a comissão sai calculada por barbeiro e se a assinatura é cobrada no cartão todo mês. O BestBarbers faz as três, com o aplicativo da sua barbearia.",
+      "Para a maioria das barbearias, é o que resolve juntas a agenda, a comissão e a assinatura, as três contas que mais tomam o tempo do dono. Antes de escolher, confira se o cliente marca sozinho, se a comissão sai calculada por barbeiro e se a assinatura é cobrada no cartão todo mês. O BestBarbers faz as três, com o aplicativo da sua barbearia.",
   },
   {
     pergunta: "Quanto custa o sistema para barbearia do BestBarbers?",
     resposta:
-      "O plano com o aplicativo da sua barbearia custa a partir de R$299 por mês. Assinatura, nota fiscal, totem e o agente de IA no WhatsApp são módulos contratados à parte. O valor final depende das unidades e dos módulos que você escolher.",
+      "O plano com o aplicativo da sua barbearia custa a partir de R$299 por mês. Assinatura, nota fiscal, totem e o agente de IA no WhatsApp são contratados à parte. O valor final depende das unidades e dos módulos que você escolher.",
   },
   {
     pergunta: "Serve para barbearia de uma cadeira ou só para quem tem equipe?",
@@ -84,7 +84,7 @@ const FAQ = [
   {
     pergunta: "Já cobro assinatura no PIX ou controlo na planilha. Consigo trazer para o sistema?",
     resposta:
-      "Sim. O BestBarbers importa a sua planilha com o vencimento de cada assinante, e o assinante cadastra o cartão no primeiro acesso ao app.",
+      "Sim. O BestBarbers importa a sua planilha com o vencimento de cada assinante, e o assinante cadastra o cartão no primeiro acesso ao app. A cobrança da assinatura é só no cartão de crédito.",
   },
   {
     pergunta: "O barbeiro e o cliente usam pelo celular?",
@@ -188,10 +188,9 @@ export default function SistemaParaBarbearia() {
             barbearia. Ele substitui o caderno, a planilha e a conta de comissão feita na mão no fim do mês.
           </p>
           <p className="mt-4 text-gray-700 text-lg leading-relaxed">
-            O BestBarbers foi feito só para barbearia. Por isso ele cuida do que sistema de salão não cuida: a comissão
-            de cada barbeiro, a assinatura cobrada todo mês e o{" "}
+            O BestBarbers foi feito para barbearia. A comissão de cada barbeiro, a assinatura cobrada todo mês e o{" "}
             <Link href="/" className="text-[#b37a00] underline underline-offset-4 hover:text-[#121212]">aplicativo para barbearia</Link>{" "}
-            com a sua marca.
+            com a sua marca já fazem parte do sistema.
           </p>
         </div>
       </section>
@@ -216,7 +215,7 @@ export default function SistemaParaBarbearia() {
                       {r.href ? (
                         <Link href={r.href} className="hover:text-[#ffaf02] transition-colors underline-offset-4 hover:underline">{r.nome}</Link>
                       ) : r.nome}
-                      {r.modulo && <span className="block mt-1 text-xs font-normal text-gray-500">módulo à parte</span>}
+                      {r.modulo && <span className="block mt-1 text-xs font-normal text-gray-500">contratado à parte</span>}
                     </th>
                     <td className="px-4 md:px-6 py-4 text-gray-300 text-sm md:text-base leading-relaxed">{r.resolve}</td>
                   </tr>
@@ -253,7 +252,7 @@ export default function SistemaParaBarbearia() {
             <li className="flex gap-3"><Feito />Agenda, caixa, comissão, clientes e o aplicativo com a sua marca</li>
             <li className="flex gap-3"><Feito />Implantação feita pelo nosso time, com você</li>
             <li className="flex gap-3"><Feito />Gerente de contas para tirar as suas dúvidas</li>
-            <li className="flex gap-3"><Feito />Assinatura, nota fiscal, totem e agente de IA são módulos à parte</li>
+            <li className="flex gap-3"><Feito />Assinatura, nota fiscal, totem e agente de IA são contratados à parte</li>
           </ul>
           <div className="mt-10">
             <FeatureCTA originDesc="[Site]BT-Sistema-Preco" className={BOTAO}>
