@@ -14,7 +14,7 @@ export interface Recurso {
   nome: string;
   resolve: string;
   href?: string;
-  /** Contratado à parte do plano com o aplicativo. */
+  /** Contratado à parte do sistema com o aplicativo. */
   modulo?: boolean;
 }
 
@@ -39,7 +39,8 @@ export interface ConteudoDeRecurso {
   comparacao?: { titulo: string; colunas: [string, string, string]; linhas: [string, string, string][] };
   tabela: { titulo: string; linhas: Recurso[] };
   passos: { titulo: string; sub?: string; itens: { titulo: string; texto: string }[] };
-  preco: { titulo: string; legenda: string; itens: string[]; botao: string };
+  /** `nota` é só para o que o preço NÃO inclui nesta página; o resto do bloco é igual em todas (PRECO_ITENS). */
+  preco: { titulo: string; nota?: string };
   casos?: { titulo: string; sub: string; itens: Caso[] };
   faq: { titulo: string; itens: { pergunta: string; resposta: string }[] };
   leiaTambem: ReactNode;
@@ -48,6 +49,16 @@ export interface ConteudoDeRecurso {
 }
 
 const SITE = "https://www.bestbarbers.app";
+
+/** O preço tem um nome só e uma lista só de "à parte" nas páginas de recurso (leitor frio, 24/Nov/26). */
+const PRECO_NOME = "Sistema com o aplicativo da sua barbearia";
+const PRECO_ITENS = [
+  "Agenda, caixa, comissão dos barbeiros e cadastro de clientes",
+  "Aplicativo com o nome e a logo da sua barbearia",
+  "Implantação feita pelo nosso time, com você",
+  "Gerente de contas para tirar as suas dúvidas",
+];
+const PRECO_A_PARTE = "À parte: assinatura, nota fiscal, totem e agente de IA.";
 
 const BOTAO =
   "inline-flex items-center justify-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]";
@@ -84,7 +95,7 @@ function jsonLd(c: ConteudoDeRecurso) {
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web, iOS, Android",
       description: c.descricao,
-      offers: { "@type": "Offer", price: "299", priceCurrency: "BRL", description: "A partir de R$299/mês" },
+      offers: { "@type": "Offer", price: "299", priceCurrency: "BRL", description: `${PRECO_NOME}, a partir de R$299 por mês` },
       featureList: c.tabela.linhas.map((r) => r.nome),
     },
     {
@@ -185,7 +196,7 @@ export function PaginaDeRecurso({ conteudo: c }: { conteudo: ConteudoDeRecurso }
                       {r.href ? (
                         <Link href={r.href} className="underline underline-offset-4 decoration-white/30 hover:text-[#ffaf02] transition-colors">{r.nome}</Link>
                       ) : r.nome}
-                      {r.modulo && <span className="block mt-1 text-xs font-normal text-gray-500">contratado à parte</span>}
+                      {r.modulo && <span className="block mt-1 text-xs font-normal text-gray-500">à parte</span>}
                     </th>
                     <td className="px-4 md:px-6 py-4 text-gray-300 text-sm md:text-base leading-relaxed">{r.resolve}</td>
                   </tr>
@@ -217,15 +228,17 @@ export function PaginaDeRecurso({ conteudo: c }: { conteudo: ConteudoDeRecurso }
       <section className="bg-[#121212] py-16 md:py-20">
         <div className="container-custom max-w-3xl">
           <h2 className="text-2xl md:text-4xl font-bold text-white">{c.preco.titulo}</h2>
-          <p className="mt-6 text-4xl md:text-5xl font-bold text-[#ffaf02]">A partir de R$299/mês</p>
-          <p className="mt-3 text-gray-400">{c.preco.legenda}</p>
+          <p className="mt-6 text-gray-300 text-lg">{PRECO_NOME}</p>
+          <p className="mt-2 text-4xl md:text-5xl font-bold text-[#ffaf02]">A partir de R$299 por mês</p>
+          {c.preco.nota && <p className="mt-4 text-gray-200 leading-relaxed">{c.preco.nota}</p>}
           <ul className="mt-8 space-y-3 text-gray-200">
-            {c.preco.itens.map((d) => (
+            {PRECO_ITENS.map((d) => (
               <li key={d} className="flex gap-3"><Feito />{d}</li>
             ))}
           </ul>
+          <p className="mt-6 text-gray-400">{PRECO_A_PARTE}</p>
           <div className="mt-10">
-            <FeatureCTA originDesc={c.originDesc} className={BOTAO}>{c.preco.botao}</FeatureCTA>
+            <FeatureCTA originDesc={c.originDesc} className={BOTAO}>QUERO SABER O PREÇO PARA MINHA BARBEARIA</FeatureCTA>
           </div>
         </div>
       </section>

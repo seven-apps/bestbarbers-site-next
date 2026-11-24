@@ -9,7 +9,7 @@ import { LinkTexto, PaginaDeRecurso, type ConteudoDeRecurso } from "@/components
  */
 
 const DESCRICAO =
-  "App próprio para barbearia: um aplicativo personalizado com o seu nome e a sua logo, na App Store e no Google Play. O cliente marca e recebe avisos.";
+  "App próprio para barbearia: um aplicativo personalizado com o seu nome e a sua logo, na App Store e no Google Play. O cliente marca e recebe recados.";
 
 export const metadata: Metadata = {
   title: "App Próprio para Barbearia: Aplicativo Personalizado | BestBarbers",
@@ -34,8 +34,8 @@ const conteudo: ConteudoDeRecurso = {
   frase: "Um aplicativo personalizado com o nome e a logo da sua barbearia, na App Store e no Google Play.",
   destaques: [
     "No app, o cliente só vê a sua barbearia",
-    "Ele marca o horário e assina pelo celular",
-    "Você manda avisos para os clientes, sem custo adicional",
+    "Ele marca o horário pelo celular, a qualquer hora",
+    "Você manda recados que aparecem no celular de quem tem o seu app, sem pagar por envio",
   ],
   botao: "QUERO UM APP PRÓPRIO PARA MINHA BARBEARIA",
   originDesc: "[Site]BT-AppProprio",
@@ -56,17 +56,17 @@ const conteudo: ConteudoDeRecurso = {
     linhas: [
       ["O que o cliente vê", "Só a sua barbearia", "Várias barbearias na mesma tela"],
       ["Nome e logo na loja", "Os da sua barbearia", "Os do aplicativo"],
-      ["Aviso no celular", "Chega com a sua logo", "Chega com a logo do aplicativo"],
+      ["Recado no celular", "Chega pelo app da sua barbearia", "Chega pelo app que reúne várias"],
     ],
   },
   tabela: {
-    titulo: "O que vem no aplicativo",
+    titulo: "O que vem com o aplicativo",
     linhas: [
       { nome: "Agendamento online", resolve: "O cliente escolhe o serviço, o barbeiro e um horário livre, a qualquer hora.", href: "/agendamento-online" },
       { nome: "Lembrete do horário", resolve: "O app avisa o cliente na véspera e de novo perto do horário marcado." },
-      { nome: "Aviso para os clientes", resolve: "Você escreve o aviso e manda quantas vezes quiser, sem custo adicional." },
-      { nome: "Cliente que sumiu", resolve: "O sistema mostra quem não vem há um tempo. Você filtra a lista e manda um aviso para todos de uma vez." },
-      { nome: "Histórico do cliente", resolve: "O cliente vê os horários marcados e os que já fez." },
+      { nome: "Recado para os clientes", resolve: "Você escreve o recado e manda quantas vezes quiser, sem pagar por envio." },
+      { nome: "Cliente que sumiu", resolve: "O sistema mostra quem não vem há um tempo. Você filtra a lista e manda um recado para todos de uma vez." },
+      { nome: "Histórico do cliente", resolve: "O cliente vê os horários marcados e os atendimentos passados." },
       { nome: "Agenda do barbeiro", resolve: "O barbeiro vê a agenda e o fechamento da comissão dele no app.", href: "/gestao-comissoes-barbeiro" },
       { nome: "Painel do dono", resolve: "Você acompanha agenda, caixa, clientes e comissão pelo navegador.", href: "/sistema-para-barbearia" },
       { nome: "Assinatura", resolve: "O cliente assina pelo app e a mensalidade é cobrada no cartão de crédito, todo mês.", href: "/clube-de-assinaturas", modulo: true },
@@ -81,27 +81,14 @@ const conteudo: ConteudoDeRecurso = {
       { titulo: "O app entra na loja", texto: "O cliente procura o nome da sua barbearia, baixa e marca." },
     ],
   },
-  preco: {
-    titulo: "Quanto custa um app próprio para barbearia",
-    legenda: "Plano com o aplicativo da sua barbearia e o sistema.",
-    itens: [
-      "Aplicativo com a sua marca na App Store e no Google Play",
-      "Agenda, caixa, comissão e clientes",
-      "Implantação feita pelo nosso time, com você",
-      "Assinatura, nota fiscal, totem e agente de IA são contratados à parte",
-    ],
-    botao: "QUERO SABER O PREÇO PARA MINHA BARBEARIA",
-  },
+  preco: { titulo: "Quanto custa um app próprio para barbearia" },
   faq: {
     titulo: "Perguntas sobre app próprio para barbearia",
     itens: [
-      { pergunta: "O que é um aplicativo personalizado para barbearia?", resposta: "É um aplicativo com o nome e a logo da sua barbearia, publicado na App Store e no Google Play. Nele o cliente só vê a sua barbearia e marca o horário." },
-      { pergunta: "Quanto custa um app próprio para barbearia?", resposta: "No BestBarbers, o plano com o aplicativo da sua barbearia custa a partir de R$299 por mês. Ele inclui agenda, caixa, comissão e clientes. Assinatura, nota fiscal, totem e agente de IA são contratados à parte." },
-      { pergunta: "Em quanto tempo o app entra na loja?", resposta: "Depende da análise da Apple e do Google, que conferem cada aplicativo antes de publicar. Por isso não prometemos data. Enquanto isso, o cliente já marca pelo link da sua barbearia." },
-      { pergunta: "E o cliente que não quiser baixar o app?", resposta: "Ele marca pelo link da barbearia, no navegador do celular. Quem baixa o app também recebe os lembretes e os avisos." },
-      { pergunta: "Posso mandar avisos para os meus clientes?", resposta: "Sim, quantas vezes quiser e sem custo adicional. O aviso chega a quem tem o app com as notificações ligadas, com a logo da sua barbearia." },
-      { pergunta: "Se um barbeiro sair, ele leva os clientes?", resposta: "O cadastro e o histórico de cada cliente ficam no sistema da sua barbearia, e o cliente continua marcando pelo app com a sua marca." },
-      { pergunta: "Preciso entender de tecnologia?", resposta: "Não. Você manda a sua marca, e o nosso time configura o sistema com você." },
+      { pergunta: "Em quanto tempo o app entra na loja?", resposta: "Quem decide a data é a Apple e o Google, que conferem cada aplicativo antes de publicar. Enquanto isso, o cliente já marca pelo link da sua barbearia." },
+      { pergunta: "E o cliente que não quiser baixar o app?", resposta: "Ele marca pelo link da barbearia, no navegador do celular. Só o assinante precisa do app, porque é nele que assina e marca pelo plano." },
+      { pergunta: "Todo cliente recebe os recados?", resposta: "O recado chega a quem tem o app da sua barbearia com as notificações ligadas. Você manda quantas vezes quiser, sem pagar por envio." },
+      { pergunta: "Se um barbeiro sair, ele leva os clientes?", resposta: "O cadastro não vai com ele: fica no sistema da sua barbearia, com o histórico de cada cliente." },
     ],
   },
   leiaTambem: (

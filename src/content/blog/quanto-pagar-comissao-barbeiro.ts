@@ -197,7 +197,7 @@ export const comissaoBarbeiroQuantoPagar: BlogArticle = {
           title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
-            "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
+            "Receita recorrente com regra de comissão de assinante configurável e cálculo automático por atendimento.",
         },
       ],
     },
@@ -302,7 +302,7 @@ export const comissaoBarbeiroQuantoPagar: BlogArticle = {
       title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
-        "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
+        "Receita recorrente com regra de comissão de assinante configurável e cálculo automático por atendimento.",
     },
   ],
 };

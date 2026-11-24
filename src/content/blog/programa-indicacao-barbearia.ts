@@ -197,7 +197,7 @@ export const programaIndicacao: BlogArticle = {
       title: "Agendamento online para barbearia",
       href: "/agendamento-online",
       description:
-        "O cliente vê os horários livres de cada barbeiro e marca sozinho, pelo link ou pelo app. O app lembra o horário.",
+        "Registre o corte por indicação como serviço e meça, com número, quanto a boca a boca traz pra sua barbearia.",
     },
     {
       title: "App próprio para barbearia",

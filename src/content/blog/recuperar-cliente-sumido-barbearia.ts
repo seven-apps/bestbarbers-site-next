@@ -158,7 +158,7 @@ export const recuperarClienteSumido: BlogArticle = {
           title: "Agendamento online para barbearia",
           href: "/agendamento-online",
           description:
-            "O cliente vê os horários livres de cada barbeiro e marca sozinho, pelo link ou pelo app. O app lembra o horário.",
+            "Cada atendimento registrado com o cliente e o barbeiro — a base pra saber, a qualquer momento, quem sumiu e há quanto tempo.",
         },
       ],
     },
@@ -203,7 +203,7 @@ export const recuperarClienteSumido: BlogArticle = {
       title: "Agendamento online para barbearia",
       href: "/agendamento-online",
       description:
-        "O cliente vê os horários livres de cada barbeiro e marca sozinho, pelo link ou pelo app. O app lembra o horário.",
+        "Histórico de cada cliente e barbeiro, pra saber na hora quem sumiu e há quanto tempo.",
     },
     {
       title: "App próprio para barbearia",

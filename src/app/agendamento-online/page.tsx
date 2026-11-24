@@ -7,6 +7,9 @@ import { LinkTexto, PaginaDeRecurso, type ConteudoDeRecurso } from "@/components
  * (posição 6): daqui saem links com esse texto para elas, e a página não disputa essas buscas.
  * Saíram da versão anterior, por não terem fonte ou não existirem: aviso por SMS,
  * "até 40% menos faltas", "30 conversas por dia", "2+ horas", a pesquisa com 21 menções e "em menos de 24 horas".
+ * Cancelar pelo link e pelo app: bestbarbers-web-clients AppointmentDetailsModal/DetailsOptions.jsx e app Appointment/
+ * Details/settings.js:208; a antecedência é o minimum_cancel_time (API appointments.js:1017). Nenhum dos dois remarca.
+ * Assinante marca pelo app: o link só cria agendamento "normal" (conferido no pacote em produção, 24/Nov/26).
  */
 
 const DESCRICAO =
@@ -34,9 +37,9 @@ const conteudo: ConteudoDeRecurso = {
   h1: "Agendamento online para barbearia",
   frase: "O cliente vê os horários livres de cada barbeiro e marca sozinho, pelo link ou pelo aplicativo da sua barbearia.",
   destaques: [
-    "O cliente marca a qualquer hora, sem você responder um por um",
+    "O cliente marca a qualquer hora, sem combinar horário um por um",
     "Cada barbeiro tem a agenda dele",
-    "O app lembra o cliente do horário",
+    "Quem tem o app recebe lembrete na véspera e perto do horário",
   ],
   botao: "QUERO AGENDAMENTO ONLINE NA MINHA BARBEARIA",
   originDesc: "[Site]BT-Agendamento",
@@ -56,7 +59,7 @@ const conteudo: ConteudoDeRecurso = {
   passos: {
     titulo: "Como o cliente marca o horário",
     itens: [
-      { titulo: "Ele abre o link ou o app", texto: "O link da sua barbearia vai no Instagram, no WhatsApp e no Google. O app é o da sua barbearia, na App Store e no Google Play." },
+      { titulo: "Ele abre o link ou o app", texto: "Você coloca o link no Instagram, no WhatsApp e no perfil do Google. O app é o da sua barbearia, na App Store e no Google Play." },
       { titulo: "Escolhe o serviço e o barbeiro", texto: "Só aparecem os horários livres daquele barbeiro." },
       { titulo: "Confirma o horário", texto: "Na primeira vez, ele faz um cadastro com senha. Nas próximas, é só marcar." },
       { titulo: "O horário entra na agenda", texto: "O barbeiro vê no app dele e você vê no painel." },
@@ -68,37 +71,26 @@ const conteudo: ConteudoDeRecurso = {
       { nome: "Link de agendamento", resolve: "O cliente marca pelo navegador do celular, sem baixar nada." },
       { nome: "Aplicativo com a sua marca", resolve: "O cliente marca pelo app com o nome da sua barbearia.", href: "/app-proprio-barbearia" },
       { nome: "Agenda por barbeiro", resolve: "Cada barbeiro tem a coluna dele, com o horário de trabalho dele." },
-      { nome: "Almoço, folga e férias", resolve: "Você bloqueia um horário, um período ou o mesmo horário toda semana. O cliente não marca em cima." },
-      { nome: "Cliente fixo", resolve: "O horário que se repete é lançado uma vez e aparece nas semanas seguintes." },
+      { nome: "Almoço, folga e férias", resolve: "Você bloqueia um horário, um período ou o mesmo horário toda semana, para um barbeiro ou para todos. O cliente só vê o que está livre." },
+      { nome: "Cliente fixo", resolve: "Você lança uma vez o horário que se repete, e ele aparece na agenda nas semanas seguintes." },
       { nome: "Encaixe", resolve: "Você coloca o cliente num horário fora da grade, sem mexer no resto da agenda." },
+      { nome: "Cancelar o horário", resolve: "O cliente cancela pelo link ou pelo app, com a antecedência que você definir. Para mudar de horário, ele cancela e marca outro." },
       { nome: "Lembrete do horário", resolve: "O app avisa o cliente na véspera e de novo perto do horário marcado." },
       { nome: "Cliente que faltou", resolve: "A falta fica marcada na agenda." },
-      { nome: "Assinante", resolve: "Marca pelo app dentro do plano dele. Quem atrasou a mensalidade só volta a marcar quando pagar.", href: "/clube-de-assinaturas", modulo: true },
-      { nome: "Totem de autoatendimento", resolve: "O cliente marca horário e avisa que chegou no balcão.", href: "/totem-autoatendimento", modulo: true },
-      { nome: "Agente de IA no WhatsApp", resolve: "Marca, remarca ou cancela o horário na agenda, pela conversa do WhatsApp.", href: "/agente-ia-whatsapp", modulo: true },
+      { nome: "Assinante", resolve: "Marca pelo app, dentro do plano dele. Quem atrasou a mensalidade só volta a marcar pelo plano depois de pagar.", href: "/clube-de-assinaturas", modulo: true },
+      { nome: "Totem de autoatendimento", resolve: "Uma tela no balcão: o cliente avisa que chegou ou marca o próximo horário.", href: "/totem-autoatendimento", modulo: true },
+      { nome: "Agente de IA no WhatsApp", resolve: "Responde o cliente no WhatsApp da barbearia e marca, remarca ou cancela o horário na agenda.", href: "/agente-ia-whatsapp", modulo: true },
     ],
   },
-  preco: {
-    titulo: "Quanto custa",
-    legenda: "Plano com a agenda online e o aplicativo da sua barbearia.",
-    itens: [
-      "Agenda, caixa, comissão, clientes e o aplicativo com a sua marca",
-      "Implantação feita pelo nosso time, com você",
-      "Gerente de contas para tirar as suas dúvidas",
-      "Assinatura, totem e agente de IA são contratados à parte",
-    ],
-    botao: "QUERO SABER O PREÇO PARA MINHA BARBEARIA",
-  },
+  preco: { titulo: "Quanto custa" },
   faq: {
     titulo: "Perguntas sobre agendamento online para barbearia",
     itens: [
-      { pergunta: "Como funciona o agendamento online de uma barbearia?", resposta: "O cliente abre o link ou o aplicativo da barbearia, escolhe o serviço, o barbeiro e um horário livre, e confirma. O horário entra na agenda na hora. O barbeiro vê no app dele e o dono vê no painel." },
-      { pergunta: "O cliente precisa baixar um aplicativo para marcar?", resposta: "Não. Ele marca pelo link, no navegador do celular. Quem baixa o aplicativo da barbearia também recebe o lembrete do horário." },
+      { pergunta: "O cliente precisa baixar um aplicativo para marcar?", resposta: "Não. Ele marca pelo link, no navegador do celular. Só o assinante precisa do app, porque é nele que assina e marca pelo plano. Quem baixa o app também recebe o lembrete do horário." },
       { pergunta: "O cliente consegue marcar de madrugada ou no domingo?", resposta: "Sim. O link e o app ficam abertos a qualquer hora, e só aparecem os horários em que a barbearia atende." },
-      { pergunta: "O lembrete diminui a falta?", resposta: "Sim. Nas barbearias que usam o BestBarbers, a falta é menor nos horários com lembrete. O aviso sai na véspera e de novo perto do horário, e chega a quem tem o app com as notificações ligadas." },
-      { pergunta: "Dá para bloquear almoço, folga e férias?", resposta: "Sim. Você bloqueia um horário, um período ou o mesmo horário toda semana, para um barbeiro ou para todos. O cliente só vê o que está livre." },
-      { pergunta: "E o cliente que prefere marcar pelo WhatsApp?", resposta: "Você manda o link na conversa e ele marca sozinho. Se quiser, o agente de IA no WhatsApp marca, remarca e cancela direto na agenda. Ele é contratado à parte." },
-      { pergunta: "Existe agenda online para barbearia grátis?", resposta: "Existe agenda com plano grátis, mas o BestBarbers não tem. O plano com o aplicativo da sua barbearia custa a partir de R$299 por mês. Se for testar uma grátis, confira se cada barbeiro tem a agenda dele, se o cliente recebe lembrete e se a comissão sai calculada." },
+      { pergunta: "O lembrete diminui a falta?", resposta: "Ajuda: quem recebe o lembrete falta menos. Não acaba com a falta. Ele chega a quem tem o app com as notificações ligadas." },
+      { pergunta: "E o cliente que prefere marcar pelo WhatsApp?", resposta: "Você manda o link na conversa e ele marca sozinho. Se quiser, o agente de IA responde no WhatsApp da barbearia e marca direto na agenda. Ele é à parte." },
+      { pergunta: "Existe agenda online para barbearia grátis?", resposta: "Existe agenda grátis, mas o BestBarbers não tem versão grátis. Se for testar uma grátis, confira se cada barbeiro tem a agenda dele e se o cliente recebe lembrete." },
     ],
   },
   leiaTambem: (
