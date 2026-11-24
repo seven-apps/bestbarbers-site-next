@@ -27,6 +27,10 @@ export async function generateMetadata({
     alternates: {
       canonical: `/sistema-para-barbearia/${city.slug}`,
     },
+    // Fora do Google (SEO, 23/Nov/26): as 30 cidades são 98,9% o mesmo texto trocando o nome (página-porta) e, em 90
+    // dias até 21/Nov/26, não houve nenhuma busca de "sistema para barbearia em <cidade>"; elas só tiravam impressão
+    // de /sistema-para-barbearia. Volta ao índice só a cidade que ganhar conteúdo local verificável.
+    robots: { index: false, follow: true },
     openGraph: {
       title: `Sistema para Barbearia em ${city.name} | BestBarbers`,
       description: `O BestBarbers é o sistema mais completo para barbearias em ${city.name}. App próprio, clube de assinaturas, agendamento online e muito mais.`,
@@ -108,16 +112,13 @@ export default async function CityPage({
                 name: city.state,
               },
             },
+            // Sem aggregateRating (SEO, 23/Nov/26): a nota 4,8 com 1.200 "avaliações" não tinha avaliação por trás
+            // (1.200 é o número de barbearias) e já tinha saído da home em 19/Set. Sem "lowPrice 0": não há plano grátis.
             offers: {
-              "@type": "AggregateOffer",
-              lowPrice: "0",
-              highPrice: "299",
+              "@type": "Offer",
+              price: "299",
               priceCurrency: "BRL",
-            },
-            aggregateRating: {
-              "@type": "AggregateRating",
-              ratingValue: "4.8",
-              reviewCount: "1200",
+              description: "A partir de R$299/mês",
             },
           }),
         }}

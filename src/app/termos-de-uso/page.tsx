@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Termos de Uso - BestBarbers",
   description:
     "Termos de Uso da plataforma BestBarbers. Leia os termos e condições para uso do nosso serviço.",
+  alternates: { canonical: "/termos-de-uso" },
 };
 
 const sections = [

@@ -25,6 +25,10 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      // lp.bestbarbers.app serve o MESMO deploy do www e o Google indexou o espelho (7.715 impressões em 90 dias até
+      // 21/Nov/26, em /parceiros?source=…). 308 para o www com o caminho e a query inteiros: link de parceiro com
+      // ?source=/?origin=/?cupom= e anúncio antigo continuam atribuindo (SEO, 23/Nov/26).
+      { source: "/:path*", has: [{ type: "host", value: "lp.bestbarbers.app" }], destination: "https://www.bestbarbers.app/:path*", permanent: true },
       { source: "/funcionalidades", destination: "/sistema-para-barbearia", permanent: true },
       { source: "/precos", destination: "/sistema-para-barbearia", permanent: true },
       { source: "/assinaturas", destination: "/clube-de-assinaturas", permanent: true },

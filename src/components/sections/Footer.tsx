@@ -36,7 +36,7 @@ export function Footer() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="flex flex-col lg:flex-row justify-between items-start gap-10 md:gap-12 lg:gap-20"
+          className="flex flex-col lg:grid lg:grid-cols-[1fr_auto] justify-between items-start gap-10 md:gap-12 lg:gap-x-20 lg:gap-y-14"
         >
           {/* Logo and tagline */}
           <motion.div variants={itemVariants} className="flex-shrink-0">
@@ -57,13 +57,14 @@ export function Footer() {
             </p>
           </motion.div>
 
-          {/* Links sections - Desktop */}
-          <div className="hidden lg:flex flex-1 justify-between gap-16">
+          {/* Links sections - Desktop: linha própria, embaixo do logo e das lojas. Em linha única com eles, as 4 colunas
+              não cabiam e empurravam o e-mail e os selos das lojas para fora da tela. */}
+          <div className="hidden lg:grid lg:order-last lg:col-span-2 grid-cols-[1fr_1fr_1fr_auto] gap-x-8">
             {footer.sections.map((section, index) => (
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="flex flex-col space-y-4"
+                className="flex flex-col space-y-4 min-w-0"
               >
                 <h3 className="text-white font-semibold text-base mb-2">
                   {section.title}
@@ -136,7 +137,7 @@ export function Footer() {
             <h3 className="text-white font-semibold text-base mb-2">
               {footer.appStores.title}
             </h3>
-            <div className="flex flex-row lg:flex-col gap-3">
+            <div className="flex flex-row gap-3">
               {footer.appStores.links.map((store, index) => (
                 <motion.div
                   key={index}
@@ -182,7 +183,8 @@ export function Footer() {
               </h3>
 
               {'links' in section && section.links && (
-                <div className="flex flex-col space-y-2">
+                // Duas colunas no celular: com "O sistema" (9 links) o rodapé ficava comprido demais em coluna única.
+                <div className="grid grid-cols-2 gap-x-6 gap-y-2">
                   {section.links.map((link, linkIndex) => (
                     <Link
                       key={linkIndex}
