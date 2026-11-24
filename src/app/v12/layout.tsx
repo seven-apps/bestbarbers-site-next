@@ -2,7 +2,7 @@ import { Vollkorn, Montserrat } from "next/font/google";
 import { foraDaBusca } from "@/lib/seo-fora-da-busca";
 
 // Página de anúncio: fora do Google (SEO, 23/Nov/26).
-export const metadata = foraDaBusca("Variante de página v12 | BestBarbers");
+export const metadata = foraDaBusca();
 
 const vollkorn = Vollkorn({
   subsets: ["latin"],
