@@ -3,9 +3,28 @@
 import { useState, useCallback, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { homeContent } from "@/content/home";
 import { ArrowRight } from "lucide-react";
 import { LeadFormModal } from "@/components/sections/LeadFormModal";
+
+/**
+ * Páginas do site que levam "Sistema" no menu (GO do André, 24/Nov/26). Página de anúncio, de parceiro, de material e de
+ * obrigado fica sem: ali o único caminho é o botão.
+ */
+const PAGINAS_COM_MENU = new Set([
+  "/",
+  "/agendamento-online",
+  "/app-proprio-barbearia",
+  "/clube-de-assinaturas",
+  "/gestao-financeira-barbearia",
+  "/gestao-comissoes-barbeiro",
+  "/nota-fiscal-barbearia",
+  "/totem-autoatendimento",
+  "/agente-ia-whatsapp",
+  "/podcast",
+]);
+const levaMenu = (caminho: string) => PAGINAS_COM_MENU.has(caminho) || /^\/(blog|conteudo)(\/|$)/.test(caminho);
 
 interface NavbarProps {
   onCtaClick?: () => void;
@@ -17,6 +36,7 @@ interface NavbarProps {
 export function Navbar({ onCtaClick, withoutCta = false, faixa }: NavbarProps) {
   const { navbar } = homeContent;
   const [modalOpen, setModalOpen] = useState(false);
+  const comMenu = levaMenu(usePathname() ?? "");
 
   const handleCtaClick = useCallback(() => {
     if (onCtaClick) {
@@ -46,6 +66,11 @@ export function Navbar({ onCtaClick, withoutCta = false, faixa }: NavbarProps) {
 
         {/* Desktop CTA */}
         {!withoutCta && <div className="hidden md:flex items-center gap-3">
+          {comMenu && (
+            <Link href="/sistema-para-barbearia" className="text-white/80 text-sm font-semibold px-3 py-3 transition-colors hover:text-[#ffaf02]">
+              Sistema
+            </Link>
+          )}
           <Link
             href="https://adm.bestbarbers.app/login"
             target="_blank"

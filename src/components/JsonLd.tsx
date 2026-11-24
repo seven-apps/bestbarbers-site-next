@@ -1,12 +1,11 @@
 import { faqItems } from "@/content/faq-home";
 
 /**
- * FAQ no dado estruturado = só o que o HTML da home mostra sem clique (a aba aberta, "App Próprio"), e sem o prazo de
- * publicação do app, que não tem medição (knowledge/dominio/bestbarbers-product-features.md, 03/Nov/26). Antes eram 20
+ * FAQ no dado estruturado = só o que o HTML da home mostra sem clique (a aba aberta, "App Próprio"). Antes eram 20
  * perguntas, 17 invisíveis e algumas com recurso que não existe (assinatura no Pix, painel consolidado da rede).
  * FAQ não dá mais caixa na busca para empresa (Google, ago/2023), mas o Google e as IAs leem o par pergunta-resposta.
  */
-const faqVisivel = faqItems.filter((item) => item.category === "App Próprio" && !item.question.startsWith("Quanto tempo"));
+const faqVisivel = faqItems.filter((item) => item.category === "App Próprio");
 
 const organizationSchema = {
   "@context": "https://schema.org",
