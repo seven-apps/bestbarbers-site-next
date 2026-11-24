@@ -18,7 +18,7 @@ export const faqItems: FAQItem[] = [
   {
     category: "App Próprio",
     question: "Quanto tempo leva para ter meu App Próprio publicado nas lojas?",
-    answer: "Após a assinatura do contrato e envio das informações necessárias (logo, cores, dados do negócio), o processo de desenvolvimento e publicação leva em média 15 a 30 dias úteis, dependendo da aprovação das lojas (Apple e Google).",
+    answer: "Você manda o nome e a logo, e o nosso time prepara o app. Quem decide a data é a Apple e o Google, que conferem cada aplicativo antes de publicar. Enquanto isso, o cliente já marca pelo link da sua barbearia.",
   },
   {
     category: "App Próprio",
@@ -85,7 +85,7 @@ export const faqItems: FAQItem[] = [
   {
     category: "Gestão Financeira",
     question: "Quais formas de pagamento o sistema aceita?",
-    answer: "O sistema aceita pagamento em dinheiro, cartão de crédito/débito (presencial ou online), Pix, e pagamentos recorrentes para assinaturas. Tudo é registrado automaticamente no controle financeiro.",
+    answer: "No balcão, você registra dinheiro, Pix, cartão de débito e cartão de crédito. A assinatura é cobrada só no cartão de crédito, todo mês.",
   },
   {
     category: "Gestão Financeira",

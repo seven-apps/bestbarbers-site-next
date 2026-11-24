@@ -40,7 +40,7 @@ const RECURSOS: Recurso[] = [
   { nome: "Agenda online", resolve: "O cliente vê os horários livres e marca sozinho pelo link ou pelo app, a qualquer hora.", href: "/agendamento-online" },
   { nome: "Aplicativo com a sua marca", resolve: "O cliente baixa o app com o nome da sua barbearia na App Store e no Google Play.", href: "/app-proprio-barbearia" },
   { nome: "Lembrete do horário", resolve: "O app avisa o cliente na véspera e de novo perto do horário marcado.", href: "/agendamento-online" },
-  { nome: "Assinatura", resolve: "A mensalidade é cobrada no cartão de crédito, todo mês, na mesma data. Quem atrasa recebe aviso no app e só volta a marcar quando pagar.", href: "/clube-de-assinaturas", modulo: true },
+  { nome: "Assinatura", resolve: "A mensalidade é cobrada no cartão de crédito, todo mês, na mesma data. Quem atrasa recebe aviso no app e só volta a marcar pelo plano quando pagar.", href: "/clube-de-assinaturas", modulo: true },
   { nome: "Comissão dos barbeiros", resolve: "Calculada sozinha para cada barbeiro, inclusive a da assinatura. O barbeiro vê o fechamento dele no app.", href: "/gestao-comissoes-barbeiro" },
   { nome: "Caixa e financeiro", resolve: "Caixa, extrato, entradas e saídas e o relatório do mês por barbeiro.", href: "/gestao-financeira-barbearia" },
   { nome: "Clientes", resolve: "Quando cada cliente veio, quantas vezes e quanto gastou. A lista de quem sumiu sai pronta para você chamar de volta pelo app." },
