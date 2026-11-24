@@ -155,7 +155,7 @@ export const recuperarClienteSumido: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Agendamento e histórico de clientes",
+          title: "Agendamento online para barbearia",
           href: "/agendamento-online",
           description:
             "Cada atendimento registrado com o cliente e o barbeiro — a base pra saber, a qualquer momento, quem sumiu e há quanto tempo.",
@@ -200,19 +200,19 @@ export const recuperarClienteSumido: BlogArticle = {
   ],
   relatedFeatures: [
     {
-      title: "Agendamento Online",
+      title: "Agendamento online para barbearia",
       href: "/agendamento-online",
       description:
         "Histórico de cada cliente e barbeiro, pra saber na hora quem sumiu e há quanto tempo.",
     },
     {
-      title: "App Próprio",
+      title: "App próprio para barbearia",
       href: "/app-proprio-barbearia",
       description:
         "Um app com a marca da barbearia que mantém o cliente por perto e reduz o sumiço.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
         "A forma mais forte de o cliente não sumir: recorrência que traz ele de volta todo mês.",

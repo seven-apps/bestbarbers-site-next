@@ -100,7 +100,7 @@ export const onboardingAssinante: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Agendamento Online",
+          title: "Agendamento online para barbearia",
           href: "/agendamento-online",
           description:
             "Marque o primeiro corte do assinante no momento da adesão e deixe ele reagendar sozinho pelo app — sem depender de WhatsApp ou ligação.",
@@ -194,10 +194,10 @@ export const onboardingAssinante: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "App Próprio para Barbearia",
+          title: "App próprio para barbearia",
           href: "/app-proprio-barbearia",
           description:
-            "Notificações com a marca da sua barbearia, agendamento e créditos do clube na palma da mão — o canal certo para o onboarding do assinante.",
+            "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
         },
       ],
     },
@@ -262,10 +262,10 @@ export const onboardingAssinante: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Clube de Assinaturas BestBarbers",
+          title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
-            "Automatize o onboarding do assinante — agendamento na adesão, controle de uso e alerta de quem sumiu na primeira semana — com painel completo de churn. A partir de R$299/mês.",
+            "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
         },
       ],
     },
@@ -318,19 +318,19 @@ export const onboardingAssinante: BlogArticle = {
   relatedSlugs: ["clube-assinatura-barbearia", "como-reduzir-faltas-barbearia"],
   relatedFeatures: [
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
-        "Crie planos, automatize o onboarding e acompanhe o uso de cada assinante com painel completo de churn e retenção.",
+        "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
     },
     {
-      title: "App Próprio",
+      title: "App próprio para barbearia",
       href: "/app-proprio-barbearia",
       description:
-        "Um aplicativo personalizado com a marca da sua barbearia para agendamento, notificações e créditos do clube na mão do assinante.",
+        "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
     },
     {
-      title: "Agendamento Online",
+      title: "Agendamento online para barbearia",
       href: "/agendamento-online",
       description:
         "Marque o primeiro corte do assinante já na adesão e deixe ele reagendar sozinho, sem atrito, dentro da janela crítica de 7 dias.",

@@ -224,7 +224,7 @@ export default function TotemAutoatendimento() {
                       href="/clube-de-assinaturas"
                       className="text-[#ffaf02] hover:underline"
                     >
-                      Clube de Assinaturas
+                      Sistema de assinatura para barbearia
                     </Link>
                     <span className="text-gray-400">
                       {" "}
@@ -236,7 +236,7 @@ export default function TotemAutoatendimento() {
                       href="/agendamento-online"
                       className="text-[#ffaf02] hover:underline"
                     >
-                      Agendamento Online
+                      Agendamento online para barbearia
                     </Link>
                     <span className="text-gray-400">
                       {" "}
@@ -260,7 +260,7 @@ export default function TotemAutoatendimento() {
                       href="/gestao-financeira-barbearia"
                       className="text-[#ffaf02] hover:underline"
                     >
-                      Gestão Financeira
+                      Controle financeiro para barbearia
                     </Link>
                     <span className="text-gray-400">
                       {" "}

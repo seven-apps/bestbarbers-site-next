@@ -363,9 +363,9 @@ export const homeContent = {
         title: "O sistema",
         links: [
           { text: "Sistema para barbearia", href: "/sistema-para-barbearia" },
-          { text: "App próprio da barbearia", href: "/app-proprio-barbearia" },
+          { text: "App próprio para barbearia", href: "/app-proprio-barbearia" },
           { text: "Agendamento online", href: "/agendamento-online" },
-          { text: "Assinatura na barbearia", href: "/clube-de-assinaturas" },
+          { text: "Sistema de assinatura", href: "/clube-de-assinaturas" },
           { text: "Comissão de barbeiro", href: "/gestao-comissoes-barbeiro" },
           { text: "Controle financeiro", href: "/gestao-financeira-barbearia" },
           { text: "Nota fiscal (NFS-e)", href: "/nota-fiscal-barbearia" },

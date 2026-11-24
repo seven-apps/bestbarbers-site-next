@@ -390,7 +390,7 @@ export default function PodcastPage() {
                   href="/clube-de-assinaturas"
                   className="inline-flex items-center justify-center gap-2 border border-[#121212]/20 text-[#121212] px-6 py-3.5 rounded-full text-sm font-bold transition-all duration-300 hover:border-[#121212] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98]"
                 >
-                  Conhecer o clube de assinaturas
+                  Sistema de assinatura
                 </Link>
                 <Link
                   href="/sistema-para-barbearia"

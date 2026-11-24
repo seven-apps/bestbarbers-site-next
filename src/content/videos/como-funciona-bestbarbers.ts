@@ -65,14 +65,14 @@ export const comoFuncionaBestbarbers: VideoContent = {
 
   relatedFeatures: [
     {
-      title: "Agendamento Online 24h",
+      title: "Agendamento online para barbearia",
       href: "/agendamento-online",
       description: "Seus clientes agendam pelo app a qualquer hora.",
     },
     {
-      title: "Gestão Financeira",
+      title: "Controle financeiro para barbearia",
       href: "/gestao-financeira-barbearia",
-      description: "Fluxo de caixa e relatórios em tempo real.",
+      description: "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
     },
     {
       title: "Gestão de Comissões",

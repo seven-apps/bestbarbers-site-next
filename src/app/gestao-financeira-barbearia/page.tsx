@@ -1,348 +1,104 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { FeatureCTA } from "@/components/FeatureCTA";
-import { Navbar } from "@/components/sections/Navbar";
-import { Footer } from "@/components/sections/Footer";
+import { LinkTexto, PaginaDeRecurso, type ConteudoDeRecurso } from "@/components/recurso/PaginaDeRecurso";
+
+/**
+ * Página de "controle financeiro" e "sistema de caixa para barbearia" (SEO lote 2, 24/Nov/26). O Google rastreou a
+ * versão anterior em 03/Jul/26 e não indexou. Saíram dela, por não terem fonte ou não existirem: "dor número 1,
+ * mencionada 47 vezes", "saiba exatamente quanto ganha", "conciliado automaticamente", comparativo semanal e ocupação
+ * nos "relatórios que se geram sozinhos". Não dizer DRE, lucro nem margem. Caixa, sangria, entrada, saída e exportação
+ * para o Excel foram conferidos nas telas Cashier, FinancesReleases e SelectReleaseTypeModal do painel; o
+ * saldo do período (entradas menos saídas) no manual do extrato da API. O saldo não é lucro: comissão só entra quando paga.
+ */
+
+const DESCRICAO =
+  "Controle financeiro para barbearia: caixa do dia, entradas e saídas, extrato e a comissão de cada barbeiro calculada, sem planilha. A partir de R$299/mês.";
 
 export const metadata: Metadata = {
-  title: "Gestão Financeira para Barbearia — Controle Completo | BestBarbers",
-  description:
-    "Controle financeiro completo para barbearia: fluxo de caixa, comissões automáticas, relatórios gerenciais e gestão de pagamentos. Saiba exatamente quanto sua barbearia ganha.",
-  alternates: {
-    canonical: "/gestao-financeira-barbearia",
+  title: "Controle Financeiro para Barbearia: Caixa e Comissão | BestBarbers",
+  description: DESCRICAO,
+  alternates: { canonical: "/gestao-financeira-barbearia" },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: "https://www.bestbarbers.app/gestao-financeira-barbearia",
+    title: "Controle financeiro para barbearia | BestBarbers",
+    description: DESCRICAO,
+    siteName: "BestBarbers",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "BestBarbers — controle financeiro para barbearia" }],
   },
 };
 
+const conteudo: ConteudoDeRecurso = {
+  slug: "gestao-financeira-barbearia",
+  trilha: "Controle financeiro",
+  descricao: DESCRICAO,
+  h1: "Controle financeiro para barbearia",
+  frase: "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro no mesmo sistema, sem planilha.",
+  destaques: [
+    "Fechou a conta do cliente, o valor já aparece no caixa",
+    "Entradas e saídas no mesmo extrato",
+    "A comissão de cada barbeiro sai calculada",
+  ],
+  botao: "QUERO CONTROLE FINANCEIRO NA MINHA BARBEARIA",
+  originDesc: "[Site]BT-Financeiro",
+  prova: "Mais de 1.200 barbearias usam o BestBarbers.",
+  oQueE: {
+    titulo: "O que é o controle financeiro da barbearia",
+    paragrafos: [
+      "É saber quanto entrou no dia, o que saiu e quanto é de cada barbeiro.",
+      "Na planilha, alguém anota cada corte. No sistema, a comanda, que é a conta do atendimento, já faz esse registro quando você fecha.",
+      <>
+        No BestBarbers, o financeiro faz parte do <LinkTexto href="/sistema-para-barbearia">sistema para barbearia</LinkTexto>,
+        junto com a agenda, a comissão e os clientes.
+      </>,
+    ],
+  },
+  passos: {
+    titulo: "Como fazer o controle financeiro da barbearia",
+    sub: "Seis passos, do começo do dia ao fim do mês.",
+    itens: [
+      { titulo: "Abra o caixa", texto: "Com o valor que está na gaveta." },
+      { titulo: "Feche cada comanda com a forma de pagamento", texto: "Dinheiro, Pix, débito ou crédito." },
+      { titulo: "Lance o que saiu", texto: "As contas, como aluguel, luz e material, e a sangria, que é o dinheiro tirado da gaveta no meio do dia." },
+      { titulo: "Feche o caixa no fim do dia", texto: "Conte o dinheiro da gaveta e compare com o valor em dinheiro que o sistema mostra." },
+      { titulo: "Acerte a comissão pelo fechamento", texto: "O valor de cada barbeiro já vem calculado." },
+      { titulo: "Veja o saldo do período", texto: "O extrato mostra o que entrou menos o que saiu. Os relatórios mostram os atendimentos e o faturamento de cada barbeiro." },
+    ],
+  },
+  tabela: {
+    titulo: "O que o financeiro do sistema faz",
+    linhas: [
+      { nome: "Caixa do dia", resolve: "Abre com o dinheiro da gaveta e fecha com o valor contado. Mostra as comandas, as entradas, as saídas e o valor em dinheiro no caixa." },
+      { nome: "Sangria", resolve: "O dinheiro tirado da gaveta no meio do dia fica registrado." },
+      { nome: "Entradas e saídas", resolve: "Você lança as contas, como aluguel, luz e material, e outras entradas que não são de atendimento." },
+      { nome: "Extrato", resolve: "Atendimentos, produtos, assinaturas, despesas e comissões do período, com o saldo. Dá para exportar para o Excel." },
+      { nome: "Formas de pagamento", resolve: "Quanto entrou em dinheiro, Pix, débito e crédito." },
+      { nome: "Comissão dos barbeiros", resolve: "Calculada sozinha. O barbeiro vê o fechamento dele no app.", href: "/gestao-comissoes-barbeiro" },
+      { nome: "Relatórios do mês", resolve: "Atendimentos, gasto médio por cliente e faturamento de cada barbeiro." },
+      { nome: "Produtos e estoque", resolve: "O produto vendido na comanda já sai do estoque." },
+      { nome: "Assinatura", resolve: "Quem está em dia, quem venceu, quem cancelou e quanto está previsto para entrar.", href: "/clube-de-assinaturas", modulo: true },
+      { nome: "Nota fiscal", resolve: "A nota do serviço e a do produto vendido saem pelo sistema, com os arquivos que o contador pede.", href: "/nota-fiscal-barbearia", modulo: true },
+    ],
+  },
+  preco: { titulo: "Quanto custa o sistema de caixa" },
+  faq: {
+    titulo: "Perguntas sobre controle financeiro para barbearia",
+    itens: [
+      { pergunta: "Dá para fazer o controle financeiro da barbearia em planilha?", resposta: "Dá, enquanto alguém anota cada atendimento, cada despesa e cada comissão todo dia. No sistema, a comanda fechada já aparece no caixa e entra na comissão do barbeiro." },
+      { pergunta: "Qual a diferença entre o caixa e o extrato?", resposta: "O caixa é do dia: abre, recebe as comandas e fecha. O extrato é do período que você escolher e junta atendimentos, produtos, assinaturas, despesas e comissões." },
+      { pergunta: "O sistema calcula a comissão dos barbeiros?", resposta: "Sim. Você cadastra o percentual de cada barbeiro uma vez. Na assinatura, que é à parte, você diz qual parte vira comissão e o sistema divide pelo que cada um atendeu." },
+      { pergunta: "O sistema substitui o contador?", resposta: "Não. Ele registra o que entrou, o que saiu e as comissões. A contabilidade e os impostos continuam com o seu contador." },
+    ],
+  },
+  leiaTambem: (
+    <>
+      Quer entender as contas antes? Leia o guia de <LinkTexto href="/blog/gestao-financeira-barbearia">gestão financeira para barbearia</LinkTexto>{" "}
+      e use a <LinkTexto href="/calculadora-lucro-do-corte">calculadora de lucro do corte</LinkTexto>.
+    </>
+  ),
+  fim: { titulo: "Fale com um especialista e veja o financeiro funcionando", texto: "Ele mostra o caixa, o extrato e a comissão com o jeito da sua barbearia." },
+};
+
 export default function GestaoFinanceiraBarbearia() {
-  return (
-    <main className="min-h-screen overflow-x-hidden max-w-[100vw] w-full">
-      <Navbar />
-
-      {/* Breadcrumb */}
-      <section className="bg-[#121212] pt-28 pb-4">
-        <div className="container-custom">
-          <nav aria-label="Breadcrumb" className="text-sm text-gray-400">
-            <Link href="/" className="hover:text-[#ffaf02] transition-colors">
-              Início
-            </Link>
-            <span className="mx-2">/</span>
-            <span className="text-white">Gestão Financeira Barbearia</span>
-          </nav>
-        </div>
-      </section>
-
-      {/* Hero */}
-      <section className="bg-[#121212] py-16 md:py-24">
-        <div className="container-custom">
-          <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight max-w-4xl">
-            Gestão Financeira para Barbearia{" "}
-            <span className="text-[#ffaf02]">
-              — Saiba Exatamente Quanto Sua Barbearia Ganha
-            </span>
-          </h1>
-          <p className="mt-6 text-lg md:text-xl text-gray-300 max-w-3xl leading-relaxed">
-            &ldquo;Não sei quanto minha barbearia ganha de verdade.&rdquo; Essa
-            é a dor número 1 de donos de barbearia — mencionada 47 vezes nas
-            nossas pesquisas. O BestBarbers resolve isso com controle financeiro
-            automático, em tempo real.
-          </p>
-          <div className="mt-10">
-            <FeatureCTA
-              originDesc="[Site]BT-Financeiro"
-              className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
-            >
-              QUERO CONTROLE FINANCEIRO
-            </FeatureCTA>
-          </div>
-        </div>
-      </section>
-
-      {/* Fluxo de Caixa */}
-      <section className="bg-white py-16 md:py-20">
-        <div className="container-custom">
-          <h2 className="text-2xl md:text-4xl font-bold text-[#121212]">
-            Fluxo de Caixa em Tempo Real
-          </h2>
-          <p className="mt-6 text-gray-600 text-lg leading-relaxed max-w-3xl">
-            Cada atendimento, cada produto vendido, cada assinatura cobrada —
-            tudo entra automaticamente no seu fluxo de caixa. Sem planilha, sem
-            caderno, sem surpresa no final do mês.
-          </p>
-          <div className="mt-10 grid md:grid-cols-3 gap-6">
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-              <div className="w-12 h-12 bg-[#ffaf02]/10 rounded-xl flex items-center justify-center mb-4">
-                <span className="text-2xl">&#128200;</span>
-              </div>
-              <h3 className="text-lg font-bold text-[#121212] mb-2">
-                Entradas e Saídas
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Visualize receitas e despesas por dia, semana ou mês. Saiba
-                exatamente o saldo disponível a qualquer momento.
-              </p>
-            </div>
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-              <div className="w-12 h-12 bg-[#ffaf02]/10 rounded-xl flex items-center justify-center mb-4">
-                <span className="text-2xl">&#128176;</span>
-              </div>
-              <h3 className="text-lg font-bold text-[#121212] mb-2">
-                Registro Automático
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Cada pagamento no sistema — Pix, cartão, dinheiro, assinatura —
-                é registrado automaticamente no financeiro.
-              </p>
-            </div>
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-              <div className="w-12 h-12 bg-[#ffaf02]/10 rounded-xl flex items-center justify-center mb-4">
-                <span className="text-2xl">&#128202;</span>
-              </div>
-              <h3 className="text-lg font-bold text-[#121212] mb-2">
-                Previsão de Receita
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Com o{" "}
-                <Link
-                  href="/clube-de-assinaturas"
-                  className="text-[#ffaf02] hover:underline"
-                >
-                  clube de assinaturas
-                </Link>
-                , você sabe antecipadamente quanto vai receber no próximo mês.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Comissoes */}
-      <section className="bg-[#121212] py-16 md:py-20">
-        <div className="container-custom">
-          <h2 className="text-2xl md:text-4xl font-bold text-white">
-            Comissões de Barbeiros — Cálculo Automático
-          </h2>
-          <p className="mt-6 text-gray-300 text-lg leading-relaxed max-w-3xl">
-            Chega de calcular comissão na mão ou no Excel. O sistema calcula
-            automaticamente quanto cada barbeiro tem a receber, baseado nos
-            atendimentos realizados. Saiba mais na página de{" "}
-            <Link
-              href="/gestao-comissoes-barbeiro"
-              className="text-[#ffaf02] hover:underline"
-            >
-              gestão de comissões
-            </Link>
-            .
-          </p>
-          <div className="mt-8 bg-white/5 rounded-2xl p-8 border border-white/10">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-lg font-bold text-white mb-4">
-                  Configure uma vez
-                </h3>
-                <ul className="space-y-3 text-gray-300">
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Percentual ou valor fixo por serviço
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Regras diferentes por profissional
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Comissão sobre produtos vendidos
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-white mb-4">
-                  Resultado automático
-                </h3>
-                <ul className="space-y-3 text-gray-300">
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Relatório de comissão por período
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Transparência total para o barbeiro
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#ffaf02] mt-1">&#10003;</span>
-                    Funciona com assinaturas e avulsos
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Relatorios */}
-      <section className="bg-white py-16 md:py-20">
-        <div className="container-custom">
-          <h2 className="text-2xl md:text-4xl font-bold text-[#121212]">
-            Relatórios Gerenciais Automáticos
-          </h2>
-          <p className="mt-6 text-gray-600 text-lg leading-relaxed max-w-3xl">
-            Relatórios que se geram sozinhos — diários, semanais e mensais. Você
-            abre o painel e já sabe como está a saúde financeira da barbearia.
-          </p>
-          <div className="mt-10 grid md:grid-cols-3 gap-6">
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-              <h3 className="text-lg font-bold text-[#121212] mb-3">
-                Diário
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Faturamento do dia, atendimentos realizados, formas de pagamento
-                utilizadas.
-              </p>
-            </div>
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-              <h3 className="text-lg font-bold text-[#121212] mb-3">
-                Semanal
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Comparativo com semanas anteriores, tendências de receita,
-                ocupação por barbeiro.
-              </p>
-            </div>
-            <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-              <h3 className="text-lg font-bold text-[#121212] mb-3">
-                Mensal
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Resultado do mês, comissões a pagar, receita de assinaturas vs.
-                avulsos, ticket médio.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Formas de Pagamento */}
-      <section className="bg-[#121212] py-16 md:py-20">
-        <div className="container-custom">
-          <h2 className="text-2xl md:text-4xl font-bold text-white">
-            Todas as Formas de Pagamento em um Lugar
-          </h2>
-          <p className="mt-6 text-gray-300 text-lg leading-relaxed max-w-3xl">
-            Dinheiro, cartão de crédito, débito, Pix e cobrança recorrente do
-            clube — tudo registrado e conciliado automaticamente.
-          </p>
-          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white/5 rounded-xl p-5 border border-white/10 text-center">
-              <span className="text-3xl block mb-2">&#128181;</span>
-              <p className="text-white font-semibold text-sm">Dinheiro</p>
-            </div>
-            <div className="bg-white/5 rounded-xl p-5 border border-white/10 text-center">
-              <span className="text-3xl block mb-2">&#128179;</span>
-              <p className="text-white font-semibold text-sm">
-                Cartão Crédito/Débito
-              </p>
-            </div>
-            <div className="bg-white/5 rounded-xl p-5 border border-white/10 text-center">
-              <span className="text-3xl block mb-2">&#9889;</span>
-              <p className="text-white font-semibold text-sm">Pix</p>
-            </div>
-            <div className="bg-white/5 rounded-xl p-5 border border-white/10 text-center">
-              <span className="text-3xl block mb-2">&#128260;</span>
-              <p className="text-white font-semibold text-sm">
-                Recorrente (Clube)
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Integracao com Clube */}
-      <section className="bg-white py-16 md:py-20">
-        <div className="container-custom">
-          <h2 className="text-2xl md:text-4xl font-bold text-[#121212]">
-            Integrado com o Clube de Assinaturas
-          </h2>
-          <p className="mt-6 text-gray-600 text-lg leading-relaxed max-w-3xl">
-            A receita do{" "}
-            <Link
-              href="/clube-de-assinaturas"
-              className="text-[#ffaf02] hover:underline font-semibold"
-            >
-              clube de assinaturas
-            </Link>{" "}
-            entra automaticamente no financeiro. Você sabe quanto é receita
-            recorrente previsível e quanto é avulso — essencial para tomar
-            decisões de investimento.
-          </p>
-        </div>
-      </section>
-
-      {/* Cross-links */}
-      <section className="bg-[#121212] py-16 md:py-20">
-        <div className="container-custom">
-          <h2 className="text-2xl md:text-4xl font-bold text-white mb-8">
-            Funcionalidades Relacionadas
-          </h2>
-          <div className="grid md:grid-cols-3 gap-4">
-            <Link
-              href="/gestao-comissoes-barbeiro"
-              className="bg-white/5 rounded-xl p-5 border border-white/10 hover:border-[#ffaf02]/30 transition-colors group"
-            >
-              <h3 className="font-bold text-white group-hover:text-[#ffaf02] transition-colors">
-                Gestão de Comissões
-              </h3>
-              <p className="text-sm text-gray-400 mt-1">
-                Cálculo automático por barbeiro e serviço
-              </p>
-            </Link>
-            <Link
-              href="/nota-fiscal-barbearia"
-              className="bg-white/5 rounded-xl p-5 border border-white/10 hover:border-[#ffaf02]/30 transition-colors group"
-            >
-              <h3 className="font-bold text-white group-hover:text-[#ffaf02] transition-colors">
-                Nota Fiscal Automática
-              </h3>
-              <p className="text-sm text-gray-400 mt-1">
-                NFS-e emitida após cada atendimento
-              </p>
-            </Link>
-            <Link
-              href="/sistema-para-barbearia"
-              className="bg-white/5 rounded-xl p-5 border border-white/10 hover:border-[#ffaf02]/30 transition-colors group"
-            >
-              <h3 className="font-bold text-white group-hover:text-[#ffaf02] transition-colors">
-                Sistema Completo
-              </h3>
-              <p className="text-sm text-gray-400 mt-1">
-                Todas as funcionalidades do BestBarbers
-              </p>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="bg-white py-16 md:py-20">
-        <div className="container-custom text-center">
-          <h2 className="text-2xl md:text-4xl font-bold text-[#121212]">
-            Saiba Exatamente Quanto Sua{" "}
-            <span className="text-[#ffaf02]">Barbearia Ganha</span>
-          </h2>
-          <p className="mt-4 text-gray-600 text-lg max-w-2xl mx-auto">
-            Chega de surpresa no final do mês. Controle financeiro real, em
-            tempo real.
-          </p>
-          <div className="mt-8">
-            <FeatureCTA
-              originDesc="[Site]BT-Financeiro"
-              className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
-            >
-              QUERO CONTROLE FINANCEIRO
-            </FeatureCTA>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
-  );
+  return <PaginaDeRecurso conteudo={conteudo} />;
 }

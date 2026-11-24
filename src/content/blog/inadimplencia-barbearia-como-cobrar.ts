@@ -257,10 +257,10 @@ export const inadimplenciaBarbearia: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Gestão Financeira para Barbearias",
+          title: "Controle financeiro para barbearia",
           href: "/gestao-financeira-barbearia",
           description:
-            "Acompanhe receitas, pendências e a saúde do clube em um painel único, com a inadimplência visível e a cobrança recorrente automatizada.",
+            "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
         },
         {
           type: "subheading",
@@ -272,10 +272,10 @@ export const inadimplenciaBarbearia: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Clube de Assinaturas BestBarbers",
+          title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
-            "Crie planos, automatize a cobrança recorrente e acompanhe a inadimplência com painel completo de pagamentos, pendências e churn.",
+            "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
         },
         {
           type: "subheading",
@@ -287,10 +287,10 @@ export const inadimplenciaBarbearia: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "App Próprio para Barbearia",
+          title: "App próprio para barbearia",
           href: "/app-proprio-barbearia",
           description:
-            "Um aplicativo com a marca da sua barbearia onde o assinante atualiza o cartão, vê os créditos e regulariza pagamentos com um toque.",
+            "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
         },
         {
           type: "paragraph",
@@ -356,22 +356,22 @@ export const inadimplenciaBarbearia: BlogArticle = {
   relatedSlugs: ["gestao-financeira-barbearia", "clube-assinatura-barbearia"],
   relatedFeatures: [
     {
-      title: "Gestão Financeira",
+      title: "Controle financeiro para barbearia",
       href: "/gestao-financeira-barbearia",
       description:
-        "Controle receitas, pendências e a inadimplência do clube em um painel único, com cobrança recorrente automatizada.",
+        "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
-        "Crie planos, automatize a cobrança e acompanhe pagamentos, pendências e churn com painel completo.",
+        "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
     },
     {
-      title: "App Próprio",
+      title: "App próprio para barbearia",
       href: "/app-proprio-barbearia",
       description:
-        "Um aplicativo com a marca da sua barbearia para o assinante atualizar o cartão e regularizar pagamentos com um toque.",
+        "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
     },
   ],
 };

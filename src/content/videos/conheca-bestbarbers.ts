@@ -71,12 +71,12 @@ export const conhecaBestbarbers: VideoContent = {
       description: "Conheça todas as funcionalidades do BestBarbers.",
     },
     {
-      title: "App Próprio Personalizado",
+      title: "App próprio para barbearia",
       href: "/app-proprio-barbearia",
       description: "Seu app na App Store e Play Store com a sua marca.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
         "Receita recorrente com cobrança automática e controle de consumo.",

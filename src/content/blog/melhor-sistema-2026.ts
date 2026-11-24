@@ -277,7 +277,7 @@ export const melhorSistema2026: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "App próprio para sua barbearia",
+          title: "App próprio para barbearia",
           href: "/app-proprio-barbearia",
           description:
             "Seu app publicado na App Store e Google Play com a sua marca. Veja como funciona.",
@@ -335,7 +335,7 @@ export const melhorSistema2026: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Clube de assinaturas para barbearia",
+          title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
             "Receita recorrente e fidelização: veja como montar seu clube com o BestBarbers.",
@@ -404,13 +404,13 @@ export const melhorSistema2026: BlogArticle = {
         "Gestão integrada: agendamento, financeiro, comissões, relatórios e muito mais.",
     },
     {
-      title: "App próprio com a sua marca",
+      title: "App próprio para barbearia",
       href: "/app-proprio-barbearia",
       description:
         "Seu aplicativo publicado na App Store e Google Play. Sua marca no celular do cliente.",
     },
     {
-      title: "Clube de assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
         "Receita recorrente e fidelização de clientes com planos mensais gerenciados automaticamente.",

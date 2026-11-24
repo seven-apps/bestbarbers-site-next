@@ -151,7 +151,7 @@ Deus te abençoe aí que você me disse muitos cursos né que se for da tua vont
       description: "Gestão completa para barbearias com app próprio.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description: "Receita recorrente com cobrança automática.",
     },

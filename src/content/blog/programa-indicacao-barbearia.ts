@@ -149,7 +149,7 @@ export const programaIndicacao: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Agendamento com registro de cada atendimento",
+          title: "Agendamento online para barbearia",
           href: "/agendamento-online",
           description:
             "Registre o \"corte indicação\" como serviço na agenda e veja, com número, quanto a boca a boca traz — e quem são os clientes que mais indicam.",
@@ -194,19 +194,19 @@ export const programaIndicacao: BlogArticle = {
   ],
   relatedFeatures: [
     {
-      title: "Agendamento Online",
+      title: "Agendamento online para barbearia",
       href: "/agendamento-online",
       description:
         "Registre o corte por indicação como serviço e meça, com número, quanto a boca a boca traz pra sua barbearia.",
     },
     {
-      title: "App Próprio",
+      title: "App próprio para barbearia",
       href: "/app-proprio-barbearia",
       description:
         "Um app com a marca da barbearia que mantém o cliente por perto — e mais perto, mais fácil ele indicar amigos.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
         "Cliente recorrente é quem mais indica, porque volta todo mês e vira fã da casa. A recorrência que alimenta a boca a boca.",

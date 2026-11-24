@@ -123,7 +123,7 @@ a ideia Exatamente é e obrigado Gabriel cara que eu gosto muito gente eu gosto 
       description: "Gestão completa para barbearias com app próprio.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description: "Receita recorrente com cobrança automática.",
     },

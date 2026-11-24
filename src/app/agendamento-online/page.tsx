@@ -1,449 +1,106 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { FeatureCTA } from "@/components/FeatureCTA";
-import {
-  Calendar,
-  Clock,
-  Link2,
-  Smartphone,
-  Bell,
-  Users,
-  ShieldCheck,
-  ArrowRight,
-  CheckCircle2,
-  MessageSquare,
-  ChevronRight,
-} from "lucide-react";
-import { Navbar } from "@/components/sections/Navbar";
-import { Footer } from "@/components/sections/Footer";
+import { LinkTexto, PaginaDeRecurso, type ConteudoDeRecurso } from "@/components/recurso/PaginaDeRecurso";
 
-/* ------------------------------------------------------------------ */
-/*  Metadata                                                          */
-/* ------------------------------------------------------------------ */
+/**
+ * Página dona de "agendamento online", "agenda online" e "agenda para barbearia" (SEO lote 2, 24/Nov/26).
+ * "sistema de agendamento" é da /sistema-para-barbearia (posição 4 a 5) e "aplicativo de agendamento" é da home
+ * (posição 6): daqui saem links com esse texto para elas, e a página não disputa essas buscas.
+ * Saíram da versão anterior, por não terem fonte ou não existirem: aviso por SMS,
+ * "até 40% menos faltas", "30 conversas por dia", "2+ horas", a pesquisa com 21 menções e "em menos de 24 horas".
+ * Cancelar pelo link e pelo app: bestbarbers-web-clients AppointmentDetailsModal/DetailsOptions.jsx e app Appointment/
+ * Details/settings.js:208; a antecedência é o minimum_cancel_time (API appointments.js:1017). Nenhum dos dois remarca.
+ * Assinante marca pelo app: o link só cria agendamento "normal" (conferido no pacote em produção, 24/Nov/26).
+ */
+
+const DESCRICAO =
+  "Agendamento online para barbearia: o cliente vê os horários livres de cada barbeiro e marca sozinho, pelo link ou pelo app. O app lembra do horário.";
+
 export const metadata: Metadata = {
-  title: "Agendamento Online para Barbearia — 24h/7 dias | BestBarbers",
-  description:
-    "Agendamento online para barbearia que funciona 24h. 6 milhões de agendamentos/mês. Chega de perder cliente no WhatsApp. Link personalizado + app + lembretes automáticos.",
-  alternates: {
-    canonical: "https://www.bestbarbers.app/agendamento-online",
-  },
+  title: "Agendamento Online e Agenda para Barbearia | BestBarbers",
+  description: DESCRICAO,
+  alternates: { canonical: "/agendamento-online" },
   openGraph: {
-    title: "Agendamento Online para Barbearia — 24h/7 dias | BestBarbers",
-    description:
-      "Agendamento online para barbearia que funciona 24h. 6 milhões de agendamentos/mês. Chega de perder cliente no WhatsApp.",
-    url: "https://www.bestbarbers.app/agendamento-online",
-    siteName: "BestBarbers",
-    locale: "pt_BR",
     type: "website",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "BestBarbers — Agendamento Online para Barbearia",
-      },
+    locale: "pt_BR",
+    url: "https://www.bestbarbers.app/agendamento-online",
+    title: "Agendamento online para barbearia | BestBarbers",
+    description: DESCRICAO,
+    siteName: "BestBarbers",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "BestBarbers — agendamento online para barbearia" }],
+  },
+};
+
+const conteudo: ConteudoDeRecurso = {
+  slug: "agendamento-online",
+  trilha: "Agendamento online",
+  descricao: DESCRICAO,
+  h1: "Agendamento online para barbearia",
+  frase: "O cliente vê os horários livres de cada barbeiro e marca sozinho, pelo link ou pelo aplicativo da sua barbearia.",
+  destaques: [
+    "O cliente marca a qualquer hora, sem combinar horário um por um",
+    "Cada barbeiro tem a agenda dele",
+    "Quem tem o app recebe lembrete na véspera e perto do horário",
+  ],
+  botao: "QUERO AGENDAMENTO ONLINE NA MINHA BARBEARIA",
+  originDesc: "[Site]BT-Agendamento",
+  prova: "Mais de 1.200 barbearias usam o BestBarbers.",
+  oQueE: {
+    titulo: "O que é agendamento online para barbearia",
+    paragrafos: [
+      "É uma agenda que o cliente abre no celular. Ele escolhe o serviço, o barbeiro e um horário livre, que entra na sua agenda na hora.",
+      <>
+        No BestBarbers, a agenda online faz parte do{" "}
+        <LinkTexto href="/sistema-para-barbearia">sistema de agendamento para barbearia</LinkTexto>, junto com o caixa e a
+        comissão dos barbeiros. O cliente também marca pelo{" "}
+        <LinkTexto href="/">aplicativo de agendamento para barbearia</LinkTexto> com a sua marca.
+      </>,
     ],
   },
-};
-
-/* ------------------------------------------------------------------ */
-/*  FAQ data (used in content + JSON-LD)                              */
-/* ------------------------------------------------------------------ */
-const faqItems = [
-  {
-    question:
-      "O agendamento online funciona mesmo fora do horário comercial?",
-    answer:
-      "Sim. O sistema fica disponível 24 horas por dia, 7 dias por semana. Seus clientes podem agendar de madrugada, no fim de semana ou em feriados — sem depender de ninguém responder no WhatsApp.",
+  passos: {
+    titulo: "Como o cliente marca o horário",
+    itens: [
+      { titulo: "Ele abre o link ou o app", texto: "Você coloca o link no Instagram, no WhatsApp e no perfil do Google. O app é o da sua barbearia, na App Store e no Google Play." },
+      { titulo: "Escolhe o serviço e o barbeiro", texto: "Só aparecem os horários livres daquele barbeiro." },
+      { titulo: "Confirma o horário", texto: "Na primeira vez, ele faz um cadastro com senha. Nas próximas, é só marcar." },
+      { titulo: "O horário entra na agenda", texto: "O barbeiro vê no app dele e você vê no painel." },
+    ],
   },
-  {
-    question:
-      "Meus clientes precisam baixar um aplicativo para agendar?",
-    answer:
-      "Não obrigatoriamente. Você recebe um link personalizado (ex: bestbarbers.app/suabarbearia) que pode ser compartilhado em qualquer lugar — Instagram, WhatsApp, Google. Além disso, com o plano App Exclusivo, sua barbearia tem um app próprio na App Store e Play Store com agendamento integrado.",
+  tabela: {
+    titulo: "O que a agenda online faz na sua barbearia",
+    linhas: [
+      { nome: "Link de agendamento", resolve: "O cliente marca pelo navegador do celular, sem baixar nada." },
+      { nome: "Aplicativo com a sua marca", resolve: "O cliente marca pelo app com o nome da sua barbearia.", href: "/app-proprio-barbearia" },
+      { nome: "Agenda por barbeiro", resolve: "Cada barbeiro tem a coluna dele, com o horário de trabalho dele." },
+      { nome: "Almoço, folga e férias", resolve: "Você bloqueia um horário, um período ou o mesmo horário toda semana, para um barbeiro ou para todos. O cliente só vê o que está livre." },
+      { nome: "Cliente fixo", resolve: "Você lança uma vez o horário que se repete, e ele aparece na agenda nas semanas seguintes." },
+      { nome: "Encaixe", resolve: "Você coloca o cliente num horário fora da grade, sem mexer no resto da agenda." },
+      { nome: "Cancelar o horário", resolve: "O cliente cancela pelo link ou pelo app, com a antecedência que você definir. Para mudar de horário, ele cancela e marca outro." },
+      { nome: "Lembrete do horário", resolve: "O app avisa o cliente na véspera e de novo perto do horário marcado." },
+      { nome: "Cliente que faltou", resolve: "A falta fica marcada na agenda." },
+      { nome: "Assinante", resolve: "Marca pelo app, dentro do plano dele. Quem atrasou a mensalidade só volta a marcar pelo plano depois de pagar.", href: "/clube-de-assinaturas", modulo: true },
+      { nome: "Totem de autoatendimento", resolve: "Uma tela no balcão: o cliente avisa que chegou ou marca o próximo horário.", href: "/totem-autoatendimento", modulo: true },
+      { nome: "Agente de IA no WhatsApp", resolve: "Responde o cliente no WhatsApp da barbearia e marca, remarca ou cancela o horário na agenda.", href: "/agente-ia-whatsapp", modulo: true },
+    ],
   },
-  {
-    question:
-      "Como o sistema reduz faltas e no-show dos clientes?",
-    answer:
-      "O BestBarbers envia lembretes automáticos por push notification e SMS antes do horário agendado. Barbearias que usam o recurso reportam redução de até 40% nos no-shows. Você também pode configurar políticas de cancelamento e bloqueio de clientes recorrentes.",
+  preco: { titulo: "Quanto custa" },
+  faq: {
+    titulo: "Perguntas sobre agendamento online para barbearia",
+    itens: [
+      { pergunta: "O cliente precisa baixar um aplicativo para marcar?", resposta: "Não. Ele marca pelo link, no navegador do celular. Só o assinante precisa do app, porque é nele que assina e marca pelo plano. Quem baixa o app também recebe o lembrete do horário." },
+      { pergunta: "O cliente consegue marcar de madrugada ou no domingo?", resposta: "Sim. O link e o app ficam abertos a qualquer hora, e só aparecem os horários em que a barbearia atende." },
+      { pergunta: "O lembrete diminui a falta?", resposta: "Ajuda: quem recebe o lembrete falta menos. Não acaba com a falta. Ele chega a quem tem o app com as notificações ligadas." },
+      { pergunta: "E o cliente que prefere marcar pelo WhatsApp?", resposta: "Você manda o link na conversa e ele marca sozinho. Se quiser, o agente de IA responde no WhatsApp da barbearia e marca direto na agenda. Ele é à parte." },
+      { pergunta: "Existe agenda online para barbearia grátis?", resposta: "Existe agenda grátis, mas o BestBarbers não tem versão grátis. Se for testar uma grátis, confira se cada barbeiro tem a agenda dele e se o cliente recebe lembrete." },
+    ],
   },
-];
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: faqItems.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
-};
-
-/* ------------------------------------------------------------------ */
-/*  Page component (Server Component)                                 */
-/* ------------------------------------------------------------------ */
-export default function AgendamentoOnlinePage() {
-  return (
+  leiaTambem: (
     <>
-      {/* JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-
-      <Navbar />
-
-      <main className="pt-[70px] md:pt-[80px]">
-        {/* ====================================================== */}
-        {/*  HERO — Dark background                                */}
-        {/* ====================================================== */}
-        <section className="bg-[#121212] py-16 md:py-24 lg:py-32">
-          <div className="container-custom">
-            {/* Breadcrumb */}
-            <nav
-              aria-label="Breadcrumb"
-              className="mb-8 text-sm text-gray-500 flex items-center gap-1.5"
-            >
-              <Link
-                href="/"
-                className="hover:text-[#ffaf02] transition-colors"
-              >
-                Home
-              </Link>
-              <ChevronRight className="w-3.5 h-3.5" />
-              <span className="text-gray-400">Agendamento Online</span>
-            </nav>
-
-            <div className="max-w-3xl">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-8">
-                Agendamento Online para Barbearia{" "}
-                <span className="text-[#ffaf02]">
-                  — Seus Clientes Agendam 24h, 7 Dias por Semana
-                </span>
-              </h1>
-
-              {/* VOC hook */}
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 mb-8">
-                <div className="flex items-start gap-3 mb-4">
-                  <MessageSquare className="w-5 h-5 text-[#ffaf02] mt-1 flex-shrink-0" />
-                  <div className="space-y-2 text-gray-300 text-base md:text-lg leading-relaxed italic">
-                    <p>&quot;Tem horário?&quot;</p>
-                    <p>&quot;15h pode?&quot;</p>
-                    <p>&quot;Não dá.&quot;</p>
-                    <p>&quot;Deixa pra lá.&quot;</p>
-                  </div>
-                </div>
-                <p className="text-gray-400 text-sm md:text-base leading-relaxed">
-                  Essa conversa acontece{" "}
-                  <strong className="text-white">30 vezes por dia</strong> no
-                  WhatsApp de barbearias sem agendamento online. São{" "}
-                  <strong className="text-white">
-                    2+ horas do seu dia
-                  </strong>{" "}
-                  respondendo mensagem — enquanto poderia estar cortando cabelo
-                  ou gerenciando o negócio.
-                </p>
-              </div>
-
-              <FeatureCTA
-                originDesc="[Site]BT-Agendamento"
-                className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm md:text-base font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
-              >
-                QUERO AGENDAMENTO ONLINE NA MINHA BARBEARIA
-                <ArrowRight className="w-5 h-5" />
-              </FeatureCTA>
-            </div>
-          </div>
-        </section>
-
-        {/* ====================================================== */}
-        {/*  STATS — White background                              */}
-        {/* ====================================================== */}
-        <section className="bg-white py-16 md:py-24">
-          <div className="container-custom">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#121212] text-center mb-4">
-              6 Milhões de Agendamentos por Mês no BestBarbers
-            </h2>
-            <p className="text-gray-600 text-center max-w-2xl mx-auto mb-12 md:mb-16 text-base md:text-lg">
-              Sem WhatsApp. Sem ligações. Sem perder cliente.
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto mb-12">
-              {[
-                {
-                  value: "6M+",
-                  label: "agendamentos por mês",
-                  icon: Calendar,
-                },
-                {
-                  value: "24/7",
-                  label: "disponível para seus clientes",
-                  icon: Clock,
-                },
-                {
-                  value: "1.200+",
-                  label: "barbearias confiam",
-                  icon: Users,
-                },
-              ].map((stat) => (
-                <div
-                  key={stat.label}
-                  className="text-center bg-gray-50 rounded-2xl p-6 md:p-8"
-                >
-                  <stat.icon className="w-8 h-8 text-[#ffaf02] mx-auto mb-3" />
-                  <p className="text-3xl md:text-4xl font-extrabold text-[#121212] mb-1">
-                    {stat.value}
-                  </p>
-                  <p className="text-gray-500 text-sm">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-gray-600 text-center max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-              O agendamento online do BestBarbers substitui o WhatsApp, as
-              ligações e as anotações em papel. Seu cliente escolhe profissional,
-              serviço, data e horário — tudo em menos de 30 segundos. Você só
-              precisa abrir a agenda e atender.
-            </p>
-          </div>
-        </section>
-
-        {/* ====================================================== */}
-        {/*  COMO FUNCIONA — Dark background                       */}
-        {/* ====================================================== */}
-        <section className="bg-[#121212] py-16 md:py-24">
-          <div className="container-custom">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-white text-center mb-4">
-              Como Funciona o Agendamento Online
-            </h2>
-            <p className="text-gray-400 text-center max-w-2xl mx-auto mb-12 md:mb-16 text-base">
-              Tudo o que você precisa para nunca mais perder cliente por falta de
-              resposta.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {[
-                {
-                  icon: Link2,
-                  title: "Link Personalizado Compartilhável",
-                  description:
-                    "Sua barbearia recebe um link único (ex: bestbarbers.app/suabarbearia). Coloque no Instagram, no WhatsApp, no Google — o cliente clica e agenda direto, sem precisar baixar nada.",
-                },
-                {
-                  icon: Smartphone,
-                  title: "App Próprio com Agendamento Integrado",
-                  description:
-                    "No plano App Exclusivo, sua barbearia tem um app na App Store e Play Store com a sua marca. O cliente baixa, agenda, recebe lembretes e faz tudo pelo celular.",
-                },
-                {
-                  icon: Bell,
-                  title: "Lembretes Automáticos (Reduz No-Show)",
-                  description:
-                    "O sistema envia lembretes automáticos por push notification antes do horário agendado. Menos faltas, menos buraco na agenda, mais faturamento previsível.",
-                },
-                {
-                  icon: Users,
-                  title: "Gestão de Agenda por Profissional",
-                  description:
-                    "Cada barbeiro tem sua própria agenda. O cliente escolhe o profissional que preferir e vê apenas os horários disponíveis daquele barbeiro — sem conflito.",
-                },
-                {
-                  icon: ShieldCheck,
-                  title: "Bloqueio de Horários e Folgas",
-                  description:
-                    "Barbeiro de folga? Reunião? Almoço? Bloqueie horários individualmente. A agenda atualiza em tempo real e o cliente só vê o que está disponível.",
-                },
-              ].map((feature) => (
-                <div
-                  key={feature.title}
-                  className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 hover:border-[#ffaf02]/30 transition-colors"
-                >
-                  <feature.icon className="w-8 h-8 text-[#ffaf02] mb-4" />
-                  <h3 className="text-lg md:text-xl font-bold text-white mb-3">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ====================================================== */}
-        {/*  PAIN SECTION — White background                       */}
-        {/* ====================================================== */}
-        <section className="bg-white py-16 md:py-24">
-          <div className="container-custom">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#121212] text-center mb-4">
-                Chega de Perder Cliente no WhatsApp
-              </h2>
-              <p className="text-gray-600 text-center mb-10 md:mb-14 text-base md:text-lg">
-                O dono de barbearia que depende do WhatsApp para agendar
-                <strong> perde clientes todos os dias</strong> — e muitas vezes
-                nem percebe.
-              </p>
-
-              <div className="bg-gray-50 rounded-2xl p-6 md:p-8 mb-10">
-                <p className="text-gray-700 text-base md:text-lg leading-relaxed mb-4">
-                  Em pesquisa com donos de barbearia, a frase mais repetida foi:
-                </p>
-                <blockquote className="border-l-4 border-[#ffaf02] pl-4 md:pl-6">
-                  <p className="text-[#121212] font-semibold text-lg md:text-xl italic">
-                    &quot;Perco 1, 2, 3 clientes por dia porque não consigo
-                    responder a tempo.&quot;
-                  </p>
-                </blockquote>
-                <p className="text-gray-500 text-sm mt-4">
-                  21 menções dessa dor em entrevistas com donos de barbearia (FDO
-                  — Field Data Observation).
-                </p>
-              </div>
-
-              <div className="space-y-4 mb-10">
-                {[
-                  "Cliente manda mensagem às 22h — você só vê às 8h, ele já agendou em outro lugar",
-                  "3 clientes mandam ao mesmo tempo — você demora pra responder e perde 2",
-                  "Barbeiro desmarca e você precisa avisar 1 por 1 no WhatsApp",
-                  "Feriado, domingo, madrugada — sem agendamento, sem faturamento",
-                ].map((pain) => (
-                  <div
-                    key={pain}
-                    className="flex items-start gap-3 text-gray-700"
-                  >
-                    <CheckCircle2 className="w-5 h-5 text-[#ffaf02] mt-0.5 flex-shrink-0" />
-                    <p className="text-sm md:text-base leading-relaxed">
-                      {pain}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8">
-                Com o agendamento online do BestBarbers, seu cliente agenda
-                sozinho — a qualquer hora, de qualquer lugar. Você para de
-                perder tempo e para de perder dinheiro.
-              </p>
-
-              <div className="text-center">
-                <FeatureCTA
-                  originDesc="[Site]BT-Agendamento"
-                  className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm md:text-base font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
-                >
-                  QUERO AGENDAMENTO ONLINE NA MINHA BARBEARIA
-                  <ArrowRight className="w-5 h-5" />
-                </FeatureCTA>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ====================================================== */}
-        {/*  INTERNAL LINKS — Dark background                      */}
-        {/* ====================================================== */}
-        <section className="bg-[#121212] py-16 md:py-24">
-          <div className="container-custom">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-white text-center mb-4">
-              O Agendamento é Só o Começo
-            </h2>
-            <p className="text-gray-400 text-center max-w-2xl mx-auto mb-10 md:mb-14 text-base">
-              O BestBarbers é uma plataforma completa. Explore as outras
-              funcionalidades que transformam sua barbearia:
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
-              {[
-                {
-                  href: "/clube-de-assinaturas",
-                  title: "Clube de Assinaturas",
-                  desc: "Receita recorrente e fidelização automática",
-                },
-                {
-                  href: "/app-proprio-barbearia",
-                  title: "App Próprio",
-                  desc: "Seu app na App Store e Play Store com sua marca",
-                },
-                {
-                  href: "/nota-fiscal-barbearia",
-                  title: "Nota Fiscal Automática",
-                  desc: "NFS-e emitida automaticamente a cada atendimento",
-                },
-              ].map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="group bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#ffaf02]/30 transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  <h3 className="text-lg font-bold text-white mb-1 group-hover:text-[#ffaf02] transition-colors flex items-center gap-2">
-                    {link.title}
-                    <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                  </h3>
-                  <p className="text-gray-400 text-sm">{link.desc}</p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ====================================================== */}
-        {/*  FAQ — White background                                */}
-        {/* ====================================================== */}
-        <section className="bg-white py-16 md:py-24">
-          <div className="container-custom">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#121212] text-center mb-10 md:mb-14">
-                Perguntas Frequentes sobre Agendamento
-              </h2>
-
-              <div className="space-y-6">
-                {faqItems.map((item, index) => (
-                  <div
-                    key={index}
-                    className="border border-gray-200 rounded-2xl p-6 md:p-8"
-                  >
-                    <h3 className="text-base md:text-lg font-bold text-[#121212] mb-3">
-                      {item.question}
-                    </h3>
-                    <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                      {item.answer}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ====================================================== */}
-        {/*  FINAL CTA — Dark background                           */}
-        {/* ====================================================== */}
-        <section className="bg-[#121212] py-16 md:py-24">
-          <div className="container-custom text-center">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-white mb-4">
-              Pare de Perder Clientes por Falta de Resposta
-            </h2>
-            <p className="text-gray-400 max-w-xl mx-auto mb-8 text-base">
-              Configure o agendamento online da sua barbearia em menos de 24
-              horas e comece a receber agendamentos automaticamente.
-            </p>
-            <FeatureCTA
-              originDesc="[Site]BT-Agendamento"
-              className="inline-flex items-center gap-2 bg-[#ffaf02] text-[#121212] px-8 py-4 rounded-full text-sm md:text-base font-bold transition-all duration-300 hover:bg-[#e69f00] hover:scale-[1.02] hover:-translate-y-0.5 active:scale-[0.98] shadow-[0_2px_10px_rgba(255,175,2,0.3)]"
-            >
-              QUERO AGENDAMENTO ONLINE NA MINHA BARBEARIA
-              <ArrowRight className="w-5 h-5" />
-            </FeatureCTA>
-          </div>
-        </section>
-      </main>
-
-      <Footer />
+      Tem cliente que marca e não aparece? Veja <LinkTexto href="/blog/como-reduzir-faltas-barbearia">como reduzir faltas na barbearia</LinkTexto>.
     </>
-  );
+  ),
+  fim: { titulo: "Fale com um especialista e veja a agenda funcionando", texto: "Ele mostra o link, o app e a agenda de cada barbeiro com o jeito da sua barbearia." },
+};
+
+export default function AgendamentoOnline() {
+  return <PaginaDeRecurso conteudo={conteudo} />;
 }

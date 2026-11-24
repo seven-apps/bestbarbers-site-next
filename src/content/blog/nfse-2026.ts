@@ -316,10 +316,10 @@ export const nfse2026: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Gestão Financeira para Barbearia",
+          title: "Controle financeiro para barbearia",
           href: "/gestao-financeira-barbearia",
           description:
-            "Veja como a BestBarbers integra emissão de notas, controle de caixa, comissões e relatórios financeiros em uma única plataforma.",
+            "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
         },
         {
           type: "paragraph",
@@ -394,10 +394,10 @@ export const nfse2026: BlogArticle = {
         "Emissão automática de NFS-e após cada atendimento, sem trabalho manual para o barbeiro.",
     },
     {
-      title: "Gestão Financeira para Barbearia",
+      title: "Controle financeiro para barbearia",
       href: "/gestao-financeira-barbearia",
       description:
-        "Controle completo de caixa, comissões e relatórios financeiros integrados à emissão de notas.",
+        "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
     },
   ],
 };

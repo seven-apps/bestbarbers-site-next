@@ -119,7 +119,7 @@ disparar mensagens em massa para sua base então chupão que seu dia da barbeari
       description: "Gestão completa para barbearias com app próprio.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description: "Receita recorrente com cobrança automática.",
     },

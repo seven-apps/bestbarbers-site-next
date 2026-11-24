@@ -169,10 +169,10 @@ export const barbeariaPilotoAutomatico: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Clube de Assinaturas BestBarbers",
+          title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
-            "Transforme cortes avulsos em receita recorrente com cobrança automática, controle de créditos e painel de assinantes — o primeiro passo para sair do piloto automático.",
+            "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
         },
       ],
     },
@@ -260,22 +260,22 @@ export const barbeariaPilotoAutomatico: BlogArticle = {
   relatedSlugs: ["clube-assinatura-barbearia", "barbearia-por-assinatura"],
   relatedFeatures: [
     {
-      title: "Gestão Financeira",
+      title: "Controle financeiro para barbearia",
       href: "/gestao-financeira-barbearia",
       description:
-        "Enxergue o caixa da sua barbearia em tempo real — receitas, despesas e comissões em um painel unificado, sem precisar somar comprovantes.",
+        "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
-        "Transforme cortes avulsos em receita recorrente e crie um piso previsível de faturamento com cobrança automática e painel de assinantes.",
+        "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
     },
     {
-      title: "App Próprio",
+      title: "App próprio para barbearia",
       href: "/app-proprio-barbearia",
       description:
-        "Um aplicativo com a marca da sua barbearia para agendamento, assinaturas e relacionamento direto com o cliente, 24 horas por dia.",
+        "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
     },
   ],
 };

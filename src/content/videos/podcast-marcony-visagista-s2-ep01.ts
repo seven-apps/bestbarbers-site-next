@@ -177,7 +177,7 @@ o final te agradeço peço que compartilhe também com seus amigos com os barbei
       description: "Gestão completa para barbearias com app próprio.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description: "Receita recorrente com cobrança automática.",
     },

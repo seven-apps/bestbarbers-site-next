@@ -21,19 +21,19 @@ export const comoReduzirFaltas: BlogArticle = {
   relatedSlugs: ["barbearia-por-assinatura", "melhor-sistema-barbearia-2026"],
   relatedFeatures: [
     {
-      title: "Agendamento Online 24h",
+      title: "Agendamento online para barbearia",
       href: "/agendamento-online",
       description:
-        "Sistema de agendamento com lembretes automáticos e confirmação pelo app.",
+        "O cliente vê os horários livres de cada barbeiro e marca sozinho, pelo link ou pelo app. O app lembra o horário.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
-        "Clientes assinantes faltam até 4x menos. Descubra como funciona.",
+        "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
     },
     {
-      title: "App Próprio Personalizado",
+      title: "App próprio para barbearia",
       href: "/app-proprio-barbearia",
       description:
         "Notificações push direto no celular do cliente para reduzir faltas.",
@@ -101,10 +101,10 @@ export const comoReduzirFaltas: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Agendamento Online com Lembretes Automáticos",
+          title: "Agendamento online para barbearia",
           href: "/agendamento-online",
           description:
-            "O BestBarbers envia lembretes automáticos por push, SMS e WhatsApp. Seus clientes agendam 24h pelo app e recebem lembretes no timing ideal.",
+            "O cliente vê os horários livres de cada barbeiro e marca sozinho, pelo link ou pelo app. O app lembra o horário.",
         },
       ],
     },
@@ -142,10 +142,10 @@ export const comoReduzirFaltas: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Clube de Assinaturas para Barbearias",
+          title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
-            "Mais de 51 mil assinantes ativos na plataforma. Cobrança automática, controle de inadimplência e relatórios de recorrência.",
+            "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
         },
         {
           type: "paragraph",
@@ -239,10 +239,10 @@ export const comoReduzirFaltas: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "App Próprio para Barbearia",
+          title: "App próprio para barbearia",
           href: "/app-proprio-barbearia",
           description:
-            "Tenha seu app exclusivo na App Store e Play Store. Notificações push ilimitadas e gratuitas para seus clientes.",
+            "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
         },
         {
           type: "paragraph",

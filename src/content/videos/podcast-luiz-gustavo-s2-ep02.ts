@@ -177,7 +177,7 @@ que assistiu Muito obrigado se você nos acompanhou até aqui fica honrado de co
       description: "Gestão completa para barbearias com app próprio.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description: "Receita recorrente com cobrança automática.",
     },

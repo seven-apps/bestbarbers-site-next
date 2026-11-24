@@ -135,7 +135,7 @@ se vê lá o Bruno também nas redes sociais dele e até a próxima valeu aos Tr
       description: "Gestão completa para barbearias com app próprio.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description: "Receita recorrente com cobrança automática.",
     },

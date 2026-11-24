@@ -286,24 +286,24 @@ export const case290Assinantes: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Clube de Assinaturas BestBarbers",
+          title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
-            "Crie planos, automatize cobranças e gerencie seus assinantes com painel completo de métricas — a mesma estrutura por trás de cases como o desta barbearia de Araxá.",
+            "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
         },
         {
           type: "link-box",
-          title: "App Próprio para Barbearia",
+          title: "App próprio para barbearia",
           href: "/app-proprio-barbearia",
           description:
-            "Tenha um aplicativo com a marca da sua barbearia para agendamento, clube de assinaturas, notificações e pagamentos — o canal direto com o assinante que sustenta o crescimento.",
+            "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
         },
         {
           type: "link-box",
-          title: "Gestão Financeira para Barbearias",
+          title: "Controle financeiro para barbearia",
           href: "/gestao-financeira-barbearia",
           description:
-            "Separe a receita recorrente da avulsa, acompanhe o ticket por assinante e enxergue a saúde financeira do clube em um painel unificado.",
+            "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
         },
         {
           type: "paragraph",
@@ -360,22 +360,22 @@ export const case290Assinantes: BlogArticle = {
   relatedSlugs: ["clube-assinatura-barbearia", "barbearia-por-assinatura"],
   relatedFeatures: [
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
-        "Crie planos de assinatura, automatize cobranças e gerencie assinantes com painel completo de métricas.",
+        "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
     },
     {
-      title: "App Próprio",
+      title: "App próprio para barbearia",
       href: "/app-proprio-barbearia",
       description:
-        "Um aplicativo personalizado com a marca da sua barbearia para agendamento, assinaturas e pagamentos.",
+        "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
     },
     {
-      title: "Gestão Financeira",
+      title: "Controle financeiro para barbearia",
       href: "/gestao-financeira-barbearia",
       description:
-        "Controle toda a saúde financeira da sua barbearia em um só lugar — receitas, despesas e comissões.",
+        "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
     },
   ],
 };

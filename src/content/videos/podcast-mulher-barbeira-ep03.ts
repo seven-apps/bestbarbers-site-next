@@ -137,7 +137,7 @@ convidado assim a gente fica honrada mesmo essa porta Siena é isso eu espero qu
       description: "Gestão completa para barbearias com app próprio.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description: "Receita recorrente com cobrança automática.",
     },
