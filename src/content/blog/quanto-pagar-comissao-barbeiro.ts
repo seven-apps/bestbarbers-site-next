@@ -194,10 +194,10 @@ export const comissaoBarbeiroQuantoPagar: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Clube de Assinaturas BestBarbers",
+          title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
-            "Receita recorrente com regra de comissão de assinante configurável e cálculo automático por atendimento.",
+            "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
         },
       ],
     },
@@ -293,16 +293,16 @@ export const comissaoBarbeiroQuantoPagar: BlogArticle = {
         "Cálculo automático de comissões por barbeiro, por serviço e por período, com relatório transparente que a equipe confere.",
     },
     {
-      title: "Gestão Financeira",
+      title: "Controle financeiro para barbearia",
       href: "/gestao-financeira-barbearia",
       description:
-        "Veja faturamento, custos e comissões em um só painel para saber exatamente quanto sobra de margem.",
+        "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
-        "Receita recorrente com regra de comissão de assinante configurável e cálculo automático por atendimento.",
+        "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
     },
   ],
 };

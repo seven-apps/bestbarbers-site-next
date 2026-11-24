@@ -143,7 +143,7 @@ mudou muito a minha vida os livros que eu tenho hoje a nos sentar não são muit
       description: "Gestão completa para barbearias com app próprio.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description: "Receita recorrente com cobrança automática.",
     },

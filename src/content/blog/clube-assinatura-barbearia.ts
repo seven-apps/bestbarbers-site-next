@@ -82,7 +82,7 @@ export const clubeAssinaturaBarbearia: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "A matemática da recorrência: avulso vs assinatura",
+          title: "Como funciona a barbearia por assinatura",
           href: "/blog/barbearia-por-assinatura",
           description:
             "Por que a receita recorrente vence o modelo avulso — com a conta feita lado a lado, o impacto no caixa e no LTV. Leia se ainda precisa do \"porquê financeiro\".",
@@ -168,10 +168,10 @@ export const clubeAssinaturaBarbearia: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "App Próprio para Barbearia",
+          title: "App próprio para barbearia",
           href: "/app-proprio-barbearia",
           description:
-            "Um aplicativo com a marca da sua barbearia onde o assinante agenda, acompanha créditos, recebe notificações e gerencia o plano.",
+            "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
         },
         {
           type: "callout",
@@ -298,10 +298,10 @@ export const clubeAssinaturaBarbearia: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Clube de Assinaturas BestBarbers",
+          title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
-            "Crie planos, automatize a cobrança, controle créditos e acompanhe quem está em risco de cancelar — tudo no painel do clube.",
+            "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
         },
         {
           type: "paragraph",
@@ -309,10 +309,10 @@ export const clubeAssinaturaBarbearia: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Gestão Financeira para Barbearias",
+          title: "Controle financeiro para barbearia",
           href: "/gestao-financeira-barbearia",
           description:
-            "Veja a receita do clube separada da avulsa, acompanhe pagamentos e pendências e tome decisão com base em dado, não em achismo.",
+            "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
         },
       ],
     },
@@ -430,10 +430,10 @@ export const clubeAssinaturaBarbearia: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Veja como o clube funciona no BestBarbers",
+          title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
-            "Clube de assinatura, app próprio, cobrança automática e painel de gestão — a partir de R$299/mês, sem setup e sem taxa por assinante.",
+            "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
         },
       ],
     },
@@ -490,22 +490,22 @@ export const clubeAssinaturaBarbearia: BlogArticle = {
   ],
   relatedFeatures: [
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
-        "Crie planos, automatize cobranças e gerencie assinantes com painel completo de uso, pagamentos e retenção.",
+        "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
     },
     {
-      title: "App Próprio",
+      title: "App próprio para barbearia",
       href: "/app-proprio-barbearia",
       description:
-        "Um aplicativo com a marca da sua barbearia para agendamento, clube de assinaturas, notificações e pagamentos.",
+        "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
     },
     {
-      title: "Gestão Financeira",
+      title: "Controle financeiro para barbearia",
       href: "/gestao-financeira-barbearia",
       description:
-        "Acompanhe a receita recorrente separada da avulsa, pagamentos e pendências em um painel unificado.",
+        "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
     },
   ],
 };

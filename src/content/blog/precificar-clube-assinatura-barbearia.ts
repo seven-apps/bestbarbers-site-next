@@ -215,10 +215,10 @@ export const precificarClubeAssinatura: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Clube de Assinaturas BestBarbers",
+          title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
-            "Crie e gerencie até 3 tiers de planos com cobrança automática, controle de créditos e painel de uso por assinante — tudo configurável sem programação.",
+            "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
         },
       ],
     },
@@ -280,10 +280,10 @@ export const precificarClubeAssinatura: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Gestão Financeira para Barbearias",
+          title: "Controle financeiro para barbearia",
           href: "/gestao-financeira-barbearia",
           description:
-            "Acompanhe receita recorrente, ticket médio por assinante, churn e uso real por plano em um painel único — os dados que tornam o teste de preço uma decisão, não um chute.",
+            "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
         },
         {
           type: "paragraph",
@@ -340,22 +340,22 @@ export const precificarClubeAssinatura: BlogArticle = {
   relatedSlugs: ["clube-assinatura-barbearia", "barbearia-por-assinatura"],
   relatedFeatures: [
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
-        "Crie planos com 2 a 3 tiers, automatize a cobrança recorrente e acompanhe o uso real de cada assinante.",
+        "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
     },
     {
-      title: "Gestão Financeira",
+      title: "Controle financeiro para barbearia",
       href: "/gestao-financeira-barbearia",
       description:
-        "Separe receita recorrente da avulsa, monitore ticket médio, churn e margem por plano em um painel único.",
+        "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
     },
     {
-      title: "App Próprio",
+      title: "App próprio para barbearia",
       href: "/app-proprio-barbearia",
       description:
-        "Aplicativo com a marca da sua barbearia para o assinante agendar, ver créditos e renovar — o canal direto que reduz churn.",
+        "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
     },
   ],
 };

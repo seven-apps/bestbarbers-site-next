@@ -159,12 +159,12 @@ export default function GestaoComissoesBarbeiro() {
             Funciona com o Clube de Assinaturas
           </h2>
           <p className="mt-6 text-gray-600 text-lg leading-relaxed max-w-3xl">
-            O maior desafio de comissão em barbearias com{" "}
+            O maior desafio de comissão de quem usa um{" "}
             <Link
               href="/clube-de-assinaturas"
               className="text-[#ffaf02] hover:underline font-semibold"
             >
-              clube de assinaturas
+              sistema de assinatura para barbearia
             </Link>{" "}
             é dividir o valor da assinatura entre os barbeiros que atenderam o
             cliente no mês. O BestBarbers faz isso automaticamente.
@@ -254,15 +254,15 @@ export default function GestaoComissoesBarbeiro() {
       <section className="bg-white py-16 md:py-20">
         <div className="container-custom">
           <h2 className="text-2xl md:text-4xl font-bold text-[#121212] mb-8">
-            Parte do Controle Financeiro Completo
+            Parte do controle financeiro da barbearia
           </h2>
           <p className="text-gray-600 text-lg mb-8 max-w-3xl">
-            A gestão de comissões é uma das funcionalidades do{" "}
+            A gestão de comissões faz parte do{" "}
             <Link
               href="/gestao-financeira-barbearia"
               className="text-[#ffaf02] hover:underline font-semibold"
             >
-              módulo financeiro completo
+              controle financeiro para barbearia
             </Link>{" "}
             do BestBarbers. Conheça também:
           </p>
@@ -272,7 +272,7 @@ export default function GestaoComissoesBarbeiro() {
               className="bg-gray-50 rounded-xl p-5 border border-gray-100 hover:border-[#ffaf02]/30 transition-colors group"
             >
               <h3 className="font-bold text-[#121212] group-hover:text-[#ffaf02] transition-colors">
-                Gestão Financeira
+                Controle financeiro para barbearia
               </h3>
               <p className="text-sm text-gray-500 mt-1">
                 Fluxo de caixa, relatórios e pagamentos

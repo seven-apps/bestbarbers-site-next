@@ -154,6 +154,13 @@ export const barbeariaPorAssinatura: BlogArticle = {
           type: "paragraph",
           text: "Considere também incluir benefícios não operacionais nos planos mais caros: prioridade no agendamento (o assinante VIP escolhe primeiro os melhores horários), desconto em produtos capilares e acesso a eventos exclusivos. Esses diferenciais custam pouco para a barbearia mas elevam a percepção de valor do plano e reduzem o churn.",
         },
+        {
+          type: "link-box",
+          title: "Plano de assinatura para barbearia: como montar e rodar",
+          href: "/blog/clube-assinatura-barbearia",
+          description:
+            "O passo a passo do plano: o que entra, o lançamento em 30 dias e a rotina de cada mês com o assinante.",
+        },
       ],
     },
 
@@ -362,10 +369,10 @@ export const barbeariaPorAssinatura: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Clube de Assinaturas BestBarbers",
+          title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
-            "Conheça a ferramenta completa para criar e gerenciar o clube de assinaturas da sua barbearia com cobrança automática, controle de créditos e painel de churn.",
+            "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
         },
         {
           type: "paragraph",
@@ -373,10 +380,10 @@ export const barbeariaPorAssinatura: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Gestão Financeira para Barbearias",
+          title: "Controle financeiro para barbearia",
           href: "/gestao-financeira-barbearia",
           description:
-            "Controle receitas, despesas e comissões da sua barbearia em um painel unificado com relatórios automáticos.",
+            "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
         },
         {
           type: "paragraph",
@@ -384,10 +391,10 @@ export const barbeariaPorAssinatura: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "App Próprio para Barbearia",
+          title: "App próprio para barbearia",
           href: "/app-proprio-barbearia",
           description:
-            "Tenha um aplicativo personalizado com a marca da sua barbearia. Agendamento, clube de assinaturas, notificações e pagamentos integrados.",
+            "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
         },
       ],
     },
@@ -440,22 +447,22 @@ export const barbeariaPorAssinatura: BlogArticle = {
   relatedSlugs: ["melhor-sistema-barbearia-2026", "como-reduzir-faltas-barbearia"],
   relatedFeatures: [
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
-        "Crie planos de assinatura, automatize cobranças e gerencie assinantes com painel completo de métricas.",
+        "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
     },
     {
-      title: "Gestão Financeira",
+      title: "Controle financeiro para barbearia",
       href: "/gestao-financeira-barbearia",
       description:
-        "Controle toda a saúde financeira da sua barbearia em um só lugar — receitas, despesas e comissões.",
+        "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
     },
     {
-      title: "App Próprio",
+      title: "App próprio para barbearia",
       href: "/app-proprio-barbearia",
       description:
-        "Um aplicativo personalizado com a marca da sua barbearia para agendamento, assinaturas e pagamentos.",
+        "O app com o nome e a logo da sua barbearia, na App Store e no Google Play. O cliente marca, recebe avisos e assina pelo celular.",
     },
   ],
 };

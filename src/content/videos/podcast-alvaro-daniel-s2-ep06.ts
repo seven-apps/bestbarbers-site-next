@@ -163,7 +163,7 @@ junto obrigado a todo mundo que acompanhou a gente até aqui fica aí as dicas v
       description: "Gestão completa para barbearias com app próprio.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description: "Receita recorrente com cobrança automática.",
     },

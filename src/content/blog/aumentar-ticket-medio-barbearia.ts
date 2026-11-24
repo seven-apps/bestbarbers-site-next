@@ -154,10 +154,10 @@ export const aumentarTicketMedio: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Agendamento com menu de serviços e encaixe automático",
+          title: "Agendamento online para barbearia",
           href: "/agendamento-online",
           description:
-            "Cadastre cada serviço com preço e duração — a agenda encaixa os extras no tempo certo e o dia não vira bagunça.",
+            "O cliente vê os horários livres de cada barbeiro e marca sozinho, pelo link ou pelo app. O app lembra o horário.",
         },
       ],
     },
@@ -199,22 +199,22 @@ export const aumentarTicketMedio: BlogArticle = {
   ],
   relatedFeatures: [
     {
-      title: "Agendamento Online",
+      title: "Agendamento online para barbearia",
       href: "/agendamento-online",
       description:
-        "Menu de serviços com preço e duração — a agenda encaixa os extras sem estourar o horário do próximo cliente.",
+        "O cliente vê os horários livres de cada barbeiro e marca sozinho, pelo link ou pelo app. O app lembra o horário.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
-        "Recorrência mensal que trava o cliente na sua barbearia e cria a base perfeita pra vender extras todo mês.",
+        "A mensalidade é cobrada no cartão todo mês, o uso do plano é controlado e a comissão de cada barbeiro sai calculada.",
     },
     {
-      title: "Gestão Financeira",
+      title: "Controle financeiro para barbearia",
       href: "/gestao-financeira-barbearia",
       description:
-        "Veja o ticket médio real da barbearia e descubra quais serviços extras mais engordam o seu caixa.",
+        "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
     },
   ],
 };

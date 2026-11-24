@@ -797,17 +797,17 @@ export default function AgenteIaWhatsappPage() {
               {[
                 {
                   href: "/agendamento-online",
-                  title: "Agendamento Online",
+                  title: "Agendamento online para barbearia",
                   desc: "A agenda 24h onde o agente marca os horários",
                 },
                 {
                   href: "/clube-de-assinaturas",
-                  title: "Clube de Assinaturas",
+                  title: "Sistema de assinatura para barbearia",
                   desc: "Receita recorrente — o agente agenda usando os benefícios do plano",
                 },
                 {
                   href: "/app-proprio-barbearia",
-                  title: "App Próprio",
+                  title: "App próprio para barbearia",
                   desc: "Seu app na App Store e Play Store com sua marca",
                 },
               ].map((link) => (

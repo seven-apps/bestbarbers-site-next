@@ -203,7 +203,7 @@ assista no YouTube Spotify e tamo junto Valeu pessoal sucesso para vocês tamo j
       description: "Gestão completa para barbearias com app próprio.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description: "Receita recorrente com cobrança automática.",
     },

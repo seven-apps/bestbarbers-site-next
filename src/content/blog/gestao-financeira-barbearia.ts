@@ -276,7 +276,7 @@ export const gestaoFinanceira: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Clube de Assinaturas BestBarbers",
+          title: "Sistema de assinatura para barbearia",
           href: "/clube-de-assinaturas",
           description:
             "Crie planos de assinatura, automatize a cobrança recorrente e construa um piso de caixa que se renova todo mês, independentemente do movimento.",
@@ -361,10 +361,10 @@ export const gestaoFinanceira: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Módulo Financeiro BestBarbers",
+          title: "Controle financeiro para barbearia",
           href: "/gestao-financeira-barbearia",
           description:
-            "Veja o módulo financeiro do BestBarbers — faturamento, caixa, comissão e clube em um painel só. A partir de R$299/mês, sem taxa por barbeiro.",
+            "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
         },
         {
           type: "paragraph",
@@ -436,10 +436,10 @@ export const gestaoFinanceira: BlogArticle = {
   ],
   relatedFeatures: [
     {
-      title: "Gestão Financeira",
+      title: "Controle financeiro para barbearia",
       href: "/gestao-financeira-barbearia",
       description:
-        "Controle faturamento, caixa, comissões e clube da sua barbearia em um painel único, com relatórios automáticos.",
+        "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
     },
     {
       title: "Gestão de Comissões",
@@ -448,7 +448,7 @@ export const gestaoFinanceira: BlogArticle = {
         "Configure percentuais por serviço e por produto e deixe o sistema calcular a comissão de cada barbeiro com transparência.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
         "Crie planos de assinatura e construa um piso de caixa que se renova todo mês com cobrança recorrente automática.",

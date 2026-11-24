@@ -28,13 +28,13 @@ export const comoCalcularComissao: BlogArticle = {
         "Cálculo automático de comissões por barbeiro, por serviço e por período. Sem planilhas.",
     },
     {
-      title: "Gestão Financeira Completa",
+      title: "Controle financeiro para barbearia",
       href: "/gestao-financeira-barbearia",
       description:
-        "Fluxo de caixa, relatórios diários e controle de pagamentos em tempo real.",
+        "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
     },
     {
-      title: "Clube de Assinaturas",
+      title: "Sistema de assinatura para barbearia",
       href: "/clube-de-assinaturas",
       description:
         "Como calcular comissão de barbeiro sobre atendimentos de assinantes.",
@@ -293,10 +293,10 @@ export const comoCalcularComissao: BlogArticle = {
         },
         {
           type: "link-box",
-          title: "Gestão Financeira para Barbearia",
+          title: "Controle financeiro para barbearia",
           href: "/gestao-financeira-barbearia",
           description:
-            "Relatórios financeiros em tempo real: faturamento, custos, margem e comissões. Tudo automático.",
+            "O caixa do dia, o que entrou, o que saiu e a comissão de cada barbeiro, sem planilha.",
         },
       ],
     },

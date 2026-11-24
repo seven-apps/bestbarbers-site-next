@@ -298,7 +298,7 @@ export default function NotaFiscalBarbearia() {
               className="bg-gray-50 rounded-xl p-5 border border-gray-100 hover:border-[#ffaf02]/30 transition-colors group"
             >
               <h3 className="font-bold text-[#121212] group-hover:text-[#ffaf02] transition-colors">
-                App Próprio Personalizado
+                App próprio para barbearia
               </h3>
               <p className="text-sm text-gray-500 mt-1">
                 Seu app na App Store e Google Play
@@ -309,7 +309,7 @@ export default function NotaFiscalBarbearia() {
               className="bg-gray-50 rounded-xl p-5 border border-gray-100 hover:border-[#ffaf02]/30 transition-colors group"
             >
               <h3 className="font-bold text-[#121212] group-hover:text-[#ffaf02] transition-colors">
-                Gestão Financeira
+                Controle financeiro para barbearia
               </h3>
               <p className="text-sm text-gray-500 mt-1">
                 Fluxo de caixa, comissões e relatórios
