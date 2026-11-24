@@ -54,7 +54,7 @@ export default function TermosDeUso() {
           Termos de uso:
         </h1>
         <p className="text-gray-600 text-sm -mt-6 mb-10">
-          Última atualização: 23 de novembro de 2026.
+          Última atualização: 24 de novembro de 2026.
         </p>
 
         {/* Table of Contents */}
@@ -272,6 +272,20 @@ export default function TermosDeUso() {
             <h2 className="text-xl md:text-2xl font-bold mb-4">
               10. Remuneração, pagamentos e serviços financeiros:
             </h2>
+            {/* Selo oficial do Asaas (contrato BaaS, cl. 3.2). A URL exige o parâmetro id. */}
+            <figure className="mb-6">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://baas.asaas.com/selos/Servicos_financeiros_Asaas-Reduzida-Positivo.svg?id=98397a2c-c900-45d5-b0ed-affba0998c26"
+                alt="Serviços financeiros Asaas"
+                width={188}
+                height={69}
+              />
+              <figcaption className="mt-2 text-sm text-gray-600">
+                Os serviços financeiros são prestados pelo Asaas, instituição de
+                pagamento autorizada pelo Banco Central.
+              </figcaption>
+            </figure>
             <div className="space-y-3">
               <p>
                 10.1 Os &quot;usuários&quot;/&quot;clientes&quot; fornecerão os
