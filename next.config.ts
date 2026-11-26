@@ -49,6 +49,15 @@ const nextConfig: NextConfig = {
       { source: "/caravelli", destination: "/parceiros?source=gustavo-caravelli&origin=120004237&odesc=Gustavo%20Caravelli%20%28Barbearia%20Premium%29", permanent: false },
     ];
   },
+  async rewrites() {
+    return [
+      // /quero dos stories (26/Nov/26, src/lib/quero-stories.ts): o `?t=` escolhe a página estática do tema e o
+      // navegador continua em /quero?… com a query inteira (origin, utm_*), que é o que a atribuição lê.
+      // Lista FECHADA, igual às chaves de TEMAS_QUERO (quero-stories.test.ts confere). Sem `t` ou fora dela: `app`.
+      { source: "/quero", has: [{ type: "query", key: "t", value: "(?<tema>app|ia|assinatura|nota|tudo)" }], destination: "/quero/:tema" },
+      { source: "/quero", destination: "/quero/app" },
+    ];
+  },
 };
 
 export default nextConfig;

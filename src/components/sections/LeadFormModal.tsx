@@ -41,6 +41,16 @@ interface LeadFormModalProps {
    * nada é medido (home, barra de navegação, tabela de precificação).
    */
   bracoTeste?: BracoForm | null;
+  /**
+   * Formulário ABERTO na própria página (a /quero dos stories, 26/Nov/26): sem fundo escurecido, sem o X, sem fechar
+   * por Escape nem por clique fora, sem travar a rolagem e sem limite de altura (quem rola é a página). Ausente = o
+   * modal de sempre, igual em todas as outras páginas.
+   */
+  inline?: boolean;
+  /** Título no formato do modal (antes, trecho em amarelo, depois). Ausente = "Tenha um Aplicativo Próprio…". */
+  titulo?: { antes: string; destaque: string; depois: string };
+  /** Texto do botão de envio. Ausente = "Quero o app da minha barbearia". */
+  textoBotao?: string;
 }
 
 /**
@@ -79,7 +89,7 @@ const formFields = [
 
 const SITE_ORIGIN_ID = 40210426;
 
-export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTeste }: LeadFormModalProps) {
+export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTeste, inline = false, titulo, textoBotao }: LeadFormModalProps) {
   const emTeste = bracoTeste === "atual" || bracoTeste === "progressivo";
   const progressivo = bracoTeste === "progressivo";
   const { trackNonCatalogEvent } = useMetaPixel();
@@ -233,12 +243,12 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
     [progressivo, handleSubmit, formData, telefoneValido, levarAte, setSubmitError],
   );
 
-  // Fecha modal com ESC
+  // Fecha modal com ESC (o formulário aberto na página não fecha)
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
-    if (isOpen) {
+    if (isOpen && !inline) {
       document.addEventListener("keydown", handleEsc);
       document.body.style.overflow = "hidden";
     }
@@ -246,7 +256,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
       document.removeEventListener("keydown", handleEsc);
       document.body.style.overflow = "";
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, inline]);
 
   // Reset form quando fechar
   const handleClose = useCallback(() => {
@@ -268,24 +278,32 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center px-4 py-6"
-      onClick={handleOverlayClick}
+      className={inline ? "w-full flex justify-center" : "fixed inset-0 z-[100] flex items-center justify-center px-4 py-6"}
+      onClick={inline ? undefined : handleOverlayClick}
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-fade-in" />
+      {!inline && <div className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-fade-in" />}
 
-      {/* Modal */}
-      <div className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-2xl md:rounded-3xl border border-black/5 shadow-2xl animate-scale-in">
+      {/* Modal (ou o cartão aberto na página, sem limite de altura nem animação de entrada) */}
+      <div
+        className={
+          inline
+            ? "relative w-full max-w-lg bg-white rounded-2xl md:rounded-3xl border border-black/5 shadow-2xl overflow-hidden"
+            : "relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-white rounded-2xl md:rounded-3xl border border-black/5 shadow-2xl animate-scale-in"
+        }
+      >
         {/* Fundo branco (André, 27/Out/26): o mesmo cartão claro das outras páginas, com a faixa dourada no topo. */}
         <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg, #ebad04, #f5c842, #ebad04)" }} />
         {/* Botao fechar */}
-        <button
-          onClick={handleClose}
-          className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 transition-colors"
-          aria-label="Fechar"
-        >
-          <X className="w-4 h-4 text-[#1e1e1e]" />
-        </button>
+        {!inline && (
+          <button
+            onClick={handleClose}
+            className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 transition-colors"
+            aria-label="Fechar"
+          >
+            <X className="w-4 h-4 text-[#1e1e1e]" />
+          </button>
+        )}
 
         <div className="p-6 md:p-8">
           {/* Titulo */}
@@ -298,11 +316,23 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
               {TEXTOS_DO_MODAL_PROGRESSIVO.titulo.depois}
             </h2>
           ) : (
-            // Revisão de UI/UX do André (27/Out/26): título em 2 linhas, com folga para o X de fechar.
-            <h2 className="font-extrabold text-[22px] leading-[29px] md:text-[28px] md:leading-[36px] text-[#1e1e1e] text-center text-balance mb-1.5 px-8">
-              Tenha um{" "}
-              <span className="text-[#ffaf02]">Aplicativo Próprio</span>{" "}
-              com a marca da sua barbearia
+            // Revisão de UI/UX do André (27/Out/26): título em 2 linhas, com folga para o X de fechar
+            // (sem o X, na página aberta, a folga cai para px-2).
+            <h2 className={`font-extrabold text-[22px] leading-[29px] md:text-[28px] md:leading-[36px] text-[#1e1e1e] text-center text-balance mb-1.5 ${inline ? "px-2" : "px-8"}`}>
+              {titulo ? (
+                <>
+                  {titulo.antes}
+                  {/* O trecho em amarelo não se parte entre duas linhas. */}
+                  <span className="text-[#ffaf02] whitespace-nowrap">{titulo.destaque}</span>
+                  {titulo.depois}
+                </>
+              ) : (
+                <>
+                  Tenha um{" "}
+                  <span className="text-[#ffaf02]">Aplicativo Próprio</span>{" "}
+                  com a marca da sua barbearia
+                </>
+              )}
             </h2>
           )}
 
@@ -398,7 +428,7 @@ export function LeadFormModal({ isOpen, onClose, originDesc, originId, bracoTest
                   </>
                 ) : (
                   <>
-                    {progressivo ? TEXTOS_DO_MODAL_PROGRESSIVO.botao : "Quero o app da minha barbearia"}
+                    {progressivo ? TEXTOS_DO_MODAL_PROGRESSIVO.botao : (textoBotao ?? "Quero o app da minha barbearia")}
                     <ArrowRight className="w-5 h-5" />
                   </>
                 )}
